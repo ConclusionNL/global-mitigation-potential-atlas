@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controller\" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="12.2.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="12.2.0" />
   </ItemGroup>
 
 </Project>
