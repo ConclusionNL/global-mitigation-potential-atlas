@@ -396,3 +396,14 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Generic
+bin
+obj
+# Umbraco
+/Src/Portfolio.Web/wwwroot/umbraco
+/Src/Portfolio.Web/umbraco/*
+!/Src/Portfolio.Web/umbraco/Data
+/Src/Portfolio.Web/umbraco/Data/*
+!/Src/Portfolio.Web/umbraco/Data/Umbraco.sqlite.db
+/Src/Portfolio.Web/Smidg
