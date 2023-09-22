@@ -4,13 +4,10 @@
     Layout = "MainWithNav.cshtml";
 }
 
-<div style="margin-left:220px">
+<div class="MainWithNav">
     <div style="background:#f4f7fa;
-            width:calc(75vw - 300px);
-            height:fit-content;
-            padding:20px;
-            top: 100px;
-            margin:25px auto" ;>
+                padding:20px;
+                margin:25px auto" ;>
         <h1>All Countries</h1>
         <ul style="list-style-type:none; padding-left:0; column-count: 4">
             @foreach (var country in Model.Countries)

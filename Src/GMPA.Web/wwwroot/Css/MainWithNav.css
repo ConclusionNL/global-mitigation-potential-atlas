@@ -1,0 +1,8 @@
+﻿.MainWithNav {
+    display: flex;
+    justify-content: center; /* Center the header horizontally */
+    align-items: center; /* Center the header vertically */
+    padding-left: 220px; /* Adjust for the sidebar width */
+    padding-right: 20px; /* Adjust as needed */
+    box-sizing: content-box;
+}
