@@ -1,0 +1,13 @@
+﻿.main-without-side-nav {
+    display: flex;
+    width: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: content-box;
+    margin: 10px auto;
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}
