@@ -26,9 +26,10 @@ namespace GMPA.Core.Controller
                 Countries = new List<Country>()
             };
 
-            foreach (var country in countries.CountryList.OfType<Country>())
+            foreach (var country in countries.Children.OfType<Country>())
             {
                 viewModel.Countries.Add(country);
+                viewModel.Countries = viewModel.Countries.OrderBy(a => a.Name).ToList();
                 Console.WriteLine(country);
             }
             viewModel.Build(CurrentPage);
