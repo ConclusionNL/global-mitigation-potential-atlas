@@ -1,0 +1,24 @@
+﻿@using GMPA.Core.Models.Umbraco;
+@model GMPA.Core.Models.ViewModels.CountriesViewModel
+@{
+    Layout = "Main.cshtml";
+}
+
+<center>
+<div style="background:#f4f7fa; width:80%; height:fit-content; padding:20px; margin-top:20px">
+    <h1>All Countries</h1>
+    <ul class="row row-cols-4 d-flex" style="list-style-type:none; padding-left:0">
+        @foreach (var country in Model.Countries)
+        {
+            @if (country.Active.First() == "True")
+            {
+                <li class="col" style="color:#2c8090"><a href="@country.Url()" style="color:#2c8090; text-decoration:none">@country.Name</a></li>
+            }
+            else
+            {
+                <li class="col" style="color:#95bfc7">@country.Name</li>
+            }
+        }
+    </ul>
+</div>
+</center>

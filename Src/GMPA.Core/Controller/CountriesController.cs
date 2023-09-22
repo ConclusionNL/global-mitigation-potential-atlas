@@ -1,37 +1,36 @@
 ﻿using GMPA.Core.Extensions;
 using GMPA.Core.Models.Umbraco;
 using GMPA.Core.Models.ViewModels;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 
 namespace GMPA.Core.Controller
 {
-    public class CountryController : RenderController
+    public class CountriesController : RenderController
     {
-        public CountryController(ILogger<RenderController> logger, ICompositeViewEngine compositeViewEngine
+        public CountriesController(ILogger<RenderController> logger, ICompositeViewEngine compositeViewEngine
             , IUmbracoContextAccessor umbracoContextAccessor)
             : base(logger, compositeViewEngine, umbracoContextAccessor)
         {
         }
 
-        public IActionResult Country()
+        public IActionResult Countries()
         {
-            var country = (Country)CurrentPage;
-            var viewModel = new CountryViewModel()
+            var countries = (Countries)CurrentPage;
+            var viewModel = new CountriesViewModel()
             {
-                Active = new List<string>()
+                Countries = new List<Country>()
             };
 
-            foreach (var isActive in country.Active)
+            foreach (var country in countries.CountryList.OfType<Country>())
             {
-                viewModel.Active.Add(isActive);
-                Console.WriteLine(viewModel.Active.Count);
+                viewModel.Countries.Add(country);
+                Console.WriteLine(country);
             }
-
             viewModel.Build(CurrentPage);
 
             return CurrentTemplate(viewModel);
