@@ -1,0 +1,24 @@
+﻿.countries {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* For larger screens, display in 4 columns */
+@media screen and (min-width: 1080px) {
+    .countries {
+        column-count: 4;
+    }
+}
+
+/* For medium-sized screens, display in 3 columns */
+@media screen and (max-width: 1079px) {
+    .countries {
+        column-count: 3;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .countries {
+        column-count: 2;
+    }
+}

@@ -4,10 +4,12 @@
     Layout = "MainWithNav.cshtml";
 }
 
-<div class="MainWithNav">
+<link rel="stylesheet" href="/css/CountiesList.css" />
+
+<div class="main-with-nav">
     <div style="background:#f4f7fa; padding:20px">
         <h1>All Countries</h1>
-        <ul style="list-style-type:none; padding-left:0; column-count: 4">
+        <ul class="countries">
             @foreach (var country in Model.Countries)
             {
                 @if (country.Active.First() == "True")

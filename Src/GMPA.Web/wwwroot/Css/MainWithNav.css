@@ -1,8 +1,9 @@
-﻿.MainWithNav {
+﻿.main-with-nav {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding:20px;
+    padding: 20px;
     padding-left: 300px;
     padding-right: 100px;
     box-sizing: content-box;
