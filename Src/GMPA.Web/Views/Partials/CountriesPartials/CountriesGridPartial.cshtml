@@ -1,18 +1,28 @@
-﻿@model GMPA.Core.Models.ViewModels.CountriesViewModel
+﻿@model List<GMPA.Core.Models.Umbraco.Country>
 
 <div class="main-with-nav">
     <div style="background:#f4f7fa; padding:20px">
         <h1>All Countries</h1>
-        <ul class="countries-list">
-            @foreach (var country in Model.Countries)
+        <ul class="countries-list-grid">
+            @foreach (var country in Model)
             {
                 @if (country.Active.First() == "True")
                 {
-                    <li class="countries-list-item-active"><a href="@country.Url()" class="countries-link-active">@country.Name</a></li>
+                    <li class="countries-list-item-active">
+                        <a href="@country.Url()" class="countries-link-active">
+                            <span class="side-nav-list-item-text">
+                                @country.Name
+                            </span>
+                        </a>
+                    </li>
                 }
                 else
                 {
-                    <li class="countries-list-item-disabled">@country.Name</li>
+                    <li class="countries-list-item-disabled">
+                        <span class="side-nav-list-item-text">
+                            @country.Name
+                        </span>
+                    </li>
                 }
             }
         </ul>

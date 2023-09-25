@@ -5,6 +5,5 @@ namespace GMPA.Core.Models.ViewModels
 {
     public class CountriesViewModel : MainViewModel
     {
-        public List<Country> Countries { get; set; }
     }
 }

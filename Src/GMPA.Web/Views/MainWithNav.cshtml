@@ -19,21 +19,6 @@
             </span>
         </li>
     </ul>
-    @*
-    <h4 style="border-bottom: 1px solid #000; margin-top:20px; text-align:center">Countries</h4>
-    <ul class="countries-list">
-        @foreach (var country in Model.Countries)
-        {
-            @if (country.Active.First() == "True")
-            {
-                <li class="countries-list-item-active"><a href="@country.Url()" class="countries-link-active">@country.Name</a></li>
-            }
-            else
-            {
-                <li class="countries-list-item-disabled">@country.Name</li>
-            }
-        }
-    </ul>
-    *@
+    <partial name="CountriesPartials/CountriesSideNavPartial" model="Model.Countries" />
 </div>
 @RenderBody()

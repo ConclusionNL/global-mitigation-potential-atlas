@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core.Models.PublishedContent;
+﻿using GMPA.Core.Models.Umbraco;
+using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace GMPA.Core.Models.ViewModels
 {
@@ -8,5 +9,7 @@ namespace GMPA.Core.Models.ViewModels
 
 		[Obsolete]
 		public IPublishedContent Content { get; set; }
-	}
+        public List<Country> Countries { get; set; }
+
+    }
 }

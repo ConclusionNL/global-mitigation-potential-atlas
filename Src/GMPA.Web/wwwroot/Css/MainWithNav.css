@@ -12,7 +12,7 @@
 }
 
 .main-with-nav-menu {
-    background:black;
+    background:white;
     width: 150px;
     height: calc(100vh - 75px);
     position: fixed;
@@ -37,4 +37,5 @@
 
 .side-nav-list-item-text {
     margin-left: 10px;
+    text-align:center
 }

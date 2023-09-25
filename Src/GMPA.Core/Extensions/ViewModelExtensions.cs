@@ -13,6 +13,21 @@ namespace GMPA.Core.Extensions
 
 			model.PageTitle = content.Name;
 			model.Content = content;
-		}
+
+			var countries = home
+				.Descendant<Countries>()
+				.Descendants<Country>();
+
+			model.Countries = new List<Country>();
+
+            foreach (var country in countries)
+            {
+                model.Countries.Add(country);
+            }
+
+            model.Countries = model.Countries
+				.OrderBy(a => a.Name)
+				.ToList();
+        }
 	}
 }

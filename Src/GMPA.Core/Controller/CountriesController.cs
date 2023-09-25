@@ -20,18 +20,8 @@ namespace GMPA.Core.Controller
 
         public IActionResult Countries()
         {
-            var countries = (Countries)CurrentPage;
-            var viewModel = new CountriesViewModel()
-            {
-                Countries = new List<Country>()
-            };
-
-            foreach (var country in countries.Children.OfType<Country>())
-            {
-                viewModel.Countries.Add(country);
-                viewModel.Countries = viewModel.Countries.OrderBy(a => a.Name).ToList();
-                Console.WriteLine(country);
-            }
+            var viewModel = new CountriesViewModel();
+            
             viewModel.Build(CurrentPage);
 
             return CurrentTemplate(viewModel);

@@ -1,0 +1,6 @@
+﻿@model GMPA.Core.Models.ViewModels.CaseViewModel
+@{
+	Layout = "Main.cshtml";
+}
+
+@await Html.GetBlockGridHtmlAsync(Model.blockGridItems)
