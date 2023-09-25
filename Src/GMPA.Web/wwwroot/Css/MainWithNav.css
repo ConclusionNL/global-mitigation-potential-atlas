@@ -10,3 +10,21 @@
     margin: 10px auto;
     flex: 1;
 }
+
+.side-nav-list {
+    background:white;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-top:10px;
+}
+
+.side-nav-list-item{
+    border-bottom: 1px solid #000;
+    padding: 5px;
+    text-align:left;
+}
+
+.side-nav-list-item-text {
+    margin-left: 10px;
+}
