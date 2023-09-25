@@ -9,16 +9,16 @@
 <div class="main-with-nav">
     <div style="background:#f4f7fa; padding:20px">
         <h1>All Countries</h1>
-        <ul class="countries">
+        <ul class="countries-list">
             @foreach (var country in Model.Countries)
             {
                 @if (country.Active.First() == "True")
                 {
-                    <li style="color:#2c8090"><a href="@country.Url()" style="color:#2c8090; text-decoration:none">@country.Name</a></li>
+                    <li class="countries-list-item-active"><a href="@country.Url()" class="countries-link-active">@country.Name</a></li>
                 }
                 else
                 {
-                    <li style="color:#95bfc7">@country.Name</li>
+                    <li class="countries-list-item-disabled">@country.Name</li>
                 }
             }
         </ul>

@@ -1,24 +1,37 @@
-﻿.countries {
+﻿.countries-list {
     list-style-type: none;
     padding-left: 0;
 }
 
 /* For larger screens, display in 4 columns */
 @media screen and (min-width: 1080px) {
-    .countries {
+    .countries-list {
         column-count: 4;
     }
 }
 
 /* For medium-sized screens, display in 3 columns */
 @media screen and (max-width: 1079px) {
-    .countries {
+    .countries-list {
         column-count: 3;
     }
 }
 
 @media screen and (max-width: 720px) {
-    .countries {
+    .countries-list {
         column-count: 2;
     }
+}
+
+.countries-link-active {
+    color: #2c8090;
+    text-decoration: none
+}
+
+.countries-list-item-active {
+    color: #2c8090
+}
+
+.countries-list-item-disabled {
+    color: #95bfc7
 }
