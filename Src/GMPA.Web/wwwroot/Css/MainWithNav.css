@@ -19,10 +19,11 @@
     margin-top:10px;
 }
 
-.side-nav-list-item{
-    border-bottom: 1px solid #000;
+.side-nav-list-item {
+    border-bottom: 1px solid #a7a7a0;
     padding: 5px;
-    text-align:left;
+    text-align: left;
+    font-weight:500;
 }
 
 .side-nav-list-item-text {
