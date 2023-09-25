@@ -1,0 +1,20 @@
+﻿@model GMPA.Core.Models.ViewModels.CountriesViewModel
+
+<div class="main-with-nav">
+    <div style="background:#f4f7fa; padding:20px">
+        <h1>All Countries</h1>
+        <ul class="countries-list">
+            @foreach (var country in Model.Countries)
+            {
+                @if (country.Active.First() == "True")
+                {
+                    <li class="countries-list-item-active"><a href="@country.Url()" class="countries-link-active">@country.Name</a></li>
+                }
+                else
+                {
+                    <li class="countries-list-item-disabled">@country.Name</li>
+                }
+            }
+        </ul>
+    </div>
+</div>
