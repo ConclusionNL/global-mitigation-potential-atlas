@@ -1,5 +1,17 @@
 ﻿@model List<GMPA.Core.Models.Umbraco.Country>
 
+@{
+    Dictionary<string, List<string>> continents = new Dictionary<string, List<string>>();
+
+    foreach(var country in Model)
+    {
+        //continents.Add(country.Continent, );
+    }
+
+
+    foreach (var countinent in continents) Console.WriteLine(countinent);
+}
+
 <div class="main-with-nav">
     <div style="background:#f4f7fa; padding:20px">
         <h1>All Countries</h1>

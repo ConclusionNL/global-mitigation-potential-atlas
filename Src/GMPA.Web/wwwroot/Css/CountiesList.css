@@ -1,6 +1,9 @@
 ﻿.countries-list {
+    height:Calc(100vh - 260px);
     list-style-type: none;
     padding-left: 0;
+    overflow:hidden;
+    overflow-y: auto;
 }
 
 .countries-list-grid {

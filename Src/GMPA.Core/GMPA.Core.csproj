@@ -11,4 +11,12 @@
     <PackageReference Include="Umbraco.Cms.Web.Website" Version="12.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\Arlanet.Umbraco.Grid\Arlanet.Umbraco.Grid.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Umbraco\Composers\" />
+  </ItemGroup>
+
 </Project>

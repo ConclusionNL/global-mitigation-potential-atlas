@@ -5,5 +5,6 @@ namespace GMPA.Core.Models.ViewModels
     public class CountryViewModel : MainViewModel
     {
         public List<string> Active {  get; set; }
+        public List<string> Continent { get; set; }
     }
 }
