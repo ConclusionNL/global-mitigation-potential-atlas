@@ -23,14 +23,15 @@ namespace GMPA.Core.Controller
             var country = (Country)CurrentPage;
             var viewModel = new CountryViewModel()
             {
-                Active = new List<string>()
+                Active = new List<string>(),
+                Continents = new List<string>(),
             };
 
-            foreach (var isActive in country.Active)
-            {
-                viewModel.Active.Add(isActive);
-                Console.WriteLine(viewModel.Active.Count);
-            }
+            // Get tag Active for country
+            foreach (var isActive in country.Active) viewModel.Active.Add(isActive);
+
+            //Get the tag representing the continent the country is located in
+            foreach (var continent in country.Continent) viewModel.Continents.Add(continent);
 
             viewModel.Build(CurrentPage);
 

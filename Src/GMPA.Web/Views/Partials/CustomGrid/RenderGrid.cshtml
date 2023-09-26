@@ -1,0 +1,88 @@
+﻿@* @using Arlanet.Umbraco.Grid.Base;
+@model BlockListGrid
+
+@foreach (var row in Model.Rows)
+{
+    var settings = (MyRowSettings)row.Settings;
+
+    <section class="@row.GetSectionClasses()"
+             style="@row.GetSectionStyle()">
+        @{ RenderBackground(settings.Background); }
+
+        <div class="@row.GetContainerClasses()"
+             style="@row.GetContainerStyle()">
+            @{ RenderRow(row, settings); }
+        </div>
+    </section>
+}
+
+@functions
+{
+    void RenderRow(BlockListGridRow gridRow, MyRowSettings settings)
+    {
+        if (gridRow != null && gridRow.Columns.Any())
+        {
+            var anchor = new HtmlString(string.IsNullOrEmpty(settings.Anchor)
+                ? string.Empty
+                : $"id=\"{settings.Anchor}\"");
+
+            <div class="@gridRow.GetRowClasses()"
+                 style="@gridRow.GetRowStyle()"
+                 @gridRow.PreviewAttributes(Model)
+                 @anchor>
+                @foreach (var column in gridRow.Columns)
+                {
+                    RenderColumn(gridRow, column);
+                }
+            </div>
+        }
+    }
+
+    void RenderColumn(BlockListGridRow gridRow, BlockListGridColumn gridColumn)
+    {
+        if (gridColumn != null)
+        {
+            <div class="@gridRow.GetColumnClasses(gridColumn)"
+                 style="@gridRow.GetColumnStyle(gridColumn)"
+                 @gridColumn.PreviewAttributes(Model)>
+
+                @foreach (var control in gridColumn.Controls)
+                {
+                    if (control == null)
+                    {
+                        continue;
+                    }
+
+                    <div class="@control.Render.ToLower()" @control.PreviewAttributes(Model)>
+                        @Html.RenderGridControl(control)
+                    </div>
+                }
+            </div>
+        }
+    }
+
+    void RenderBackground(MyBackgroundSettings settingsBackground)
+    {
+        if (!string.IsNullOrEmpty(settingsBackground.BackgroundImageUrl))
+        {
+            <figure class="background-overlay">
+                <picture class="background-overlay background-image">
+                    <img src="@settingsBackground.BackgroundImageUrl" alt="Background Image">
+                </picture>
+            </figure>
+        }
+
+        var backgroundBlur = settingsBackground.BackgroundBlur
+            ? "background-blur"
+            : null;
+        var backgroundColor = string.IsNullOrEmpty(settingsBackground.BackgroundColor)
+            ? null
+            : $"background-color: {settingsBackground.BackgroundColor}";
+
+        if (backgroundBlur != null || backgroundColor != null)
+        {
+            <div class="background-overlay @backgroundBlur" style="@backgroundColor"></div>
+        }
+    }
+}
+ *@

@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace GMPA.Core.Models.Umbraco
 {
-	/// <summary>Grid Layout Text</summary>
-	[PublishedModel("gridLayoutText")]
-	public partial class GridLayoutText : PublishedElementModel
+	/// <summary>Header</summary>
+	[PublishedModel("header")]
+	public partial class Header : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
-		public new const string ModelTypeAlias = "gridLayoutText";
+		public new const string ModelTypeAlias = "header";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
@@ -34,14 +34,14 @@ namespace GMPA.Core.Models.Umbraco
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<GridLayoutText, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<Header, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public GridLayoutText(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public Header(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,11 +50,11 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
-		/// Grid Text
+		/// Text
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("gridText")]
-		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString GridText => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "gridText");
+		[ImplementPropertyType("text")]
+		public virtual string Text => this.Value<string>(_publishedValueFallback, "text");
 	}
 }

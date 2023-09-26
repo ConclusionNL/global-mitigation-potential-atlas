@@ -1,0 +1,39 @@
+﻿@* @model ImagePickerGridControl.ImagePickerViewModel
+@{
+    if (Model.Images.Count < 1)
+    {
+        return;
+    }
+}
+<div class="imagepicker">
+    @if (Model.Images.Count >= 2)
+    {
+        <div class="carousel carousel--image js-image-carousel" data-slides="1">
+            <div class="image-slider swiper-wrapper">
+                @foreach (var image in Model.Images)
+                {
+                    <div class="image-slider__item swiper-slide">
+                        @await Html.PartialAsync("~/Views/Partials/Media/Image.cshtml", image)
+                    </div>
+                }
+            </div>
+            <div class="swiper-button-prev card-button-prev carousel__button--prev"></div>
+            <div class="swiper-button-next card-button-next carousel__button--next"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    }
+    else
+    {
+        var image = Model.Images.FirstOrDefault();
+        <div class="image-slider__item swiper-slide">
+            @await Html.PartialAsync("~/Views/Partials/Media/Image.cshtml", image)
+            @if (!string.IsNullOrWhiteSpace(image.Caption))
+            {
+                <div class="caption">
+                    @image.Caption
+                </div>
+            }
+        </div>
+    }
+</div>
+ *@

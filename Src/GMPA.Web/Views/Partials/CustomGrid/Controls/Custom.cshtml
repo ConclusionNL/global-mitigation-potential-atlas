@@ -1,0 +1,59 @@
+﻿@* @model CustomGridControl.CustomViewModel
+@{
+    SmidgeHelper.RequiresJs("~/scripts/controls/custom/custom.js", Constants.Dependencies.Smidge.Priorities.Control);
+}
+
+@if (Model.EnableShadowRoot)
+{
+    SmidgeHelper.RequiresInlineJs(InlineJavaScript(Model.Id, Model.Javascript, true));
+
+    <template id="template-@Model.Id">
+        <style>
+            @Model.Css
+        </style>
+
+        <div>
+            @Model.Html
+        </div>
+    </template>
+
+    <div id="shadow-@Model.Id"></div>
+}
+else
+{
+    SmidgeHelper.RequiresInlineJs(InlineJavaScript(Model.Id, Model.Javascript, false));
+    SmidgeHelper.RequiresInlineCss(InlineCss(Model.Css));
+
+    <div id="element-@Model.Id">
+        @Model.Html
+    </div>
+}
+
+@functions
+{
+    IHtmlContent InlineJavaScript(string id, IHtmlContent javascript, bool shadowRoot)
+    {
+        string initializeMethod = shadowRoot
+            ? "initializeShadowRoot"
+            : "initializeElement";
+
+        Func<object, IHtmlContent> result =
+            @<script>
+                 Sonic.GridControls.Custom.@(initializeMethod)("@id", function(element) {
+                     @javascript
+                 });
+            </script>;
+
+        return result(null);
+    }
+
+    IHtmlContent InlineCss(IHtmlContent css)
+    {
+        Func<object, IHtmlContent> result =
+            @<style>
+                 @css
+             </style>;
+
+        return result(null);
+    }
+} *@
