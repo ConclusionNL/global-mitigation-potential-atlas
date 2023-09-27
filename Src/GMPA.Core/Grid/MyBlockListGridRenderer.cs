@@ -1,5 +1,8 @@
-﻿using Arlanet.Umbraco.Grid.Base;
+﻿using System;
+using System.Collections.Generic;
+using Arlanet.Umbraco.Grid.Base;
 using Arlanet.Umbraco.Grid.Other;
+using Marketing.Core.Models.Umbraco;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
@@ -207,65 +210,65 @@ namespace Marketing.Core.Grid
             return string.Join(" ", classes);
         }
 
-        //public override BlockListGridRow CreateRow(List<BlockListGridColumn> columns, IPublishedElement settings)
-        //{
-        //    var baseRow = base.CreateRow(columns, settings);
+        public override BlockListGridRow CreateRow(List<BlockListGridColumn> columns, IPublishedElement settings)
+        {
+            var baseRow = base.CreateRow(columns, settings);
 
-        //    //var mySettings = (RowSettings)settings;
+            var mySettings = (RowSettings)settings;
 
-        //    baseRow.Settings = new MyRowSettings
-        //    {
-        //        Background = new MyBackgroundSettings
-        //        {
-        //            BackgroundColor = mySettings.BackgroundColor,
-        //            BackgroundImageUrl = mySettings.BackgroundImage.MediaUrl(),
-        //            BackgroundBlur = mySettings.BackgroundBlur
-        //        },
+            baseRow.Settings = new MyRowSettings
+            {
+                Background = new MyBackgroundSettings
+                {
+                    BackgroundColor = mySettings.BackgroundColor,
+                    BackgroundImageUrl = mySettings.BackgroundImage.MediaUrl(),
+                    BackgroundBlur = mySettings.BackgroundBlur
+                },
 
-        //        TextColor = string.IsNullOrWhiteSpace(mySettings.TextColor)
-        //            ? null
-        //            : mySettings.TextColor,
-        //        CssClasses = mySettings.CssClasses,
+                TextColor = string.IsNullOrWhiteSpace(mySettings.TextColor)
+                    ? null
+                    : mySettings.TextColor,
+                CssClasses = mySettings.CssClasses,
 
-        //        IsFullWidth = mySettings.IsFullWidth,
-        //        IsFullHeight = mySettings.IsfullHeight,
+                IsFullWidth = mySettings.IsFullWidth,
+                IsFullHeight = mySettings.IsfullHeight,
 
-        //        Anchor = mySettings.Anchor,
-        //        HorizontalAlignment = string.IsNullOrWhiteSpace(mySettings.HorizontalAlignment)
-        //            ? Alignment.None
-        //            : Enum.Parse<Alignment>(mySettings.HorizontalAlignment),
-        //        VerticalAlignment = string.IsNullOrWhiteSpace(mySettings.VerticalAlignment)
-        //            ? Alignment.None
-        //            : Enum.Parse<Alignment>(mySettings.VerticalAlignment),
-        //        PaddingTop = string.IsNullOrWhiteSpace(mySettings.PaddingTop)
-        //            ? Padding.Double
-        //            : Enum.Parse<Padding>(mySettings.PaddingTop),
-        //        PaddingBottom = string.IsNullOrWhiteSpace(mySettings.PaddingBottom)
-        //            ? Padding.Double
-        //            : Enum.Parse<Padding>(mySettings.PaddingBottom)
-        //    };
+                Anchor = mySettings.Anchor,
+                HorizontalAlignment = string.IsNullOrWhiteSpace(mySettings.HorizontalAlignment)
+                    ? Alignment.None
+                    : Enum.Parse<Alignment>(mySettings.HorizontalAlignment),
+                VerticalAlignment = string.IsNullOrWhiteSpace(mySettings.VerticalAlignment)
+                    ? Alignment.None
+                    : Enum.Parse<Alignment>(mySettings.VerticalAlignment),
+                PaddingTop = string.IsNullOrWhiteSpace(mySettings.PaddingTop)
+                    ? Padding.Double
+                    : Enum.Parse<Padding>(mySettings.PaddingTop),
+                PaddingBottom = string.IsNullOrWhiteSpace(mySettings.PaddingBottom)
+                    ? Padding.Double
+                    : Enum.Parse<Padding>(mySettings.PaddingBottom)
+            };
 
-        //    return baseRow;
-        //}
+            return baseRow;
+        }
 
-        //public override BlockListGridColumn CreateColumn(int width, IPublishedElement settings, List<BlockListGridControl> controls)
-        //{
-        //    var baseColumn = base.CreateColumn(width, settings, controls);
+        public override BlockListGridColumn CreateColumn(int width, IPublishedElement settings, List<BlockListGridControl> controls)
+        {
+            var baseColumn = base.CreateColumn(width, settings, controls);
 
-        //    var mySettings = (ColumnSettings)settings;
+            var mySettings = (ColumnSettings)settings;
 
-        //    baseColumn.Settings = new MyColumnSettings
-        //    {
-        //        CssClasses = mySettings.CssClasses,
-        //        HorizontalAlignment = string.IsNullOrWhiteSpace(mySettings.HorizontalAlignment)
-        //            ? Alignment.None
-        //            : Enum.Parse<Alignment>(mySettings.HorizontalAlignment),
-        //        VerticalAlignment = string.IsNullOrWhiteSpace(mySettings.VerticalAlignment)
-        //            ? Alignment.None
-        //            : Enum.Parse<Alignment>(mySettings.VerticalAlignment)
-        //    };
+            baseColumn.Settings = new MyColumnSettings
+            {
+                CssClasses = mySettings.CssClasses,
+                HorizontalAlignment = string.IsNullOrWhiteSpace(mySettings.HorizontalAlignment)
+                    ? Alignment.None
+                    : Enum.Parse<Alignment>(mySettings.HorizontalAlignment),
+                VerticalAlignment = string.IsNullOrWhiteSpace(mySettings.VerticalAlignment)
+                    ? Alignment.None
+                    : Enum.Parse<Alignment>(mySettings.VerticalAlignment)
+            };
 
-        //    return baseColumn;
-        //}
+            return baseColumn;
+        }
     }
 }

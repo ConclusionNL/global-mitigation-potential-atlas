@@ -1,4 +1,4 @@
-﻿
+﻿@model BlockListGrid
 @{
     Layout = null;
 
@@ -77,12 +77,12 @@
     </style>
 
     @await SmidgeHelper.CssHereAsync()
-    @* @await SmidgeHelper.InlineCssHereAsync() *@
+    @await SmidgeHelper.InlineCssHereAsync()
 </head>
 <body class="">
-    @* @await Html.PartialAsync("~/Views/Partials/CustomGrid/RenderGrid.cshtml", Model) *@
+    @await Html.PartialAsync("~/Views/Partials/CustomGrid/RenderGrid.cshtml", Model)
     @await SmidgeHelper.JsHereAsync()
-    @* @await SmidgeHelper.InlineJsHereAsync() *@
+    @await SmidgeHelper.InlineJsHereAsync()
 
     <script>
         window.addEventListener("beforeunload", function () {

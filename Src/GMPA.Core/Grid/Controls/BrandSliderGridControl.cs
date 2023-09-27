@@ -1,33 +1,37 @@
-﻿//using System.Collections.Generic;
-//using Arlanet.Umbraco.Grid.Base;
-//namespace Marketing.Core.Grid.Controls
-//{
-//    public class BrandSliderGridControl : GridControl
-//    {
-//        public override string ViewPath => "~/Views/Partials/BrandSlider.cshtml";
-//        public override string Alias => "componentBrandSlider";
+﻿using System.Collections.Generic;
+using Arlanet.Umbraco.Grid.Base;
+using Marketing.Core.Models.Media;
+using Marketing.Core.Models.Umbraco;
+using Marketing.Core.Models.ViewModels.Grid;
 
-//        public override GridControlViewModel Render(BlockListGridControl gridControl, bool preview = false)
-//        {
-//            var component = (ComponentBrandSlider)gridControl.Component;
+namespace Marketing.Core.Grid.Controls
+{
+    public class BrandSliderGridControl : GridControl
+    {
+        public override string ViewPath => "~/Views/Partials/BrandSlider.cshtml";
+        public override string Alias => "componentBrandSlider";
 
-//            var images = new List<ImageModel>();
+        public override GridControlViewModel Render(BlockListGridControl gridControl, bool preview = false)
+        {
+            var component = (ComponentBrandSlider)gridControl.Component;
 
-//            foreach (var mediaItem in component.BrandImages)
-//            {
-//                var image = mediaItem.Content as Image;
+            var images = new List<ImageModel>();
 
-//                var imageModel = new ImageModel(image, aspectRatio: AspectRatio.OneByOne);
+            foreach (var mediaItem in component.BrandImages)
+            {
+                var image = mediaItem.Content as Image;
 
-//                images.Add(imageModel);
-//            }
+                var imageModel = new ImageModel(image, aspectRatio: AspectRatio.OneByOne);
 
-//            return ViewModel(ViewPath, new BrandSliderViewModel
-//            {
-//                BrandImages = images,
-//                Header = component.Header,
-//                SubHeader = component.SubHeader
-//            });
-//        }
-//    }
-//}
+                images.Add(imageModel);
+            }
+
+            return ViewModel(ViewPath, new BrandSliderViewModel
+            {
+                BrandImages = images, 
+                Header = component.Header, 
+                SubHeader = component.SubHeader
+            });
+        }
+    }
+}

@@ -18,7 +18,6 @@ namespace Arlanet.Umbraco.Grid.Other
         {
             notification.ServerVariables.Add("Arlanet.Umbraco.Grid", new Dictionary<string, object>
             {
-                
             });
         }
     }

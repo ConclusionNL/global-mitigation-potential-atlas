@@ -38,6 +38,7 @@ namespace Arlanet.Umbraco.Grid.Base
         private void Initialize(BlockListGridSettings blockListGridSettings, IContentTypeService contentTypeService)
         {
             _columnSettingsKey = Guid.NewGuid();
+            _columnSettingsContentKey = columnSettingsContentType.Key;
         }
 
         public virtual string GetSectionClasses(BlockListGridRow gridRow)
@@ -80,7 +81,7 @@ namespace Arlanet.Umbraco.Grid.Base
             return string.Empty;
         }
 
-        public virtual BlockListGrid MapBlockListModel(BlockGridModel blockListModel)
+        public virtual BlockListGrid MapBlockListModel(BlockListModel blockListModel)
         {
             var rows = blockListModel
                 .Select(x => new
@@ -90,7 +91,7 @@ namespace Arlanet.Umbraco.Grid.Base
                         .Value(_publishedValueFallback) as string,
                     Components = x.Content
                         .GetProperty("controls")
-                        .Value(_publishedValueFallback) as BlockGridModel,
+                        .Value(_publishedValueFallback) as BlockListModel,
                     x.Settings
                 })
                 .ToList();
