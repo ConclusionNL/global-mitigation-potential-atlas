@@ -6,7 +6,6 @@ namespace Arlanet.Umbraco.Grid.Base
     {
         public int PreviewId { get; set; }
 
-        //TODO: Rename to Alias
         public string Render { get; set; }
 
         public IPublishedElement Component { get; set; }
