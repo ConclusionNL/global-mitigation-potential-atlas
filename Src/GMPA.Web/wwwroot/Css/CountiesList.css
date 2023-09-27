@@ -1,9 +1,8 @@
 ﻿.countries-list {
-    height:Calc(100vh - 260px);
+    height: Calc(100vh - 260px);
     list-style-type: none;
     padding-left: 0;
-    overflow:hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .countries-list-grid {
@@ -14,20 +13,20 @@
 /* For larger screens, display in 4 columns */
 @media screen and (min-width: 1080px) {
     .countries-list-grid {
-        column-count: 4;
+        column-count: 6;
     }
 }
 
 /* For medium-sized screens, display in 3 columns */
 @media screen and (max-width: 1079px) {
     .countries-list-grid {
-        column-count: 3;
+        column-count: 5;
     }
 }
 
 @media screen and (max-width: 720px) {
     .countries-list-grid {
-        column-count: 2;
+        column-count: 4;
     }
 }
 
@@ -42,4 +41,10 @@
 
 .countries-list-item-disabled {
     color: #95bfc7
+}
+
+.country-divider {
+    border-bottom: 1px solid #000;
+    margin-top: 5px;
+    text-align: center;
 }

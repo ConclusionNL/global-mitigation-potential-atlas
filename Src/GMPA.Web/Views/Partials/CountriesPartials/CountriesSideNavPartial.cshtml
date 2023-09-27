@@ -10,10 +10,10 @@
     }
 }
 
-<h4 style="border-bottom: 1px solid #000; margin-top: 20px; text-align: center">Countries</h4>
-<ul class="countries-list">
+<h4 class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseContinents" aria-expanded="true" aria-controls="collapseContinents">Countries</h4>
+<ul class="countries-list show" id="collapseContinents">
     <!-- #region Africa-->
-    <li>
+    <li class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseAfrica" aria-expanded="true" aria-controls="collapseAfrica">
         <b>Africa</b>
     </li>
 
@@ -26,7 +26,7 @@
         {
             @if (countryItem.Active.First() == "True")
             {
-                <li class="countries-list-item-active">
+                <li class="countries-list-item-active show" id="collapseAfrica">
                     <a href="@countryItem.Url()" class="countries-link-active">
                         <span class="side-nav-list-item-text">
                             @countryItem.Name
@@ -36,17 +36,21 @@
             }
             else
             {
-                <li class="countries-list-item-disabled">
+                <li class="countries-list-item-disabled show" id="collapseAfrica">
                     <span class="side-nav-list-item-text">
                         @countryItem.Name
                     </span>
                 </li>
             }
+
+            countries.Remove(countryItem);
         }
+
+        Console.WriteLine($"Remaining countries {countries.Count()}");
     }
     <!-- #endregion -->
     <!-- #region Asia-->
-    <li>
+    <li class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseAsia" aria-expanded="true" aria-controls="collapseAsia">
         <b>Asia</b>
     </li>
 
@@ -59,7 +63,7 @@
         {
             @if (countryItem.Active.First() == "True")
             {
-                <li class="countries-list-item-active">
+                <li class="countries-list-item-active show" id="collapseAsia">
                     <a href="@countryItem.Url()" class="countries-link-active">
                         <span class="side-nav-list-item-text">
                             @countryItem.Name
@@ -69,17 +73,21 @@
             }
             else
             {
-                <li class="countries-list-item-disabled">
+                <li class="countries-list-item-disabled show" id="collapseAsia">
                     <span class="side-nav-list-item-text">
                         @countryItem.Name
                     </span>
                 </li>
             }
+
+            countries.Remove(countryItem);
         }
+
+        Console.WriteLine($"Remaining countries {countries.Count()}");
     }
     <!-- #endregion -->
     <!-- #region Europe-->
-    <li>
+    <li class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseEurope" aria-expanded="true" aria-controls="collapseEurope">
         <b>Europe</b>
     </li>
 
@@ -92,7 +100,7 @@
         {
             @if (countryItem.Active.First() == "True")
             {
-                <li class="countries-list-item-active">
+                <li class="countries-list-item-active show" id="collapseEurope">
                     <a href="@countryItem.Url()" class="countries-link-active">
                         <span class="side-nav-list-item-text">
                             @countryItem.Name
@@ -102,17 +110,21 @@
             }
             else
             {
-                <li class="countries-list-item-disabled">
+                <li class="countries-list-item-disabled show" id="collapseEurope">
                     <span class="side-nav-list-item-text">
                         @countryItem.Name
                     </span>
                 </li>
             }
+
+            countries.Remove(countryItem);
         }
+
+        Console.WriteLine($"Remaining countries {countries.Count()}");
     }
     <!-- #endregion -->
     <!-- #region North America-->
-    <li>
+    <li class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseNorthAmerica" aria-expanded="true" aria-controls="collapseNorthAmerica">
         <b>North America</b>
     </li>
 
@@ -125,7 +137,7 @@
         {
             @if (countryItem.Active.First() == "True")
             {
-                <li class="countries-list-item-active">
+                <li class="countries-list-item-active show" id="collapseNorthAmerica">
                     <a href="@countryItem.Url()" class="countries-link-active">
                         <span class="side-nav-list-item-text">
                             @countryItem.Name
@@ -135,17 +147,21 @@
             }
             else
             {
-                <li class="countries-list-item-disabled">
+                <li class="countries-list-item-disabled show" id="collapseNorthAmerica">
                     <span class="side-nav-list-item-text">
                         @countryItem.Name
                     </span>
                 </li>
             }
+
+            countries.Remove(countryItem);
         }
+
+        Console.WriteLine($"Remaining countries {countries.Count()}");
     }
     <!-- #endregion -->
     <!-- #region Oceania-->
-    <li>
+    <li class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseOceania" aria-expanded="true" aria-controls="collapseOceania">
         <b>Oceania</b>
     </li>
 
@@ -158,7 +174,7 @@
         {
             @if (countryItem.Active.First() == "True")
             {
-                <li class="countries-list-item-active">
+                <li class="countries-list-item-active show" id="collapseOceania">
                     <a href="@countryItem.Url()" class="countries-link-active">
                         <span class="side-nav-list-item-text">
                             @countryItem.Name
@@ -168,17 +184,21 @@
             }
             else
             {
-                <li class="countries-list-item-disabled">
+                <li class="countries-list-item-disabled show" id="collapseOceania">
                     <span class="side-nav-list-item-text">
                         @countryItem.Name
                     </span>
                 </li>
             }
+
+            countries.Remove(countryItem);
         }
+
+        Console.WriteLine($"Remaining countries {countries.Count()}");
     }
     <!-- #endregion -->
     <!-- #region South America-->
-    <li>
+    <li class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseSouthAmerica" aria-expanded="true" aria-controls="collapseSouthAmerica">
         <b>South America</b>
     </li>
 
@@ -191,7 +211,7 @@
         {
             @if (countryItem.Active.First() == "True")
             {
-                <li class="countries-list-item-active">
+                <li class="countries-list-item-active show" id="collapseSouthAmerica">
                     <a href="@countryItem.Url()" class="countries-link-active">
                         <span class="side-nav-list-item-text">
                             @countryItem.Name
@@ -201,13 +221,17 @@
             }
             else
             {
-                <li class="countries-list-item-disabled">
+                <li class="countries-list-item-disabled show" id="collapseSouthAmerica">
                     <span class="side-nav-list-item-text">
                         @countryItem.Name
                     </span>
                 </li>
             }
+
+            countries.Remove(countryItem);
         }
+
+        Console.WriteLine($"Remaining countries {countries.Count()}");
     }
     <!-- #endregion -->
 </ul>

@@ -14,9 +14,8 @@
     <div style="background:#f4f7fa; padding:20px">
         <h1>All Countries</h1>
         <ul class="countries-list-grid">
-
             <!-- #region Africa-->
-            <li>
+            <li class="country-divider">
                 <b>Africa</b>
             </li>
 
@@ -45,12 +44,15 @@
                             </span>
                         </li>
                     }
+
+                    countries.Remove(countryItem);
                 }
+
+                Console.WriteLine($"Remaining countries {countries.Count()}");
             }
             <!-- #endregion -->
-
             <!-- #region Asia-->
-            <li>
+            <li class="country-divider">
                 <b>Asia</b>
             </li>
 
@@ -79,12 +81,15 @@
                             </span>
                         </li>
                     }
+
+                    countries.Remove(countryItem);
                 }
+
+                Console.WriteLine($"Remaining countries {countries.Count()}");
             }
             <!-- #endregion -->
-
             <!-- #region Europe-->
-            <li>
+            <li class="country-divider">
                 <b>Europe</b>
             </li>
 
@@ -113,12 +118,15 @@
                             </span>
                         </li>
                     }
+
+                    countries.Remove(countryItem);
                 }
+
+                Console.WriteLine($"Remaining countries {countries.Count()}");
             }
             <!-- #endregion -->
-
             <!-- #region North America-->
-            <li>
+            <li class="country-divider">
                 <b>North America</b>
             </li>
 
@@ -147,12 +155,15 @@
                             </span>
                         </li>
                     }
+
+                    countries.Remove(countryItem);
                 }
+
+                Console.WriteLine($"Remaining countries {countries.Count()}");
             }
             <!-- #endregion -->
-
             <!-- #region Oceania-->
-            <li>
+            <li class="country-divider">
                 <b>Oceania</b>
             </li>
 
@@ -181,12 +192,15 @@
                             </span>
                         </li>
                     }
+
+                    countries.Remove(countryItem);
                 }
+
+                Console.WriteLine($"Remaining countries {countries.Count()}");
             }
             <!-- #endregion -->
-
             <!-- #region South America-->
-            <li>
+            <li class="country-divider">
                 <b>South America</b>
             </li>
 
@@ -215,7 +229,11 @@
                             </span>
                         </li>
                     }
+
+                    countries.Remove(countryItem);
                 }
+
+                Console.WriteLine($"Remaining countries {countries.Count()}");
             }
             <!-- #endregion -->
         </ul>
