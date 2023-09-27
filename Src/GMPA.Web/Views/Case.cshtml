@@ -4,24 +4,5 @@
 	Layout = "Main.cshtml";
 }
 
-@{
-	var grid = Model.Content.Value<BlockGridModel>("CaseLayout");
-
-	var gridColumns = grid.GridColumns;
-
-	foreach(var item in grid)
-	{
-		var content = item.Content;
-		var settings = item.Settings;
-		var areas = item.Areas;
-		var rowSpan = item.RowSpan;
-		var columnSpan = item.ColumnSpan;
-
-		<div>
-			<h2>@(content.Value<string>("title"))</h2>
-			<span>This block is supposed to span <b>@rowSpan rows</b> and <b>@columnSpan columns</b> and <b>@areas.Count()</b></span>
-		</div>
-
-		
-	}
+	@await Html.GetBlockGridHtmlAsync(Model.blockGridItems);
 }
