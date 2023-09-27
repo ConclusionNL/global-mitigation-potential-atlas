@@ -1,26 +1,213 @@
-﻿@model List<GMPA.Core.Models.Umbraco.Country>
+﻿@using GMPA.Core.Models.Umbraco;
+@model List<GMPA.Core.Models.Umbraco.Country>
+
+@{
+    Dictionary<Country, string> countries = new Dictionary<Country, string>();
+
+    foreach (var country in Model)
+    {
+        countries.Add(country, country.Continent.First());
+    }
+}
 
 <h4 style="border-bottom: 1px solid #000; margin-top: 20px; text-align: center">Countries</h4>
 <ul class="countries-list">
-    @foreach (var country in Model)
+    <!-- #region Africa-->
+    <li>
+        <b>Africa</b>
+    </li>
+
+    @foreach (var country in countries)
     {
-        @if (country.Active.First() == "True")
+        var countryItem = country.Key;
+        var countryContinent = country.Value;
+
+        @if (countryContinent == "Africa")
         {
-            <li class="countries-list-item-active">
-                <a href="@country.Url()" class="countries-link-active">
+            @if (countryItem.Active.First() == "True")
+            {
+                <li class="countries-list-item-active">
+                    <a href="@countryItem.Url()" class="countries-link-active">
+                        <span class="side-nav-list-item-text">
+                            @countryItem.Name
+                        </span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="countries-list-item-disabled">
                     <span class="side-nav-list-item-text">
-                        @country.Name
+                        @countryItem.Name
                     </span>
-                </a>
-            </li>
-        }
-        else
-        {
-            <li class="countries-list-item-disabled">
-                <span class="side-nav-list-item-text">
-                    @country.Name
-                </span>
-            </li>
+                </li>
+            }
         }
     }
+    <!-- #endregion -->
+    <!-- #region Asia-->
+    <li>
+        <b>Asia</b>
+    </li>
+
+    @foreach (var country in countries)
+    {
+        var countryItem = country.Key;
+        var countryContinent = country.Value;
+
+        @if (countryContinent == "Asia")
+        {
+            @if (countryItem.Active.First() == "True")
+            {
+                <li class="countries-list-item-active">
+                    <a href="@countryItem.Url()" class="countries-link-active">
+                        <span class="side-nav-list-item-text">
+                            @countryItem.Name
+                        </span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="countries-list-item-disabled">
+                    <span class="side-nav-list-item-text">
+                        @countryItem.Name
+                    </span>
+                </li>
+            }
+        }
+    }
+    <!-- #endregion -->
+    <!-- #region Europe-->
+    <li>
+        <b>Europe</b>
+    </li>
+
+    @foreach (var country in countries)
+    {
+        var countryItem = country.Key;
+        var countryContinent = country.Value;
+
+        @if (countryContinent == "Europe")
+        {
+            @if (countryItem.Active.First() == "True")
+            {
+                <li class="countries-list-item-active">
+                    <a href="@countryItem.Url()" class="countries-link-active">
+                        <span class="side-nav-list-item-text">
+                            @countryItem.Name
+                        </span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="countries-list-item-disabled">
+                    <span class="side-nav-list-item-text">
+                        @countryItem.Name
+                    </span>
+                </li>
+            }
+        }
+    }
+    <!-- #endregion -->
+    <!-- #region North America-->
+    <li>
+        <b>North America</b>
+    </li>
+
+    @foreach (var country in countries)
+    {
+        var countryItem = country.Key;
+        var countryContinent = country.Value;
+
+        @if (countryContinent == "North America")
+        {
+            @if (countryItem.Active.First() == "True")
+            {
+                <li class="countries-list-item-active">
+                    <a href="@countryItem.Url()" class="countries-link-active">
+                        <span class="side-nav-list-item-text">
+                            @countryItem.Name
+                        </span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="countries-list-item-disabled">
+                    <span class="side-nav-list-item-text">
+                        @countryItem.Name
+                    </span>
+                </li>
+            }
+        }
+    }
+    <!-- #endregion -->
+    <!-- #region Oceania-->
+    <li>
+        <b>Oceania</b>
+    </li>
+
+    @foreach (var country in countries)
+    {
+        var countryItem = country.Key;
+        var countryContinent = country.Value;
+
+        @if (countryContinent == "Oceania")
+        {
+            @if (countryItem.Active.First() == "True")
+            {
+                <li class="countries-list-item-active">
+                    <a href="@countryItem.Url()" class="countries-link-active">
+                        <span class="side-nav-list-item-text">
+                            @countryItem.Name
+                        </span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="countries-list-item-disabled">
+                    <span class="side-nav-list-item-text">
+                        @countryItem.Name
+                    </span>
+                </li>
+            }
+        }
+    }
+    <!-- #endregion -->
+    <!-- #region South America-->
+    <li>
+        <b>South America</b>
+    </li>
+
+    @foreach (var country in countries)
+    {
+        var countryItem = country.Key;
+        var countryContinent = country.Value;
+
+        @if (countryContinent == "South America")
+        {
+            @if (countryItem.Active.First() == "True")
+            {
+                <li class="countries-list-item-active">
+                    <a href="@countryItem.Url()" class="countries-link-active">
+                        <span class="side-nav-list-item-text">
+                            @countryItem.Name
+                        </span>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="countries-list-item-disabled">
+                    <span class="side-nav-list-item-text">
+                        @countryItem.Name
+                    </span>
+                </li>
+            }
+        }
+    }
+    <!-- #endregion -->
 </ul>
