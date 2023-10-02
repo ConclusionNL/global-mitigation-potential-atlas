@@ -396,6 +396,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+<<<<<<< HEAD
 
 # Generic
 bin
@@ -407,3 +408,5 @@ obj
 /Src/Portfolio.Web/umbraco/Data/*
 !/Src/Portfolio.Web/umbraco/Data/Umbraco.sqlite.db
 /Src/Portfolio.Web/Smidg
+=======
+>>>>>>> e38708d (Initial commit)
