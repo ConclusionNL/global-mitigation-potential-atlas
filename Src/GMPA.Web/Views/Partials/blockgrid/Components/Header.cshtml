@@ -1,8 +1,10 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem<GMPA.Core.Models.Umbraco.Header>>;
-@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+﻿@* @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem<GMPA.Core.Models.Umbraco.Header>>;
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels; *@
+@using GMPA.Core.Models.ViewModels.GridViewModels;
+@model HeaderViewModel;
 
 @* Render the Heading property from the Element Type selected as Content section *@
-<h1 style="text-align: right; margin-right: 100px;"><b>@Model.Content.Title</b></h1>
+<h1 style="text-align: right; margin-right: 100px;"><b>@Model.Title</b></h1>
 
 @* Render the block areas *@
-@await Html.GetBlockGridItemAreasHtmlAsync(Model)
+@* @await Html.GetBlockGridItemAreasHtmlAsync(Model) *@

@@ -4,7 +4,7 @@ namespace Arlanet.Umbraco.Grid.Base
 {
     public abstract class GridControl
     {
-        public const string BASE_VIEWPATH = "~/Views/Partials/CustomGrid/Controls/";
+        public const string BASE_VIEWPATH = "~/Views/Partials/blockgrid/Components/";
 
         public virtual string Alias { get; }
         public virtual string ViewPath { get; }

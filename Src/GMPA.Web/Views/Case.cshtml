@@ -1,8 +1,7 @@
 ﻿@using Umbraco.Cms.Core.Models.Blocks;
 @model GMPA.Core.Models.ViewModels.CaseViewModel
 @{
-	Layout = "Main.cshtml";
+    Layout = "Main.cshtml";
 }
 
-	@await Html.GetBlockGridHtmlAsync(Model.blockGridItems);
-}
+@await Html.GetBlockGridHtmlAsync(Model.blockGridItems);
