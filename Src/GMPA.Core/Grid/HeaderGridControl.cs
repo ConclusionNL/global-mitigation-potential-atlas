@@ -15,6 +15,8 @@ namespace GMPA.Core.Grid
         {
             var component = (Header)gridControl.Component;
 
+            Console.WriteLine(component.Title);
+
             return ViewModel(ViewPath, new HeaderViewModel
             {
                 Title = component.Title
