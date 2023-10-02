@@ -2,7 +2,7 @@
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
 @* Render the Heading property from the Element Type selected as Content section *@
-<h3>@Model.Content.Title</h3>
+<h1 style="text-align: right; margin-right: 100px;"><b>@Model.Content.Title</b></h1>
 
 @* Render the block areas *@
 @await Html.GetBlockGridItemAreasHtmlAsync(Model)

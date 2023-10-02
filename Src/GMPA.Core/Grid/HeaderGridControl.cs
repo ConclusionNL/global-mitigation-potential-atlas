@@ -17,7 +17,7 @@ namespace GMPA.Core.Grid
 
             return ViewModel(ViewPath, new HeaderViewModel
             {
-                Title = component.Text
+                Title = component.Title
             });
         }
     }

@@ -38,7 +38,7 @@ namespace Arlanet.Umbraco.Grid.Base
         private void Initialize(BlockListGridSettings blockListGridSettings, IContentTypeService contentTypeService)
         {
             _columnSettingsKey = Guid.NewGuid();
-            _columnSettingsContentKey = columnSettingsContentType.Key;
+            //_columnSettingsContentKey = columnSettingsContentType.Key;
         }
 
         public virtual string GetSectionClasses(BlockListGridRow gridRow)
