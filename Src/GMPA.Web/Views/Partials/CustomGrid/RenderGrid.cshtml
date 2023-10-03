@@ -1,4 +1,6 @@
-﻿@* @using Marketing.Core.Grid
+﻿@using Arlanet.Umbraco.Grid.Base;
+@using Marketing.Core.Grid;
+
 @model BlockListGrid
 
 @foreach (var row in Model.Rows)
@@ -63,6 +65,11 @@
 
     void RenderBackground(MyBackgroundSettings settingsBackground)
     {
+        if(settingsBackground == null) 
+        {
+            return;
+        }
+
         if (!string.IsNullOrEmpty(settingsBackground.BackgroundImageUrl))
         {
             <figure class="background-overlay">
@@ -85,4 +92,3 @@
         }
     }
 }
- *@

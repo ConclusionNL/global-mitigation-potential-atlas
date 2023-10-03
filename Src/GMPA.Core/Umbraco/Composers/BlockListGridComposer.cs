@@ -1,5 +1,7 @@
 ﻿using Arlanet.Umbraco.Grid.Base;
+using GMPA.Core.Grid.Controls;
 using Marketing.Core.Grid;
+using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Extensions;
@@ -11,27 +13,11 @@ namespace Marketing.Core.Umbraco.Composing.Composers
     {
         public void Compose(IUmbracoBuilder builder)
         {
-            //builder.Services.AddUnique<BlockListGridRenderer, MyBlockListGridRenderer>();
+            builder.Services.AddUnique<BlockGridRenderer, MyBlockGridRenderer>();
 
             ////NOTE: Use AddSingleton to register multiple instances of the same type!
-            //builder.Services.AddSingleton<GridControl, HeaderGridControl>();
-            //builder.Services.AddSingleton<GridControl, MarkdownGridControl>();
-            //builder.Services.AddSingleton<GridControl, CustomGridControl>();
-            //builder.Services.AddSingleton<GridControl, ContentPickerGridControl>();
-            //builder.Services.AddSingleton<GridControl, ImagePickerGridControl>();
-            //builder.Services.AddSingleton<GridControl, ButtonGridControl>();
-            //builder.Services.AddSingleton<GridControl, CardGridControl>();
-            //builder.Services.AddSingleton<GridControl, CardRowGridControl>();
-            //builder.Services.AddSingleton<GridControl, MasonryGridControl>();
-            //builder.Services.AddSingleton<GridControl, BrandSliderGridControl>();
-            //builder.Services.AddSingleton<GridControl, ReviewsGridControl>();
-            //builder.Services.AddSingleton<GridControl, EmbedGridControl>();
-            //builder.Services.AddSingleton<GridControl, SocialsGridControl>();
-            //builder.Services.AddSingleton<GridControl, HighlightGridControl>();
-            //builder.Services.AddSingleton<GridControl, FAQBlockGridControl>();
-            //builder.Services.AddSingleton<GridControl, LinkGridControl>();
-            //builder.Services.AddSingleton<GridControl, MarkdownCardGridControl>();
-            //builder.Services.AddSingleton<GridControl, CaseCarouselGridControl>();
+            builder.Services.AddSingleton<GridControl, HeaderGridControl>();
+            builder.Services.AddSingleton<GridControl, ParagraphGridControl>();
         }
     }
 }

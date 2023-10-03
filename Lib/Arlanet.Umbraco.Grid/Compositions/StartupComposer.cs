@@ -13,7 +13,7 @@ namespace Arlanet.Umbraco.Grid.Compositions
         {
             builder.Components().Append<StartupComponent>();
 
-            builder.Services.AddSingleton<BlockListGridRenderer>();
+            builder.Services.AddSingleton<BlockGridRenderer>();
             builder.Services.AddSingleton<BlockListGridControlResolver>();
 
             builder.Services

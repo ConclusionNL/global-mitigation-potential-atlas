@@ -20,12 +20,9 @@ namespace GMPA.Core.Controller
         public IActionResult Case()
         {
             var caseDocument = (Case)CurrentPage;
-            var viewModel = new CaseViewModel()
-            {
-                blockGridItems = caseDocument.CaseLayout
-            };
 
-            viewModel.Build(CurrentPage);
+            var viewModel = new CaseViewModel();
+            viewModel.Build(caseDocument);
 
             return CurrentTemplate(viewModel);
         }

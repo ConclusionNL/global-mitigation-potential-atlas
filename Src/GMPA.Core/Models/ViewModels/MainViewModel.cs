@@ -7,7 +7,7 @@ namespace GMPA.Core.Models.ViewModels
 	{
 		public string PageTitle { get; set; }
 
-		[Obsolete]
+        [Obsolete]
 		public IPublishedContent Content { get; set; }
         public List<Country> Countries { get; set; }
 

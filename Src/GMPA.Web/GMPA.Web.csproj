@@ -4,6 +4,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Views\Partials\blockgrid\Components\**" />
+    <Content Remove="Views\Partials\blockgrid\Components\**" />
+    <EmbeddedResource Remove="Views\Partials\blockgrid\Components\**" />
+    <None Remove="Views\Partials\blockgrid\Components\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Umbraco.Cms" Version="12.1.2" />

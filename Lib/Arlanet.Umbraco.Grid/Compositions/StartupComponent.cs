@@ -8,12 +8,12 @@ namespace Arlanet.Umbraco.Grid.Compositions
 {
     public class StartupComponent : IComponent
     {
-        private readonly Lazy<BlockListGridRenderer> _blockListGridRenderer;
+        private readonly Lazy<BlockGridRenderer> _blockListGridRenderer;
         private readonly BlockListGridControlResolver _blockListGridControlResolver;
         private readonly IRuntimeState _runtimeState;
 
         public StartupComponent(
-            Lazy<BlockListGridRenderer> blockListGridRenderer,
+            Lazy<BlockGridRenderer> blockListGridRenderer,
             BlockListGridControlResolver blockListGridControlResolver,
             IRuntimeState runtimeState
         )

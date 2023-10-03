@@ -2,5 +2,6 @@
 {
     public class BlockListGridSettings
     {
+        //Do nothing
     }
 }
