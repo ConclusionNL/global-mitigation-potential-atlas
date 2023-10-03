@@ -1,4 +1,5 @@
 ﻿using Arlanet.Umbraco.Grid.Base;
+using GMPA.Core.Grid.Enums;
 using GMPA.Core.Models.GridViewModels;
 using GMPA.Core.Models.Umbraco;
 
@@ -12,10 +13,13 @@ namespace GMPA.Core.Grid.Controls
         public override GridControlViewModel Render(BlockListGridControl gridControl, bool preview = false)
         {
             var component = (Header)gridControl.Component;
-
+            
             return ViewModel(ViewPath, new HeaderViewModel
             {
-                Title = component.Title
+                Title = component.Title,
+                HeaderSize = string.IsNullOrWhiteSpace(component.HeaderSize) 
+                    ? HeaderSize.Large 
+                    : Enum.Parse<HeaderSize>(component.HeaderSize) 
             });
         }
     }

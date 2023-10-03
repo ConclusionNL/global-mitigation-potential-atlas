@@ -1,6 +1,9 @@
 ﻿using Arlanet.Umbraco.Grid.Base;
 using Arlanet.Umbraco.Grid.Other;
+using GMPA.Core.Models.Umbraco;
 using Microsoft.Extensions.Options;
+using System.Runtime;
+using GMPA.Core.Grid.Enums;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
 using Umbraco.Cms.Core.Services;
@@ -211,12 +214,17 @@ namespace Marketing.Core.Grid
         {
             var baseRow = base.CreateRow(columns, settings);
 
+            var mySettings = (RowSettings)settings;
+
             baseRow.Settings = new MyRowSettings
             {
-                CssClasses = new List<string>()
+                CssClasses = mySettings.CssClasses?.ToList() ?? new List<string>(),
+                HorizontalAlignment = string.IsNullOrWhiteSpace(mySettings.HorizontalAlignment)
+                    ? Alignment.None
+                    : Enum.Parse<Alignment>(mySettings.HorizontalAlignment)
             };
 
-            /*var mySettings = (RowSettings)settings;
+            /*
 
             baseRow.Settings = new MyRowSettings
             {
@@ -257,9 +265,11 @@ namespace Marketing.Core.Grid
         {
             var baseColumn = base.CreateColumn(width, settings, controls);
 
+            var mySettings = (ColumnSettings)settings;
+
             baseColumn.Settings = new MyColumnSettings()
             {
-                CssClasses = new List<string>()
+                CssClasses = mySettings.CssClasses?.ToList() ?? new List<string>()
             };
 
             /*var mySettings = (ColumnSettings)settings;

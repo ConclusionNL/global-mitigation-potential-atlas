@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GMPA.Core.Grid.Enums;
 
 namespace Marketing.Core.Grid
 {

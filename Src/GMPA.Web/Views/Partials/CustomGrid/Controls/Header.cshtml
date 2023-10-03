@@ -1,3 +1,16 @@
-﻿@model HeaderViewModel;
+﻿@using GMPA.Core.Grid.Enums
+@model HeaderViewModel;
 
-<div class="h2">@Model.Title</div>
+@switch (Model.HeaderSize)
+{
+    case HeaderSize.Medium:
+        <div class="h3">@Model.Title</div>
+        break;
+    case HeaderSize.Small:
+        <div class="h5">@Model.Title</div>
+        break;
+    case HeaderSize.Large:
+    default:
+        <div class="h1">@Model.Title</div>
+        break;
+}

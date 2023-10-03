@@ -16,7 +16,7 @@ namespace GMPA.Core.Grid.Controls
 
             return ViewModel(ViewPath, new ParagraphViewModel
             {
-                Text = new HtmlString(component.Text.ToHtmlString())
+                Text = new HtmlString(component.Text?.ToHtmlString() ?? string.Empty)
             });
         }
     }
