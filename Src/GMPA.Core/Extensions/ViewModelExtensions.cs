@@ -31,8 +31,9 @@ namespace GMPA.Core.Extensions
                 .OrderBy(a => a.Name)
                 .ToList();
 
-            ConstructGrid(model, content);
             #endregion
+            
+            ConstructGrid(model, content);
         }
 
         private static void ConstructGrid<T>(T viewModel, IPublishedContent node) where T : MainViewModel, new()
