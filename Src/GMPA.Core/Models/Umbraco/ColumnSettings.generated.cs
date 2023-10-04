@@ -56,5 +56,13 @@ namespace GMPA.Core.Models.Umbraco
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClasses")]
 		public virtual global::System.Collections.Generic.IEnumerable<string> CssClasses => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "cssClasses");
+
+		///<summary>
+		/// Horizontal Alignment
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("horizontalAlignment")]
+		public virtual string HorizontalAlignment => this.Value<string>(_publishedValueFallback, "horizontalAlignment");
 	}
 }

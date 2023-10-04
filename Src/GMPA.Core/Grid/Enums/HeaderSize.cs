@@ -2,6 +2,7 @@
 {
     public enum HeaderSize
     {
+        Main,
         Large,
         Medium,
         Small,

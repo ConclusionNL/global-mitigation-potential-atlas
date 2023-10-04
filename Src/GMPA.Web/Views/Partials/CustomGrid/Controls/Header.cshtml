@@ -3,6 +3,9 @@
 
 @switch (Model.HeaderSize)
 {
+    case HeaderSize.Main:
+        <div class="h1">@Model.Title</div>
+        break;
     case HeaderSize.Medium:
         <div class="h3">@Model.Title</div>
         break;
@@ -11,6 +14,6 @@
         break;
     case HeaderSize.Large:
     default:
-        <div class="h1">@Model.Title</div>
+        <div class="h2">@Model.Title</div>
         break;
 }

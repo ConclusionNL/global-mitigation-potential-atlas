@@ -13,13 +13,13 @@ namespace GMPA.Core.Grid.Controls
         public override GridControlViewModel Render(BlockListGridControl gridControl, bool preview = false)
         {
             var component = (Header)gridControl.Component;
-            
+
             return ViewModel(ViewPath, new HeaderViewModel
             {
                 Title = component.Title,
-                HeaderSize = string.IsNullOrWhiteSpace(component.HeaderSize) 
-                    ? HeaderSize.Large 
-                    : Enum.Parse<HeaderSize>(component.HeaderSize) 
+                HeaderSize = string.IsNullOrWhiteSpace(component.HeaderSize)
+                    ? HeaderSize.Large
+                    : Enum.Parse<HeaderSize>(component.HeaderSize)
             });
         }
     }
