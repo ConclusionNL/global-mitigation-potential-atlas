@@ -1,9 +1,11 @@
 ﻿@model GMPA.Core.Models.ViewModels.CaseViewModel
 @{
-    Layout = "Main.cshtml";
+    Layout = "MainWithNav.cshtml";
 }
 
-@if (Model.BlockGrid != null)
-{
-    @await Html.PartialAsync("~/Views/Partials/CustomGrid/RenderGrid.cshtml", Model.BlockGrid)
-}
+<div class="main-with-nav">
+    @if (Model.BlockGrid != null)
+    {
+        @await Html.PartialAsync("~/Views/Partials/CustomGrid/RenderGrid.cshtml", Model.BlockGrid)
+    }
+</div>

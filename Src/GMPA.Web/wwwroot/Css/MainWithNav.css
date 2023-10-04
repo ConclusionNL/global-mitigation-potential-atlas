@@ -3,9 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    padding-left: 300px;
-    padding-right: 100px;
+    padding: 20px 100px 20px 300px;
     box-sizing: content-box;
     margin: 10px auto;
     flex: 1;
@@ -24,8 +22,7 @@
     background:white;
     list-style-type: none;
     padding: 0;
-    margin: 0;
-    margin-top:10px;
+    margin: 10px 0 0;
 }
 
 .side-nav-list-item {

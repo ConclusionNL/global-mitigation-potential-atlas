@@ -6,7 +6,7 @@
     align-items: center;
     padding: 20px;
     box-sizing: content-box;
-    margin: 10px auto;
+    margin: 100px auto 10px;
     flex: 1;
     word-wrap: break-word;
     overflow-wrap: anywhere;
