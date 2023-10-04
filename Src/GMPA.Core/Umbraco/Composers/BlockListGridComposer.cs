@@ -16,6 +16,7 @@ namespace Marketing.Core.Umbraco.Composing.Composers
             builder.Services.AddUnique<BlockGridRenderer, MyBlockGridRenderer>();
 
             ////NOTE: Use AddSingleton to register multiple instances of the same type!
+            builder.Services.AddSingleton<GridControl, SelectionTestGridControl>();
             builder.Services.AddSingleton<GridControl, HeaderGridControl>();
             builder.Services.AddSingleton<GridControl, ParagraphGridControl>();
         }
