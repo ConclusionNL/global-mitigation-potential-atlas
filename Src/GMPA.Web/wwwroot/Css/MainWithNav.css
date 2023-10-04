@@ -1,6 +1,7 @@
 ﻿.main-with-nav {
     display: flex;
     flex-direction: column;
+    width: calc(100vh + 150px);
     justify-content: center;
     align-items: center;
     padding: 20px 100px 20px 300px;

@@ -1,5 +1,5 @@
 ﻿.countries-list {
-    height: Calc(100vh - 260px);
+    height: Calc(100vh - 240px);
     list-style-type: none;
     padding-left: 0;
     overflow-y: scroll;

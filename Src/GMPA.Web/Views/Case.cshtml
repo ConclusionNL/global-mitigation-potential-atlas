@@ -3,7 +3,7 @@
     Layout = "MainWithNav.cshtml";
 }
 
-<div class="main-with-nav">
+<div>
     @if (Model.BlockGrid != null)
     {
         @await Html.PartialAsync("~/Views/Partials/CustomGrid/RenderGrid.cshtml", Model.BlockGrid)

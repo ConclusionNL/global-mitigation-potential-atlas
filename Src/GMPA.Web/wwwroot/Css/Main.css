@@ -11,3 +11,7 @@
     word-wrap: break-word;
     overflow-wrap: anywhere;
 }
+
+.main-menu-displacement{
+    margin-top: 100px;
+}
