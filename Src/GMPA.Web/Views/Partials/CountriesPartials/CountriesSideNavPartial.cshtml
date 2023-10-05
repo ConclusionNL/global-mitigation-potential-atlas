@@ -12,6 +12,28 @@
 
 <h4 class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseContinents" aria-expanded="true" aria-controls="collapseContinents">Countries</h4>
 <ul class="countries-list show" id="collapseContinents">
+
+    <!-- #region Currently Active countries -->
+    <li class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapsePilot" aria-expanded="true" aria-controls="collapsePilot">
+        <b>Pilot</b>
+    </li>
+    @foreach (var country in countries)
+    {
+        var countryItem = country.Key;
+
+        @if (countryItem.Active.First() == "True")
+        {
+            <li class="countries-list-item-active show" id="collapsePilot">
+                <a href="@countryItem.Url()" class="countries-link-active">
+                    <span class="side-nav-list-item-text">
+                        @countryItem.Name
+                    </span>
+                </a>
+            </li>
+        }
+    }
+
+    <!-- #endregion -->
     <!-- #region Africa-->
     <li class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseAfrica" aria-expanded="true" aria-controls="collapseAfrica">
         <b>Africa</b>
