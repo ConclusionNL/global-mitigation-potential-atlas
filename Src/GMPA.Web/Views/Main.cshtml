@@ -24,7 +24,7 @@
     <div class="container-fluid" style="margin-top: 100px">
         <div class="row">
             <div class="col">
-                <partial name="TopNavBarPartial"/>
+                <partial name="TopNavBarPartial" />
             </div>
         </div>
         <div class="row">
@@ -33,5 +33,15 @@
             </div>
         </div>
     </div>
+
+    <environment include="Development">
+        <script type="module" defer src="~/@@vite/client"></script>
+    </environment>
+
+    @foreach (var url in await SmidgeHelper.GenerateJsUrlsAsync(debug: true))
+    {
+        <script src="@url" type="module"></script>
+    }
+
 </body>
 </html>

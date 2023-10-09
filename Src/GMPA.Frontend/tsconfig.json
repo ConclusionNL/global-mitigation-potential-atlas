@@ -1,0 +1,40 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "lib": ["ESNext", "DOM"],
+        "moduleResolution": "node",
+        "strict": true,
+        "alwaysStrict": true,
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "noEmit": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noImplicitReturns": true,
+        "skipLibCheck": true,
+        "allowJs": false,
+        "noImplicitAny": true,
+        "baseUrl": "./",
+        "types": [
+            "vite/client", // fix for react errors in vue files
+            "vitest/globals"
+        ],
+        "paths": {
+            "@arla-lib": ["arlanet-library"]
+        }
+    },
+    "include": [
+        "script/**/*",
+        "script/**/*.{ts,vue}",
+        "config/**/*",
+        "arlanet-library/**/*",
+        "arlanet-library/**/*.vue",
+        "stories/**/*",
+        "i18n/**/*",
+        "../Arlanet.Frontend.Library.Test/**/*"
+    ]
+}

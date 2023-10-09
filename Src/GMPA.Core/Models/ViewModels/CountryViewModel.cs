@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using GMPA.Core.Models.Umbraco;
 
 namespace GMPA.Core.Models.ViewModels
 {
     public class CountryViewModel : MainViewModel
     {
-        public List<string> Active {  get; set; }
-        public List<string> Continent { get; set; }
+        public CountryModel Country { get; set; }
     }
 }

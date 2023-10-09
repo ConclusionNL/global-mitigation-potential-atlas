@@ -1,7 +1,7 @@
 ﻿using GMPA.Core.Extensions;
+using GMPA.Core.Models;
 using GMPA.Core.Models.Umbraco;
 using GMPA.Core.Models.ViewModels;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
@@ -21,20 +21,38 @@ namespace GMPA.Core.Controller
         public IActionResult Country()
         {
             var country = (Country)CurrentPage;
-            var viewModel = new CountryViewModel()
+            var viewModel = new CountryViewModel
             {
-                Active = new List<string>(),
-                Continent = new List<string>(),
+                Country = new CountryModel
+                {
+
+                    Active = new List<string>(),
+                    Continent = new List<string>()
+                }
             };
 
-            // Get tag Active for country
-            foreach (var isActive in country.Active) viewModel.Active.Add(isActive);
-
-            //Get the tag representing the continent the country is located in
-            foreach (var continent in country.Continent.Distinct())
+            if (country == null)
             {
-                viewModel.Continent.Add(continent);
-                Console.WriteLine(continent);
+                return null;
+            }
+
+            if (country.Active != null)
+            {
+                // Get tag Active for country
+                foreach (var isActive in country.Active)
+                {
+                    viewModel.Country.Active.Add(isActive);
+                }
+            }
+
+            if (country.Continent != null)
+            {
+                //Get the tag representing the continent the country is located in
+                foreach (var continent in country.Continent.Distinct())
+                {
+                    viewModel.Country.Continent.Add(continent);
+                    Console.WriteLine(continent);
+                }
             }
 
             viewModel.Build(CurrentPage);

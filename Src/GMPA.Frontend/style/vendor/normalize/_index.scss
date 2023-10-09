@@ -1,0 +1,59 @@
+@use '../../abstracts' as a;
+@use 'node_modules/normalize.css/normalize.css';
+
+// custom rules
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+// 1. Prevent adjustments of font size after orientation changes in iOS.
+// 2. Change the default tap highlight to be completely transparent in iOS.
+body {
+    /* stylelint-disable-next-line property-no-vendor-prefix -- Keep this as is */
+    -webkit-text-size-adjust: 100%; // 1
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // 2
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    margin: 0;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: a.px(16);
+}
+
+ol,
+ul {
+    padding-left: a.px(32);
+}
+
+blockquote {
+    margin: 0 0 a.px(16);
+}
+
+a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+figure {
+    margin: 0 0 a.px(16);
+}
+
+[role='button'] {
+    cursor: pointer;
+}

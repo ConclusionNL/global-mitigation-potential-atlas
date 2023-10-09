@@ -1,0 +1,180 @@
+import { Meta  } from '@storybook/blocks';
+
+<Meta title="Documentatie/Installatie" />
+
+<style>
+  {`
+    .subheading {
+      --mediumdark: '#999999';
+      font-weight: 900;
+      font-size: 13px;
+      color: #999;
+      letter-spacing: 6px;
+      line-height: 24px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      margin-top: 40px;
+    }
+
+    .link-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      row-gap: 10px;
+    }
+
+    @media (min-width: 620px) {
+      .link-list {
+        row-gap: 20px;
+        column-gap: 20px;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media all and (-ms-high-contrast:none) {
+    .link-list {
+        display: -ms-grid;
+        -ms-grid-columns: 1fr 1fr;
+        -ms-grid-rows: 1fr 1fr;
+      }
+    }
+
+    .link-item {
+      display: block;
+      padding: 20px 30px 20px 15px;
+      border: 1px solid #00000010;
+      border-radius: 5px;
+      transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
+      color: #333333;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .link-item:hover {
+      border-color: #1EA7FD50;
+      transform: translate3d(0, -3px, 0);
+      box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
+    }
+
+    .link-item:active {
+      border-color: #1EA7FD;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .link-item strong {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .link-item img {
+      height: 40px;
+      width: 40px;
+      margin-right: 15px;
+      flex: none;
+    }
+
+    .link-item span {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .tip {
+      display: inline-block;
+      border-radius: 1em;
+      font-size: 11px;
+      line-height: 12px;
+      font-weight: 700;
+      background: #E7FDD8;
+      color: #66BF3C;
+      padding: 4px 12px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    
+    .tip-warning {
+      display: inline-block;
+      border-radius: 1em;
+      font-size: 11px;
+      line-height: 12px;
+      font-weight: 700;
+      background: #ff9966;
+      color: #fff;
+      padding: 4px 12px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    .tip-wrapper {
+      font-size: 13px;
+      line-height: 20px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tip-wrapper code {
+      font-size: 12px;
+      display: inline-block;
+    }
+
+    .docblock-source {
+        margin-bottom: 0;
+    }
+
+    .mt-0 {
+        margin-top: 0;
+    }
+
+    .tip-wrapper.mt-0 p {
+        margin-top: 5px;
+    }
+
+    .mb-0 {
+        margin-bottom: 0;
+    }
+    
+    .tip-wrapper.mb-0 p {
+        margin-bottom: 0;
+    }
+  `}
+</style>
+
+# Frontend library installeren
+
+Het installeren van de frontend library gaat middels NuGet packages, de beschikbare versies zijn hier terug te vinden: 
+[https://dev.azure.com/arlanet/Arlanet/_artifacts/feed/Frontend/NuGet/Arlanet.Frontend.Library/overview](https://dev.azure.com/arlanet/Arlanet/_artifacts/feed/Frontend/NuGet/Arlanet.Frontend.Library/overview)
+
+## NuGet authenticatie
+Helaas forceert het gebruik van DevOps artifacts het eenmalig moeten installeren van een NuGet plugin, de laatste versie kan <a href="https://github.com/microsoft/artifacts-credprovider/releases" target="_blank">hier</a> gevonden worden. 
+Download <code>Microsoft.NuGet.CredentialProvider.zip</code> en plaats de inhoud van het plugins mapje in <code>%userprofile% > .nuget > plugins</code>
+
+## Template installeren
+Om de template van de frontend library op je computer te installeren, kan je het volgende _dotnet_ command gebruiken:
+
+```
+dotnet new install Arlanet.Frontend.Library --interactive --nuget-source https://pkgs.dev.azure.com/arlanet/Arlanet/_packaging/Frontend/nuget/v3/index.json
+```
+<div className="tip-wrapper mb-0">
+  <span className="tip">Updaten naar nieuwe versie</span>Het bovenstaande command zorgt er ook voor dat de laatste versie wordt geinstalleerd indien er al een versie geinstalleerd is.
+</div>
+<div className="tip-wrapper mt-0">
+  <span className="tip">Specifieke versie</span>Voeg <code>--version x.x.x</code> toe om een specifieke versie te installeren
+</div>
+
+Het kan zijn dat NuGet je gaat vragen om een Microsoft URL in je browser te openen en een code in te typen, als het goed is is dit eenmalig. Zodra het scherm aangeeft dat het gesloten kan worden kan je in je CLI op enter drukken om door te gaan.
+
+
+## Project aanmaken/updaten
+Het aanmaken van een project gaat via het volgende command:
+```
+dotnet new arlanetfrontendlibrary
+```
+<div className="tip-wrapper mb-0">
+  <span className="tip tip-warning">Let op!</span>Dit zal plaatsvinden in de huidige directory! Maak vooraf dus een map aan voor je project
+</div>
+<div className="tip-wrapper mt-0">
+  <span className="tip">Bestaande projecten</span>Voeg <code>--force</code> toe om bestaande projecten te updaten naar een nieuwe versie
+</div>
+
+## Troubleshooting
+- Krijg je tijdens het installeren van de template de melding dat de package niet bestaat? <a href="https://dotnet.microsoft.com/en-us/download" target="_blank">Download de laatste .NET SDK</a> (versie >= 7.0.4)

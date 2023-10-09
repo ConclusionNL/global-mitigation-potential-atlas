@@ -1,14 +1,4 @@
-﻿@using GMPA.Core.Models.Umbraco;
-@model List<GMPA.Core.Models.Umbraco.Country>
-
-@{
-    Dictionary<Country, string> countries = new Dictionary<Country, string>();
-
-    foreach (var country in Model)
-    {
-        countries.Add(country, country.Continent.First());
-    }
-}
+﻿@model List<GMPA.Core.Models.CountryModel>
 
 <h4 class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapseContinents" aria-expanded="true" aria-controls="collapseContinents">Countries</h4>
 <ul class="countries-list show" id="collapseContinents">
@@ -17,20 +7,15 @@
     <li class="country-divider" data-bs-toggle="collapse" data-bs-target="#collapsePilot" aria-expanded="true" aria-controls="collapsePilot">
         <b>Pilot</b>
     </li>
-    @foreach (var country in countries)
+    @foreach (var country in Model.Where(country => country.Active?.First() == "True"))
     {
-        var countryItem = country.Key;
-
-        @if (countryItem.Active.First() == "True")
-        {
-            <li class="countries-list-item-active show" id="collapsePilot">
-                <a href="@countryItem.Url()" class="countries-link-active">
-                    <span class="side-nav-list-item-text">
-                        @countryItem.Name
-                    </span>
-                </a>
-            </li>
-        }
+        <li class="countries-list-item-active show" id="collapsePilot">
+            <a href="@country.Url" class="countries-link-active">
+                <span class="side-nav-list-item-text">
+                    @country.Name
+                </span>
+            </a>
+        </li>
     }
 
     <!-- #endregion -->
@@ -39,33 +24,25 @@
         <b>Africa</b>
     </li>
 
-    @foreach (var country in countries)
+    @foreach (var country in Model.Where(country => country.Continent.First() == "Africa"))
     {
-        var countryItem = country.Key;
-        var countryContinent = country.Value;
-
-        @if (countryContinent == "Africa")
+        if (country.Active.First() == "True")
         {
-            @if (countryItem.Active.First() == "True")
-            {
-                <li class="countries-list-item-active show" id="collapseAfrica">
-                    <a href="@countryItem.Url()" class="countries-link-active">
-                        <span class="side-nav-list-item-text">
-                            @countryItem.Name
-                        </span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="countries-list-item-disabled show" id="collapseAfrica">
+            <li class="countries-list-item-active show" id="collapseAfrica">
+                <a href="@country.Url" class="countries-link-active">
                     <span class="side-nav-list-item-text">
-                        @countryItem.Name
+                        @country.Name
                     </span>
-                </li>
-            }
-
-            countries.Remove(countryItem);
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="countries-list-item-disabled show" id="collapseAfrica">
+                <span class="side-nav-list-item-text">
+                    @country.Name
+                </span>
+            </li>
         }
     }
     <!-- #endregion -->
@@ -74,33 +51,25 @@
         <b>Asia</b>
     </li>
 
-    @foreach (var country in countries)
+    @foreach (var country in Model.Where(country => country.Continent.First() == "Asia"))
     {
-        var countryItem = country.Key;
-        var countryContinent = country.Value;
-
-        @if (countryContinent == "Asia")
+        if (country.Active.First() == "True")
         {
-            @if (countryItem.Active.First() == "True")
-            {
-                <li class="countries-list-item-active show" id="collapseAsia">
-                    <a href="@countryItem.Url()" class="countries-link-active">
-                        <span class="side-nav-list-item-text">
-                            @countryItem.Name
-                        </span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="countries-list-item-disabled show" id="collapseAsia">
+            <li class="countries-list-item-active show" id="collapseAsia">
+                <a href="@country.Url" class="countries-link-active">
                     <span class="side-nav-list-item-text">
-                        @countryItem.Name
+                        @country.Name
                     </span>
-                </li>
-            }
-
-            countries.Remove(countryItem);
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="countries-list-item-disabled show" id="collapseAsia">
+                <span class="side-nav-list-item-text">
+                    @country.Name
+                </span>
+            </li>
         }
     }
     <!-- #endregion -->
@@ -109,33 +78,25 @@
         <b>Europe</b>
     </li>
 
-    @foreach (var country in countries)
+    @foreach (var country in Model.Where(country => country.Continent.First() == "Europe"))
     {
-        var countryItem = country.Key;
-        var countryContinent = country.Value;
-
-        @if (countryContinent == "Europe")
+        if (country.Active.First() == "True")
         {
-            @if (countryItem.Active.First() == "True")
-            {
-                <li class="countries-list-item-active show" id="collapseEurope">
-                    <a href="@countryItem.Url()" class="countries-link-active">
-                        <span class="side-nav-list-item-text">
-                            @countryItem.Name
-                        </span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="countries-list-item-disabled show" id="collapseEurope">
+            <li class="countries-list-item-active show" id="collapseEurope">
+                <a href="@country.Url" class="countries-link-active">
                     <span class="side-nav-list-item-text">
-                        @countryItem.Name
+                        @country.Name
                     </span>
-                </li>
-            }
-
-            countries.Remove(countryItem);
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="countries-list-item-disabled show" id="collapseEurope">
+                <span class="side-nav-list-item-text">
+                    @country.Name
+                </span>
+            </li>
         }
     }
     <!-- #endregion -->
@@ -144,33 +105,25 @@
         <b>North America</b>
     </li>
 
-    @foreach (var country in countries)
+    @foreach (var country in Model.Where(country => country.Continent.First() == "North America"))
     {
-        var countryItem = country.Key;
-        var countryContinent = country.Value;
-
-        @if (countryContinent == "North America")
+        if (country.Active.First() == "True")
         {
-            @if (countryItem.Active.First() == "True")
-            {
-                <li class="countries-list-item-active show" id="collapseNorthAmerica">
-                    <a href="@countryItem.Url()" class="countries-link-active">
-                        <span class="side-nav-list-item-text">
-                            @countryItem.Name
-                        </span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="countries-list-item-disabled show" id="collapseNorthAmerica">
+            <li class="countries-list-item-active show" id="collapseNorthAmerica">
+                <a href="@country.Url" class="countries-link-active">
                     <span class="side-nav-list-item-text">
-                        @countryItem.Name
+                        @country.Name
                     </span>
-                </li>
-            }
-
-            countries.Remove(countryItem);
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="countries-list-item-disabled show" id="collapseNorthAmerica">
+                <span class="side-nav-list-item-text">
+                    @country.Name
+                </span>
+            </li>
         }
     }
     <!-- #endregion -->
@@ -179,33 +132,25 @@
         <b>Oceania</b>
     </li>
 
-    @foreach (var country in countries)
+    @foreach (var country in Model.Where(country => country.Continent.First() == "Oceania"))
     {
-        var countryItem = country.Key;
-        var countryContinent = country.Value;
-
-        @if (countryContinent == "Oceania")
+        if (country.Active.First() == "True")
         {
-            @if (countryItem.Active.First() == "True")
-            {
-                <li class="countries-list-item-active show" id="collapseOceania">
-                    <a href="@countryItem.Url()" class="countries-link-active">
-                        <span class="side-nav-list-item-text">
-                            @countryItem.Name
-                        </span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="countries-list-item-disabled show" id="collapseOceania">
+            <li class="countries-list-item-active show" id="collapseOceania">
+                <a href="@country.Url" class="countries-link-active">
                     <span class="side-nav-list-item-text">
-                        @countryItem.Name
+                        @country.Name
                     </span>
-                </li>
-            }
-
-            countries.Remove(countryItem);
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="countries-list-item-disabled show" id="collapseOceania">
+                <span class="side-nav-list-item-text">
+                    @country.Name
+                </span>
+            </li>
         }
     }
     <!-- #endregion -->
@@ -214,33 +159,25 @@
         <b>South America</b>
     </li>
 
-    @foreach (var country in countries)
+    @foreach (var country in Model.Where(country => country.Continent.First() == "South America"))
     {
-        var countryItem = country.Key;
-        var countryContinent = country.Value;
-
-        @if (countryContinent == "South America")
+        if (country.Active.First() == "True")
         {
-            @if (countryItem.Active.First() == "True")
-            {
-                <li class="countries-list-item-active show" id="collapseSouthAmerica">
-                    <a href="@countryItem.Url()" class="countries-link-active">
-                        <span class="side-nav-list-item-text">
-                            @countryItem.Name
-                        </span>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="countries-list-item-disabled show" id="collapseSouthAmerica">
+            <li class="countries-list-item-active show" id="collapseSouthAmerica">
+                <a href="@country.Url" class="countries-link-active">
                     <span class="side-nav-list-item-text">
-                        @countryItem.Name
+                        @country.Name
                     </span>
-                </li>
-            }
-
-            countries.Remove(countryItem);
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="countries-list-item-disabled show" id="collapseSouthAmerica">
+                <span class="side-nav-list-item-text">
+                    @country.Name
+                </span>
+            </li>
         }
     }
     <!-- #endregion -->

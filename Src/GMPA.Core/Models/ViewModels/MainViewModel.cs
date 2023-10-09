@@ -9,7 +9,7 @@ namespace GMPA.Core.Models.ViewModels
 
         [Obsolete]
 		public IPublishedContent Content { get; set; }
-        public List<Country> Countries { get; set; }
+        public List<CountryModel> Countries { get; set; }
 
     }
 }

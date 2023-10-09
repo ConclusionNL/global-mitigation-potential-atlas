@@ -1,0 +1,84 @@
+@use 'sass:math' as math;
+@use 'sass:map' as map;
+@use 'sass:string' as string;
+
+// PX to REM
+// usage px(200)
+@function px($size) {
+    $rem-size: math.div($size, 16);
+
+    @return #{$rem-size}rem;
+}
+
+@function map-collect($maps...) {
+    $collection: ();
+
+    @each $map in $maps {
+        $collection: map.merge($collection, $map);
+    }
+
+    @return $collection;
+}
+
+@function to-rgba($color, $alpha: 1) {
+    @return unquote('rgba(#{red($color)}, #{green($color)}, #{blue($color)}, #{$alpha})');
+}
+
+// Use svg icons in ul > li and be able to style them.
+// usage
+// ul {
+//     li {
+//         background-image: icon($icon-name, 'color');
+//     }
+// }
+// https://codepen.io/noahblon/pen/xGbXdV?editors=1100
+@function str-replace($string, $search, $replace: '') {
+    // check if string contains #
+    @if string.index($string, '#') {
+        $index: string.index($string, $search);
+
+        @if $index {
+            @return string.slice($string, 1, $index - 1) + $replace +
+                str-replace(
+                    string.slice($string, $index + string.length($search)),
+                    $search,
+                    $replace
+                );
+        }
+
+        @return $string;
+    } @else {
+        @return $string;
+    }
+}
+
+@function build-icon($icon) {
+    $icon: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24">#{$icon}</svg>';
+    @return $icon;
+}
+
+@function build-path($path, $parameters) {
+    $icon: '<path fill="#{map.get($parameters, color)}" stroke="#{map.get($parameters, stroke-color)}" stroke-width="#{map.get($parameters, stroke-width)}" style="#{map.get($parameters, css)}" d="#{$path}" />';
+    @return $icon;
+}
+
+@function icon($icon-name, $color, $stroke-color: transparent, $stroke-width: 0, $css: '') {
+    $parameters: (
+        'color': str-replace($color, '#', '%23'),
+        // str-replace function to detect if param contains #, if so replace it with %23
+        'stroke-color': $stroke-color,
+        'stroke-width': $stroke-width,
+        'css': $css,
+    );
+
+    $icons: (
+        checkmark:
+            build-path(
+                'M5.707 11.46a1 1 0 1 0-1.414 1.414l1.414-1.414Zm3.96 5.373-.707.707a1 1 0 0 0 1.414 0l-.707-.707Zm10.04-8.626a1 1 0 0 0-1.414-1.414l1.414 1.414ZM4.293 12.874 8.96 17.54l1.414-1.414-4.667-4.666-1.414 1.414Zm6.08 4.666 9.334-9.333-1.414-1.414-9.333 9.333 1.414 1.414Z',
+                $parameters
+            ),
+    );
+
+    $icon: build-icon(map.get($icons, $icon-name));
+    @return url('data:image/svg+xml;charset=utf8,#{$icon}');
+}

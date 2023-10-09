@@ -1,0 +1,16 @@
+{
+    "dest": "./public",
+    "shape": {
+        "id": {
+            "separator": "-",
+            "whitespace": "-"
+        }
+    },
+    "mode": {
+        "symbol": {
+            "bust": false,
+            "dest": "./",
+            "sprite": "./sprite.svg"
+        }
+    }
+}

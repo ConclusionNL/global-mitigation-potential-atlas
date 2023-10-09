@@ -47,7 +47,7 @@ namespace GMPA.Web
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-			}
+            }
 
 			app.UseUmbraco()
 				.WithMiddleware(u =>
@@ -61,6 +61,13 @@ namespace GMPA.Web
 					u.UseBackOfficeEndpoints();
 					u.UseWebsiteEndpoints();
 				});
+
+            if (env.IsDevelopment())
+            {
+                app.UseSpa(spa =>
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:5174")
+                );
+            }
 		}
 	}
 }

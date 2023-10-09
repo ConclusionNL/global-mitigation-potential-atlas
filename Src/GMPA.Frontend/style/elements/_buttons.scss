@@ -1,0 +1,37 @@
+@use '../abstracts' as a;
+
+@mixin reset-btn() {
+    border: 0;
+    outline: 0;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    background-color: transparent;
+
+    &[disabled],
+    .disabled {
+        pointer-events: none;
+        opacity: 0.4;
+    }
+}
+
+@mixin button() {
+    @include reset-btn;
+    cursor: pointer;
+    vertical-align: middle;
+    position: relative;
+    text-decoration: none;
+}
+
+@mixin btn-default {
+    --bg: #{a.$c-brand-1};
+    --color: #{a.$c-white};
+    background-color: var(--bg);
+    color: var(--color);
+    transition: all 0.2s ease;
+
+    @include a.ho-cus {
+        --bg: #{a.$c-layout-1};
+        --color: #{a.$c-black};
+    }
+}

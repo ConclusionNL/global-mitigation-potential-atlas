@@ -1,0 +1,23 @@
+@use 'sass:map';
+@import 'node_modules/bootstrap/scss/variables';
+
+// Custom breakpoints
+$custom-breakpoints: (
+    sm: 640px,
+    md: 1024px,
+    lg: 1280px,
+    xl: 1600px,
+    xxl: 1601px,
+    xxxl: 1920px,
+);
+
+// Custom container widths
+$custom-containers: (
+    xxl: 1600px,
+);
+
+// Merge our $custom-breakpoints into Bootstrap $grid-breakpoints sass map
+$grid-breakpoints: map.merge($grid-breakpoints, $custom-breakpoints);
+
+// Merge our $custom-containers into Bootstrap $container-max-widths sass map
+$container-max-widths: map.merge($container-max-widths, $custom-containers);

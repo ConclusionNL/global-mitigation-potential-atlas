@@ -1,14 +1,49 @@
 # Generic
 bin
 obj
+.vs
+*.user
+package-lock.json
+packages.lock.json
+node_modules
+/dist
+.vscode
+
+ 
+
+# Frontend
+/Src/GMPA.Frontend/node_modules
+/Src/GMPA.Web/dist
+
+ 
 
 # Umbraco
-/Src/Portfolio.Web/wwwroot/umbraco
-/Src/Portfolio.Web/umbraco/*
-!/Src/Portfolio.Web/umbraco/Data
-/Src/Portfolio.Web/umbraco/Data/*
-!/Src/Portfolio.Web/umbraco/Data/Umbraco.sqlite.db
-/Src/Portfolio.Web/Smidge
+/Src/GMPA.Web/wwwroot/umbraco
+/Src/GMPA.Web/umbraco/*
+!/Src/GMPA.Web/umbraco/Deploy
+/Src/GMPA.Web/Smidge
 
-# VS
-.vs
+ 
+
+# Umbraco ModelsBuilder
+/Src/GMPA.Core/Models/Umbraco/ood.flag
+
+ 
+
+# Umbraco Deploy
+/Src/GMPA.Web/umbraco/Deploy/*
+!/Src/GMPA.Web/umbraco/Deploy/Revision
+
+ 
+
+# Other
+/Res
+
+ 
+
+ 
+
+/Src/GMPA.Web/wwwroot/media
+/Src/GMPA.Web/coverage
+/Src/GMPA.Web/wwwroot/dist/
+/Src/GMPA.Web/uSync/v9/Content

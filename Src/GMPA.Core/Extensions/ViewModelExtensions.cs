@@ -1,4 +1,5 @@
 ﻿using Arlanet.Umbraco.Grid;
+using GMPA.Core.Models;
 using GMPA.Core.Models.Umbraco;
 using GMPA.Core.Models.ViewModels;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -15,16 +16,23 @@ namespace GMPA.Core.Extensions
 
             model.PageTitle = content.Name;
             model.Content = content;
+
             #region countries
             var countries = home
                 .Descendant<Countries>()
                 .Descendants<Country>();
 
-            model.Countries = new List<Country>();
+            model.Countries = new List<CountryModel>();
 
             foreach (var country in countries)
             {
-                model.Countries.Add(country);
+                model.Countries.Add(new CountryModel
+                {
+                    Name = country.Name,
+                    Continent = country.Continent?.ToList(),
+                    Active = country.Active?.ToList(),
+                    Url = country.Url(mode: UrlMode.Absolute),
+                });
             }
 
             model.Countries = model.Countries

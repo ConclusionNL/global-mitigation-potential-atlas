@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.7" />
     <PackageReference Include="Umbraco.Cms" Version="12.1.2" />
   </ItemGroup>
 

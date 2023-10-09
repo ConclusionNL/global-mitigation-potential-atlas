@@ -1,0 +1,20 @@
+// // Vendors
+// @use 'vendor/normalize';
+// @use 'vendor/rfs';
+// @use 'vendor/bootstrap';
+
+// // Base
+// @use 'base/typography';
+// @use 'base/body';
+
+// // Elements
+// @use './elements';
+
+// // Layout
+// @use './layout/skip-to';
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;

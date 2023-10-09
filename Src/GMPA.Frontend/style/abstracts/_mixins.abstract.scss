@@ -1,0 +1,39 @@
+@use '../vendor/bootstrap/bootstrap-vue' as bs;
+
+@mixin ho-cus {
+    &:hover,
+    &:focus {
+        @content;
+    }
+}
+
+@mixin line-clamp($lines: 3) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+}
+
+// Column breakout of bootstrap container
+// usage
+// @include bootstrap-col-breakout;
+// @include bootstrap-col-breakout(false);
+
+@mixin bootstrap-col-breakout($mobileOnly: true) {
+    margin: 0 calc((var(--bs-gutter-x) * 0.5) * -1);
+
+    .row {
+        --bs-gutter-x: 0;
+    }
+
+    @if $mobileOnly == true {
+        @include bs.media-breakpoint-up(sm) {
+            margin: unset;
+
+            .row {
+                --bs-gutter-x: #{bs.$grid-gutter-width};
+            }
+        }
+    }
+}

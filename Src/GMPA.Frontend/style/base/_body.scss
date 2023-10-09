@@ -1,0 +1,7 @@
+body {
+    /* stylelint-disable-next-line selector-no-qualifying-type -- Keep this over-qualified notation */
+    &.hide-overflow {
+        height: 100vh;
+        overflow: hidden;
+    }
+}

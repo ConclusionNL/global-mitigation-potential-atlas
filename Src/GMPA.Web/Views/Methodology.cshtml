@@ -1,6 +1,26 @@
-﻿@model MethodologyViewModel
+﻿@using Newtonsoft.Json
+@model MethodologyViewModel
 @{
-	Layout = "Main.cshtml";
+    Layout = "Main.cshtml";
+
+    string pageName = "methodology";
+
+    <environment include="Development">
+        @{
+            SmidgeHelper.RequiresJs($"~/script/{pageName}.page.ts");
+        }
+    </environment>
+
+    <environment exclude="Development">
+        @{
+            SmidgeHelper.RequiresJs($"~/dist/script/{pageName}.page.js");
+            SmidgeHelper.RequiresCss($"~/dist/script/{pageName}.page.css");
+        }
+    </environment>
 }
 
-@Model.BodyText
+
+@JsonConvert.SerializeObject(Model.Countries)
+<div id="main">
+    <methodology-page title="@Model.BodyText"></methodology-page>
+</div>

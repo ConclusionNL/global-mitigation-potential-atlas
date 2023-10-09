@@ -1,0 +1,8 @@
+@use '../abstracts' as a;
+@use '../vendor/bootstrap' as bs;
+@use '../vendor/rfs' as rfs;
+
+$comp-name: 'example';
+
+.#{$comp-name} {
+}
