@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arlanet.Umbraco.Grid", "..\..\Lib\Arlanet.Umbraco.Grid\Arlanet.Umbraco.Grid.csproj", "{21EF4F1E-41EF-4E2D-AD74-69195DD101E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMPA.Frontend", "..\GMPA.Frontend\GMPA.Frontend.csproj", "{D4A3ACF1-0A06-4015-A16E-CE5B6DDB2221}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{21EF4F1E-41EF-4E2D-AD74-69195DD101E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21EF4F1E-41EF-4E2D-AD74-69195DD101E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21EF4F1E-41EF-4E2D-AD74-69195DD101E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4A3ACF1-0A06-4015-A16E-CE5B6DDB2221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A3ACF1-0A06-4015-A16E-CE5B6DDB2221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A3ACF1-0A06-4015-A16E-CE5B6DDB2221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A3ACF1-0A06-4015-A16E-CE5B6DDB2221}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
