@@ -50,12 +50,12 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
-		/// Tags
+		/// Sector Tags
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("tags")]
-		public virtual global::System.Collections.Generic.IEnumerable<string> Tags => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "tags");
+		[ImplementPropertyType("sectorTags")]
+		public virtual global::System.Collections.Generic.IEnumerable<string> SectorTags => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "sectorTags");
 
 		///<summary>
 		/// Block Grid
