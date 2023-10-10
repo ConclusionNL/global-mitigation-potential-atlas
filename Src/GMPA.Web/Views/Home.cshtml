@@ -1,7 +1,33 @@
-﻿@model GMPA.Core.Models.ViewModels.HomeViewModel
+﻿@using Newtonsoft.Json
+@model HomeViewModel
 @{
-	Layout = "MainWithNav.cshtml";
+	Layout = "Main.cshtml";
+
+    string pageName = "home";
+    var clist = @JsonConvert.SerializeObject(Model.Countries);
+
+    <environment include="Development">
+        @{
+            SmidgeHelper.RequiresJs($"~/script/{pageName}.page.ts");
+        }
+    </environment>
+
+    <environment exclude="Development">
+        @{
+            SmidgeHelper.RequiresJs($"~/dist/script/{pageName}.page.js");
+            SmidgeHelper.RequiresCss($"~/dist/script/{pageName}.page.css");
+        }
+    </environment>
 }
+
+
+
+
+<div id="home">
+    <home-page></home-page>
+    as
+</div>
+
 
 @if (Model.BlockListGrid != null)
 {
