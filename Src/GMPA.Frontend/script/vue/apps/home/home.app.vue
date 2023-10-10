@@ -1,4 +1,5 @@
 ﻿<template>
+    <h1 v-html="stuff"></h1>
     <homeSidenav :textOrStuff="stuff"></homeSidenav>
 </template>
 
@@ -6,13 +7,10 @@
     import homeSidenav from './components/home-sidenav.vue';
 
     const props = defineProps<{
-        countries: [];
         stuff: string;
     }>();
 </script>
 
 <style lang="scss">
-    body {
-        background: white;
-    }
+    // Do Nothing
 </style>

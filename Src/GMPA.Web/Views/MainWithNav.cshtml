@@ -1,11 +1,31 @@
-﻿@{
+﻿@using Newtonsoft.Json
+@{
     Layout = "Main.cshtml";
+
+    string pageName = "home";
+    var clist = @JsonConvert.SerializeObject(Model.Countries);
+
+    <environment include="Development">
+        @{
+            SmidgeHelper.RequiresJs($"~/script/{pageName}.page.ts");
+        }
+    </environment>
+
+    <environment exclude="Development">
+        @{
+            SmidgeHelper.RequiresJs($"~/dist/script/{pageName}.page.js");
+            SmidgeHelper.RequiresCss($"~/dist/script/{pageName}.page.css");
+        }
+    </environment>
 }
 
 <div class="container-fluid p-0">
     <div class="row p-0">
         <div class="col-2 shadow h-50 sticky-top t-100" style="background: white">
-            <partial name="CountriesPartials/CountriesSideNavPartial" model="Model.Countries" />
+            <div id="home">
+                <home-page stuff="A"></home-page>
+            </div>
+            <partial name="CountriesPartials/CountriesSideNavPartial" model="Model.Countries"/>
         </div>
         <div class="col-10">
             @RenderBody()

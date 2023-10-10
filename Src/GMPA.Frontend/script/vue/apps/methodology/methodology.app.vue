@@ -8,7 +8,6 @@
 
     const props = defineProps<{
         title: string;
-        countries: [];
     }>();
 </script>
 

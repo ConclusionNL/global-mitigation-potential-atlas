@@ -1,33 +1,7 @@
-﻿@using Newtonsoft.Json
-@model HomeViewModel
+﻿@model HomeViewModel
 @{
-	Layout = "Main.cshtml";
-
-    string pageName = "home";
-    var clist = @JsonConvert.SerializeObject(Model.Countries);
-
-    <environment include="Development">
-        @{
-            SmidgeHelper.RequiresJs($"~/script/{pageName}.page.ts");
-        }
-    </environment>
-
-    <environment exclude="Development">
-        @{
-            SmidgeHelper.RequiresJs($"~/dist/script/{pageName}.page.js");
-            SmidgeHelper.RequiresCss($"~/dist/script/{pageName}.page.css");
-        }
-    </environment>
+	Layout = "MainWithNav.cshtml";
 }
-
-
-
-
-<div id="home">
-    <home-page></home-page>
-    as
-</div>
-
 
 @if (Model.BlockListGrid != null)
 {
