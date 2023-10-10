@@ -1,7 +1,17 @@
 ﻿<template>
-    
     <ul class="countries-list show">
-        <li v-for="continent in continents" >
+        <li>
+            <div class="country-divider">
+                Pilot
+            </div>
+        <li v-for="country in props.countries">
+            <div v-if="country.Active == 'True'">
+                <a class="countries-link-active" :href=country.Url>{{country.Name}}</a>
+            </div>
+        </li>
+
+        </li>
+        <li v-for="continent in continents">
             <div class="country-divider">
                 {{continent}}
             </div>
@@ -22,18 +32,25 @@
 </template>
 
 <script lang="ts" setup>
-    import { callWithAsyncErrorHandling, defineProps, reactive } from "vue";
+    import { defineProps, ref } from "vue";
 
     const props = defineProps({
         countries: {},
     })
 
-    var continents = ["Asia", "Africa", "North America", "South America", "Europe", "Oceania"]
+    const continents = ["Asia", "Africa", "North America", "South America", "Europe", "Oceania"]
 
 </script>
 
 <style lang="scss">
-    .test {
-        background: white;
+    .collapse {
+        &:not(.show) {
+            display: none;
+        }
+    }
+
+    .collapsing {
+        height: 0;
+        overflow: hidden;
     }
 </style>
