@@ -1,14 +1,15 @@
 ﻿<template>
-    <h1 v-html="stuff"></h1>
-    <homeSidenav :textOrStuff="stuff"></homeSidenav>
+    <homeSidenav :countries="props.countries"></homeSidenav>
 </template>
 
 <script setup lang="ts">
     import homeSidenav from './components/home-sidenav.vue';
+    import { defineProps, reactive } from "vue";
 
     const props = defineProps<{
-        stuff: string;
+        countries: {};
     }>();
+
 </script>
 
 <style lang="scss">

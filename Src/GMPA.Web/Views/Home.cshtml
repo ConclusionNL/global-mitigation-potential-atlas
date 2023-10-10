@@ -1,7 +1,42 @@
-﻿@model HomeViewModel
+﻿@using Newtonsoft.Json
+
+@model HomeViewModel
 @{
-	Layout = "MainWithNav.cshtml";
+	Layout = "Main.cshtml";
+
+    string pageName = "home";
+    var clist = @JsonConvert.SerializeObject(Model.Countries);
+
+    <environment include="Development">
+        @{
+            SmidgeHelper.RequiresJs($"~/script/{pageName}.page.ts");
+        }
+    </environment>
+
+    <environment exclude="Development">
+        @{
+            SmidgeHelper.RequiresJs($"~/dist/script/{pageName}.page.js");
+            SmidgeHelper.RequiresCss($"~/dist/script/{pageName}.page.css");
+        }
+    </environment>
 }
+
+<div class="container-fluid p-0">
+    <div class="row p-0">
+        <div class="col-2 shadow h-50 sticky-top t-100" style="background: white">
+            <div id="home">
+                <home-page :countries="@JsonConvert.SerializeObject(Model.Countries)"></home-page>
+            </div>
+            <partial name="CountriesPartials/CountriesSideNavPartial" model="Model.Countries" />
+        </div>
+        <div class="col-10">
+            <!-- TODO: Add map component here -->
+            Map component here
+            @*JsonConvert.SerializeObject(Model.Countries);*@
+        </div>
+    </div>
+</div>
+
 
 @if (Model.BlockListGrid != null)
 {
