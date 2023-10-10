@@ -1,9 +1,5 @@
 ﻿<template>
     <h1 v-html="title"></h1>
-    {{countries}}
-    <ul>
-        <li v-for="(country, index) in countries" :key="`country-${index}`">{{country}}</li>
-    </ul>
     <methodology-aside></methodology-aside>
 </template>
 
@@ -17,7 +13,5 @@
 </script>
 
 <style lang="scss">
-    body{
-        background: red;
-    }
+    // Do nothing
 </style>

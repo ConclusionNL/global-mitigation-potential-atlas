@@ -1,5 +1,4 @@
-﻿@using Newtonsoft.Json
-@model MethodologyViewModel
+﻿@model MethodologyViewModel
 @{
     Layout = "Main.cshtml";
 
@@ -19,8 +18,6 @@
     </environment>
 }
 
-
-@JsonConvert.SerializeObject(Model.Countries)
-<div id="main">
+<div id="methodology">
     <methodology-page title="@Model.BodyText"></methodology-page>
 </div>

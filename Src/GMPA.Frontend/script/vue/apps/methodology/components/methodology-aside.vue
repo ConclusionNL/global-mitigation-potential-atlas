@@ -6,7 +6,5 @@
 </script>
 
 <style lang="scss">
-    .test {
-        background: blue;
-    }
+    // Do nothing
 </style>
