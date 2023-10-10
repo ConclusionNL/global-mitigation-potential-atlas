@@ -40,7 +40,7 @@
         countries: {},
     })
 
-    const continents = ["Asia", "Africa", "North America", "South America", "Europe", "Oceania"]
+    const continents = ["Africa", "Asia", "North America", "South America", "Europe", "Oceania"]
 
     const isCollapsed = ref(true);
 
