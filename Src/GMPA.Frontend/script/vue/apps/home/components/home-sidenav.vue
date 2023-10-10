@@ -12,24 +12,27 @@
         </li>
         </li>
         <!-- #endregion -->
-
-        <li v-for="continent in continents" @click="toggleCollapse" :class="{'collapsed': isCollapsed}">
-            <div class="country-divider">
+        <div v-for="(continent, i) in continents" :index="continent">
+        <li>
+            <div class="country-divider" @click="continentsCollapsable[i] = !continentsCollapsable[i]">
                 {{continent}}
             </div>
-            <div v-for="country in props.countries" v-show="isCollapsed" class="collapsible-content">
-        <li v-if="country.Continent == continent">
-            <div class="countries-list-item-active show">
-                <div v-if="country.Active == 'True'">
-                    <a class="countries-link-active" :href=country.Url>{{country.Name}}</a>
-                </div>
-                <div v-else class="countries-list-item-disabled">
-                    {{country.Name}}
+            <div v-for="country in props.countries" class="expander" :class="{ 'expanded': continentsCollapsable[i] }">
+                <div class="expander-content">
+                    <li v-if="country.Continent == continent">
+                        <div class="countries-list-item-active">
+                            <div v-if="country.Active == 'True'">
+                                <a class="countries-link-active" :href=country.Url>{{country.Name}}</a>
+                            </div>
+                            <div v-else class="countries-list-item-disabled">
+                                {{country.Name}}
+                            </div>
+                        </div>
+                    </li>
                 </div>
             </div>
         </li>
         </div>
-        </li>
     </ul>
 </template>
 
@@ -41,24 +44,32 @@
     })
 
     const continents = ["Africa", "Asia", "North America", "South America", "Europe", "Oceania"]
+    const continentsCollapsable = ref([]);
 
-    const isCollapsed = ref(true);
-
-    const toggleCollapse = () => {
-        console.log(isCollapsed.value);
-        isCollapsed.value = !isCollapsed.value;
-    };
-
+    continents.forEach(continent => {
+        continentsCollapsable.value.push(true);
+    });
 </script>
 
 <style lang="scss">
-    .collapsible-content {
-        max-height: 0;
+    .expander {
+        display: grid;
+        grid-template-rows: 0fr;
         overflow: hidden;
-        transition: max-height 0.5s ease-in-out;
+        transition: grid-template-rows 0.2s;
     }
 
-    .collapsed .collapsible-content {
-        max-height: 500px; /* Set an appropriate max-height value */
+    .expander-content {
+        min-height: 0;
+        transition: visibility 0.2s;
+        visibility: hidden;
+    }
+
+    .expander.expanded {
+        grid-template-rows: 1fr;
+    }
+
+    .expander.expanded .expander-content {
+        visibility: visible;
     }
 </style>
