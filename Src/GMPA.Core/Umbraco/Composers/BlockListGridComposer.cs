@@ -4,6 +4,7 @@ using Marketing.Core.Grid;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Infrastructure.Migrations.Upgrade.V_10_7_0;
 using Umbraco.Extensions;
 
 namespace Marketing.Core.Umbraco.Composing.Composers
@@ -16,7 +17,7 @@ namespace Marketing.Core.Umbraco.Composing.Composers
             builder.Services.AddUnique<BlockGridRenderer, MyBlockGridRenderer>();
 
             ////NOTE: Use AddSingleton to register multiple instances of the same type!
-            builder.Services.AddSingleton<GridControl, SelectionTestGridControl>();
+            builder.Services.AddSingleton<GridControl, TagTitleGridControl>();
             builder.Services.AddSingleton<GridControl, HeaderGridControl>();
             builder.Services.AddSingleton<GridControl, ParagraphGridControl>();
         }
