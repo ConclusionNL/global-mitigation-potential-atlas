@@ -21,11 +21,30 @@ namespace GMPA.Core.Controller
         public IActionResult Country()
         {
             var country = (Country)CurrentPage;
+
+            var list = new List<Item>();
+
+            foreach (var accordionItem in country.AccordionItem )
+            {
+                var item = accordionItem.Content as AccordionItem;
+
+                if (item == null)
+                {
+                    continue;
+                }
+
+                list.Add(new Item
+                {
+                    Title = item.Title,
+                    BodyText = item.BodyText?.ToHtmlString()
+                });
+            }
+
             var viewModel = new CountryViewModel
             {
+                Accordion = list,
                 Country = new CountryModel
                 {
-
                     Active = new List<string>(),
                     Continent = new List<string>()
                 }

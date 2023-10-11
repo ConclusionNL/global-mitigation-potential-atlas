@@ -15,3 +15,11 @@
     Text that should wrap Text that should wrap Text that should wrap Text that should wrap Text that should wrap
 </p>
 
+@if (Model.Accordion != null)
+{
+    foreach (var item in Model.Accordion)
+    {
+        <p>@item.Title</p>
+        @Html.Raw(item.BodyText)
+    }
+}
