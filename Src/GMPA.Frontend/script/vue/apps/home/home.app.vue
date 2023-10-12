@@ -1,17 +1,56 @@
 ﻿<template>
-    <homeSidenav :countries="props.countries"></homeSidenav>
+    <div>
+        <div class="row">
+            <div class="side-nav">
+                <homeSidenav :countries="countries"></homeSidenav>
+            </div>
+            <div class="col-10 p-0">
+                <worldMap @country-clicked="handleCountryClick"></worldMap>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
-    import homeSidenav from './components/home-sidenav.vue';
-    import { defineProps, reactive } from "vue";
+import homeSidenav from './components/home-sidenav.vue';
+import worldMap from './components/world-map.vue';
+import { useCollaborationStore } from './stores/collaborationStore';
+import { ref, computed, defineProps } from 'vue';
+//import StackedAreaPlusBar from './components/StackedArea.vue'
 
-    const props = defineProps<{
-        countries: {};
-    }>();
+//console.log(useCollaborationStore);
 
+const props = defineProps<{
+    countries: {};
+}>();
+
+//const countries = ref([])
+//const selectedTechnology = ref("")
+const selectedCountry = ref('');
+//const isChecked = ref(true);
+//countries.value.push("SG")
+
+//function handleButtonClick(collboaratingCountries) {
+//    countries.value = collboaratingCountries
+//}
+
+//function handleBarClick(eventData) {
+//    console.log('Bar Clicked:', eventData);
+//    selectedTechnology.value = eventData.index.series
+//}
+
+function handleCountryClick(country: any) {
+    console.log('Country Clicked:', country.properties.name);
+    selectedCountry.value = country.properties.name;
+}
+
+const collaborationStore = useCollaborationStore();
+//TODO read from collaboration store which combinations of collaborating countries are even available - in addition to the fake data set
 </script>
 
 <style lang="scss">
-    // Do Nothing
+.side-nav {
+    width: 200px;
+    height: calc(100vh - 136px);
+}
 </style>

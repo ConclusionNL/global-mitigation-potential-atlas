@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace GMPA.Core.Models.Umbraco
 {
-	/// <summary>Policy Origin</summary>
-	[PublishedModel("policyOrigin")]
-	public partial class PolicyOrigin : PublishedElementModel
+	/// <summary>Case Country Context</summary>
+	[PublishedModel("caseCountryContext")]
+	public partial class CaseCountryContext : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
-		public new const string ModelTypeAlias = "policyOrigin";
+		public new const string ModelTypeAlias = "caseCountryContext";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
@@ -34,14 +34,14 @@ namespace GMPA.Core.Models.Umbraco
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<PolicyOrigin, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<CaseCountryContext, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public PolicyOrigin(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public CaseCountryContext(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,11 +50,19 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
-		/// Policy Origin Dropdown
+		/// Description of enabling factor
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("policyOriginDropdown")]
-		public virtual string PolicyOriginDropdown => this.Value<string>(_publishedValueFallback, "policyOriginDropdown");
+		[ImplementPropertyType("descriptionOfEnablingFactor")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString DescriptionOfEnablingFactor => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "descriptionOfEnablingFactor");
+
+		///<summary>
+		/// Traction
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("traction")]
+		public virtual string Traction => this.Value<string>(_publishedValueFallback, "traction");
 	}
 }

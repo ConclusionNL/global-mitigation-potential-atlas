@@ -3,9 +3,199 @@
     Layout = "Main.cshtml";
 }
 
-<div>
-    @if (Model.BlockGrid != null)
-    {
-        @await Html.PartialAsync("~/Views/Partials/CustomGrid/RenderGrid.cshtml", Model.BlockGrid)
+<h1>@Model.PageTitle</h1>
+<h3 class="sectorTag">Sector: @Model.sectorTag</h3>
+<p>@Model.caseIntro</p>
+
+<div id="traction">
+    @{
+        <h2>Traction</h2>
+        foreach (var countryContext in Model.CaseCountryContextBlock)
+        {
+            <h3>@countryContext.Traction</h3>
+            @Html.Raw(countryContext.TractionDescription)
+        }
     }
 </div>
+
+<div id="policies">
+    @{
+        <h2>Policies</h2>
+        foreach (var casePolicy in Model.CasePolicyBlock)
+        {
+
+            <h4>@casePolicy.Title</h4>
+            <p>@Html.Raw(casePolicy.InstrumentText)</p>
+            <div class="row">
+                <div class="col-1">
+                    <div class="tagName">
+                        Policy Decision
+                    </div>
+                    <div class="tags">
+                        @casePolicy.PolicyDecision
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Policy Origin
+                    </div>
+                    <div class="tags">
+                        @casePolicy.PolicyOrigin
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Type of Policy
+                    </div>
+                    <div class="tags">
+                        @casePolicy.TypeOfPolicyInstrument
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Jurisdiction
+                    </div>
+                    <div class="tags">
+                        @casePolicy.Jurisdiction
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Enforcement level
+                    </div>
+                    <div class="tags">
+                        @casePolicy.EnforcementLevel
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Sectoral coverage
+                    </div>
+                    <div class="tags">
+                        @casePolicy.SectoralCoverage
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Target group
+                    </div>
+                    <div class="tags">
+                        @casePolicy.TargetGroup
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Institutional requirement
+                    </div>
+                    <div class="tags">
+                        @casePolicy.InstitutionalRequirement
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Implementation status
+                    </div>
+                    <div class="tags">
+                        @casePolicy.ImplementationStatus
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Monitoring and evaluation
+                    </div>
+                    <div class="tags">
+                        @casePolicy.MonitoringAndEvaluation
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        Start date of implementation
+                    </div>
+                    <div class="tags">
+                        @casePolicy.StartDate
+                    </div>
+                </div>
+                <div class="col-1 tags">
+                    <div class="tagName">
+                        End date of implementation
+                    </div>
+                    <div class="tags">
+                        @if (casePolicy.EndDate != "1/1/1")
+                        {
+                            @casePolicy.EndDate
+                        }
+                        else
+                        {
+                            <div>Ongoing</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div id="LockIn">
+    <h2>Positive Lock-Ins</h2>
+    @foreach (var positiveLock in Model.CaseLockInBlock
+        .Where(a => a.NegativePositive))
+    {
+        <div>
+            <h4>@positiveLock.LockInType</h4>
+            @Html.Raw(positiveLock.BodyText)
+        </div>
+    }
+
+    <h2>Negative Lock-Ins</h2>
+    @foreach (var negativeLock in Model.CaseLockInBlock
+    .Where(a => !a.NegativePositive))
+    {
+        <div>
+            <h4>@negativeLock.LockInType</h4>
+            @Html.Raw(negativeLock.BodyText)
+        </div>
+    }
+</div>
+
+<div id="tag List">
+    <ul class="tagList">
+        @{
+            foreach (var tag in Model.TagsList)
+            {
+                <li>@tag</li>
+            }
+        }
+    </ul>
+</div>
+
+<style>
+    .sectorTag {
+        color: darkgray;
+        font-style: italic
+    }
+
+    .tagList {
+        display: inline;
+        list-style-type: none;
+    }
+
+        .tagList li {
+            display: inline;
+            color: darkgray;
+            font-style: italic;
+            font-size: 13px;
+            margin-right: 5px;
+        }
+
+    .tagName {
+        color: black;
+        font-size: 15px;
+    }
+
+    .tags {
+        color: darkgray;
+        font-style: italic;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+</style>

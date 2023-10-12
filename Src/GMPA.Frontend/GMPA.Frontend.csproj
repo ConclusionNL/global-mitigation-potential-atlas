@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="script\vue\apps\home\assets\" />
+    <Folder Include="script\vue\apps\home\stores\" />
+  </ItemGroup>
+
 </Project>

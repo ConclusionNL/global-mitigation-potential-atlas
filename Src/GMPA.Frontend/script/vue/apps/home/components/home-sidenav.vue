@@ -1,6 +1,6 @@
 ﻿<template>
     <h4 class="country-divider">Countries</h4>
-    <ul class="countries-list show">
+    <ul class="countries-list">
         <!-- #region Pilot countries-->
         <li>
             <div class="country-divider">

@@ -12,6 +12,9 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vue from '@vitejs/plugin-vue';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import dsv from '@rollup/plugin-dsv';
+import svgLoader from 'vite-svg-loader';
+
 
 import { UMBRACO_PROJECT_NAME, PORT } from './config';
 
@@ -68,6 +71,8 @@ export default defineConfig(({ command, mode }): UserConfig => {
         publicDir: false,
         plugins: [
             vue(),
+            dsv(),
+            svgLoader(),
             VueI18nPlugin({
                 include: resolve(
                     dirname(fileURLToPath(import.meta.url)),

@@ -1,8 +1,8 @@
 ﻿.countries-list {
-    height: Calc(100vh - 240px);
+    height: calc(100vh - 136px);
     list-style-type: none;
     padding-left: 0;
-    overflow-y: scroll;
+    overflow-y: auto
 }
 
 .countries-list-grid {
@@ -48,4 +48,5 @@
     margin-top: 5px;
     text-align: center;
     font-weight: bold;
+    cursor: pointer;
 }

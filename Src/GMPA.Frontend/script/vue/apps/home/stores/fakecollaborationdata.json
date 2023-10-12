@@ -1,0 +1,72 @@
+[
+    {
+        "x": 1,
+        "transport": 20,
+        "windenergy": 4,
+        "nuclear": 10,
+        "biomass": 25,
+        "waterenergy": 0,
+        "newtech": 2,
+        "wonderstuff": 0
+    },
+    {
+        "x": 2,
+        "transport": 6,
+        "windenergy": 5,
+        "nuclear": 20,
+        "biomass": 10,
+        "waterenergy": 1,
+        "newtech": 5,
+        "wonderstuff": 0
+    },
+    {
+        "x": 3,
+        "transport": 4,
+        "windenergy": 3,
+        "nuclear": 15,
+        "biomass": 8,
+        "waterenergy": 8,
+        "newtech": 5,
+        "wonderstuff": 0
+    },
+    {
+        "x": 4,
+        "transport": 1,
+        "windenergy": 0,
+        "nuclear": 11,
+        "biomass": 13,
+        "waterenergy": 2,
+        "newtech": 2,
+        "wonderstuff": 2
+    },
+    {
+        "x": 5,
+        "transport": 0,
+        "windenergy": 0,
+        "nuclear": 5,
+        "biomass": 2,
+        "waterenergy": 0,
+        "newtech": 1,
+        "wonderstuff": 4
+    },
+    {
+        "x": 7.3,
+        "transport": 0,
+        "windenergy": 0,
+        "nuclear": 4,
+        "biomass": 2,
+        "waterenergy": 0,
+        "newtech": 1,
+        "wonderstuff": 1
+    },
+    {
+        "x": 9.1,
+        "transport": 0,
+        "windenergy": 0,
+        "nuclear": 2,
+        "biomass": 1,
+        "waterenergy": 0,
+        "newtech": 0.5,
+        "wonderstuff": 1
+    }
+]

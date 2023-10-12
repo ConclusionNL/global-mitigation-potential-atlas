@@ -20,7 +20,7 @@ namespace GMPA.Core.Models.Umbraco
 {
 	/// <summary>Case</summary>
 	[PublishedModel("case")]
-	public partial class Case : PublishedContentModel, IGrid
+	public partial class Case : PublishedContentModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -50,27 +50,51 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
-		/// Geographical
+		/// Case Country Block List
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("geographical")]
-		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Geographical => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "geographical");
+		[ImplementPropertyType("caseCountryBlockList")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel CaseCountryBlockList => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "caseCountryBlockList");
 
 		///<summary>
-		/// Sector Tags
+		/// CaseIntroduction
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("sectorTags")]
-		public virtual global::System.Collections.Generic.IEnumerable<string> SectorTags => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "sectorTags");
+		[ImplementPropertyType("caseIntroduction")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString CaseIntroduction => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "caseIntroduction");
 
 		///<summary>
-		/// Block Grid
+		/// Case Lock In Block List
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("blockGrid")]
-		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockGridModel BlockGrid => global::GMPA.Core.Models.Umbraco.Grid.GetBlockGrid(this, _publishedValueFallback);
+		[ImplementPropertyType("caseLockInBlockList")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel CaseLockInBlockList => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "caseLockInBlockList");
+
+		///<summary>
+		/// Case Policy Block List
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("casePolicyBlockList")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel CasePolicyBlockList => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "casePolicyBlockList");
+
+		///<summary>
+		/// SectorTag
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("sectorTag")]
+		public virtual global::System.Collections.Generic.IEnumerable<string> SectorTag => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "sectorTag");
+
+		///<summary>
+		/// Tags
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tags")]
+		public virtual global::System.Collections.Generic.IEnumerable<string> Tags => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "tags");
 	}
 }

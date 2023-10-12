@@ -2,7 +2,7 @@
 
 @model HomeViewModel
 @{
-	Layout = "Main.cshtml";
+    Layout = "Main.cshtml";
 
     string pageName = "home";
     var clist = @JsonConvert.SerializeObject(Model.Countries);
@@ -21,19 +21,9 @@
     </environment>
 }
 
-<div class="container-fluid p-0">
-    <div class="row p-0">
-        <div class="col-2 shadow h-50 sticky-top t-100" style="background: white">
-            <div id="home">
-                <home-page :countries="@JsonConvert.SerializeObject(Model.Countries)"></home-page>
-            </div>
-        </div>
-        <div class="col-10">
-            <!-- TODO: Add map component here -->
-            Map component here
-            @*JsonConvert.SerializeObject(Model.Countries);*@
-        </div>
-    </div>
+
+<div id="home">
+    <home-page :countries="@JsonConvert.SerializeObject(Model.Countries)"></home-page>
 </div>
 
 
