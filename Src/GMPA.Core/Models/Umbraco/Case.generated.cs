@@ -50,6 +50,14 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
+		/// Geographical
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("geographical")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Geographical => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "geographical");
+
+		///<summary>
 		/// Sector Tags
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
