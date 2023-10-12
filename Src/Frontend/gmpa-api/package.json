@@ -1,0 +1,17 @@
+{
+  "name": "@gmpa/api",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": "18"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "generate": "openapi-generator-cli generate",
+    "build": "npm run clean && npm run generate"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "2.7.0",
+    "rimraf": "5.0.5"
+  }
+}

@@ -1,5 +1,4 @@
 ﻿using Arlanet.Umbraco.Grid.Base;
-using System;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.Services;
@@ -9,17 +8,17 @@ namespace Arlanet.Umbraco.Grid.Compositions
     public class StartupComponent : IComponent
     {
         private readonly Lazy<BlockGridRenderer> _blockListGridRenderer;
-        private readonly BlockListGridControlResolver _blockListGridControlResolver;
+        private readonly BlockGridControlResolver _blockGridControlResolver;
         private readonly IRuntimeState _runtimeState;
 
         public StartupComponent(
             Lazy<BlockGridRenderer> blockListGridRenderer,
-            BlockListGridControlResolver blockListGridControlResolver,
+            BlockGridControlResolver blockGridControlResolver,
             IRuntimeState runtimeState
         )
         {
             _blockListGridRenderer = blockListGridRenderer;
-            _blockListGridControlResolver = blockListGridControlResolver;
+            _blockGridControlResolver = blockGridControlResolver;
             _runtimeState = runtimeState;
         }
 
@@ -27,7 +26,7 @@ namespace Arlanet.Umbraco.Grid.Compositions
         {
             if (_runtimeState.Level == RuntimeLevel.Run)
             {
-                ServiceLocator.Initialize(_blockListGridRenderer.Value, _blockListGridControlResolver);
+                ServiceLocator.Initialize(_blockListGridRenderer.Value, _blockGridControlResolver);
             }
         }
 

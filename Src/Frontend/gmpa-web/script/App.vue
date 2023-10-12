@@ -1,0 +1,3 @@
+<template>
+    Hello GMPA!
+</template>

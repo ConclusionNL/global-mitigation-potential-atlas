@@ -10,7 +10,7 @@ namespace GMPA.Core.Grid.Controls
         public override string ViewPath => "~/Views/Partials/CustomGrid/Controls/Header.cshtml";
         public override string Alias => "header";
 
-        public override GridControlViewModel Render(BlockListGridControl gridControl, bool preview = false)
+        public override GridControlViewModel Render(BlockGridControl gridControl, bool preview = false)
         {
             var component = (Header)gridControl.Component;
 

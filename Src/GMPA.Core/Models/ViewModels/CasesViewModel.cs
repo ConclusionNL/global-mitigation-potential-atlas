@@ -1,5 +1,7 @@
-﻿namespace GMPA.Core.Models.ViewModels;
-
-public class CasesViewModel : MainViewModel
+﻿namespace GMPA.Core.Models.ViewModels
 {
+    public class CasesViewModel : MainViewModel
+    {
+        //Do nothing
+    }
 }

@@ -1,5 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -7,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="12.2.0" />
     <PackageReference Include="Umbraco.Cms.Web.Website" Version="12.2.0" />
   </ItemGroup>
@@ -14,9 +15,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\Arlanet.Umbraco.Grid\Arlanet.Umbraco.Grid.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Umbraco\Composers\" />
-  </ItemGroup>
-
 </Project>

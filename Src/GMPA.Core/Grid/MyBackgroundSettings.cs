@@ -1,4 +1,4 @@
-﻿namespace Marketing.Core.Grid
+﻿namespace GMPA.Core.Grid
 {
     public class MyBackgroundSettings
     {

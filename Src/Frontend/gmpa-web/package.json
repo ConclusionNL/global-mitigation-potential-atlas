@@ -81,6 +81,7 @@
         "vue-tsc": "^1.8.8"
     },
     "dependencies": {
+        "@gmpa/api": "file:../gmpa-api",
         "@vueuse/core": "^10.1.2",
         "bootstrap": "^5.3.0",
         "d3": "^6.7.0",

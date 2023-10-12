@@ -1,13 +1,12 @@
 ﻿using Arlanet.Umbraco.Grid.Base;
+using GMPA.Core.Grid;
 using GMPA.Core.Grid.Controls;
-using Marketing.Core.Grid;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
-using Umbraco.Cms.Infrastructure.Migrations.Upgrade.V_10_7_0;
 using Umbraco.Extensions;
 
-namespace Marketing.Core.Umbraco.Composing.Composers
+namespace GMPA.Core.Umbraco.Composers
 {
     [ComposeAfter(typeof(Arlanet.Umbraco.Grid.Compositions.StartupComposer))]
     public class BlockListGridComposer : IComposer

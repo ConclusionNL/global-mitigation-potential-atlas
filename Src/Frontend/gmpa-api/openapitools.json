@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "6.2.1",
+    "generators": {
+      "gmpa-api": {
+        "generatorName": "typescript-fetch",
+        "inputSpec": "http://localhost:8080/swagger/v1/swagger.json",
+        "output": "dist",
+        "additionalProperties": {
+          "supportsES6": true
+        }
+      }
+    }
+  }
+}

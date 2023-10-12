@@ -27,7 +27,7 @@
 </div>
 
 
-@if (Model.BlockListGrid != null)
+@if (Model.BlockGrid != null)
 {
-    @await Html.PartialAsync("~/Views/Partials/CustomGrid/RenderGrid.cshtml", Model.BlockListGrid)
+    @await Html.PartialAsync("~/Views/Partials/CustomGrid/RenderGrid.cshtml", Model.BlockGrid)
 }

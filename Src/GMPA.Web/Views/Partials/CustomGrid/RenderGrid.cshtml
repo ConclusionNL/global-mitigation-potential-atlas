@@ -1,7 +1,7 @@
 ﻿@using Arlanet.Umbraco.Grid.Base;
-@using Marketing.Core.Grid;
+@using GMPA.Core.Grid
 
-@model BlockListGrid
+@model BlockGrid
 
 @foreach (var row in Model.Rows)
 {
@@ -20,7 +20,7 @@
 
 @functions
 {
-    void RenderRow(BlockListGridRow gridRow, MyRowSettings settings)
+    void RenderRow(BlockGridRow gridRow, MyRowSettings settings)
     {
         if (gridRow != null && gridRow.Columns.Any())
         {
@@ -40,7 +40,7 @@
         }
     }
 
-    void RenderColumn(BlockListGridRow gridRow, BlockListGridColumn gridColumn)
+    void RenderColumn(BlockGridRow gridRow, BlockGridColumn gridColumn)
     {
         if (gridColumn != null)
         {
@@ -55,7 +55,7 @@
                         continue;
                     }
 
-                    <div class="@control.Render.ToLower()" @control.PreviewAttributes(Model)>
+                    <div class="@control.Alias.ToLower()" @control.PreviewAttributes(Model)>
                         @Html.RenderGridControl(control)
                     </div>
                 }

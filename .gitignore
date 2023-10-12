@@ -9,13 +9,9 @@ node_modules
 /dist
 .vscode
 
- 
-
 # Frontend
 /Src/GMPA.Frontend/node_modules
-/Src/GMPA.Web/dist
-
- 
+/Src/GMPA.Web/wwwroot/dist
 
 # Umbraco
 /Src/GMPA.Web/wwwroot/umbraco
@@ -23,27 +19,12 @@ node_modules
 !/Src/GMPA.Web/umbraco/Deploy
 /Src/GMPA.Web/Smidge
 
- 
-
 # Umbraco ModelsBuilder
 /Src/GMPA.Core/Models/Umbraco/ood.flag
-
- 
 
 # Umbraco Deploy
 /Src/GMPA.Web/umbraco/Deploy/*
 !/Src/GMPA.Web/umbraco/Deploy/Revision
 
- 
-
 # Other
 /Res
-
- 
-
- 
-
-/Src/GMPA.Web/wwwroot/media
-/Src/GMPA.Web/coverage
-/Src/GMPA.Web/wwwroot/dist/
-/Src/GMPA.Web/uSync/v9/Content

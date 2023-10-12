@@ -1,84 +1,53 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Arlanet.Umbraco.Grid.Other;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Org.BouncyCastle.Asn1.Crmf;
-using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Models.Blocks;
+﻿using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
-using Umbraco.Cms.Core.Services;
-using Umbraco.Extensions;
 
 namespace Arlanet.Umbraco.Grid.Base
 {
     public class BlockGridRenderer
     {
-        private readonly IPublishedValueFallback _publishedValueFallback;
-        private readonly BlockEditorConverter _blockEditorConverter;
-
-        public BlockGridRenderer(
-            IPublishedValueFallback publishedValueFallback,
-            BlockEditorConverter blockEditorConverter,
-            IContentTypeService contentTypeService,
-            IOptions<BlockListGridSettings> blockListGridSettings
-        )
-        {
-            _publishedValueFallback = publishedValueFallback;
-            _blockEditorConverter = blockEditorConverter;
-
-            Initialize(blockListGridSettings.Value, contentTypeService);
-        }
-
-        private void Initialize(BlockListGridSettings blockListGridSettings, IContentTypeService contentTypeService)
-        {
-            //Do nothing
-        }
-
-        public virtual string GetSectionClasses(BlockListGridRow gridRow)
+        public virtual string GetSectionClasses(BlockGridRow gridRow)
         {
             return string.Empty;
         }
 
-        public virtual string GetSectionStyle(BlockListGridRow gridRow)
+        public virtual string GetSectionStyle(BlockGridRow gridRow)
         {
             return string.Empty;
         }
 
-        public virtual string GetContainerClasses(BlockListGridRow gridRow)
+        public virtual string GetContainerClasses(BlockGridRow gridRow)
         {
             return string.Empty;
         }
 
-        public virtual string GetContainerStyle(BlockListGridRow gridRow)
+        public virtual string GetContainerStyle(BlockGridRow gridRow)
         {
             return string.Empty;
         }
 
-        public virtual string GetRowClasses(BlockListGridRow gridRow)
+        public virtual string GetRowClasses(BlockGridRow gridRow)
         {
             return string.Empty;
         }
 
-        public virtual string GetRowStyle(BlockListGridRow gridRow)
+        public virtual string GetRowStyle(BlockGridRow gridRow)
         {
             return string.Empty;
         }
 
-        public virtual string GetColumnClasses(BlockListGridRow gridRow, BlockListGridColumn gridColumn)
+        public virtual string GetColumnClasses(BlockGridRow gridRow, BlockGridColumn gridColumn)
         {
             return string.Empty;
         }
 
-        public virtual string GetColumnStyle(BlockListGridRow gridRow, BlockListGridColumn gridColumn)
+        public virtual string GetColumnStyle(BlockGridRow gridRow, BlockGridColumn gridColumn)
         {
             return string.Empty;
         }
 
-        public virtual BlockListGrid MapBlockListModel(BlockGridModel blockGridModel)
+        public virtual BlockGrid MapBlockGridModel(BlockGridModel blockGridModel)
         {
-            var rows = new List<BlockListGridRow>();
+            var rows = new List<BlockGridRow>();
 
             foreach (var row in blockGridModel)
             {
@@ -89,7 +58,7 @@ namespace Arlanet.Umbraco.Grid.Base
                     continue;
                 }
 
-                var columns = new List<BlockListGridColumn>();
+                var columns = new List<BlockGridColumn>();
 
                 foreach (var column in rowArea)
                 {
@@ -100,13 +69,13 @@ namespace Arlanet.Umbraco.Grid.Base
                         continue;
                     }
 
-                    var controls = new List<BlockListGridControl>();
+                    var controls = new List<BlockGridControl>();
 
                     foreach (var control in columnArea)
                     {
-                        controls.Add(new BlockListGridControl
+                        controls.Add(new BlockGridControl
                         {
-                            Render = control.Content.ContentType.Alias,
+                            Alias = control.Content.ContentType.Alias,
 
                             Component = control.Content,
                             Settings = control.Settings
@@ -119,7 +88,7 @@ namespace Arlanet.Umbraco.Grid.Base
                 rows.Add(CreateRow(columns, row.Settings));
             }
 
-            var blockListGrid = new BlockListGrid
+            var blockListGrid = new BlockGrid
             {
                 Rows = rows
             };
@@ -127,9 +96,9 @@ namespace Arlanet.Umbraco.Grid.Base
             return blockListGrid;
         }
 
-        public virtual BlockListGridRow CreateRow(List<BlockListGridColumn> columns, IPublishedElement settings)
+        public virtual BlockGridRow CreateRow(List<BlockGridColumn> columns, IPublishedElement settings)
         {
-            return new BlockListGridRow
+            return new BlockGridRow
             {
                 Columns = columns,
 
@@ -137,9 +106,9 @@ namespace Arlanet.Umbraco.Grid.Base
             };
         }
 
-        public virtual BlockListGridColumn CreateColumn(int width, IPublishedElement settings, List<BlockListGridControl> controls)
+        public virtual BlockGridColumn CreateColumn(int width, IPublishedElement settings, List<BlockGridControl> controls)
         {
-            return new BlockListGridColumn
+            return new BlockGridColumn
             {
                 Width = width,
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Arlanet.Umbraco.Grid.Base
+﻿namespace Arlanet.Umbraco.Grid.Base
 {
     public abstract class GridControl
     {
@@ -20,7 +18,7 @@ namespace Arlanet.Umbraco.Grid.Base
             ViewPath = $"{alias}.cshtml";
         }
         
-        public abstract GridControlViewModel Render(BlockListGridControl gridControl, bool preview = false);
+        public abstract GridControlViewModel Render(BlockGridControl gridControl, bool preview = false);
 
         protected GridControlViewModel ViewModel(string view, object model = null)
         {

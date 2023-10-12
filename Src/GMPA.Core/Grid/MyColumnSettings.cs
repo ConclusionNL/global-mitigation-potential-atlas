@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using GMPA.Core.Grid.Enums;
+﻿using GMPA.Core.Grid.Enums;
 
-namespace Marketing.Core.Grid
+namespace GMPA.Core.Grid
 {
     public class MyColumnSettings
     {

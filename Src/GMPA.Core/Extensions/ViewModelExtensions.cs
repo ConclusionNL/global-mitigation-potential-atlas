@@ -15,9 +15,7 @@ namespace GMPA.Core.Extensions
             var home = content.AncestorOrSelf<Home>();
 
             model.PageTitle = content.Name;
-            model.Content = content;
 
-            #region countries
             var countries = home
                 .Descendant<Countries>()
                 .Descendants<Country>();
@@ -39,8 +37,6 @@ namespace GMPA.Core.Extensions
                 .OrderBy(a => a.Name)
                 .ToList();
 
-            #endregion
-            
             ConstructGrid(model, content);
         }
 
@@ -48,7 +44,7 @@ namespace GMPA.Core.Extensions
         {
             if (node is IGrid grid && viewModel is IGridViewModel gridViewModel)
             {
-                gridViewModel.BlockGrid = ServiceLocator.BlockListGridRenderer.MapBlockListModel(grid.BlockGrid);
+                gridViewModel.BlockGrid = ServiceLocator.BlockListGridRenderer.MapBlockGridModel(grid.BlockGrid);
             }
         }
     }

@@ -14,10 +14,10 @@ namespace Arlanet.Umbraco.Grid.Compositions
             builder.Components().Append<StartupComponent>();
 
             builder.Services.AddSingleton<BlockGridRenderer>();
-            builder.Services.AddSingleton<BlockListGridControlResolver>();
+            builder.Services.AddSingleton<BlockGridControlResolver>();
 
             builder.Services
-                .AddOptions<BlockListGridSettings>()
+                .AddOptions<BlockGridSettings>()
                 .Bind(builder.Config.GetSection(Constants.BlockListGridConfigurationKey))
                 .ValidateDataAnnotations();
 

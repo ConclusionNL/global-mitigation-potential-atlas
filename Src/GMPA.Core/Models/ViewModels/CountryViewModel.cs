@@ -1,7 +1,4 @@
-﻿using GMPA.Core.Models.Umbraco;
-using J2N.Text;
-
-namespace GMPA.Core.Models.ViewModels
+﻿namespace GMPA.Core.Models.ViewModels
 {
     public class CountryViewModel : MainViewModel
     {

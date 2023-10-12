@@ -1,34 +1,13 @@
 ﻿using Arlanet.Umbraco.Grid.Base;
-using Arlanet.Umbraco.Grid.Other;
-using GMPA.Core.Models.Umbraco;
-using Microsoft.Extensions.Options;
-using System.Runtime;
 using GMPA.Core.Grid.Enums;
+using GMPA.Core.Models.Umbraco;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
-using Umbraco.Cms.Core.Services;
-using Umbraco.Extensions;
 
-namespace Marketing.Core.Grid
+namespace GMPA.Core.Grid
 {
     public class MyBlockGridRenderer : BlockGridRenderer
     {
-        public MyBlockGridRenderer(
-            IPublishedValueFallback publishedValueFallback,
-            BlockEditorConverter blockEditorConverter,
-            IContentTypeService contentTypeService,
-            IOptions<BlockListGridSettings> blockListGridSettings
-        ) : base(
-            publishedValueFallback,
-            blockEditorConverter,
-            contentTypeService,
-            blockListGridSettings
-        )
-        {
-            //Do nothing
-        }
-
-        public override string GetSectionClasses(BlockListGridRow gridRow)
+        public override string GetSectionClasses(BlockGridRow gridRow)
         {
             var settings = (MyRowSettings)gridRow.Settings;
 
@@ -72,7 +51,7 @@ namespace Marketing.Core.Grid
             return string.Join(" ", classes);
         }
 
-        public override string GetSectionStyle(BlockListGridRow gridRow)
+        public override string GetSectionStyle(BlockGridRow gridRow)
         {
             var settings = (MyRowSettings)gridRow.Settings;
 
@@ -84,7 +63,7 @@ namespace Marketing.Core.Grid
             return string.Empty;
         }
 
-        public override string GetContainerClasses(BlockListGridRow gridRow)
+        public override string GetContainerClasses(BlockGridRow gridRow)
         {
             var settings = (MyRowSettings)gridRow.Settings;
 
@@ -108,7 +87,7 @@ namespace Marketing.Core.Grid
             return string.Join(" ", classes);
         }
 
-        public override string GetRowClasses(BlockListGridRow gridRow)
+        public override string GetRowClasses(BlockGridRow gridRow)
         {
             var settings = (MyRowSettings)gridRow.Settings;
 
@@ -150,7 +129,7 @@ namespace Marketing.Core.Grid
             return string.Join(" ", classes);
         }
 
-        public override string GetColumnClasses(BlockListGridRow gridRow, BlockListGridColumn gridColumn)
+        public override string GetColumnClasses(BlockGridRow gridRow, BlockGridColumn gridColumn)
         {
             var rowSettings = (MyRowSettings)gridRow.Settings;
             var columnSettings = (MyColumnSettings)gridColumn.Settings;
@@ -210,7 +189,7 @@ namespace Marketing.Core.Grid
             return string.Join(" ", classes);
         }
 
-        public override BlockListGridRow CreateRow(List<BlockListGridColumn> columns, IPublishedElement settings)
+        public override BlockGridRow CreateRow(List<BlockGridColumn> columns, IPublishedElement settings)
         {
             var baseRow = base.CreateRow(columns, settings);
 
@@ -224,9 +203,7 @@ namespace Marketing.Core.Grid
                     : Enum.Parse<Alignment>(mySettings.HorizontalAlignment)
             };
 
-            /*
-
-            baseRow.Settings = new MyRowSettings
+            /*baseRow.Settings = new MyRowSettings
             {
                 Background = new MyBackgroundSettings
                 {
@@ -241,7 +218,7 @@ namespace Marketing.Core.Grid
                 CssClasses = mySettings.CssClasses,
 
                 IsFullWidth = mySettings.IsFullWidth,
-                IsFullHeight = mySettings.IsfullHeight,
+                IsFullHeight = mySettings.IsFullHeight,
 
                 Anchor = mySettings.Anchor,
                 HorizontalAlignment = string.IsNullOrWhiteSpace(mySettings.HorizontalAlignment)
@@ -261,13 +238,13 @@ namespace Marketing.Core.Grid
             return baseRow;
         }
 
-        public override BlockListGridColumn CreateColumn(int width, IPublishedElement settings, List<BlockListGridControl> controls)
+        public override BlockGridColumn CreateColumn(int width, IPublishedElement settings, List<BlockGridControl> controls)
         {
             var baseColumn = base.CreateColumn(width, settings, controls);
 
             var mySettings = (ColumnSettings)settings;
 
-            baseColumn.Settings = new MyColumnSettings()
+            baseColumn.Settings = new MyColumnSettings
             {
                 CssClasses = mySettings.CssClasses?.ToList() ?? new List<string>()
             };

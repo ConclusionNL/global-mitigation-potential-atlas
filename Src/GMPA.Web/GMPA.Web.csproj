@@ -1,42 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Remove="Views\Partials\blockgrid\Components\**" />
-    <Content Remove="Views\Partials\blockgrid\Components\**" />
-    <EmbeddedResource Remove="Views\Partials\blockgrid\Components\**" />
-    <None Remove="Views\Partials\blockgrid\Components\**" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.12" />
+    <PackageReference Include="Umbraco.Cms" Version="12.2.0" />
+    <PackageReference Include="uSync.Complete" Version="12.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.7" />
-    <PackageReference Include="Umbraco.Cms" Version="12.1.2" />
+    <ProjectReference Include="..\..\Lib\Arlanet.Umbraco.Grid\Arlanet.Umbraco.Grid.csproj" />
+    <ProjectReference Include="..\GMPA.Core\GMPA.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
-    <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
-    <ProjectReference Include="..\..\Lib\Arlanet.Umbraco.Grid\Arlanet.Umbraco.Grid.csproj" />
-    <ProjectReference Include="..\GMPA.Core\GMPA.Core.csproj" />
-    <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Images\" />
+    <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
+    <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="72.1.0.3" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
   </ItemGroup>
 
   <PropertyGroup>
     <!-- Razor files are needed for the backoffice to work correctly -->
     <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <!-- Remove RazorCompileOnBuild and RazorCompileOnPublish when not using ModelsMode InMemoryAuto -->
-    <RazorCompileOnBuild>true</RazorCompileOnBuild>
-    <RazorCompileOnPublish>true</RazorCompileOnPublish>
-  </PropertyGroup>
-  
 </Project>

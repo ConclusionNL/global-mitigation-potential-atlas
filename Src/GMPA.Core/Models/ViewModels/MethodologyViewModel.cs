@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GMPA.Core.Extensions;
-using GMPA.Core.Models.Umbraco;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Html;
 
 namespace GMPA.Core.Models.ViewModels
 {

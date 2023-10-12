@@ -2,6 +2,6 @@
 {
     public static class Constants
     {
-        public const string BlockListGridConfigurationKey = "BlockListGrid";
+        public const string BlockListGridConfigurationKey = "BlockGrid";
     }
 }

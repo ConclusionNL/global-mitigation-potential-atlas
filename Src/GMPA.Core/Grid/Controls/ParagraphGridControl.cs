@@ -10,7 +10,7 @@ namespace GMPA.Core.Grid.Controls
         public override string ViewPath => "~/Views/Partials/CustomGrid/Controls/Paragraph.cshtml";
         public override string Alias => "paragraph";
 
-        public override GridControlViewModel Render(BlockListGridControl gridControl, bool preview = false)
+        public override GridControlViewModel Render(BlockGridControl gridControl, bool preview = false)
         {
             var component = (Paragraph)gridControl.Component;
 
