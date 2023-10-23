@@ -1,13 +1,15 @@
 ﻿<template>
     <div id="mapcontainer">
+        <div class="search-container">
+            <searchBar class="search-box" @search-input="handleSearch" />
+        </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
         <countryCard
             v-if="selectedCountry && !inCollabMode"
             :selected-country="selectedCountry"
             class="country-box"
             @country-closed="handleUnselectCard"
-            @collab-mode="handleCollabMode"
-            @country-details="handleCountryDetails" />
+            @collab-mode="handleCollabMode" />
         <collabCard
             v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
             class="countries-box"
@@ -26,6 +28,7 @@ import { ref, watch, onMounted, defineProps, defineEmits, computed } from 'vue';
 import toggleBox from './toggle-box.vue';
 import countryCard from './country-card.vue';
 import collabCard from './collaboration-card.vue';
+import searchBar from './searchbar.vue';
 
 const emit = defineEmits(['country-clicked']);
 
@@ -37,6 +40,7 @@ const heatmapData = collaborationStore.heatmapData;
 const mitigation = ref('None');
 const selectedCountries = ref([]);
 const selectedCountry = ref('');
+const searchValue = ref('');
 
 const width = window.innerWidth - 200;
 const height = window.innerHeight - 86;
@@ -45,6 +49,10 @@ const inCollabMode = ref(false);
 
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
+};
+
+const handleSearch = (searchVal) => {
+    searchValue.value = searchVal;
 };
 
 const handleUnselectCollab = (country) => {
@@ -67,12 +75,6 @@ const handleUnselectCard = () => {
 const handleCollabMode = () => {
     inCollabMode.value = true;
     markCollabCountry(selectedCountry.value);
-
-    // TODO: Suggest countries based on (selectedCountry OR selectedCountries[0] ???)
-};
-
-const handleCountryDetails = () => {
-    // TODO: Show more country details
 };
 
 onMounted(() => {
@@ -110,6 +112,8 @@ onMounted(() => {
     pathGenerator = d3.geoPath().projection(projection);
 
     g = svg.append('g');
+
+    console.log();
 
     const colorLegendG = svg.append('g').attr('transform', `translate(40,310)`);
 
@@ -545,6 +549,16 @@ p {
     border: 1px solid #ccc;
     padding: 10px;
     /* Add any other styling you need */
+}
+
+.search-box {
+    position: absolute;
+    top: 136px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
 }
 
 .toggle-box {
