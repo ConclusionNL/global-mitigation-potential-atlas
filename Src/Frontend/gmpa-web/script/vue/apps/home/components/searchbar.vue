@@ -7,7 +7,7 @@
             class="search-bar"
             @input="filterInput"
             @keydown.enter="onEnter" />
-        <searchIcon width="24" height="24" class="search-icon" />
+        <searchIcon @click="onEnter" width="24" height="24" class="search-icon" />
         <div class="justify-center">
             <div
                 v-if="
