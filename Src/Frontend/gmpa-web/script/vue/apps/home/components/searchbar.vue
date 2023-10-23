@@ -5,10 +5,23 @@
             type="text"
             placeholder="Search for region or country"
             class="search-bar"
-            :class="{ active: !input }"
-            @input="handleInput" />
+            @input="filterInput"
+            @keydown.enter="onEnter" />
         <searchIcon width="24" height="24" class="search-icon" />
-        <div v-if="handleInput">asdasd</div>
+        <div class="justify-center">
+            <div
+                v-if="
+                    filterInput &&
+                    filterInput !== input &&
+                    !test.includes(input.toLocaleLowerCase())
+                "
+                class="results"
+                :class="{ active: !filterInput }">
+                <li @click="onSuggestionClick(country)" v-for="country in filterInput">
+                    {{ country }}
+                </li>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -17,21 +30,33 @@ import { ref, onMounted, watch, defineEmits, computed } from 'vue';
 import searchIcon from '../assets/search.svg';
 
 const input = ref('');
-const emit = defineEmits(['search-input']);
+const emit = defineEmits(['search-input', 'country-searched']);
 
 watch(input, (newValue) => {
     emit('search-input', newValue);
 });
 
-let test = ['oppa', 'keke', 'iop'];
+// TODO: Import all countries here
+let test = ['oppa', 'keke', 'iop', 'kellogs'];
 
-const handleInput = computed(() => {
+const filterInput = computed(() => {
     if (!input.value) return;
     const filteredInput = test.filter((e) =>
         e.toLocaleLowerCase().startsWith(input.value.toLocaleLowerCase())
     );
     return filteredInput.length > 0 ? filteredInput : false;
 });
+
+const onSuggestionClick = (country) => {
+    input.value = country;
+    emit('country-searched', country);
+};
+
+const onEnter = () => {
+    if (!test.includes(input.value.toLocaleLowerCase())) return;
+
+    console.log('it works!');
+};
 </script>
 
 <style scoped>
@@ -53,43 +78,34 @@ const handleInput = computed(() => {
     cursor: pointer;
 }
 
-::selection {
-    color: #ffffff;
-    background: #664aff;
-}
-
-.search-input.active input {
-    border-radius: 5px 5px 0 0;
-}
-
 .search-input .results {
     padding: 0;
-    opacity: 0;
-    pointer-events: none;
-    max-height: 280px;
+    cursor: pointer;
+    max-height: 200px;
+    width: 350px;
     overflow-y: auto;
+    background-color: white;
+    margin-top: 2px;
 }
 
 .search-input.active .results {
     padding: 10px 8px;
-    opacity: 1;
-    pointer-events: auto;
+    background-color: white;
 }
 
 .results li {
     list-style: none;
     padding: 8px 12px;
-    display: none;
     width: 100%;
-    cursor: default;
-    border-radius: 3px;
-}
-
-.search-input.active .results li {
-    display: block;
+    background-color: white;
 }
 
 .results li:hover {
     background: #efefef;
+}
+
+.justify-center {
+    display: flex;
+    justify-content: center;
 }
 </style>
