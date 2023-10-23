@@ -25,7 +25,19 @@
         </div>
         <div class="suggestion-country-container">
             <div v-for="n in 2" :key="n">
-                <div class="suggestion-country-boxes">Suggestion {{ n }}</div>
+                <div class="suggestion-country-boxes">
+                    <input
+                        :id="n"
+                        type="checkbox"
+                        :name="`checkbox-${n}`"
+                        :value="n"
+                        class="checkbox" />
+                    <div class="label-box">
+                        <div class="label-title">Country {{ n }}</div>
+                        <div class="label-subtitle">Data with filters from country {{ n }}</div>
+                    </div>
+                    <div class="other-info"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -125,10 +137,36 @@ const props = defineProps({
 }
 
 .suggestion-country-boxes {
+    flex: 1;
+    display: flex;
+    flex: auto;
+    align-items: center;
     border: 1px solid #f07004;
     border-radius: 4px;
     gap: 16px;
     height: 60px;
-    width: 315px;
+    width: 340px;
+    padding: 8px 12px;
+}
+
+.checkbox {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+}
+
+.label-box {
+    display: flex;
+    flex-direction: column;
+
+    .label-title {
+        color: #214b63;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .label-subtitle {
+        font-size: 14px;
+    }
 }
 </style>
