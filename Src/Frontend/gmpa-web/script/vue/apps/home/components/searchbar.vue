@@ -13,11 +13,12 @@
                 v-if="filterInput && filterInput !== input && !inputContainsCountry"
                 class="results"
                 :class="{ active: !filterInput }">
-                <li @click="onSuggestionClick(country.Name)" v-for="country in filterInput">
+                <li @click="onSuggestionClick(country)" v-for="country in filterInput">
                     {{ country.Name }}
                 </li>
             </div>
         </div>
+        <div v-if="errorMsg" class="error justify-center">{{ errorMsg }}</div>
     </div>
 </template>
 
@@ -28,13 +29,15 @@ import searchIcon from '../assets/search.svg';
 const input = ref('');
 const emit = defineEmits(['search-input', 'country-searched']);
 
+const errorMsg = ref('');
+
 const props = defineProps({
     countries: {},
 });
 
-// watch(input, (newValue) => {
-//     emit('search-input', newValue);
-// });
+watch(input, (newValue) => {
+    errorMsg.value = '';
+});
 
 const filterInput = computed(() => {
     if (!input.value) return;
@@ -45,8 +48,13 @@ const filterInput = computed(() => {
 });
 
 const onSuggestionClick = (country) => {
-    input.value = country;
-    emit('country-searched', country);
+    if (!country.Active) {
+        errorMsg.value = 'Country is not available in the pilot';
+        return;
+    }
+
+    input.value = country.Name;
+    onEnter();
 };
 
 const inputContainsCountry = computed(() => {
@@ -59,11 +67,15 @@ const inputContainsCountry = computed(() => {
 });
 
 const onEnter = () => {
-    if (!inputContainsCountry.value || !inputContainsCountry.value.Active) return;
+    if (!inputContainsCountry.value) {
+        errorMsg.value = 'Country could not be found';
+        return;
+    } else if (!inputContainsCountry.value.Active) {
+        errorMsg.value = 'Country is not available in the pilot';
+        return;
+    }
 
-    console.log(inputContainsCountry.value.Active);
-
-    console.log('it works!');
+    emit('country-searched', inputContainsCountry.value);
 };
 </script>
 
@@ -109,11 +121,16 @@ const onEnter = () => {
 }
 
 .results li:hover {
-    background: #efefef;
+    background: lightgray;
 }
 
 .justify-center {
     display: flex;
     justify-content: center;
+}
+
+.error {
+    color: red;
+    font-weight: 500;
 }
 </style>
