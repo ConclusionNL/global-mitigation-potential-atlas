@@ -8,7 +8,7 @@
             </div>
         <li v-for="country in props.countries">
             <div v-if="country.Active">
-                <a class="countries-link-active" :href=country.Url>{{country.Name}}</a>
+                <div @click="emit('country-clicked', country)" class="countries-link-active pointer">{{ country.Name }}</div>
             </div>
         </li>
         </li>
@@ -23,10 +23,10 @@
                     <li v-if="country.Continent == continent">
                         <div class="countries-list-item-active">
                             <div v-if="country.Active">
-                                <a class="countries-link-active" :href=country.Url>{{country.Name}}</a>
+                                <a class="countries-link-active" :href=country.Url>{{ country.Name }}</a>
                             </div>
                             <div v-else class="countries-list-item-disabled">
-                                {{country.Name}}
+                                {{ country.Name }}
                             </div>
                         </div>
                     </li>
@@ -38,11 +38,13 @@
 </template>
 
 <script lang="ts" setup>
-    import { defineProps, ref } from "vue";
+    import { defineProps, defineEmits, ref } from "vue";
 
     const props = defineProps({
         countries: {},
     })
+
+    const emit = defineEmits(['country-clicked']);
 
     const continents = ["Africa", "Asia", "North America", "South America", "Europe", "Oceania"]
     const continentsCollapsable = ref([]);
@@ -53,6 +55,10 @@
 </script>
 
 <style lang="scss">
+    .pointer {
+        cursor: pointer;
+    }
+
     .expander {
         display: grid;
         grid-template-rows: 0fr;

@@ -74,7 +74,15 @@ const inCollabMode = ref(false);
 
 const props = defineProps({
     countries: {},
+    selectedCountryNav: {},
 });
+
+// watch(props.selectedCountryNav, (newVal) => {
+//     selectedCountry.value = newVal;
+//     console.log(selectedCountry.value);
+// });
+
+console.log(props.selectedCountryNav);
 
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
