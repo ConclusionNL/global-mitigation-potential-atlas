@@ -211,7 +211,7 @@ onMounted(() => {
             .append('rect')
             .merge(backgroundRect)
             .attr('x', 10 * 2)
-            .attr('y', 10 * -4)
+            .attr('y', 5)
             .attr('rx', 10 * 2)
             .attr('width', backgroundRectWidth)
             .attr('fill', 'white')
@@ -261,7 +261,7 @@ onMounted(() => {
         // Add rectangle with gradient fill
         svg.append('rect')
             .attr('x', 40)
-            .attr('y', -50)
+            .attr('y', 0)
             .attr('width', 30)
             .attr('height', 300)
             .style('fill', 'url(#gradient)')
@@ -284,14 +284,14 @@ onMounted(() => {
 
         svg.append('g')
             .attr('id', 'legend-axis')
-            .attr('transform', 'translate(75, 450) scale(1)') // Position the axis; adjust as needed
+            .attr('transform', 'translate(75, 500) scale(1)') // Position the axis; adjust as needed
             .call(yAxis);
         removeElementIfExists('legend-axis-title');
         svg.append('text')
             .attr('id', 'legend-axis-title')
             .attr('transform', 'rotate(-90)') // Rotate the text for vertical axis
-            .attr('y', 10) // Position it 40 pixels to the left of the axis
-            .attr('x', -610) // Position it at the middle of the axis
+            .attr('y', 13) // Position it 40 pixels to the left of the axis
+            .attr('x', -660) // Position it at the middle of the axis
             .attr('dy', '1em') // Adjustments for positioning
             .style('text-anchor', 'middle') // Center the text
             .text(mitigation.value);
