@@ -5,7 +5,6 @@
             type="text"
             placeholder="Search for region or country"
             class="search-bar"
-            @input="filterInput"
             @keydown.enter="onEnter" />
         <searchIcon @click="onEnter" width="24" height="24" class="search-icon" />
         <div class="justify-center">
