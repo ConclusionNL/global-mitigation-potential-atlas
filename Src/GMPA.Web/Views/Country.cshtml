@@ -40,9 +40,9 @@
             <div>
                 @Html.Raw(collapsibleBlock.BodyText)
 
-                if (collapsibleBlock.ImageUrl == "")
+                @if (collapsibleBlock.ImageUrl == "")
                 {
-                continue;
+                    continue;
                 }
 
                 <center>
