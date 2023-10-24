@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace GMPA.Core.Models.Umbraco
 {
-	/// <summary>Country Details - Normal Content - Block List</summary>
+	/// <summary>Country Details Block</summary>
 	[PublishedModel("countryDetailsNormalContentBlockList")]
 	public partial class CountryDetailsNormalContentBlockList : PublishedElementModel
 	{

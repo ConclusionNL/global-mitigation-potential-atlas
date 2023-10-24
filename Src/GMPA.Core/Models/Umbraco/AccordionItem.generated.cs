@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace GMPA.Core.Models.Umbraco
 {
-	/// <summary>AccordionItem</summary>
+	/// <summary>Country Accordion Block</summary>
 	[PublishedModel("accordionItem")]
 	public partial class AccordionItem : PublishedElementModel
 	{
