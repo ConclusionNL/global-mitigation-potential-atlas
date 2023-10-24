@@ -18,6 +18,26 @@
             class="countries-box"
             :countries-list="selectedCountries"
             @country-closed="handleUnselectCollab" />
+        <div class="zoom-box">
+            <div class="zoom-flex">
+                <div
+                    @click="
+                        zoomLevel += 0.5;
+                        zoomToScale(zoomLevel);
+                    "
+                    class="r-btn plus">
+                    <plusIcon width="24" height="24" />
+                </div>
+                <div
+                    @click="
+                        zoomLevel -= 0.5;
+                        zoomToScale(zoomLevel);
+                    "
+                    class="r-btn minus">
+                    <minusIcon width="24" height="4" />
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -32,6 +52,8 @@ import toggleBox from './toggle-box.vue';
 import countryCard from './country-card.vue';
 import collabCard from './collaboration-card.vue';
 import searchBar from './searchbar.vue';
+import plusIcon from '../assets/plus.svg';
+import minusIcon from '../assets/minus.svg';
 
 const emit = defineEmits(['country-clicked']);
 
@@ -43,6 +65,7 @@ const heatmapData = collaborationStore.heatmapData;
 const mitigation = ref('None');
 const selectedCountries = ref([]);
 const selectedCountry = ref('');
+const zoomLevel = ref(1);
 
 const width = window.innerWidth - 200;
 const height = window.innerHeight - 86;
@@ -131,9 +154,7 @@ onMounted(() => {
     const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
 
     const colorScale = d3.scaleOrdinal();
-    //      const colorValue = (d) => d.properties.economy;
-    //      const colorValue = (d) => d.properties.continent ;
-    //      const colorValue = (d) => d.properties.income_grp ;
+
     const colorValue = function (d) {
         const nameLength = d.properties.name.length;
         const nameLengthCategory = nameLength < 6 ? 'Short' : 'Long' + ' ' + nameLength;
@@ -410,6 +431,7 @@ onMounted(() => {
 function zoomed(event) {
     g.selectAll('path').attr('transform', event.transform); // Apply the zoom transform to map elements
 }
+
 // Function to zoom to a specific country
 function zoomToCountry(event, d) {
     // Calculate the bounding box of the selected feature
@@ -500,11 +522,6 @@ function toggleCountrySelection(d, countryPath) {
 </script>
 
 <style>
-.country {
-    stroke: black;
-    stroke-width: 0.05px;
-}
-
 .hover-country {
     stroke: lightblue;
     stroke-width: 1.75px;
@@ -587,5 +604,29 @@ p {
     position: absolute;
     bottom: 20px;
     margin-left: 120px;
+}
+
+.zoom-box {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+}
+
+.zoom-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.r-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50px;
+    background-color: white;
+    color: #214b63;
+    cursor: pointer;
 }
 </style>

@@ -13,7 +13,7 @@
         </li>
         </li>
         <!-- #endregion -->
-        <div v-for="(continent, i) in continents" :index="continent">
+        <div v-for="(continent, i) in continents" :index="continent" style="padding-right: 10px">
         <li>
             <div class="country-divider" @click="continentsCollapsable[i] = !continentsCollapsable[i]">
                 {{continent}}
