@@ -10,15 +10,11 @@
         <searchIcon @click="onEnter" width="24" height="24" class="search-icon" />
         <div class="justify-center">
             <div
-                v-if="
-                    filterInput &&
-                    filterInput !== input &&
-                    !test.includes(input.toLocaleLowerCase())
-                "
+                v-if="filterInput && filterInput !== input && !inputContainsCountry"
                 class="results"
                 :class="{ active: !filterInput }">
-                <li @click="onSuggestionClick(country)" v-for="country in filterInput">
-                    {{ country }}
+                <li @click="onSuggestionClick(country.Name)" v-for="country in filterInput">
+                    {{ country.Name }}
                 </li>
             </div>
         </div>
@@ -26,23 +22,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, defineEmits, computed } from 'vue';
+import { ref, onMounted, watch, defineEmits, defineProps, computed } from 'vue';
 import searchIcon from '../assets/search.svg';
 
 const input = ref('');
 const emit = defineEmits(['search-input', 'country-searched']);
 
-watch(input, (newValue) => {
-    emit('search-input', newValue);
+const props = defineProps({
+    countries: {},
 });
 
-// TODO: Import all countries here
-let test = ['oppa', 'keke', 'iop', 'kellogs'];
+// watch(input, (newValue) => {
+//     emit('search-input', newValue);
+// });
 
 const filterInput = computed(() => {
     if (!input.value) return;
-    const filteredInput = test.filter((e) =>
-        e.toLocaleLowerCase().startsWith(input.value.toLocaleLowerCase())
+    const filteredInput = props.countries.filter((c) =>
+        c.Name.toLocaleLowerCase().startsWith(input.value.toLocaleLowerCase())
     );
     return filteredInput.length > 0 ? filteredInput : false;
 });
@@ -52,8 +49,19 @@ const onSuggestionClick = (country) => {
     emit('country-searched', country);
 };
 
+const inputContainsCountry = computed(() => {
+    for (const country in props.countries) {
+        if (props.countries[country].Name.toLocaleLowerCase() === input.value.toLocaleLowerCase()) {
+            return props.countries[country];
+        }
+    }
+    return false;
+});
+
 const onEnter = () => {
-    if (!test.includes(input.value.toLocaleLowerCase())) return;
+    if (!inputContainsCountry.value || !inputContainsCountry.value.Active) return;
+
+    console.log(inputContainsCountry.value.Active);
 
     console.log('it works!');
 };

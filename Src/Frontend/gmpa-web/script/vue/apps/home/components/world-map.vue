@@ -1,7 +1,10 @@
 ﻿<template>
     <div id="mapcontainer">
         <div class="search-container">
-            <searchBar class="search-box" @search-input="handleSearch" />
+            <searchBar
+                class="search-box"
+                @search-input="handleSearch"
+                :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
         <countryCard
@@ -46,6 +49,10 @@ const width = window.innerWidth - 200;
 const height = window.innerHeight - 86;
 
 const inCollabMode = ref(false);
+
+const props = defineProps({
+    countries: {},
+});
 
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;

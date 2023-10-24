@@ -5,7 +5,7 @@
                 <homeSidenav :countries="countries"></homeSidenav>
             </div>
             <div class="col-10 p-0">
-                <worldMap @country-clicked="handleCountryClick"></worldMap>
+                <worldMap :countries="props.countries" @country-clicked="handleCountryClick"></worldMap>
             </div>
         </div>
     </div>
