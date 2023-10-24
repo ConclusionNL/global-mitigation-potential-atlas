@@ -7,7 +7,7 @@
                 Pilot
             </div>
         <li v-for="country in props.countries">
-            <div v-if="country.Active == 'True'">
+            <div v-if="country.Active">
                 <a class="countries-link-active" :href=country.Url>{{country.Name}}</a>
             </div>
         </li>
@@ -22,7 +22,7 @@
                 <div class="expander-content">
                     <li v-if="country.Continent == continent">
                         <div class="countries-list-item-active">
-                            <div v-if="country.Active == 'True'">
+                            <div v-if="country.Active">
                                 <a class="countries-link-active" :href=country.Url>{{country.Name}}</a>
                             </div>
                             <div v-else class="countries-list-item-disabled">

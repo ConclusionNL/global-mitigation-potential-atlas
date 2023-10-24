@@ -50,20 +50,12 @@ namespace GMPA.Core.Controller.Render
                 Accordion = list,
                 Country = new CountryModel
                 {
-                    Active = new List<string>(),
+                    Active = new bool(),
                     Continent = new List<string>()
                 }
             };
 
-            if (country.Active != null)
-            {
-                // Get tag Active for country
-                foreach (var isActive in country.Active)
-                {
-                    viewModel.Country.Active.Add(isActive);
-                }
-            }
-
+            viewModel.Country.Active = country.Active;
             if (country.Continent != null)
             {
                 //Get the tag representing the continent the country is located in

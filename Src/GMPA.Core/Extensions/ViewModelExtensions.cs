@@ -28,7 +28,7 @@ namespace GMPA.Core.Extensions
                 {
                     Name = country.Name,
                     Continent = country.Continent?.ToList(),
-                    Active = country.Active?.ToList(),
+                    Active = country.Active,
                     Url = country.Url(mode: UrlMode.Absolute),
                 });
             }

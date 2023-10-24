@@ -61,9 +61,8 @@ namespace GMPA.Core.Models.Umbraco
 		/// Active: Only every assign one tag here. Either True of False
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("active")]
-		public virtual global::System.Collections.Generic.IEnumerable<string> Active => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "active");
+		public virtual bool Active => this.Value<bool>(_publishedValueFallback, "active");
 
 		///<summary>
 		/// Content
