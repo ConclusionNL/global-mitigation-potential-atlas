@@ -2,10 +2,12 @@
     <div>
         <div class="row">
             <div class="side-nav">
-                <homeSidenav :countries="countries"></homeSidenav>
+                <homeSidenav :countries="props.countries"></homeSidenav>
             </div>
             <div class="col-10 p-0">
-                <worldMap :countries="props.countries" @country-clicked="handleCountryClick"></worldMap>
+                <worldMap
+                    :countries="props.countries"
+                    @country-clicked="handleCountryClick"></worldMap>
             </div>
         </div>
     </div>

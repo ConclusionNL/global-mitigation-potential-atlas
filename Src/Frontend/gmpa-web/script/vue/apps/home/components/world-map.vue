@@ -3,7 +3,7 @@
         <div class="search-container">
             <searchBar
                 class="search-box"
-                @search-input="handleSearch"
+                @country-searched="handleSearch"
                 :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
@@ -43,7 +43,6 @@ const heatmapData = collaborationStore.heatmapData;
 const mitigation = ref('None');
 const selectedCountries = ref([]);
 const selectedCountry = ref('');
-const searchValue = ref('');
 
 const width = window.innerWidth - 200;
 const height = window.innerHeight - 86;
@@ -58,8 +57,13 @@ const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
 };
 
-const handleSearch = (searchVal) => {
-    searchValue.value = searchVal;
+const handleSearch = (country) => {
+    const d = countryDataSet.features.find((c) => c.properties.name === country.Name);
+    const countrySelection = getCountryNodes().filter((c) => c.properties.name === country.Name);
+
+    selectedCountry.value = d;
+    toggleCountrySelection(d, countrySelection);
+    // zoomToCountry(null, countrySelection);
 };
 
 const handleUnselectCollab = (country) => {
@@ -446,7 +450,6 @@ function markCollabCountry(country) {
 }
 
 function unmarkAllSelectedCountries() {
-    //countryNodes = g.selectAll('path').data(countryDataSet.features);
     getCountryNodes()
         .filter((d) => selectedCountries.value.id !== d.id)
         .classed('selected-country', false);
@@ -477,7 +480,7 @@ function handleCountryClick(event, d) {
 
 // Function to toggle country selection
 function toggleCountrySelection(d, countryPath) {
-    if (selectedCountry.value === d.properties || selectedCountries.value.includes(d)) {
+    if (selectedCountry.value === d || selectedCountries.value.includes(d)) {
         return;
     }
 

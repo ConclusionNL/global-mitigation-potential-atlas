@@ -3,7 +3,7 @@
         <div class="title">Select multiple countries to view collaboration potentials</div>
         <div class="flex-collab">
             <div class="countries-collab-list">
-                <div v-for="country in countriesList" :key="country">
+                <div v-for="country in props.countriesList" :key="country">
                     <div class="small-card">
                         <div>{{ country.properties.name }}</div>
                         <closeIcon
