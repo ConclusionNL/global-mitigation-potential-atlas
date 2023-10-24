@@ -2,12 +2,14 @@
     <div>
         <div class="row">
             <div class="side-nav">
-                <homeSidenav :countries="props.countries"></homeSidenav>
+                <homeSidenav
+                    :countries="props.countries"
+                    @country-clicked="handleCountryNavClick"></homeSidenav>
             </div>
             <div class="col-10 p-0">
                 <worldMap
                     :countries="props.countries"
-                    @country-clicked="handleCountryClick"></worldMap>
+                    :selected-country-nav="selectedCountryNav"></worldMap>
             </div>
         </div>
     </div>
@@ -18,6 +20,10 @@ import homeSidenav from './components/home-sidenav.vue';
 import worldMap from './components/world-map.vue';
 import { useCollaborationStore } from './stores/collaborationStore';
 import { ref, computed, defineProps } from 'vue';
+import { useCountries } from './composables/useCountries';
+
+const countries = useCountries();
+
 //import StackedAreaPlusBar from './components/StackedArea.vue'
 
 //console.log(useCollaborationStore);
@@ -28,7 +34,7 @@ const props = defineProps<{
 
 //const countries = ref([])
 //const selectedTechnology = ref("")
-const selectedCountry = ref('');
+const selectedCountryNav = ref('');
 //const isChecked = ref(true);
 //countries.value.push("SG")
 
@@ -41,9 +47,8 @@ const selectedCountry = ref('');
 //    selectedTechnology.value = eventData.index.series
 //}
 
-function handleCountryClick(country: any) {
-    console.log('Country Clicked:', country.properties.name);
-    selectedCountry.value = country.properties.name;
+function handleCountryNavClick(country: any) {
+    selectedCountryNav.value = country;
 }
 
 const collaborationStore = useCollaborationStore();
