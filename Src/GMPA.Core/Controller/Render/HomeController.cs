@@ -11,8 +11,8 @@ namespace GMPA.Core.Controller.Render
     public class HomeController : RenderController
     {
         public HomeController(
-            ILogger<HomeController> logger, 
-            ICompositeViewEngine compositeViewEngine, 
+            ILogger<HomeController> logger,
+            ICompositeViewEngine compositeViewEngine,
             IUmbracoContextAccessor umbracoContextAccessor
         )
             : base(logger, compositeViewEngine, umbracoContextAccessor)

@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace GMPA.Core.Models.ApiModels
 {
     [JsonConverter(typeof(PolymorphismTypeConverter<IGridControlApiModel>))]
-    public interface IGridControlApiModel 
+    public interface IGridControlApiModel
     {
         public string Alias { get; set; }
     }
@@ -31,11 +30,11 @@ namespace GMPA.Core.Models.ApiModels
                     JsonSerializer.Serialize(writer, default(T), options);
                     break;
                 default:
-                {
-                    var type = value.GetType();
-                    JsonSerializer.Serialize(writer, value, type, options);
-                    break;
-                }
+                    {
+                        var type = value.GetType();
+                        JsonSerializer.Serialize(writer, value, type, options);
+                        break;
+                    }
             }
         }
     }

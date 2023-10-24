@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
-using GMPA.Core.Extensions;
+﻿using GMPA.Core.Extensions;
 using GMPA.Core.Models.Umbraco;
 using GMPA.Core.Models.ViewModels;
 using Microsoft.AspNetCore.Html;
@@ -30,12 +28,12 @@ namespace GMPA.Core.Controller.Render
 
             var viewModel = new CaseViewModel
             {
-                sectorTag = caseDocument.SectorTag.FirstOrDefault(),
-                caseIntro = new HtmlString(caseDocument.CaseIntroduction.ToHtmlString()),
+                SectorTag = caseDocument.SectorTag.FirstOrDefault(),
+                CaseIntro = new HtmlString(caseDocument.CaseIntroduction.ToHtmlString()),
 
                 CaseCountryContextBlock = caseDocument.CaseCountryBlockList?
                     .Select(a => a.Content as CaseCountryContext)
-                    .Select(b => new CaseCountryContextBlockList
+                    .Select(b => new CaseViewModel.CaseCountryContextBlockList
                     {
                         Traction = b.Traction,
                         TractionDescription = b.DescriptionOfEnablingFactor?.ToHtmlString()
@@ -44,7 +42,7 @@ namespace GMPA.Core.Controller.Render
 
                 CasePolicyBlock = caseDocument.CasePolicyBlockList?
                     .Select(a => a.Content as CasePolicyBlock)
-                    .Select(b => new CasePolicyBlockList
+                    .Select(b => new CaseViewModel.CasePolicyBlockList
                     {
                         Title = b.Title,
                         InstrumentText = b.InstrumentsText.ToHtmlString(),
@@ -71,7 +69,7 @@ namespace GMPA.Core.Controller.Render
 
                 CaseLockInBlock = caseDocument.CaseLockInBlockList?
                     .Select(a => a.Content as CaseLockIn)
-                    .Select(b => new CaseLockInBlockList
+                    .Select(b => new CaseViewModel.CaseLockInBlockList
                     {
                         NegativePositive = b.NegativePositive,
                         LockInType = b.LockInType,
