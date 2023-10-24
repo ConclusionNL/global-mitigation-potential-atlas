@@ -3,11 +3,10 @@
     Layout = "Main.cshtml";
 }
 
-<br/>
-<a class="return" href="/">← Back to the map</a>
-<br/>
 
-<h1>
+
+
+<h1 style="text-align: center;">
     @Model.PageTitle
 </h1>
 <p>
@@ -24,9 +23,3 @@
         @Html.Raw(item.BodyText)
     }
 }
-
-<style>
-    .return {
-        text-decoration: none;
-    }
-</style>
