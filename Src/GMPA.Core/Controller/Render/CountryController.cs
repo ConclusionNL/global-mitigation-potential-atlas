@@ -52,7 +52,8 @@ namespace GMPA.Core.Controller.Render
                 {
                     Title = b.Title,
                     BodyText = b.BodyText.ToHtmlString(),
-                    ImageUrl = b.Image?.Url()
+                    ImageUrl = b.Image?.Url(),
+                    Id = b.CollapsableID
                 })
             .ToList()
             };

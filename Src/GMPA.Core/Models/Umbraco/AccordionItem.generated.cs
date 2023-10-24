@@ -58,6 +58,14 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString BodyText => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "bodyText");
 
 		///<summary>
+		/// CollapsableID: Create an ID used to collapse this section. No spaces or numbers are allowed. Use Camel Case or Pascal Case if several words are needed for the ID
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("collapsableID")]
+		public virtual string CollapsableID => this.Value<string>(_publishedValueFallback, "collapsableID");
+
+		///<summary>
 		/// Image
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]

@@ -36,8 +36,12 @@
     @{
         foreach (var collapsibleBlock in Model.CollapsibleBlockList)
         {
-            <h2 id="@collapsibleBlock.Title">@collapsibleBlock.Title</h2>
-            <div>
+            <div data-bs-toggle="collapse" data-bs-target="#@collapsibleBlock.Id" aria-expanded="false" aria-controls="@collapsibleBlock.Id">
+                <h2>
+                    @collapsibleBlock.Title
+                </h2>
+            </div>
+            <div class="collapse" id="@collapsibleBlock.Id">
                 @Html.Raw(collapsibleBlock.BodyText)
 
                 @if (collapsibleBlock.ImageUrl == "")
