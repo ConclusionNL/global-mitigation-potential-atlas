@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
+using Umbraco.Extensions;
 
 namespace GMPA.Core.Controller.Render
 {
@@ -26,33 +27,34 @@ namespace GMPA.Core.Controller.Render
         {
             var country = (Country)CurrentPage!;
 
-            var list = new List<Item>();
-
-            if (country.AccordionItem != null)
-            {
-                foreach (var accordionItem in country.AccordionItem)
-                {
-                    if (accordionItem.Content is not AccordionItem item)
-                    {
-                        continue;
-                    }
-
-                    list.Add(new Item
-                    {
-                        Title = item.Title,
-                        BodyText = item.BodyText?.ToHtmlString()
-                    });
-                }
-            }
-
             var viewModel = new CountryViewModel
             {
-                Accordion = list,
                 Country = new CountryModel
                 {
                     Active = new bool(),
                     Continent = new List<string>()
-                }
+                },
+
+                NormalBlockList = country.NormalTextBlockList?
+                    .Select(a => a.Content as CountryDetailsNormalContentBlockList)
+                    .Select(b => new CountryViewModel.NormalBlockListItem
+                    {
+                        Title = b.Title,
+                        BodyText = b.BodyText.ToHtmlString(),
+                        Url = b.Link,
+                        ImageUrl = b.Image?.Url()
+                    })
+                    .ToList(),
+
+                CollapsibleBlockList = country.AccordionItem?
+                .Select(a => a.Content as AccordionItem)
+                .Select(b => new CountryViewModel.CollapsibleBlockListItem
+                {
+                    Title = b.Title,
+                    BodyText = b.BodyText.ToHtmlString(),
+                    ImageUrl = b.Image?.Url()
+                })
+            .ToList()
             };
 
             viewModel.Country.Active = country.Active;

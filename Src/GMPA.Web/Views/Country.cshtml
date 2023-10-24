@@ -6,20 +6,49 @@
 
 
 
-<h1 style="text-align: center;">
+<h1>
     @Model.PageTitle
 </h1>
-<p>
-    Text that should wrap Text that should wrap Text that should wrap Text that should wrap Text that should wrap
-    Text that should wrap Text that should wrap Text that should wrap Text that should wrap Text that should wrap
-    Text that should wrap Text that should wrap Text that should wrap Text that should wrap Text that should wrap
-</p>
 
-@if (Model.Accordion != null)
-{
-    foreach (var item in Model.Accordion)
-    {
-        <p>@item.Title</p>
-        @Html.Raw(item.BodyText)
+<div id="Normal">
+    @{
+        foreach (var normalBlock in Model.NormalBlockList)
+        {
+            <h2 id="@normalBlock.Title">@normalBlock.Title</h2>
+            @Html.Raw(normalBlock.BodyText)
+
+            if (normalBlock.Url != "")
+            {
+                <a href="@normalBlock.Url">Learn More about @Model.PageTitle</a>
+            }
+
+            if (normalBlock.ImageUrl != "")
+            {
+                <center>
+                    <img src="@normalBlock.ImageUrl" />
+                </center>
+            }
+        }
     }
-}
+</div>
+
+<div id="Collasible">
+    @{
+        foreach (var collapsibleBlock in Model.CollapsibleBlockList)
+        {
+            <h2 id="@collapsibleBlock.Title">@collapsibleBlock.Title</h2>
+            <div>
+                @Html.Raw(collapsibleBlock.BodyText)
+
+                if (collapsibleBlock.ImageUrl == "")
+                {
+                continue;
+                }
+
+                <center>
+                    <img src="@collapsibleBlock.ImageUrl" />
+                </center>
+            </div>
+        }
+    }
+</div>
