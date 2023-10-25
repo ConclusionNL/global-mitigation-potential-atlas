@@ -8,15 +8,12 @@
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
         <countryCard
-            v-if="selectedCountry && !inCollabMode"
-            :selected-country="selectedCountry"
+            v-if="selectedCountries[0] && !inCollabMode"
             class="country-box"
-            @country-closed="handleUnselectCard"
             @collab-mode="handleCollabMode" />
         <collabCard
             v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
             class="countries-box"
-            :countries-list="selectedCountries"
             @country-closed="handleUnselectCollab" />
         <div class="zoom-box">
             <div class="zoom-flex">
@@ -47,6 +44,7 @@ import * as topojson from 'topojson';
 import { geoAlbers, geoEquirectangular, geoEqualEarth } from 'd3-geo';
 import { scaleSequential } from 'd3-scale';
 import { useCollaborationStore } from '../stores/collaborationStore';
+import { useSelectedCountries } from '../composables/useSelectedCountries';
 import { ref, watch, onMounted, defineProps, defineEmits, computed } from 'vue';
 import toggleBox from './toggle-box.vue';
 import countryCard from './country-card.vue';
@@ -55,7 +53,11 @@ import searchBar from './searchbar.vue';
 import plusIcon from '../assets/plus.svg';
 import minusIcon from '../assets/minus.svg';
 
-const emit = defineEmits(['country-clicked']);
+const useCountries = useSelectedCountries();
+const selectedCountries = useCountries.selectedCountries;
+const inCollabMode = useCountries.inCollabMode;
+
+// const emit = defineEmits(['country-clicked']);
 
 let svg, g, countryDataSet, pathGenerator, zoooom;
 
@@ -63,61 +65,55 @@ const collaborationStore = useCollaborationStore();
 const heatmapData = collaborationStore.heatmapData;
 
 const mitigation = ref('None');
-const selectedCountries = ref([]);
-const selectedCountry = ref('');
 const zoomLevel = ref(1);
 
 const width = window.innerWidth - 200;
 const height = window.innerHeight - 86;
 
-const inCollabMode = ref(false);
-
 const props = defineProps({
     countries: {},
-    selectedCountryNav: {},
 });
 
-// watch(props.selectedCountryNav, (newVal) => {
-//     selectedCountry.value = newVal;
-//     console.log(selectedCountry.value);
-// });
+watch(selectedCountries, (newVal) => {
+    if (!newVal[0]) {
+        unmarkAllSelectedCountries();
+        zoomToScale(1);
+    }
 
-console.log(props.selectedCountryNav);
+    
+});
+
+watch(inCollabMode, (newVal) => {
+    markCollabCountry(selectedCountries.value[0]);
+});
 
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
 };
 
 const handleSearch = (country) => {
-    const d = countryDataSet.features.find((c) => c.properties.name === country.Name);
+    const d = useCountries.getCountryByName(country.Name);
     const countrySelection = getCountryNodes().filter((c) => c.properties.name === country.Name);
 
-    selectedCountry.value = d;
+    useCountries.addCountry(d);
     toggleCountrySelection(d, countrySelection);
     // zoomToCountry(null, countrySelection);
 };
 
 const handleUnselectCollab = (country) => {
     unmarkCollabCountry(country);
-    selectedCountries.value = selectedCountries.value.filter((c) => c !== country);
+    useCountries.removeCountry(country);
     if (selectedCountries.value.length < 1) {
         inCollabMode.value = false;
-        selectedCountry.value = '';
+        useCountries.resetCountries();
         zoomToScale(1);
     }
 };
 
-const handleUnselectCard = () => {
-    unmarkAllSelectedCountries();
-    selectedCountries.value = [];
-    selectedCountry.value = '';
-    zoomToScale(1);
-};
-
-const handleCollabMode = () => {
-    inCollabMode.value = true;
-    markCollabCountry(selectedCountry.value);
-};
+// const handleCollabMode = () => {
+//     inCollabMode.value = true;
+//     markCollabCountry(selectedCountries.value[0]);
+// };
 
 onMounted(() => {
     watch(mitigation, (newValue) => {
@@ -249,6 +245,7 @@ onMounted(() => {
 
     loadAndProcessData().then((countries) => {
         countryDataSet = countries;
+        useCountries.dataSet.value = countries.features;
         // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
         // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
         // the color scale - get min and max for the desired property from the heatmap data
@@ -504,13 +501,11 @@ function handleMouseLeave() {
 function handleCountryClick(event, d) {
     if (!inCollabMode.value) zoomToCountry(event, d);
     toggleCountrySelection(d, d3.select(this));
-
-    emit('country-clicked', d);
 }
 
 // Function to toggle country selection
 function toggleCountrySelection(d, countryPath) {
-    if (selectedCountry.value === d || selectedCountries.value.includes(d)) {
+    if (selectedCountries.value.includes(d)) {
         return;
     }
 
@@ -519,13 +514,12 @@ function toggleCountrySelection(d, countryPath) {
         countryPath.classed('selected-country-collab', true);
     } else {
         unmarkAllSelectedCountries();
-        selectedCountries.value = [];
-        selectedCountry.value = d;
+        useCountries.resetCountries();
         countryPath.classed('selected-country-collab', false);
         countryPath.classed('selected-country', true);
     }
 
-    selectedCountries.value.push(d);
+    useCountries.addCountry(d);
 }
 </script>
 

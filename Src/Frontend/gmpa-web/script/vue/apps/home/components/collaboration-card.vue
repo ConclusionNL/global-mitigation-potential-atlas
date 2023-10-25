@@ -3,18 +3,18 @@
         <div class="title">Select multiple countries to view collaboration potentials</div>
         <div class="flex-collab">
             <div class="countries-collab-list">
-                <div v-for="country in props.countriesList" :key="country">
+                <div v-for="country in selectedCountries" :key="country">
                     <div class="small-card">
                         <div>{{ country.properties.name }}</div>
                         <closeIcon
                             width="24"
                             height="24"
                             style="cursor: pointer"
-                            @click="emit('country-closed', country)" />
+                            @click="useCountries.removeCountry(country)" />
                     </div>
                 </div>
             </div>
-            <button v-if="countriesList.length > 1" class="benefits-btn">View benefits</button>
+            <button v-if="selectedCountries.length > 1" class="benefits-btn">View benefits</button>
         </div>
         <div class="suggestions-container">
             <div style="font-weight: 500">Our suggestions</div>
@@ -45,14 +45,12 @@
 
 <script setup>
 import { ref, onMounted, watch, defineProps } from 'vue';
+import { useSelectedCountries } from '../composables/useSelectedCountries';
 import closeIcon from '../assets/cross.svg';
 import filterIcon from '../assets/filter.svg';
 
-const emit = defineEmits(['country-closed']);
-
-const props = defineProps({
-    countriesList: [],
-});
+const useCountries = useSelectedCountries();
+const selectedCountries = useCountries.selectedCountries;
 </script>
 
 <style scoped>

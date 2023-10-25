@@ -2,14 +2,10 @@
     <div>
         <div class="row">
             <div class="side-nav">
-                <homeSidenav
-                    :countries="props.countries"
-                    @country-clicked="handleCountryNavClick"></homeSidenav>
+                <homeSidenav :countries="props.countries"></homeSidenav>
             </div>
             <div class="col-10 p-0">
-                <worldMap
-                    :countries="props.countries"
-                    :selected-country-nav="selectedCountryNav"></worldMap>
+                <worldMap :countries="props.countries"></worldMap>
             </div>
         </div>
     </div>
@@ -20,13 +16,13 @@ import homeSidenav from './components/home-sidenav.vue';
 import worldMap from './components/world-map.vue';
 import { useCollaborationStore } from './stores/collaborationStore';
 import { ref, computed, defineProps } from 'vue';
-import { useCountries } from './composables/useCountries';
 
-const countries = useCountries();
+// COMPOSABLE LOGIC FOR SELECTED_COUNTRIES
+// import { useSelectedCountries } from './composables/useSelectedCountries';
+// const useCountries = useSelectedCountries();
+// const selectedCountries = useCountries.selectedCountries;
 
 //import StackedAreaPlusBar from './components/StackedArea.vue'
-
-//console.log(useCollaborationStore);
 
 const props = defineProps<{
     countries: {};
@@ -61,3 +57,4 @@ const collaborationStore = useCollaborationStore();
     height: calc(100vh - 136px);
 }
 </style>
+./composables/useSelectedCountries

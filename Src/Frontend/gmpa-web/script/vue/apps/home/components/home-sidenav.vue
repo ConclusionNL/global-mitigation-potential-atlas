@@ -8,7 +8,7 @@
             </div>
         <li v-for="country in props.countries">
             <div v-if="country.Active">
-                <div @click="emit('country-clicked', country)" class="countries-link-active pointer">{{ country.Name }}</div>
+                <div @click="useCountries.setCountry(useCountries.getCountryByName(country.Name));" class="countries-link-active pointer">{{ country.Name }}</div>
             </div>
         </li>
         </li>
@@ -39,6 +39,9 @@
 
 <script lang="ts" setup>
     import { defineProps, defineEmits, ref } from "vue";
+    import { useSelectedCountries } from '../composables/useSelectedCountries';
+
+    const useCountries = useSelectedCountries();
 
     const props = defineProps({
         countries: {},
@@ -52,6 +55,8 @@
     continents.forEach(continent => {
         continentsCollapsable.value.push(true);
     });
+
+
 </script>
 
 <style lang="scss">

@@ -22,12 +22,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, defineEmits, defineProps, computed } from 'vue';
+import { ref, onMounted, watch, defineProps, computed } from 'vue';
+import { useSelectedCountries } from '../composables/useSelectedCountries';
 import searchIcon from '../assets/search.svg';
 
-const input = ref('');
-const emit = defineEmits(['search-input', 'country-searched']);
+const useCountries = useSelectedCountries();
 
+const input = ref('');
 const errorMsg = ref('');
 
 const props = defineProps({
@@ -74,7 +75,7 @@ const onEnter = () => {
         return;
     }
 
-    emit('country-searched', inputContainsCountry.value);
+    useCountries.setCountry(useCountries.getCountryByName(inputContainsCountry.value.Name));
 };
 </script>
 

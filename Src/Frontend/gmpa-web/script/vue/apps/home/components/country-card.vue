@@ -1,14 +1,14 @@
 <template>
     <div class="country-card">
         <div class="card-top">
-            <div class="title">{{ selectedCountry.properties.name }}</div>
+            <div class="title">{{ selectedCountries[0].properties.name }}</div>
             <closeIcon
                 class="close-btn"
                 :src="closeIcon"
                 alt="close-button"
                 height="24"
                 width="24"
-                @click="emit('country-closed')" />
+                @click="useCountries.resetCountries()" />
         </div>
         <div class="card-data-spacing">
             <div v-for="n in 3" :key="n" class="data">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="card-buttons">
-            <button class="btn btn-alt-1" @click="emit('collab-mode')">
+            <button class="btn btn-alt-1" @click="useCountries.setCollabMode(true)">
                 Select for collaboration
             </button>
             <button class="btn btn-alt-2" @click="emit('country-details')">
@@ -29,13 +29,13 @@
 
 <script setup>
 import { ref, onMounted, watch, defineProps } from 'vue';
+import { useSelectedCountries } from '../composables/useSelectedCountries';
 import closeIcon from '../assets/cross.svg';
 
-const emit = defineEmits(['country-closed', 'collab-mode', 'country-details']);
+const useCountries = useSelectedCountries();
+const selectedCountries = useCountries.selectedCountries;
 
-const props = defineProps({
-    selectedCountry: {},
-});
+const emit = defineEmits(['country-closed', 'country-details']);
 </script>
 
 <style scoped>
