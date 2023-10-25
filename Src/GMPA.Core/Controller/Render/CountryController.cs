@@ -59,7 +59,7 @@ namespace GMPA.Core.Controller.Render
 
                 ContactName = country.ContactName,
                 ContactTitle = country.TitleOrJob,
-                ContactImageUrl = country.PictureOfContactPerson.Url(),
+                ContactImageUrl = country.PictureOfContactPerson?.Url() ?? "/media/xaaonxl0/dummypicture.jpg",
                 ContactEmail = country.Email,
                 ContactPhoneNumber = country.PhoneNumber,
             };
