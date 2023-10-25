@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace GMPA.Core.Models.Umbraco
 {
-	/// <summary>Methodology</summary>
-	[PublishedModel("methodology")]
-	public partial class Methodology : PublishedContentModel
+	/// <summary>Methodology - References</summary>
+	[PublishedModel("methodologyReferences")]
+	public partial class MethodologyReferences : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
-		public new const string ModelTypeAlias = "methodology";
+		public new const string ModelTypeAlias = "methodologyReferences";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
@@ -34,14 +34,14 @@ namespace GMPA.Core.Models.Umbraco
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<Methodology, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<MethodologyReferences, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public Methodology(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public MethodologyReferences(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,19 +50,19 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
-		/// BodyText
+		/// Referenece Content
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("bodyText")]
-		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString BodyText => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "bodyText");
+		[ImplementPropertyType("referenceContent")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString ReferenceContent => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "referenceContent");
 
 		///<summary>
-		/// References
+		/// Reference Name
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("references")]
-		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel References => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "references");
+		[ImplementPropertyType("referenceName")]
+		public virtual string ReferenceName => this.Value<string>(_publishedValueFallback, "referenceName");
 	}
 }

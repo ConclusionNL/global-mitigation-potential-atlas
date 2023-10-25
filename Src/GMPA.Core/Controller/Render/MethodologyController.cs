@@ -1,7 +1,6 @@
 ﻿using GMPA.Core.Extensions;
 using GMPA.Core.Models.Umbraco;
 using GMPA.Core.Models.ViewModels;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
@@ -24,11 +23,20 @@ namespace GMPA.Core.Controller.Render
 
         public IActionResult Methodology()
         {
-            var aboutGmpa = (Methodology)CurrentPage!;
+            var methodology = (Methodology)CurrentPage!;
 
             var viewModel = new MethodologyViewModel
             {
-                BodyText = aboutGmpa.BodyText?.ToHtmlString() ?? string.Empty
+                BodyText = methodology.BodyText?.ToHtmlString() ?? string.Empty,
+
+                MethodologyReferenceBlock = methodology.References
+                    .Select(a => a.Content as MethodologyReferences)
+                    .Select(b => new MethodologyViewModel.MethodologyReferenceBlockList
+                    {
+                        Title = b.ReferenceName,
+                        Reference = b.ReferenceContent.ToHtmlString(),
+                    })
+                    .ToList()
             };
 
             viewModel.Build(CurrentPage);

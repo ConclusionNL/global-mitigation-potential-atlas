@@ -3,14 +3,5 @@
     Layout = "Main.cshtml";
 }
 
-<div class="main-without-side-nav">
-    <h1>About The GMPA</h1>
-    <p style="white-space: normal">
-        @Model.BodyText
-    </p>
-    <p>
-        Extra filler text that should overflow because this text is just a bunch of nonsense but it should be a bit
-        longer than the current container so that it overflows grammer is also wrong cause who cares this will
-        be deleted when released
-    </p>
-</div>
+<h1>@Model.PageTitle</h1>
+@Html.Raw(@Model.BodyText)

@@ -3,4 +3,25 @@
     Layout = "Main.cshtml";
 }
 
+<h1>@Model.PageTitle</h1>
 @Html.Raw(@Model.BodyText)
+
+<br/>
+<h2 class="referenceDivider">References</h2>
+@foreach (var reference in Model.MethodologyReferenceBlock)
+{
+    <div class="reference">
+        <b>@reference.Title</b>
+        @Html.Raw(reference.Reference)
+    </div>
+}
+
+<style>
+    .referenceDivider {
+        border-top: 1px solid #000000
+    }
+
+    .reference {
+        padding: 5px;
+    }
+</style>
