@@ -21,5 +21,14 @@
         public CountryModel Country { get; set; }
         public List<NormalBlockListItem> NormalBlockList { get; set; }
         public List<CollapsibleBlockListItem> CollapsibleBlockList { get; set; }
+
+        #region Contact
+        public string ContactName { get; set; }
+        public string ContactTitle { get; set; }
+        public string ContactImageUrl { get; set; }
+        public string ContactEmail { get; set; }
+        public string ContactPhoneNumber { get; set; }
+
+        #endregion
     }
 }

@@ -32,7 +32,7 @@ namespace GMPA.Core.Controller.Render
                 Country = new CountryModel
                 {
                     Active = new bool(),
-                    Continent = new List<string>()
+                    Continent = new List<string>(),
                 },
 
                 NormalBlockList = country.NormalTextBlockList?
@@ -55,7 +55,13 @@ namespace GMPA.Core.Controller.Render
                     ImageUrl = b.Image?.Url(),
                     Id = b.CollapsableID
                 })
-            .ToList()
+            .ToList(),
+
+                ContactName = country.ContactName,
+                ContactTitle = country.TitleOrJob,
+                ContactImageUrl = country.PictureOfContactPerson.Url(),
+                ContactEmail = country.Email,
+                ContactPhoneNumber = country.PhoneNumber,
             };
 
             viewModel.Country.Active = country.Active;
