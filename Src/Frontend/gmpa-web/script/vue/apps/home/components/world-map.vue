@@ -74,17 +74,32 @@ const props = defineProps({
     countries: {},
 });
 
-watch(selectedCountries, (newVal) => {
+watch(selectedCountries, (newVal, oldVal) => {
+    console.log('COUNTRY ADDED!');
+    if (inCollabMode.value) {
+        selectedCountries.value.forEach((c) => markCollabCountry(c));
+    }
+
     if (!newVal[0]) {
         unmarkAllSelectedCountries();
         zoomToScale(1);
     }
 
-    
+    if (oldVal.length > newVal.length) {
+        const country = oldVal.filter((c) => !newVal.includes(c));
+        unmarkCollabCountry(useCountries.getCountryByName(country[0].properties.name));
+        useCountries.removeCountry(useCountries.getCountryByName(country[0].properties.name));
+    }
+
+    if (selectedCountries.value.length < 1) useCountries.setCollabMode(false);
 });
 
 watch(inCollabMode, (newVal) => {
-    markCollabCountry(selectedCountries.value[0]);
+    if (newVal) {
+        markCollabCountry(selectedCountries.value[0]);
+    } else {
+        unmarkAllSelectedCountries();
+    }
 });
 
 const handleMitigation = (mitigationVal) => {
@@ -95,25 +110,10 @@ const handleSearch = (country) => {
     const d = useCountries.getCountryByName(country.Name);
     const countrySelection = getCountryNodes().filter((c) => c.properties.name === country.Name);
 
-    useCountries.addCountry(d);
+    // useCountries.addCountry(d);
     toggleCountrySelection(d, countrySelection);
     // zoomToCountry(null, countrySelection);
 };
-
-const handleUnselectCollab = (country) => {
-    unmarkCollabCountry(country);
-    useCountries.removeCountry(country);
-    if (selectedCountries.value.length < 1) {
-        inCollabMode.value = false;
-        useCountries.resetCountries();
-        zoomToScale(1);
-    }
-};
-
-// const handleCollabMode = () => {
-//     inCollabMode.value = true;
-//     markCollabCountry(selectedCountries.value[0]);
-// };
 
 onMounted(() => {
     watch(mitigation, (newValue) => {
@@ -150,8 +150,6 @@ onMounted(() => {
     pathGenerator = d3.geoPath().projection(projection);
 
     g = svg.append('g');
-
-    console.log();
 
     const colorLegendG = svg.append('g').attr('transform', `translate(40,310)`);
 
@@ -479,7 +477,8 @@ function markCollabCountry(country) {
 function unmarkAllSelectedCountries() {
     getCountryNodes()
         .filter((d) => selectedCountries.value.id !== d.id)
-        .classed('selected-country', false);
+        .classed('selected-country', false)
+        .classed('selected-country-collab', false);
 }
 
 function unmarkCollabCountry(country) {

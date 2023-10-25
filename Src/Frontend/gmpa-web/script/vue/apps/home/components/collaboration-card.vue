@@ -1,6 +1,14 @@
 <template>
     <div class="collab-card">
-        <div class="title">Select multiple countries to view collaboration potentials</div>
+        <div class="card-top">
+            <div class="title">Select multiple countries to view collaboration potentials</div>
+            <closeIcon
+                class="close-btn"
+                alt="close-button"
+                height="24"
+                width="24"
+                @click="useCountries.resetCountries()" />
+        </div>
         <div class="flex-collab">
             <div class="countries-collab-list">
                 <div v-for="country in selectedCountries" :key="country">
@@ -156,15 +164,26 @@ const selectedCountries = useCountries.selectedCountries;
 .label-box {
     display: flex;
     flex-direction: column;
+}
 
-    .label-title {
-        color: #214b63;
-        font-size: 16px;
-        font-weight: 600;
-    }
+.label-title {
+    color: #214b63;
+    font-size: 16px;
+    font-weight: 600;
+}
 
-    .label-subtitle {
-        font-size: 14px;
-    }
+.label-subtitle {
+    font-size: 14px;
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #214b63;
+}
+
+.close-btn {
+    cursor: pointer;
 }
 </style>

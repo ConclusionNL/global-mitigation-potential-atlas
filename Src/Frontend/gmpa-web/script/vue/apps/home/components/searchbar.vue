@@ -75,7 +75,11 @@ const onEnter = () => {
         return;
     }
 
-    useCountries.setCountry(useCountries.getCountryByName(inputContainsCountry.value.Name));
+    if (useCountries.inCollabMode) {
+        useCountries.addCountry(useCountries.getCountryByName(inputContainsCountry.value.Name));
+    } else {
+        useCountries.setCountry(useCountries.getCountryByName(inputContainsCountry.value.Name));
+    }
 };
 </script>
 

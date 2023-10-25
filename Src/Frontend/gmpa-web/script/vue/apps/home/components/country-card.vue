@@ -4,7 +4,6 @@
             <div class="title">{{ selectedCountries[0].properties.name }}</div>
             <closeIcon
                 class="close-btn"
-                :src="closeIcon"
                 alt="close-button"
                 height="24"
                 width="24"

@@ -8,7 +8,7 @@
             </div>
         <li v-for="country in props.countries">
             <div v-if="country.Active">
-                <div @click="useCountries.setCountry(useCountries.getCountryByName(country.Name));" class="countries-link-active pointer">{{ country.Name }}</div>
+                <div @click="!useCountries.inCollabMode ? useCountries.setCountry(useCountries.getCountryByName(country.Name)) : useCountries.addCountry(useCountries.getCountryByName(country.Name))" class="countries-link-active pointer">{{ country.Name }}</div>
             </div>
         </li>
         </li>
