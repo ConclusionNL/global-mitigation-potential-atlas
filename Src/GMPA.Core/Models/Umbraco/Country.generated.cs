@@ -65,6 +65,14 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual bool Active => this.Value<bool>(_publishedValueFallback, "active");
 
 		///<summary>
+		/// Contact Name: The name of the contact person for the country
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("contactName")]
+		public virtual string ContactName => this.Value<string>(_publishedValueFallback, "contactName");
+
+		///<summary>
 		/// Continent
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
@@ -73,11 +81,43 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual global::System.Collections.Generic.IEnumerable<string> Continent => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "continent");
 
 		///<summary>
+		/// Email: Email of the contact person for the country
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("email")]
+		public virtual string Email => this.Value<string>(_publishedValueFallback, "email");
+
+		///<summary>
 		/// Normal Text Block List
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("normalTextBlockList")]
 		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel NormalTextBlockList => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "normalTextBlockList");
+
+		///<summary>
+		/// Phone Number: The phone number of the contact person for the country
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("phoneNumber")]
+		public virtual string PhoneNumber => this.Value<string>(_publishedValueFallback, "phoneNumber");
+
+		///<summary>
+		/// Picture of Contact Person: The picture of the contact person for the country
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("pictureOfContactPerson")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops PictureOfContactPerson => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "pictureOfContactPerson");
+
+		///<summary>
+		/// Title or Job: The Title or Job this contact person has for the country
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("titleOrJob")]
+		public virtual string TitleOrJob => this.Value<string>(_publishedValueFallback, "titleOrJob");
 	}
 }
