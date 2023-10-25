@@ -28,7 +28,7 @@ namespace GMPA.Core.Controller.Render
 
             var viewModel = new MethodologyViewModel
             {
-                BodyText = new HtmlString(aboutGmpa.BodyText?.ToHtmlString() ?? string.Empty)
+                BodyText = aboutGmpa.BodyText?.ToHtmlString() ?? string.Empty
             };
 
             viewModel.Build(CurrentPage);

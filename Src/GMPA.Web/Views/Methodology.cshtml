@@ -1,23 +1,6 @@
 ﻿@model MethodologyViewModel
 @{
     Layout = "Main.cshtml";
-
-    string pageName = "methodology";
-
-    <environment include="Development">
-        @{
-            SmidgeHelper.RequiresJs($"~/script/{pageName}.page.ts");
-        }
-    </environment>
-
-    <environment exclude="Development">
-        @{
-            SmidgeHelper.RequiresJs($"~/dist/script/{pageName}.page.js");
-            SmidgeHelper.RequiresCss($"~/dist/script/{pageName}.page.css");
-        }
-    </environment>
 }
 
-<div id="methodology">
-    <methodology-page title="@Model.BodyText"></methodology-page>
-</div>
+@Html.Raw(@Model.BodyText)
