@@ -4,30 +4,30 @@
 }
 
 
-
-
-<h1>
-    @Model.PageTitle
+<h1>@Model.PageTitle
 </h1>
 
 <div id="Normal">
     @{
         foreach (var normalBlock in Model.NormalBlockList)
         {
-            <h2 id="@normalBlock.Title">@normalBlock.Title</h2>
-            @Html.Raw(normalBlock.BodyText)
+           
+    <h2 id="@normalBlock.Title">@normalBlock.Title</h2>
+    @Html.Raw(normalBlock.BodyText)
 
             if (normalBlock.Url != "")
             {
-                <a href="@normalBlock.Url">Learn More about @Model.PageTitle</a>
-            }
+               
+    <a href="@normalBlock.Url">Learn More about @Model.PageTitle</a>
+    }
 
             if (normalBlock.ImageUrl != "")
             {
-                <center>
-                    <img src="@normalBlock.ImageUrl" />
-                </center>
-            }
+               
+    <center>
+        <img src="@normalBlock.ImageUrl" />
+    </center>
+    }
         }
     }
 </div>
@@ -36,37 +36,55 @@
     @{
         foreach (var collapsibleBlock in Model.CollapsibleBlockList)
         {
-            <div data-bs-toggle="collapse" data-bs-target="#@collapsibleBlock.Id" aria-expanded="false" aria-controls="@collapsibleBlock.Id">
-                <h2 class="collapsibleHeader">
-                    @collapsibleBlock.Title
-                </h2>
-            </div>
-            <div class="collapse" id="@collapsibleBlock.Id">
-                @Html.Raw(collapsibleBlock.BodyText)
+           
+    <div data-bs-toggle="collapse" data-bs-target="#@collapsibleBlock.Id" aria-expanded="false" aria-controls="@collapsibleBlock.Id">
+        <h2 class="collapsibleHeader">@collapsibleBlock.Title
+        </h2>
+    </div>
+    <div class="collapse" id="@collapsibleBlock.Id">
+        @Html.Raw(collapsibleBlock.BodyText)
 
                 @if (collapsibleBlock.ImageUrl == "")
                 {
                     continue;
                 }
 
-                <center>
-                    <img src="@collapsibleBlock.ImageUrl" />
-                </center>
-            </div>
-        }
+               
+
+        <center>
+            <img src="@collapsibleBlock.ImageUrl" alt="" />
+        </center>
+    </div>
+    }
     }
 </div>
 
-<div>
-    @Model.ContactName
-    @Model.ContactTitle
-    <img src="@Model.ContactImageUrl"/>
-    @Model.ContactEmail
-    @Model.ContactPhoneNumber
+<div class="contactSection">
+    <h3>Contact</h3>
+    <br />
+    <h4>@Model.ContactName</h4>
+    <div>@Model.ContactTitle</div>
+    <img src="@Model.ContactImageUrl" alt="Contact Person Picture" width="200px" height="200px" />
+    <h5><b>Contact Details</b></h5>
+    <div>
+        <b>Email:</b> @Model.ContactEmail
+    </div>
+    <div>
+        <b>Number:</b> @Model.ContactPhoneNumber
+    </div>
 </div>
 
 <style>
     .collapsibleHeader {
         cursor: pointer;
+    }
+
+    .contactSection {
+        padding: 20px;
+        border-top:2px solid rgb(217, 217, 217);
+    }
+
+    .contactSection img {
+        border-radius: 25px;
     }
 </style>
