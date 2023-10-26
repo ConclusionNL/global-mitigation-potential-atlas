@@ -217,6 +217,9 @@ onMounted(() => {
                                 d.properties[key] = c[key];
                             }
                         }
+                        // set the property in_heatmap to true to indicate that there is heatmap data for this country 
+                        d.properties['in_heatmap'] = true
+
                     });
 
                 // todo - these properties are added in a not very efficient way
@@ -494,6 +497,8 @@ function handleMouseLeave() {
 }
 
 function handleCountryClick(event, d) {
+    // only respond to click if the country is in the initial MVP dataset in case of no countries selected yet
+    if (!d.properties['in_heatmap']) return;
     if (!inCollabMode.value) zoomToCountry(event, d);
     toggleCountrySelection(d, d3.select(this));
 
