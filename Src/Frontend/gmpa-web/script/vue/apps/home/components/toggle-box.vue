@@ -8,7 +8,7 @@
                 :value="mitigation"
                 name="mitigation"
                 @change="selectedMitigation = mitigation" />
-            <label :for="mitigation">{{ mitigation }}</label>
+            <label :for="mitigation">{{ mitigation.replace(/_/g, " ") }}</label>
         </div>
     </div>
 </template>
