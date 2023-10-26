@@ -531,6 +531,14 @@ function handleMouseLeave() {
 function handleCountryClick(event, d) {
     // only respond to click if the country is in the initial MVP dataset in case of no countries selected yet
     if (!d.properties['in_heatmap']) return;
+
+    // if we are in collabmode, then only process the click if the clicked country is in the set of collaboration candidates
+    if (inCollabMode.value) {
+        const selectedCountryCodes = selectedCountries.value.map(country => country.properties.iso_a2)
+        const collaborationCandidateCountryCodes = collaborationStore.findCollaboratingCountries(selectedCountryCodes)
+        if (collaborationCandidateCountryCodes.length == 0 || !collaborationCandidateCountryCodes.includes(d.properties.iso_a2))   
+          return   
+    }
     if (!inCollabMode.value) zoomToCountry(event, d);
     toggleCountrySelection(d, d3.select(this));
 
