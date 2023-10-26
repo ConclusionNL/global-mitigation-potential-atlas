@@ -7,14 +7,10 @@
                 :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
-        <countryCard
-            v-if="selectedCountries[0] && !inCollabMode"
-            class="country-box"
-            @collab-mode="handleCollabMode" />
+        <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box" />
         <collabCard
             v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
-            class="countries-box"
-            @country-closed="handleUnselectCollab" />
+            class="countries-box" />
         <div class="zoom-box">
             <div class="zoom-flex">
                 <div
@@ -74,25 +70,33 @@ const props = defineProps({
     countries: {},
 });
 
-watch(selectedCountries, (newVal, oldVal) => {
-    console.log('COUNTRY ADDED!');
-    if (inCollabMode.value) {
-        selectedCountries.value.forEach((c) => markCollabCountry(c));
-    }
+watch(
+    selectedCountries,
+    (newVal, oldVal) => {
+        if (!newVal[0]) {
+            unmarkAllSelectedCountries();
+            zoomToScale(1);
+        } else {
+            if (inCollabMode.value) {
+                markCollabCountry(selectedCountries.value[selectedCountries.value.length - 1]);
+            } else {
+                markSelectCountry(selectedCountries.value[selectedCountries.value.length - 1]);
+            }
+        }
 
-    if (!newVal[0]) {
-        unmarkAllSelectedCountries();
-        zoomToScale(1);
-    }
+        if (oldVal.length > newVal.length) {
+            const country = oldVal.filter((c) => !newVal.includes(c));
+            unmarkCollabCountry(useCountries.getCountryByName(country[0].properties.name));
+        }
 
-    if (oldVal.length > newVal.length) {
-        const country = oldVal.filter((c) => !newVal.includes(c));
-        unmarkCollabCountry(useCountries.getCountryByName(country[0].properties.name));
-        useCountries.removeCountry(useCountries.getCountryByName(country[0].properties.name));
-    }
+        if (selectedCountries.value.length < 1) {
+            useCountries.setCollabMode(false);
+        }
 
-    if (selectedCountries.value.length < 1) useCountries.setCollabMode(false);
-});
+        // console.log(selectedCountries.value);
+    },
+    { deep: true }
+);
 
 watch(inCollabMode, (newVal) => {
     if (newVal) {
@@ -126,7 +130,6 @@ onMounted(() => {
         yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value);
 
         drawAllCountries(countryDataSet);
-        console.log(`New mitigation value: ${newValue}`);
         drawVerticalAxis();
     });
 
@@ -474,6 +477,13 @@ function markCollabCountry(country) {
         .classed('selected-country-collab', true);
 }
 
+function markSelectCountry(country) {
+    getCountryNodes()
+        .filter((c) => country.id === c.id)
+        .classed('selected-country', true)
+        .classed('selected-country-collab', false);
+}
+
 function unmarkAllSelectedCountries() {
     getCountryNodes()
         .filter((d) => selectedCountries.value.id !== d.id)
@@ -498,8 +508,13 @@ function handleMouseLeave() {
 }
 
 function handleCountryClick(event, d) {
-    if (!inCollabMode.value) zoomToCountry(event, d);
-    toggleCountrySelection(d, d3.select(this));
+    if (!inCollabMode.value) {
+        unmarkAllSelectedCountries();
+        useCountries.setCountry(d);
+        zoomToCountry(event, d);
+    } else {
+        useCountries.addCountry(d);
+    }
 }
 
 // Function to toggle country selection
@@ -508,17 +523,14 @@ function toggleCountrySelection(d, countryPath) {
         return;
     }
 
-    if (inCollabMode.value) {
-        countryPath.classed('selected-country', false);
-        countryPath.classed('selected-country-collab', true);
-    } else {
-        unmarkAllSelectedCountries();
-        useCountries.resetCountries();
-        countryPath.classed('selected-country-collab', false);
-        countryPath.classed('selected-country', true);
-    }
+    countryPath.classed('selected-country', !inCollabMode.value);
+    countryPath.classed('selected-country-collab', inCollabMode.value);
 
-    useCountries.addCountry(d);
+    if (inCollabMode.value) {
+        useCountries.addCountry(d);
+    } else {
+        useCountries.setCountry(d);
+    }
 }
 </script>
 

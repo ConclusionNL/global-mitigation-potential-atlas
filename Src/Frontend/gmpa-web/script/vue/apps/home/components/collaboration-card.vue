@@ -7,7 +7,10 @@
                 alt="close-button"
                 height="24"
                 width="24"
-                @click="useCountries.resetCountries()" />
+                @click="
+                    useCountries.resetCountries();
+                    useCountries.setCollabMode(false);
+                " />
         </div>
         <div class="flex-collab">
             <div class="countries-collab-list">
@@ -18,7 +21,10 @@
                             width="24"
                             height="24"
                             style="cursor: pointer"
-                            @click="useCountries.removeCountry(country)" />
+                            @click="
+                                useCountries.removeCountry(country);
+                                console.log(useCountries.selectedCountries.value);
+                            " />
                     </div>
                 </div>
             </div>
