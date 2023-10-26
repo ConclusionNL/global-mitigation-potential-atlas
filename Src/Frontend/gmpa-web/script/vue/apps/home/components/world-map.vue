@@ -126,6 +126,7 @@ function highlightCollaborationCandidates() {
 
 const handleChangeInCountriesSelection = () => {
     highlightCollaborationCandidates()
+    zoomInOnSelectedCountries()
 }
 
 onMounted(() => {
@@ -526,6 +527,49 @@ function toggleCountrySelection(d, countryPath) {
 
     handleChangeInCountriesSelection()
 }
+
+function zoomInOnSelectedCountries() {
+            if (selectedCountries.value.length > 0) {
+                console.log(`after drawing all countries let 's mark  each and zoom in on the combination'`)
+
+                var minX = Number.POSITIVE_INFINITY;
+                var minY = Number.POSITIVE_INFINITY;
+                var maxX = Number.NEGATIVE_INFINITY;
+                var maxY = Number.NEGATIVE_INFINITY;
+                selectedCountries.value.forEach((c) => {
+                    var selectedCountryGeoJSON = countryDataSet.features.filter((d) => d.id == c.id)
+
+                    // Calculate zoom parameters
+                    //                var bounds = d3.geoBounds(selectedCountryGeoJSON[0]);
+                    const bounds = pathGenerator.bounds(selectedCountryGeoJSON[0]);
+                    minX = Math.min(minX, bounds[0][0]);
+                    minY = Math.min(minY, bounds[0][1]);
+                    maxX = Math.max(maxX, bounds[1][0]);
+                    maxY = Math.max(maxY, bounds[1][1]);
+                })
+
+
+                const dx = maxX - minX;
+                const dy = maxY - minY;
+                const x = (minX + maxX) / 2;
+                const y = (minY + maxY) / 2;
+                const scale = Math.max(1, Math.min(3, 0.9 / Math.max(dx / width, dy / height)));
+
+                // Transition to the selected feature's position and scale
+                svg.transition()
+                    .duration(750)
+                    .call(zoooom.transform, d3.zoomIdentity
+                        .translate(width / 2, height / 2)
+                        .scale(scale)
+                        .translate(-x, -y)
+                    );
+
+
+            }
+
+        }
+
+
 </script>
 
 <style>
