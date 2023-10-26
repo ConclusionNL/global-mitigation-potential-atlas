@@ -2,6 +2,7 @@
     <div id="mapcontainer">
         <div class="search-container">
             <searchBar class="search-box" @country-searched="handleSearch" :countries="props.countries" />
+
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
         <countryCard v-if="selectedCountry && !inCollabMode" :selected-country="selectedCountry" class="country-box"
@@ -9,7 +10,7 @@
         <collabCard v-if="inCollabMode && selectedCountries && selectedCountries.length > 0" class="countries-box"
             :countries-list="selectedCountries"
             :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)"
-            @country-closed="handleUnselectCollab" @country-added="handleAddCollaboratingCountry" />
+            @country-closed="handleUnselectCollab" @country-added="handleAddCollaboratingCountry" @show-benefits="stackedAreaModalVisible=true"/>
         <div class="zoom-box">
             <div class="zoom-flex">
                 <div @click="
@@ -25,6 +26,15 @@
                     <minusIcon width="24" height="4" />
                 </div>
             </div>
+        </div>
+
+    </div>
+
+    <div class="modal" v-if="stackedAreaModalVisible">
+        <div class="modal-content">
+            <!-- Modal content goes here -->
+            <H1>CONTENT</H1>
+            <a href="#" class="close-link" @click="closeModal">Close</a>
         </div>
     </div>
 </template>
@@ -52,6 +62,9 @@ const heatmapData = collaborationStore.heatmapData;
 
 const mitigation = ref('None');
 const selectedCountries = ref([]);
+const stackedAreaModalVisible = ref(false)
+
+const closeModal = () => stackedAreaModalVisible.value=false
 
 const selectedCountry = ref('');
 const zoomLevel = ref(1);
@@ -698,5 +711,34 @@ p {
     color: #214b63;
     cursor: pointer;
     box-shadow: 0px 4px 8px 0px #214b6352;
+}
+
+/* Modal Container */
+.modal {
+    display: block;
+    /* Initially hidden */
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    background: rgba(186, 54, 54, 0.7);
+    /* Semi-transparent background */
+    z-index: 1000;
+    /* Ensure the modal is on top of other content */
+    overflow: auto;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fff;
+    /* Background color for the modal */
+    margin: 5% auto;
+    /* Center the modal vertically */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 </style>

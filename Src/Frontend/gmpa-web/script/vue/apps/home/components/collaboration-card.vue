@@ -11,7 +11,7 @@
                     </div>
                 </div>
             </div>
-            <button v-if="countriesList.length > 1" class="benefits-btn">View benefits</button>
+            <button v-if="countriesList.length > 1" class="benefits-btn" @click="emit('show-benefits')">View benefits</button>
         </div>
         <div class="suggestions-container">
             <div style="font-weight: 500">Our suggestions</div>
@@ -42,7 +42,7 @@ import { ref, onMounted, watch, defineProps, computed } from 'vue';
 import closeIcon from '../assets/cross.svg';
 import filterIcon from '../assets/filter.svg';
 
-const emit = defineEmits(['country-closed', 'country-added']);
+const emit = defineEmits(['country-closed', 'country-added','show-benefits']);
 
 const props = defineProps({
     countriesList: [], collaborationCandidatesList: []
