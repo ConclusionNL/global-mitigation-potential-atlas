@@ -1,39 +1,25 @@
 ﻿<template>
     <div id="mapcontainer">
         <div class="search-container">
-            <searchBar
-                class="search-box"
-                @country-searched="handleSearch"
-                :countries="props.countries" />
+            <searchBar class="search-box" @country-searched="handleSearch" :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
-        <countryCard
-            v-if="selectedCountry && !inCollabMode"
-            :selected-country="selectedCountry"
-            class="country-box"
-            @country-closed="handleUnselectCard"
-            @collab-mode="handleCollabMode" />
-        <collabCard
-            v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
-            class="countries-box"
-            :countries-list="selectedCountries"
-            @country-closed="handleUnselectCollab" />
+        <countryCard v-if="selectedCountry && !inCollabMode" :selected-country="selectedCountry" class="country-box"
+            @country-closed="handleUnselectCard" @collab-mode="handleCollabMode" />
+        <collabCard v-if="inCollabMode && selectedCountries && selectedCountries.length > 0" class="countries-box"
+            :countries-list="selectedCountries" @country-closed="handleUnselectCollab" />
         <div class="zoom-box">
             <div class="zoom-flex">
-                <div
-                    @click="
-                        zoomLevel += 0.5;
-                        zoomToScale(zoomLevel);
-                    "
-                    class="r-btn plus">
+                <div @click="
+                    zoomLevel += 0.5;
+                zoomToScale(zoomLevel);
+                " class="r-btn plus">
                     <plusIcon width="24" height="24" />
                 </div>
-                <div
-                    @click="
-                        zoomLevel -= 0.5;
-                        zoomToScale(zoomLevel);
-                    "
-                    class="r-btn minus">
+                <div @click="
+                    zoomLevel -= 0.5;
+                zoomToScale(zoomLevel);
+                " class="r-btn minus">
                     <minusIcon width="24" height="4" />
                 </div>
             </div>
@@ -64,6 +50,8 @@ const heatmapData = collaborationStore.heatmapData;
 
 const mitigation = ref('None');
 const selectedCountries = ref([]);
+const collaborationCandidatesForSelectedCountries = []; // whenever the set of selected countries changes, the list of collaboration candidates should be updated 
+
 const selectedCountry = ref('');
 const zoomLevel = ref(1);
 
@@ -117,21 +105,42 @@ const handleUnselectCard = () => {
 const handleCollabMode = () => {
     inCollabMode.value = true;
     markCollabCountry(selectedCountry.value);
+    highlightCollaborationCandidates()
 };
+
+function highlightCollaborationCandidates() {
+    const selectedCountryCodes = selectedCountries.value.map(country => country.properties.iso_a2)
+    const collaborationCandidateCountryCodes = collaborationStore.findCollaboratingCountries(selectedCountryCodes)
+    // unhighlight all currently highlighted collaboration candidates
+    getCountryNodes()
+        .classed('suggested-country-collab', false);
+
+    // given the the currently selected countries in selectedCountries
+    // find the collaboration candidates and highlight each of them;
+    if (collaborationCandidateCountryCodes.length > 0 && inCollabMode.value) {
+        getCountryNodes()
+            .filter((d) => collaborationCandidateCountryCodes.includes(d.properties.iso_a2))
+            .classed('suggested-country-collab', true);
+    }
+}
+
+const handleChangeInCountriesSelection = () => {
+    highlightCollaborationCandidates()
+}
 
 onMounted(() => {
     watch(mitigation, (newValue) => {
-        // WHAT SHOULD HAPPEN WHEN THE TOGGLEBOX IS UPDATED?
-        // redefine colorScale2
-        // redraw countries
-        // redefine color legend
-
         colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value);
         yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value);
 
         drawAllCountries(countryDataSet);
         console.log(`New mitigation value: ${newValue}`);
         drawVerticalAxis();
+    });
+
+    watch(selectedCountries, (newValue) => {
+        console.log(`new selected countries selection`)
+        handleChangeInCountriesSelection()
     });
 
     const t0 = { k: width / 2 / Math.PI, x: width / 2, y: height / 2 };
@@ -157,17 +166,7 @@ onMounted(() => {
 
     console.log();
 
-    const colorLegendG = svg.append('g').attr('transform', `translate(40,310)`);
-
     const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
-
-    const colorScale = d3.scaleOrdinal();
-
-    const colorValue = function (d) {
-        const nameLength = d.properties.name.length;
-        const nameLengthCategory = nameLength < 6 ? 'Short' : 'Long' + ' ' + nameLength;
-        return d.properties.continent;
-    };
 
     let colorScale2, yAxisScale;
 
@@ -206,9 +205,6 @@ onMounted(() => {
             countries.features.forEach((d) => {
                 // add all country properties from the TSV file to the features of the countries
                 Object.assign(d.properties, rowById[d.id]);
-                const nameLength = parseInt(d.properties.name_len);
-                d.properties['nameLengthCategory'] =
-                    nameLength < 6 ? 'Short' : 'Long' + ' ' + nameLength;
 
                 // using the ISo2 country code (iso_a2), check heatmapData array for an object with the right COUnTRY property value
                 const countryCode = d.properties.iso_a2;
@@ -249,14 +245,11 @@ onMounted(() => {
 
     loadAndProcessData().then((countries) => {
         countryDataSet = countries;
+        collaborationStore.prepareCountryCollaborations()
         // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
         // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
         // the color scale - get min and max for the desired property from the heatmap data
 
-        colorScale
-            .domain(countries.features.map(colorValue))
-            .domain(colorScale.domain().sort().reverse())
-            .range(d3.schemeSpectral[colorScale.domain().length]);
         heatmapLegendG.call(heatmapLegend, {
             spacing: 30,
             textOffset: 15,
@@ -323,7 +316,7 @@ onMounted(() => {
             .attr('x', -660) // Position it at the middle of the axis
             .attr('dy', '1em') // Adjustments for positioning
             .style('text-anchor', 'middle') // Center the text
-            .text(mitigation.value);
+            .text(mitigation.value.replace(/_/g, " "));
     }
 
     function drawAllCountries(countries) {
@@ -481,7 +474,6 @@ function markCollabCountry(country) {
 
 function unmarkAllSelectedCountries() {
     getCountryNodes()
-        .filter((d) => selectedCountries.value.id !== d.id)
         .classed('selected-country', false);
 }
 
@@ -526,6 +518,8 @@ function toggleCountrySelection(d, countryPath) {
     }
 
     selectedCountries.value.push(d);
+
+    handleChangeInCountriesSelection()
 }
 </script>
 
@@ -549,9 +543,9 @@ function toggleCountrySelection(d, countryPath) {
 }
 
 .suggested-country-collab {
-    fill: #f07004;
+    fill: #e081b4;
     fill-opacity: 0.6;
-    stroke: #f07004;
+    stroke: #833d04;
     stroke-width: 1px;
 }
 
