@@ -6,10 +6,7 @@
                 <div v-for="country in props.countriesList" :key="country">
                     <div class="small-card">
                         <div>{{ country.properties.name }}</div>
-                        <closeIcon
-                            width="24"
-                            height="24"
-                            style="cursor: pointer"
+                        <closeIcon width="24" height="24" style="cursor: pointer"
                             @click="emit('country-closed', country)" />
                     </div>
                 </div>
@@ -24,17 +21,14 @@
             </div>
         </div>
         <div class="suggestion-country-container">
-            <div v-for="n in 2" :key="n">
+            <div v-for="collaborationCandidate in collaborationCandidatesList" :key="n">
                 <div class="suggestion-country-boxes">
-                    <input
-                        :id="n"
-                        type="checkbox"
-                        :name="`checkbox-${n}`"
-                        :value="n"
-                        class="checkbox" />
+                    <input :id="collaborationCandidate.id" type="checkbox" :name="`checkbox-${n}`"
+                        :value="collaborationCandidate" class="checkbox" @change="emit('country-added', collaborationCandidate)" />
                     <div class="label-box">
-                        <div class="label-title">Country {{ n }}</div>
-                        <div class="label-subtitle">Data with filters from country {{ n }}</div>
+                        <div class="label-title">{{ collaborationCandidate.properties.name }}</div>
+<!--                        <div class="label-subtitle">Data with filters from country {{ collaborationCandidate.properties.iso_a2 }}</div>
+-->
                     </div>
                     <div class="other-info"></div>
                 </div>
@@ -44,15 +38,35 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, defineProps } from 'vue';
+import { ref, onMounted, watch, defineProps, computed } from 'vue';
 import closeIcon from '../assets/cross.svg';
 import filterIcon from '../assets/filter.svg';
 
-const emit = defineEmits(['country-closed']);
+const emit = defineEmits(['country-closed', 'country-added']);
 
 const props = defineProps({
-    countriesList: [],
+    countriesList: [], collaborationCandidatesList: []
 });
+
+
+watch(() => props.countriesList, (newValue, oldValue) => {
+    console.log(`Prop changed from ${oldValue} to ${newValue}`);
+});
+
+const handleCheckboxChange = (event) => {
+    const checkboxValue = event.target.value;
+    const checkboxId = event.target.id;
+console.log(`collab cands ${props.countriesList}`)
+    if (event.target.checked) {
+        console.log(`Checkbox with value ${checkboxValue} and id ${checkboxId} is checked`);
+        // Perform actions or invoke your handler here with checkboxValue or checkboxId
+
+        emit('country-added', checkboxValue)
+    } else {
+        console.log(`Checkbox with value ${checkboxValue} and id ${checkboxId} is unchecked`);
+        // Handle when the checkbox is unchecked
+    }
+};
 </script>
 
 <style scoped>
@@ -145,7 +159,7 @@ const props = defineProps({
     border-radius: 4px;
     gap: 16px;
     height: 60px;
-    width: 340px;
+    width: 180px;
     padding: 8px 12px;
 }
 
