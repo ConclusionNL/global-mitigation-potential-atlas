@@ -57,4 +57,3 @@ const collaborationStore = useCollaborationStore();
     height: calc(100vh - 136px);
 }
 </style>
-./composables/useSelectedCountries
