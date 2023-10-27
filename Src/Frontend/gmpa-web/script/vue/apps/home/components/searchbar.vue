@@ -27,6 +27,7 @@ import { useSelectedCountries } from '../composables/useSelectedCountries';
 import searchIcon from '../assets/search.svg';
 
 const useCountries = useSelectedCountries();
+const inCollabMode = useCountries.inCollabMode;
 
 const input = ref('');
 const errorMsg = ref('');
@@ -75,7 +76,7 @@ const onEnter = () => {
         return;
     }
 
-    if (useCountries.inCollabMode) {
+    if (inCollabMode.value) {
         useCountries.addCountry(useCountries.getCountryByName(inputContainsCountry.value.Name));
     } else {
         useCountries.setCountry(useCountries.getCountryByName(inputContainsCountry.value.Name));

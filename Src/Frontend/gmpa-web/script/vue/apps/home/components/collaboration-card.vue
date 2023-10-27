@@ -21,10 +21,7 @@
                             width="24"
                             height="24"
                             style="cursor: pointer"
-                            @click="
-                                useCountries.removeCountry(country);
-                                console.log(useCountries.selectedCountries.value);
-                            " />
+                            @click="useCountries.removeCountry(country)" />
                     </div>
                 </div>
             </div>

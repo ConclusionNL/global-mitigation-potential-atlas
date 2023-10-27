@@ -12,12 +12,13 @@ export function useSelectedCountries() {
     }
 
     function setCountry(country) {
+        if (!country) return;
         resetCountries();
         addCountry(country);
     }
 
     function addCountry(country) {
-        if (selectedCountries.value.includes(country)) return;
+        if (selectedCountries.value.includes(country) || !country) return;
         selectedCountries.value.push(country);
     }
 

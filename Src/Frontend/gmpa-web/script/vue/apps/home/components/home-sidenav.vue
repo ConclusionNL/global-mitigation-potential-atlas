@@ -8,7 +8,7 @@
             </div>
         <li v-for="country in props.countries">
             <div v-if="country.Active">
-                <div @click="!useCountries.inCollabMode ? useCountries.setCountry(useCountries.getCountryByName(country.Name)) : useCountries.addCountry(useCountries.getCountryByName(country.Name))" class="countries-link-active pointer">{{ country.Name }}</div>
+                <div @click="!inCollabMode ? useCountries.setCountry(useCountries.getCountryByName(country.Name)) : useCountries.addCountry(useCountries.getCountryByName(country.Name))" class="countries-link-active pointer">{{ country.Name }}</div>
             </div>
         </li>
         </li>
@@ -42,6 +42,7 @@
     import { useSelectedCountries } from '../composables/useSelectedCountries';
 
     const useCountries = useSelectedCountries();
+    const inCollabMode = useCountries.inCollabMode;
 
     const props = defineProps({
         countries: {},

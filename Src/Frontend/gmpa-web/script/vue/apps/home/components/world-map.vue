@@ -80,6 +80,7 @@ watch(
             if (inCollabMode.value) {
                 markCollabCountry(selectedCountries.value[selectedCountries.value.length - 1]);
             } else {
+                unmarkAllSelectedCountries();
                 markSelectCountry(selectedCountries.value[selectedCountries.value.length - 1]);
             }
         }
