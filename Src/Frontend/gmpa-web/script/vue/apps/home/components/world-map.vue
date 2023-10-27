@@ -1,10 +1,7 @@
 ﻿<template>
     <div id="mapcontainer">
         <div class="search-container">
-            <searchBar
-                class="search-box"
-                @country-searched="handleSearch"
-                :countries="props.countries" />
+            <searchBar class="search-box" :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
         <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box" />
@@ -109,15 +106,6 @@ watch(inCollabMode, (newVal) => {
 
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
-};
-
-const handleSearch = (country) => {
-    const d = useCountries.getCountryByName(country.Name);
-    const countrySelection = getCountryNodes().filter((c) => c.properties.name === country.Name);
-
-    // useCountries.addCountry(d);
-    toggleCountrySelection(d, countrySelection);
-    // zoomToCountry(null, countrySelection);
 };
 
 onMounted(() => {
@@ -515,22 +503,6 @@ function handleCountryClick(event, d) {
         zoomToCountry(event, d);
     } else {
         useCountries.addCountry(d);
-    }
-}
-
-// Function to toggle country selection
-function toggleCountrySelection(d, countryPath) {
-    if (selectedCountries.value.includes(d)) {
-        return;
-    }
-
-    countryPath.classed('selected-country', !inCollabMode.value);
-    countryPath.classed('selected-country-collab', inCollabMode.value);
-
-    if (inCollabMode.value) {
-        useCountries.addCountry(d);
-    } else {
-        useCountries.setCountry(d);
     }
 }
 </script>
