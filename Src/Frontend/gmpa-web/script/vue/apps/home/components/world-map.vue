@@ -32,9 +32,8 @@
 
     <div class="modal" v-if="stackedAreaModalVisible">
         <div class="modal-content">
-            <!-- Modal content goes here -->
-            <H1>CONTENT</H1>
             <a href="#" class="close-link" @click="closeModal">Close</a>
+            <collaborationStackedAreaChart :countries-list="selectedCountries" />
         </div>
     </div>
 </template>
@@ -52,6 +51,7 @@ import collabCard from './collaboration-card.vue';
 import searchBar from './searchbar.vue';
 import plusIcon from '../assets/plus.svg';
 import minusIcon from '../assets/minus.svg';
+import collaborationStackedAreaChart from './collaboration-stacked-area-chart.vue';
 
 const emit = defineEmits(['country-clicked']);
 
@@ -727,10 +727,10 @@ p {
     /* Initially hidden */
     position: fixed;
     top: 5%;
-    left: 5%;
-    width: 90%;
+    left: 10%;
+    width: 85%;
     height: 90%;
-    background: rgba(186, 54, 54, 0.7);
+    background: rgba(249, 245, 245, 0.9);
     /* Semi-transparent background */
     z-index: 1000;
     /* Ensure the modal is on top of other content */
@@ -746,7 +746,7 @@ p {
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    max-width: 90%;
+    max-width: 95%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 </style>
