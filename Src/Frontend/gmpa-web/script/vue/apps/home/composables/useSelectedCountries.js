@@ -18,7 +18,7 @@ export function useSelectedCountries() {
     }
 
     function addCountry(country) {
-        if (selectedCountries.value.includes(country) || !country) return;
+        if (selectedCountries.value.map((c) => c.id).includes(country.id) || !country) return;
         selectedCountries.value.push(country);
     }
 

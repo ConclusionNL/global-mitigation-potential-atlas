@@ -34,7 +34,7 @@ import closeIcon from '../assets/cross.svg';
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 
-const emit = defineEmits(['country-closed', 'country-details']);
+const emit = defineEmits(['country-details']);
 </script>
 
 <style scoped>

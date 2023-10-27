@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-    import { defineProps, defineEmits, ref } from "vue";
+    import { defineProps, ref } from "vue";
     import { useSelectedCountries } from '../composables/useSelectedCountries';
 
     const useCountries = useSelectedCountries();
@@ -47,8 +47,6 @@
     const props = defineProps({
         countries: {},
     })
-
-    const emit = defineEmits(['country-clicked']);
 
     const continents = ["Africa", "Asia", "North America", "South America", "Europe", "Oceania"]
     const continentsCollapsable = ref([]);

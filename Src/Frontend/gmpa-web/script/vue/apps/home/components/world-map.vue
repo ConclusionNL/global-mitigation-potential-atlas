@@ -90,8 +90,6 @@ watch(
         if (selectedCountries.value.length < 1) {
             useCountries.setCollabMode(false);
         }
-
-        // console.log(selectedCountries.value);
     },
     { deep: true }
 );
