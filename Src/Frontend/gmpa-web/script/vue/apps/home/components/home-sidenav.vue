@@ -8,12 +8,12 @@
             </div>
         <li v-for="country in props.countries">
             <div v-if="country.Active">
-                <a class="countries-link-active" :href=country.Url>{{country.Name}}</a>
+                <div @click="!inCollabMode ? useCountries.setCountry(useCountries.getCountryByName(country.Name)) : useCountries.addCountry(useCountries.getCountryByName(country.Name))" class="countries-link-active pointer">{{ country.Name }}</div>
             </div>
         </li>
         </li>
         <!-- #endregion -->
-        <div v-for="(continent, i) in continents" :index="continent">
+        <div v-for="(continent, i) in continents" :index="continent" style="padding-right: 10px">
         <li>
             <div class="country-divider" @click="continentsCollapsable[i] = !continentsCollapsable[i]">
                 {{continent}}
@@ -23,10 +23,10 @@
                     <li v-if="country.Continent == continent">
                         <div class="countries-list-item-active">
                             <div v-if="country.Active">
-                                <a class="countries-link-active" :href=country.Url>{{country.Name}}</a>
+                                <a class="countries-link-active" :href=country.Url>{{ country.Name }}</a>
                             </div>
                             <div v-else class="countries-list-item-disabled">
-                                {{country.Name}}
+                                {{ country.Name }}
                             </div>
                         </div>
                     </li>
@@ -39,6 +39,10 @@
 
 <script lang="ts" setup>
     import { defineProps, ref } from "vue";
+    import { useSelectedCountries } from '../composables/useSelectedCountries';
+
+    const useCountries = useSelectedCountries();
+    const inCollabMode = useCountries.inCollabMode;
 
     const props = defineProps({
         countries: {},
@@ -50,9 +54,15 @@
     continents.forEach(continent => {
         continentsCollapsable.value.push(true);
     });
+
+
 </script>
 
 <style lang="scss">
+    .pointer {
+        cursor: pointer;
+    }
+
     .expander {
         display: grid;
         grid-template-rows: 0fr;

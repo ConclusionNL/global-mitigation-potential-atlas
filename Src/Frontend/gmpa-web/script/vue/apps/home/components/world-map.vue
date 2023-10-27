@@ -1,18 +1,33 @@
 ﻿<template>
     <div id="mapcontainer">
+        <div class="search-container">
+            <searchBar class="search-box" :countries="props.countries" />
+        </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
-        <countryCard
-            v-if="selectedCountry && !inCollabMode"
-            :selected-country="selectedCountry"
-            class="country-box"
-            @country-closed="handleUnselectCard"
-            @collab-mode="handleCollabMode"
-            @country-details="handleCountryDetails" />
+        <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box" />
         <collabCard
             v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
-            class="countries-box"
-            :countries-list="selectedCountries"
-            @country-closed="handleUnselectCollab" />
+            class="countries-box" />
+        <div class="zoom-box">
+            <div class="zoom-flex">
+                <div
+                    @click="
+                        zoomLevel += 0.5;
+                        zoomToScale(zoomLevel);
+                    "
+                    class="r-btn plus">
+                    <plusIcon width="24" height="24" />
+                </div>
+                <div
+                    @click="
+                        zoomLevel -= 0.5;
+                        zoomToScale(zoomLevel);
+                    "
+                    class="r-btn minus">
+                    <minusIcon width="24" height="4" />
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -22,12 +37,20 @@ import * as topojson from 'topojson';
 import { geoAlbers, geoEquirectangular, geoEqualEarth } from 'd3-geo';
 import { scaleSequential } from 'd3-scale';
 import { useCollaborationStore } from '../stores/collaborationStore';
+import { useSelectedCountries } from '../composables/useSelectedCountries';
 import { ref, watch, onMounted, defineProps, defineEmits, computed } from 'vue';
 import toggleBox from './toggle-box.vue';
 import countryCard from './country-card.vue';
 import collabCard from './collaboration-card.vue';
+import searchBar from './searchbar.vue';
+import plusIcon from '../assets/plus.svg';
+import minusIcon from '../assets/minus.svg';
 
-const emit = defineEmits(['country-clicked']);
+const useCountries = useSelectedCountries();
+const selectedCountries = useCountries.selectedCountries;
+const inCollabMode = useCountries.inCollabMode;
+
+// const emit = defineEmits(['country-clicked']);
 
 let svg, g, countryDataSet, pathGenerator, zoooom;
 
@@ -35,44 +58,52 @@ const collaborationStore = useCollaborationStore();
 const heatmapData = collaborationStore.heatmapData;
 
 const mitigation = ref('None');
-const selectedCountries = ref([]);
-const selectedCountry = ref('');
+const zoomLevel = ref(1);
 
 const width = window.innerWidth - 200;
 const height = window.innerHeight - 86;
 
-const inCollabMode = ref(false);
+const props = defineProps({
+    countries: {},
+});
+
+watch(
+    selectedCountries,
+    (newVal, oldVal) => {
+        if (!newVal[0]) {
+            unmarkAllSelectedCountries();
+            zoomToScale(1);
+        } else {
+            if (inCollabMode.value) {
+                markCollabCountry(selectedCountries.value[selectedCountries.value.length - 1]);
+            } else {
+                unmarkAllSelectedCountries();
+                markSelectCountry(selectedCountries.value[selectedCountries.value.length - 1]);
+            }
+        }
+
+        if (oldVal.length > newVal.length) {
+            const country = oldVal.filter((c) => !newVal.includes(c));
+            unmarkCollabCountry(useCountries.getCountryByName(country[0].properties.name));
+        }
+
+        if (selectedCountries.value.length < 1) {
+            useCountries.setCollabMode(false);
+        }
+    },
+    { deep: true }
+);
+
+watch(inCollabMode, (newVal) => {
+    if (newVal) {
+        markCollabCountry(selectedCountries.value[0]);
+    } else {
+        unmarkAllSelectedCountries();
+    }
+});
 
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
-};
-
-const handleUnselectCollab = (country) => {
-    unmarkCollabCountry(country);
-    selectedCountries.value = selectedCountries.value.filter((c) => c !== country);
-    if (selectedCountries.value.length < 1) {
-        inCollabMode.value = false;
-        selectedCountry.value = '';
-        zoomToScale(1);
-    }
-};
-
-const handleUnselectCard = () => {
-    unmarkAllSelectedCountries();
-    selectedCountries.value = [];
-    selectedCountry.value = '';
-    zoomToScale(1);
-};
-
-const handleCollabMode = () => {
-    inCollabMode.value = true;
-    markCollabCountry(selectedCountry.value);
-
-    // TODO: Suggest countries based on (selectedCountry OR selectedCountries[0] ???)
-};
-
-const handleCountryDetails = () => {
-    // TODO: Show more country details
 };
 
 onMounted(() => {
@@ -86,7 +117,6 @@ onMounted(() => {
         yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value);
 
         drawAllCountries(countryDataSet);
-        console.log(`New mitigation value: ${newValue}`);
         drawVerticalAxis();
     });
 
@@ -116,9 +146,7 @@ onMounted(() => {
     const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
 
     const colorScale = d3.scaleOrdinal();
-    //      const colorValue = (d) => d.properties.economy;
-    //      const colorValue = (d) => d.properties.continent ;
-    //      const colorValue = (d) => d.properties.income_grp ;
+
     const colorValue = function (d) {
         const nameLength = d.properties.name.length;
         const nameLengthCategory = nameLength < 6 ? 'Short' : 'Long' + ' ' + nameLength;
@@ -196,7 +224,7 @@ onMounted(() => {
             .append('rect')
             .merge(backgroundRect)
             .attr('x', 10 * 2)
-            .attr('y', 10 * -4)
+            .attr('y', 5)
             .attr('rx', 10 * 2)
             .attr('width', backgroundRectWidth)
             .attr('fill', 'white')
@@ -205,6 +233,7 @@ onMounted(() => {
 
     loadAndProcessData().then((countries) => {
         countryDataSet = countries;
+        useCountries.dataSet.value = countries.features;
         // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
         // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
         // the color scale - get min and max for the desired property from the heatmap data
@@ -246,7 +275,7 @@ onMounted(() => {
         // Add rectangle with gradient fill
         svg.append('rect')
             .attr('x', 40)
-            .attr('y', -50)
+            .attr('y', 0)
             .attr('width', 30)
             .attr('height', 300)
             .style('fill', 'url(#gradient)')
@@ -269,14 +298,14 @@ onMounted(() => {
 
         svg.append('g')
             .attr('id', 'legend-axis')
-            .attr('transform', 'translate(75, 450) scale(1)') // Position the axis; adjust as needed
+            .attr('transform', 'translate(75, 500) scale(1)') // Position the axis; adjust as needed
             .call(yAxis);
         removeElementIfExists('legend-axis-title');
         svg.append('text')
             .attr('id', 'legend-axis-title')
             .attr('transform', 'rotate(-90)') // Rotate the text for vertical axis
-            .attr('y', 10) // Position it 40 pixels to the left of the axis
-            .attr('x', -610) // Position it at the middle of the axis
+            .attr('y', 13) // Position it 40 pixels to the left of the axis
+            .attr('x', -660) // Position it at the middle of the axis
             .attr('dy', '1em') // Adjustments for positioning
             .style('text-anchor', 'middle') // Center the text
             .text(mitigation.value);
@@ -395,6 +424,7 @@ onMounted(() => {
 function zoomed(event) {
     g.selectAll('path').attr('transform', event.transform); // Apply the zoom transform to map elements
 }
+
 // Function to zoom to a specific country
 function zoomToCountry(event, d) {
     // Calculate the bounding box of the selected feature
@@ -434,11 +464,18 @@ function markCollabCountry(country) {
         .classed('selected-country-collab', true);
 }
 
+function markSelectCountry(country) {
+    getCountryNodes()
+        .filter((c) => country.id === c.id)
+        .classed('selected-country', true)
+        .classed('selected-country-collab', false);
+}
+
 function unmarkAllSelectedCountries() {
-    //countryNodes = g.selectAll('path').data(countryDataSet.features);
     getCountryNodes()
         .filter((d) => selectedCountries.value.id !== d.id)
-        .classed('selected-country', false);
+        .classed('selected-country', false)
+        .classed('selected-country-collab', false);
 }
 
 function unmarkCollabCountry(country) {
@@ -458,39 +495,17 @@ function handleMouseLeave() {
 }
 
 function handleCountryClick(event, d) {
-    if (!inCollabMode.value) zoomToCountry(event, d);
-    toggleCountrySelection(d, d3.select(this));
-
-    emit('country-clicked', d);
-}
-
-// Function to toggle country selection
-function toggleCountrySelection(d, countryPath) {
-    if (selectedCountry.value === d.properties || selectedCountries.value.includes(d)) {
-        return;
-    }
-
-    if (inCollabMode.value) {
-        countryPath.classed('selected-country', false);
-        countryPath.classed('selected-country-collab', true);
-    } else {
+    if (!inCollabMode.value) {
         unmarkAllSelectedCountries();
-        selectedCountries.value = [];
-        selectedCountry.value = d;
-        countryPath.classed('selected-country-collab', false);
-        countryPath.classed('selected-country', true);
+        useCountries.setCountry(d);
+        zoomToCountry(event, d);
+    } else {
+        useCountries.addCountry(d);
     }
-
-    selectedCountries.value.push(d);
 }
 </script>
 
 <style>
-.country {
-    stroke: black;
-    stroke-width: 0.05px;
-}
-
 .hover-country {
     stroke: lightblue;
     stroke-width: 1.75px;
@@ -547,6 +562,16 @@ p {
     /* Add any other styling you need */
 }
 
+.search-box {
+    position: absolute;
+    top: 136px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+}
+
 .toggle-box {
     position: absolute;
     top: 250px;
@@ -563,5 +588,30 @@ p {
     position: absolute;
     bottom: 20px;
     margin-left: 120px;
+}
+
+.zoom-box {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+}
+
+.zoom-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.r-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50px;
+    background-color: white;
+    color: #214b63;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px 0px #214b6352;
 }
 </style>

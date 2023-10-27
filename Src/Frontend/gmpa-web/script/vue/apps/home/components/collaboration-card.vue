@@ -1,20 +1,31 @@
 <template>
     <div class="collab-card">
-        <div class="title">Select multiple countries to view collaboration potentials</div>
+        <div class="card-top">
+            <div class="title">Select multiple countries to view collaboration potentials</div>
+            <closeIcon
+                class="close-btn"
+                alt="close-button"
+                height="24"
+                width="24"
+                @click="
+                    useCountries.resetCountries();
+                    useCountries.setCollabMode(false);
+                " />
+        </div>
         <div class="flex-collab">
             <div class="countries-collab-list">
-                <div v-for="country in countriesList" :key="country">
+                <div v-for="country in selectedCountries" :key="country">
                     <div class="small-card">
                         <div>{{ country.properties.name }}</div>
                         <closeIcon
                             width="24"
                             height="24"
                             style="cursor: pointer"
-                            @click="emit('country-closed', country)" />
+                            @click="useCountries.removeCountry(country)" />
                     </div>
                 </div>
             </div>
-            <button v-if="countriesList.length > 1" class="benefits-btn">View benefits</button>
+            <button v-if="selectedCountries.length > 1" class="benefits-btn">View benefits</button>
         </div>
         <div class="suggestions-container">
             <div style="font-weight: 500">Our suggestions</div>
@@ -25,7 +36,19 @@
         </div>
         <div class="suggestion-country-container">
             <div v-for="n in 2" :key="n">
-                <div class="suggestion-country-boxes">Suggestion {{ n }}</div>
+                <div class="suggestion-country-boxes">
+                    <input
+                        :id="n"
+                        type="checkbox"
+                        :name="`checkbox-${n}`"
+                        :value="n"
+                        class="checkbox" />
+                    <div class="label-box">
+                        <div class="label-title">Country {{ n }}</div>
+                        <div class="label-subtitle">Data with filters from country {{ n }}</div>
+                    </div>
+                    <div class="other-info"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -33,14 +56,12 @@
 
 <script setup>
 import { ref, onMounted, watch, defineProps } from 'vue';
+import { useSelectedCountries } from '../composables/useSelectedCountries';
 import closeIcon from '../assets/cross.svg';
 import filterIcon from '../assets/filter.svg';
 
-const emit = defineEmits(['country-closed']);
-
-const props = defineProps({
-    countriesList: [],
-});
+const useCountries = useSelectedCountries();
+const selectedCountries = useCountries.selectedCountries;
 </script>
 
 <style scoped>
@@ -125,10 +146,47 @@ const props = defineProps({
 }
 
 .suggestion-country-boxes {
+    flex: 1;
+    display: flex;
+    flex: auto;
+    align-items: center;
     border: 1px solid #f07004;
     border-radius: 4px;
     gap: 16px;
     height: 60px;
-    width: 315px;
+    width: 340px;
+    padding: 8px 12px;
+}
+
+.checkbox {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+}
+
+.label-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.label-title {
+    color: #214b63;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.label-subtitle {
+    font-size: 14px;
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #214b63;
+}
+
+.close-btn {
+    cursor: pointer;
 }
 </style>
