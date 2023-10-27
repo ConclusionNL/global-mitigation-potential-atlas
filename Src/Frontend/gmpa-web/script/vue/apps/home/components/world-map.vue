@@ -33,7 +33,7 @@
     <div class="modal" v-if="stackedAreaModalVisible">
         <div class="modal-content">
             <a href="#" class="close-link" @click="closeModal">Close</a>
-            <collaborationStackedAreaChart :countries-list="selectedCountries" />
+            <mitigationPotentialDiagram :countries-list="selectedCountries" />
         </div>
     </div>
 </template>
@@ -51,7 +51,8 @@ import collabCard from './collaboration-card.vue';
 import searchBar from './searchbar.vue';
 import plusIcon from '../assets/plus.svg';
 import minusIcon from '../assets/minus.svg';
-import collaborationStackedAreaChart from './collaboration-stacked-area-chart.vue';
+
+import mitigationPotentialDiagram from './mitigation-potential-diagram.vue';
 
 const emit = defineEmits(['country-clicked']);
 
