@@ -12,6 +12,8 @@ export const useCollaborationStore = defineStore('collaboration', () => {
     const fakeDataSet = ref(fakeRecords);
     const heatmapData = ref(heatmapRecords);
     let dataSet = ref([]);
+    let collaborations; // an array that contains string arrays with country codes for collaborating countries. each entry looks like [countryA], [countryB], ... (with up to four countries)
+
 
     const prepareData = async (countries) => {
         console.log(`prepare data ${countries}`);
@@ -27,12 +29,42 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         // this is how you can add data in store's state this.myData = {prop:42}
     };
 
+        
+    const prepareCountryCollaborations = async () => {
+        collaborations = identifyAllCountryCollaborations(collaborationData.value)
+    };
+
+      // given an array list of two letter country codes, what are the countries that have a potential collaboration with each of these countries?
+      const findCollaboratingCountries = (collaboratingCountries) => {
+        const result = [];
+        
+        for (const entry of collaborations) { // loop over all combinations of country collaborations (possibly with duplicates)
+          let match = true;
+          
+          for (const country of collaboratingCountries) { // loop over countries in the current collaboration set; this set can be empty; in the latter case, all countries are candidate and can be selected
+            if (!entry.includes(country)) { 
+              match = false;
+              break;
+            }
+          }          
+          if (match) {
+            for (const string of entry) {
+              if (!result.includes(string) && !collaboratingCountries.includes(string)) {
+                result.push(string);
+              }
+            }
+          }
+        }        
+        return result;
+      }
     return {
         collaborationData,
         fakeDataSet,
         heatmapData,
         dataSet,
         prepareData,
+        prepareCountryCollaborations,
+        findCollaboratingCountries
     };
 });
 
@@ -98,6 +130,19 @@ const prepareCollaborationData = (raw, countries) => {
     prepareFakeData(data);
     return data;
 };
+
+// return an array of arrays of two letter country codes of potentially collaborating countries
+// result can be [['ID','SG'], ['ID','PH'], ['ID','PH,'SG']]
+function identifyAllCountryCollaborations(raw) {
+    const collaborations = []
+  
+    for (const rec of raw) {
+      const collaboratingCountries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
+      const collabKey = deriveCountryKey(collaboratingCountries)
+      if (!collaborations.includes(collabKey)) collaborations.push(collabKey)
+    }
+    return collaborations.map(str => str.match(/.{1,2}/g) || []); // return an array of two letter string arrays
+  }
 
 const prepareFakeData = (data) => {
     data.sort((a, b) => d3.ascending(a.x, b.x));

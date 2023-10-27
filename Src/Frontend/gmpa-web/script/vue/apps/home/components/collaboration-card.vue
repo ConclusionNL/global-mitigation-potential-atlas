@@ -2,30 +2,23 @@
     <div class="collab-card">
         <div class="card-top">
             <div class="title">Select multiple countries to view collaboration potentials</div>
-            <closeIcon
-                class="close-btn"
-                alt="close-button"
-                height="24"
-                width="24"
-                @click="
-                    useCountries.resetCountries();
-                    useCountries.setCollabMode(false);
-                " />
+            <closeIcon class="close-btn" alt="close-button" height="24" width="24" @click="
+                useCountries.resetCountries();
+            useCountries.setCollabMode(false);
+            " />
         </div>
         <div class="flex-collab">
             <div class="countries-collab-list">
                 <div v-for="country in selectedCountries" :key="country">
                     <div class="small-card">
                         <div>{{ country.properties.name }}</div>
-                        <closeIcon
-                            width="24"
-                            height="24"
-                            style="cursor: pointer"
+                        <closeIcon width="24" height="24" style="cursor: pointer"
                             @click="useCountries.removeCountry(country)" />
                     </div>
                 </div>
             </div>
-            <button v-if="selectedCountries.length > 1" class="benefits-btn">View benefits</button>
+            <button v-if="selectedCountries.length > 1" class="benefits-btn" @click="emit('show-benefits')">View
+                benefits</button>
         </div>
         <div class="suggestions-container">
             <div style="font-weight: 500">Our suggestions</div>
@@ -35,17 +28,15 @@
             </div>
         </div>
         <div class="suggestion-country-container">
-            <div v-for="n in 2" :key="n">
+            <div v-for="collaborationCandidate in collaborationCandidatesList" :key="n">
                 <div class="suggestion-country-boxes">
-                    <input
-                        :id="n"
-                        type="checkbox"
-                        :name="`checkbox-${n}`"
-                        :value="n"
-                        class="checkbox" />
+                    <input :id="collaborationCandidate.id" type="checkbox" :name="`checkbox-${n}`"
+                        :value="collaborationCandidate" class="checkbox"
+                        @change="useCountries.addCountry(collaborationCandidate)" />
                     <div class="label-box">
-                        <div class="label-title">Country {{ n }}</div>
-                        <div class="label-subtitle">Data with filters from country {{ n }}</div>
+                        <div class="label-title">{{ collaborationCandidate.properties.name }}</div>
+                        <!--                        <div class="label-subtitle">Data with filters from country {{ collaborationCandidate.properties.iso_a2 }}</div>
+-->
                     </div>
                     <div class="other-info"></div>
                 </div>
@@ -62,6 +53,11 @@ import filterIcon from '../assets/filter.svg';
 
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
+const emit = defineEmits(['show-benefits']);
+
+const props = defineProps({
+    collaborationCandidatesList: []
+});
 </script>
 
 <style scoped>

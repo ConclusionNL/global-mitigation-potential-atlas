@@ -1,14 +1,9 @@
 <template>
     <div class="mitigation-card">
         <div v-for="(mitigation, i) in mitgiationList" :key="i" class="radio-text">
-            <input
-                :id="mitigation"
-                :checked="i == 0"
-                type="radio"
-                :value="mitigation"
-                name="mitigation"
+            <input :id="mitigation" :checked="i == 0" type="radio" :value="mitigation" name="mitigation"
                 @change="selectedMitigation = mitigation" />
-            <label :for="mitigation">{{ mitigation }}</label>
+            <label :for="mitigation">{{ mitigation.replace(/_/g, " ") }}</label>
         </div>
     </div>
 </template>

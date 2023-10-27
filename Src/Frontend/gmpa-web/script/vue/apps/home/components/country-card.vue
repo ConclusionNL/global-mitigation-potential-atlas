@@ -10,9 +10,25 @@
                 @click="useCountries.resetCountries()" />
         </div>
         <div class="card-data-spacing">
-            <div v-for="n in 3" :key="n" class="data">
-                <div>Mitigation Type</div>
-                <div>1$gbpt</div>
+            <div key="1" class="data">
+                <div>Mitigation Potential(GtCO2e)</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)'] }}</div>
+            </div>
+            <div key="2" class="data">
+                <div>Mitigation Cost($/GtCO2e)</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Cost($/GtCO2e)'] }}</div>
+            </div>
+            <div key="3" class="data">
+                <div>Mitigation Potential(GtCO2e) at 50</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_50'] }}</div>
+            </div>
+            <div key="4" class="data">
+                <div>Mitigation Potential(GtCO2e) at 100</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_100'] }}</div>
+            </div>
+            <div key="5" class="data">
+                <div>Mitigation Potential(GtCO2e) at 200</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_200'] }}</div>
             </div>
         </div>
         <div class="card-buttons">
@@ -40,7 +56,7 @@ const emit = defineEmits(['country-details']);
 <style scoped>
 .country-card {
     padding: 24px 32px;
-    height: 249px;
+    height: 289px;
     width: 480px;
     background-color: white;
     border-radius: 8px;

@@ -5,27 +5,28 @@
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
         <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box" />
-        <collabCard
-            v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
-            class="countries-box" />
+        <collabCard v-if="inCollabMode && selectedCountries && selectedCountries.length > 0" class="countries-box" 
+            :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)" @show-benefits="stackedAreaModalVisible=true"/>
         <div class="zoom-box">
             <div class="zoom-flex">
-                <div
-                    @click="
-                        zoomLevel += 0.5;
-                        zoomToScale(zoomLevel);
-                    "
-                    class="r-btn plus">
+                <div @click="
+                    zoomLevel += 0.5;
+                zoomToScale(zoomLevel);
+                " class="r-btn plus">
                     <plusIcon width="24" height="24" />
                 </div>
-                <div
-                    @click="
-                        zoomLevel -= 0.5;
-                        zoomToScale(zoomLevel);
-                    "
-                    class="r-btn minus">
+                <div @click="
+                    zoomLevel -= 0.5;
+                zoomToScale(zoomLevel);
+                " class="r-btn minus">
                     <minusIcon width="24" height="4" />
                 </div>
+            </div>
+        </div>
+        <div class="modal" v-if="stackedAreaModalVisible">
+            <div class="modal-content">
+                <a href="#" class="close-link" @click="closeModal">Close</a>
+                <mitigationPotentialDiagram :countries-list="selectedCountries" />
             </div>
         </div>
     </div>
@@ -45,10 +46,14 @@ import collabCard from './collaboration-card.vue';
 import searchBar from './searchbar.vue';
 import plusIcon from '../assets/plus.svg';
 import minusIcon from '../assets/minus.svg';
+import mitigationPotentialDiagram from './mitigation-potential-diagram.vue';
 
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 const inCollabMode = useCountries.inCollabMode;
+
+const stackedAreaModalVisible = ref(false)
+const closeModal = () => stackedAreaModalVisible.value=false
 
 // const emit = defineEmits(['country-clicked']);
 
@@ -66,6 +71,25 @@ const height = window.innerHeight - 86;
 const props = defineProps({
     countries: {},
 });
+
+function highlightCollaborationCandidates() {
+    const selectedCountryCodes = selectedCountries.value.map(country => country.properties.iso_a2)
+    const collaborationCandidateCountryCodes = collaborationStore.findCollaboratingCountries(selectedCountryCodes)
+    // unhighlight all currently highlighted collaboration candidates
+    getCountryNodes()
+        .classed('suggested-country-collab', false);
+    // given the the currently selected countries in selectedCountries
+    // find the collaboration candidates and highlight each of them;
+    if (collaborationCandidateCountryCodes.length > 0 && inCollabMode.value) {
+        getCountryNodes()
+            .filter((d) => collaborationCandidateCountryCodes.includes(d.properties.iso_a2))
+            .classed('suggested-country-collab', true);
+    }
+}
+const handleChangeInCountriesSelection = () => {
+    highlightCollaborationCandidates()
+    zoomInOnSelectedCountries()
+}
 
 watch(
     selectedCountries,
@@ -90,6 +114,7 @@ watch(
         if (selectedCountries.value.length < 1) {
             useCountries.setCollabMode(false);
         }
+        handleChangeInCountriesSelection()
     },
     { deep: true }
 );
@@ -97,6 +122,7 @@ watch(
 watch(inCollabMode, (newVal) => {
     if (newVal) {
         markCollabCountry(selectedCountries.value[0]);
+        highlightCollaborationCandidates();
     } else {
         unmarkAllSelectedCountries();
     }
@@ -105,14 +131,19 @@ watch(inCollabMode, (newVal) => {
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
 };
+const findCollaboratingCandidates = (selectedCountries) => {
+    let collaborationCandidateCountries = []
+    if (selectedCountries.length > 0) {
+        const selectedCountryCodes = selectedCountries.map(country => country.properties.iso_a2)
+        const collaborationCandidateCountryCodes = collaborationStore.findCollaboratingCountries(selectedCountryCodes)
+        // create an array of country objects for the countries whose code is in collaborationCandidateCountryCodes
+        collaborationCandidateCountries = countryDataSet.features.filter((c) => collaborationCandidateCountryCodes.includes(c.properties.iso_a2))
+    }
+    return collaborationCandidateCountries
+}
 
 onMounted(() => {
     watch(mitigation, (newValue) => {
-        // WHAT SHOULD HAPPEN WHEN THE TOGGLEBOX IS UPDATED?
-        // redefine colorScale2
-        // redraw countries
-        // redefine color legend
-
         colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value);
         yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value);
 
@@ -120,6 +151,7 @@ onMounted(() => {
         drawVerticalAxis();
     });
 
+    
     const t0 = { k: width / 2 / Math.PI, x: width / 2, y: height / 2 };
     svg = d3
         .select('#mapcontainer')
@@ -144,14 +176,6 @@ onMounted(() => {
     const colorLegendG = svg.append('g').attr('transform', `translate(40,310)`);
 
     const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
-
-    const colorScale = d3.scaleOrdinal();
-
-    const colorValue = function (d) {
-        const nameLength = d.properties.name.length;
-        const nameLengthCategory = nameLength < 6 ? 'Short' : 'Long' + ' ' + nameLength;
-        return d.properties.continent;
-    };
 
     let colorScale2, yAxisScale;
 
@@ -190,9 +214,6 @@ onMounted(() => {
             countries.features.forEach((d) => {
                 // add all country properties from the TSV file to the features of the countries
                 Object.assign(d.properties, rowById[d.id]);
-                const nameLength = parseInt(d.properties.name_len);
-                d.properties['nameLengthCategory'] =
-                    nameLength < 6 ? 'Short' : 'Long' + ' ' + nameLength;
 
                 // using the ISo2 country code (iso_a2), check heatmapData array for an object with the right COUnTRY property value
                 const countryCode = d.properties.iso_a2;
@@ -205,6 +226,8 @@ onMounted(() => {
                                 d.properties[key] = c[key];
                             }
                         }
+                              // set the property in_heatmap to true to indicate that there is heatmap data for this country 
+                              d.properties['in_heatmap'] = true
                     });
 
                 // todo - these properties are added in a not very efficient way
@@ -233,15 +256,11 @@ onMounted(() => {
 
     loadAndProcessData().then((countries) => {
         countryDataSet = countries;
+        collaborationStore.prepareCountryCollaborations()
         useCountries.dataSet.value = countries.features;
         // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
         // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
         // the color scale - get min and max for the desired property from the heatmap data
-
-        colorScale
-            .domain(countries.features.map(colorValue))
-            .domain(colorScale.domain().sort().reverse())
-            .range(d3.schemeSpectral[colorScale.domain().length]);
         heatmapLegendG.call(heatmapLegend, {
             spacing: 30,
             textOffset: 15,
@@ -308,7 +327,7 @@ onMounted(() => {
             .attr('x', -660) // Position it at the middle of the axis
             .attr('dy', '1em') // Adjustments for positioning
             .style('text-anchor', 'middle') // Center the text
-            .text(mitigation.value);
+            .text(mitigation.value.replace(/_/g, " "));
     }
 
     function drawAllCountries(countries) {
@@ -317,9 +336,12 @@ onMounted(() => {
         countryNodes
             // fill with gray (#dcdcdc) when the country's data is unknown
             .attr('fill', (d) =>
-                d.properties.hasOwnProperty(mitigation.value)
+                d.properties['in_heatmap']
+                ? ( d.properties.hasOwnProperty(mitigation.value)
                     ? colorScale2(d.properties[mitigation.value])
-                    : '#dcdcdc'
+                    : "#ffffff"
+                  )
+                : '#dcdcdc'
             )
             .select('title') // Select the child title of each path
             .text(
@@ -337,9 +359,12 @@ onMounted(() => {
             .attr('d', pathGenerator)
             // fill with gray (#dcdcdc) when the country's data is unknown
             .attr('fill', (d) =>
-                d.properties.hasOwnProperty(mitigation.value)
+            d.properties['in_heatmap']
+                ? ( d.properties.hasOwnProperty(mitigation.value)
                     ? colorScale2(d.properties[mitigation.value])
-                    : '#dcdcdc'
+                    : "#ffffff"
+                  )
+                : '#dcdcdc'
             )
             .on('mouseover', handleMouseOver)
             .on('mouseleave', handleMouseLeave)
@@ -495,12 +520,55 @@ function handleMouseLeave() {
 }
 
 function handleCountryClick(event, d) {
+    // ignore click for unsupported countries
+    if (!d.properties['in_heatmap']) return;
+    // if we are in collabmode, then only process the click if the clicked country is in the set of collaboration candidates
     if (!inCollabMode.value) {
         unmarkAllSelectedCountries();
+
         useCountries.setCountry(d);
         zoomToCountry(event, d);
     } else {
+        // if the user clicked on a countrythat is not a collaboration candidate, then do not process the click
+        const selectedCountryCodes = selectedCountries.value.map(country => country.properties.iso_a2)
+        const collaborationCandidateCountryCodes = collaborationStore.findCollaboratingCountries(selectedCountryCodes)
+        if (collaborationCandidateCountryCodes.length == 0 || !collaborationCandidateCountryCodes.includes(d.properties.iso_a2))   
+          return       
+        
         useCountries.addCountry(d);
+    }
+}
+
+function zoomInOnSelectedCountries() {
+    if (selectedCountries.value.length > 0) {
+        console.log(`after drawing all countries let 's mark  each and zoom in on the combination'`)
+        var minX = Number.POSITIVE_INFINITY;
+        var minY = Number.POSITIVE_INFINITY;
+        var maxX = Number.NEGATIVE_INFINITY;
+        var maxY = Number.NEGATIVE_INFINITY;
+        selectedCountries.value.forEach((c) => {
+            var selectedCountryGeoJSON = countryDataSet.features.filter((d) => d.id == c.id)
+            // Calculate zoom parameters
+            //                var bounds = d3.geoBounds(selectedCountryGeoJSON[0]);
+            const bounds = pathGenerator.bounds(selectedCountryGeoJSON[0]);
+            minX = Math.min(minX, bounds[0][0]);
+            minY = Math.min(minY, bounds[0][1]);
+            maxX = Math.max(maxX, bounds[1][0]);
+            maxY = Math.max(maxY, bounds[1][1]);
+        })
+        const dx = maxX - minX;
+        const dy = maxY - minY;
+        const x = (minX + maxX) / 2;
+        const y = (minY + maxY) / 2;
+        const scale = Math.max(1, Math.min(3, 0.9 / Math.max(dx / width, dy / height)));
+        // Transition to the selected feature's position and scale
+        svg.transition()
+            .duration(750)
+            .call(zoooom.transform, d3.zoomIdentity
+                .translate(width / 2, height / 2)
+                .scale(scale)
+                .translate(-x, -y)
+            );
     }
 }
 </script>
@@ -511,7 +579,13 @@ function handleCountryClick(event, d) {
     stroke-width: 1.75px;
 }
 
-/* Style for selected country */
+.suggested-country-collab {
+    fill: #e081b4;
+    fill-opacity: 0.6;
+    stroke: #833d04;
+    stroke-width: 1px;
+}
+
 .selected-country {
     fill: #95ad28;
     stroke: white;
@@ -613,5 +687,33 @@ p {
     color: #214b63;
     cursor: pointer;
     box-shadow: 0px 4px 8px 0px #214b6352;
+}
+
+.modal {
+    display: block;
+    /* Initially hidden */
+    position: fixed;
+    top: 5%;
+    left: 10%;
+    width: 85%;
+    height: 90%;
+    background: rgba(249, 245, 245, 0.9);
+    /* Semi-transparent background */
+    z-index: 1000;
+    /* Ensure the modal is on top of other content */
+    overflow: auto;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fff;
+    /* Background color for the modal */
+    margin: 5% auto;
+    /* Center the modal vertically */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-width: 95%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 </style>
