@@ -48,25 +48,6 @@ const props = defineProps({
     countriesList: [], collaborationCandidatesList: []
 });
 
-
-watch(() => props.countriesList, (newValue, oldValue) => {
-    console.log(`Prop changed from ${oldValue} to ${newValue}`);
-});
-
-const handleCheckboxChange = (event) => {
-    const checkboxValue = event.target.value;
-    const checkboxId = event.target.id;
-console.log(`collab cands ${props.countriesList}`)
-    if (event.target.checked) {
-        console.log(`Checkbox with value ${checkboxValue} and id ${checkboxId} is checked`);
-        // Perform actions or invoke your handler here with checkboxValue or checkboxId
-
-        emit('country-added', checkboxValue)
-    } else {
-        console.log(`Checkbox with value ${checkboxValue} and id ${checkboxId} is unchecked`);
-        // Handle when the checkbox is unchecked
-    }
-};
 </script>
 
 <style scoped>
