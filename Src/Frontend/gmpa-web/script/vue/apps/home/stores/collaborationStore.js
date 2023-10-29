@@ -20,8 +20,6 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
 
     const prepareData = async (countries) => {
-        console.log(`prepare data ${countries}`);
-
         if (countries.includes('FAKE')) {
             const data = JSON.parse(JSON.stringify(fakeDataSet.value));
             prepareFakeData(data);
@@ -29,8 +27,6 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         } else {
             dataSet.value = prepareCollaborationData(collaborationData.value, countries);
         }
-        console.log(`this data set ${dataSet.value}`);
-        // this is how you can add data in store's state this.myData = {prop:42}
         return dataSet.value;
     };
 
