@@ -61,12 +61,11 @@
                     <div class="title">View Country Statistics</div>
                 </div>
                 <div class="country-navigations">
-                    <div class="country-navigation">
-                            Vietnam ->
-                        </div>
+                    <div v-for="country in selectedCountries" :key="country">
                         <div class="country-navigation">
-                            Thailand ->
+                            {{ country.properties.name }} ->
                         </div>
+                    </div>
                     <button class="benefits-btn" @click="emit('show-benefits')">Show
                         Mitigation Potential Diagram</button>
                 </div>
@@ -244,6 +243,7 @@ const props = defineProps({
     align-items: center;
     color: #214b63;
 }
+
 .close-btn {
     cursor: pointer;
 }
