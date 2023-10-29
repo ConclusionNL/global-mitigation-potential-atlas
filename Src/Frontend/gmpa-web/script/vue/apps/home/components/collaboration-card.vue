@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="suggestion-country-container">
-                <div v-for="collaborationCandidate in collaborationCandidatesList" :key="n">
+                <div v-for="collaborationCandidate in collaborationCandidatesList" :key="collaborationCandidate.id">
                     <div class="suggestion-country-boxes">
                         <input :id="collaborationCandidate.id" type="checkbox" :name="`checkbox-${n}`"
                             :value="collaborationCandidate" class="checkbox"
@@ -49,10 +49,14 @@
         <div class="benefits-card" v-if="!showComposeCollaborationSet">
             <a @click="showComposeCollaborationSet = true">Back </a>
             <div class="suggestion-country-container">
-                <div class="card-top">
-                    <div class="title">Cost of achieving maximum mitigation potential in <span
-                            class="selected-collaboration">{{ selectedCountries.map(country =>
-                                country.properties.name).join(', ') }}</span> in autarky vs collaboration</div>
+                <div>
+                    <div class="card-top">
+                        <div class="title">Cost of achieving maximum mitigation potential in <span
+                                class="selected-collaboration">{{ selectedCountries.map(country =>
+                                    country.properties.name).join(', ') }}</span> in autarky vs collaboration</div>
+
+                    </div>
+                    <maximumPitigationPotentialGauge :countriesList="selectedCountries" />
                 </div>
                 <div class="card-top">
                     <div class="title">Coalition Maximum Mitigation Potential (Absolute with Collaboration)</div>
@@ -63,7 +67,7 @@
                 <div class="country-navigations">
                     <div v-for="country in selectedCountries" :key="country">
                         <div class="country-navigation">
-                            {{ country.properties.name }} ->
+                            <a @click="emit('country-navigation', country)">{{ country.properties.name }} -></a>
                         </div>
                     </div>
                     <button class="benefits-btn" @click="emit('show-benefits')">Show
@@ -79,10 +83,11 @@ import { ref, onMounted, watch, defineProps } from 'vue';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
 import closeIcon from '../assets/cross.svg';
 import filterIcon from '../assets/filter.svg';
+import maximumPitigationPotentialGauge from './maximum-mitigation-potential-gauge.vue';
 
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
-const emit = defineEmits(['show-benefits']);
+const emit = defineEmits(['show-benefits', 'country-navigation']);
 const showComposeCollaborationSet = ref(true)
 
 const props = defineProps({
@@ -180,7 +185,7 @@ const props = defineProps({
     border-radius: 4px;
     cursor: pointer;
     font-weight: 600;
-    height: 48px;
+    height: 68px;
     font-size: 16px;
     width: fit-content;
     color: #f07004;
@@ -188,6 +193,7 @@ const props = defineProps({
     background-color: white;
     padding: 12px 16px;
     flex-shrink: 0;
+    margin-top: 20px;
 }
 
 .suggestion-country-container {
