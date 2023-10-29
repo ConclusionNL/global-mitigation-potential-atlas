@@ -1,16 +1,16 @@
 ﻿<template>
     <h1><span class="selected-collaboration">{{selectedCollaboration}}</span>'s Mitigation Potential Diagram 2030/2050</h1>
 
-    <label for="countrySelect">Select a Country:</label>
+    <label for="countrySelect">Select one Country or Full collaboration:</label>
     <select id="countrySelect" v-model="selectedCountry" @change="handleCountryChange" class="select-element">
         <option v-for="option in selectListOptions.concat(countriesList.map(country => ({
             label: country.properties.name,
             value: country,
-        })))" :key="n" :value="option.value">
+        })))"  :value="option.value">
             {{ option.label }}
         </option>
     </select>
-    <collaborationStackedAreaChart />
+    <collaborationStackedAreaChart :collaborationCountriesList="collaborationCountriesList" @technologySelected="handleTechnologySelected"/>
 </template>
 
 <script setup>
@@ -24,6 +24,10 @@ const emit = defineEmits(['technology-selected']);
 const props = defineProps({
     countriesList: []
 });
+const handleTechnologySelected = (payload) => {
+      // Access the payload passed to the event handler
+      console.log(`Technology selected: ${JSON.stringify(payload)}`);
+    }
 
 const selectedCountry = ref({"value":"all"})
 const selectListOptions = ref([{ "label": "Full Collaboration", "value": "all" }])
@@ -35,16 +39,13 @@ const selectedCollaboration = computed(() => {
     else return selectedCountry.value.properties.name
 });
 
+const collaborationCountriesList = computed(() => {
+    if (selectedCountry.value == 'all'||selectedCountry.value.value == 'all') {
+        return props.countriesList
+    }
+    else return [selectedCountry.value]
+});
 
-// const handleCountryChange = () => {
-//     // This method is invoked when the user selects a country
-//     // You can access the selected country object as this.selectedCountry
-//     if (selectedCountry) {
-//         console.log('Selected Country:', selectedCountry.value);
-//         console.log('Selected Country:', selectedCountry.label);
-//         // Perform actions or invoke your handler function here
-//     }
-// }
 </script>
 
 <style>

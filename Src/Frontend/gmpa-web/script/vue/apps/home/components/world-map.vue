@@ -23,8 +23,8 @@
                 </div>
             </div>
         </div>
-        <div class="modal" v-if="stackedAreaModalVisible">
-            <div class="modal-content">
+        <div class="modal-diagram" v-if="stackedAreaModalVisible">
+            <div class="modal-diagram-content">
                 <a href="#" class="close-link" @click="closeModal">Close</a>
                 <mitigationPotentialDiagram :countries-list="selectedCountries" />
             </div>
@@ -689,31 +689,33 @@ p {
     box-shadow: 0px 4px 8px 0px #214b6352;
 }
 
-.modal {
+.modal-diagram {
     display: block;
     /* Initially hidden */
     position: fixed;
-    top: 5%;
+    top: 3%;
     left: 10%;
     width: 85%;
-    height: 90%;
-    background: rgba(249, 245, 245, 0.9);
+    height: 95%;
+    background: rgba(255, 255, 255, 0.95);
     /* Semi-transparent background */
-    z-index: 1000;
+    z-index: 1500;
     /* Ensure the modal is on top of other content */
     overflow: auto;
+    padding: 2px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-width: 85%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+
 }
 
 /* Modal Content */
-.modal-content {
+.modal-diagram-content {
     background-color: #fff;
-    /* Background color for the modal */
-    margin: 5% auto;
-    /* Center the modal vertically */
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    max-width: 95%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 1% ; 
+    padding: 1px;
+    border: 0px;
+
 }
 </style>
