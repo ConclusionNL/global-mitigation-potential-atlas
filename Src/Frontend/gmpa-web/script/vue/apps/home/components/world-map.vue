@@ -6,7 +6,8 @@
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
         <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box" />
         <collabCard v-if="inCollabMode && selectedCountries && selectedCountries.length > 0" class="countries-box" 
-            :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)" @show-benefits="stackedAreaModalVisible=true"/>
+            :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)" @show-benefits="stackedAreaModalVisible=true"
+            @countryNavigation="console.log(`country selected for navigation in collab card`)"/>
         <div class="zoom-box">
             <div class="zoom-flex">
                 <div @click="
@@ -26,7 +27,7 @@
         <div class="modal-diagram" v-if="stackedAreaModalVisible">
             <div class="modal-diagram-content">
                 <a href="#" class="close-link" @click="closeModal">Close</a>
-                <mitigationPotentialDiagram :countries-list="selectedCountries" />
+                <mitigationPotentialDiagram :countries-list="selectedCountries" @technologySelected="console.log(`technoogy selected in mitigation potential diagram`)"/>
             </div>
         </div>
     </div>
@@ -541,7 +542,6 @@ function handleCountryClick(event, d) {
 
 function zoomInOnSelectedCountries() {
     if (selectedCountries.value.length > 0) {
-        console.log(`after drawing all countries let 's mark  each and zoom in on the combination'`)
         var minX = Number.POSITIVE_INFINITY;
         var minY = Number.POSITIVE_INFINITY;
         var maxX = Number.NEGATIVE_INFINITY;
