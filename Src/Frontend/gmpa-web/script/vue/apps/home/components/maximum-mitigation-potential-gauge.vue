@@ -11,8 +11,8 @@ import * as d3 from 'd3';
 const props = defineProps({
     countriesList: []
 })
-const svgWidth = 340;
-const svgHeight = 120;
+const svgWidth = 420;
+const svgHeight = 180;
 
 onMounted(() => {
     setupGauge(props.countriesList)
@@ -20,7 +20,7 @@ onMounted(() => {
 
 const setupGauge = async (countriesList) => {
 
-    const maxValue = 220
+    const maxValue = 250
     const highValue = 160
     const lowValue = 110
 
@@ -94,7 +94,7 @@ const setupGauge = async (countriesList) => {
         .attr("y", 50)
         ;
 
-      
+
 
 
     // Create a symbol generator for triangles
@@ -115,8 +115,8 @@ const setupGauge = async (countriesList) => {
         .attr("fill", emptyFillColor)
         .attr("stroke", highValueFillColor) // Add a dark blue outline
         .attr("stroke-width", borderThickness);    // Adjust the outline width
-  // highvalue balloon
-  balloonArea.append("rect")
+    // highvalue balloon
+    balloonArea.append("rect")
         .attr("width", balloonWidth)
         .attr("height", 40)
         .attr("x", rectWidth * highPercentage - 30)
@@ -158,7 +158,7 @@ const setupGauge = async (countriesList) => {
         .append("rect")
         .attr("width", cornerRadius * 2)
         .attr("height", rectHeight)
-        .attr("x", rectWidth - cornerRadius )
+        .attr("x", rectWidth - cornerRadius)
         ;
 
     // Create the left orange part with a curved corner on the left
@@ -177,41 +177,57 @@ const setupGauge = async (countriesList) => {
         .attr("x", cornerRadius * 2)
         .attr("fill", lowValueFillColor);
 
-    // Create the central dark blue part with no curved corners
+    // Create the central part for the high value  with no curved corners
     chart.append("rect")
         .attr("width", rectWidth * (highPercentage - lowPercentage))
         .attr("height", rectHeight)
         .attr("x", rectWidth * lowPercentage) // Position it after the orange part
         .attr("fill", highValueFillColor);
 
-    // Create the right empty part with a curved corner on the right
-    chart.append("rect")
-        .attr("width", rectWidth * (1 - highPercentage))
-        .attr("height", rectHeight)
-        .attr("rx", cornerRadius)
-        .attr("ry", cornerRadius)
-        .attr("x", rectWidth * highPercentage) // Position it after the dark blue part
-        .attr("fill", emptyFillColor)
-        .attr("clip-path", "url(#right-clip)")
-        .attr("stroke", outlineColor) // Add a dark blue outline
-        .attr("stroke-width", borderThickness);    // Adjust the outline width
-    ;
+    // // Create the right empty part with a curved corner on the right
+    // chart.append("rect")
+    //     .attr("width", rectWidth * (1 - highPercentage))
+    //     .attr("height", rectHeight)
+    //     .attr("rx", cornerRadius)
+    //     .attr("ry", cornerRadius)
+    //     .attr("x", rectWidth * highPercentage) 
+    //     .attr("fill", emptyFillColor)
+    //     .attr("clip-path", "url(#right-clip)")
+    //     .attr("stroke", outlineColor) 
+    //     .attr("stroke-width", borderThickness);    // Adjust the outline width
+    // ;
+
+    const centerX = rectWidth - 0.5 * rectHeight; // Y-coordinate of the center
+    const centerY = 0.5 * rectHeight; // Y-coordinate of the center
+    const radius = 0.5 * rectHeight - 0.5 * borderThickness;   // Radius of the semicircle
+
+    // Create a path for the semicircle
+    const pathData = `M ${centerX} ${centerY - radius} A ${radius} ${radius} 0 1 1 ${centerX} ${centerY + radius}`;
+
+    chart.append("path")
+        .attr("d", pathData)
+        .attr("fill", emptyFillColor) 
+        .attr("stroke", outlineColor)
+        .attr("stroke-width", borderThickness);    
+
+
 
     chart.append("rect")
-        .attr("width", rectWidth * (1 - highPercentage) - (cornerRadius ))
+        .attr("width", rectWidth * (1 - highPercentage) - (0.9 * cornerRadius))
         .attr("height", rectHeight)
-        .attr("x", rectWidth * highPercentage) // Position it after the dark blue part
+        .attr("x", rectWidth * highPercentage) 
         .attr("fill", emptyFillColor)
+        .attr("fill-opacity", 0)
 
     chart.append("rect")
-        .attr("width", rectWidth * (1 - highPercentage) - (0.8 * cornerRadius))
+        .attr("width", rectWidth * (1 - highPercentage) - (0.9 * cornerRadius))
         .attr("height", borderThickness)
         .attr("x", rectWidth * highPercentage)
         .attr("y", rectHeight - borderThickness)
         .attr("fill", highValueFillColor);
 
     chart.append("rect")
-        .attr("width", rectWidth * (1 - highPercentage) - (0.8 * cornerRadius))
+        .attr("width", rectWidth * (1 - highPercentage) - (0.9 * cornerRadius))
         .attr("height", borderThickness)
         .attr("x", rectWidth * highPercentage)
         .attr("fill", highValueFillColor);
