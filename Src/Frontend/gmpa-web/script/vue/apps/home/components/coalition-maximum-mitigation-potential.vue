@@ -1,0 +1,174 @@
+﻿<template>
+    <div id="svgLineChartContainer"></div>
+</template>
+
+<script setup>
+import { ref, onMounted, watch, defineProps, computed } from 'vue';
+import { useCollaborationStore } from '../stores/collaborationStore';
+import * as d3 from 'd3';
+
+const collaborationStore = useCollaborationStore();
+
+const props = defineProps({
+    countriesList: []
+})
+const svgWidth = 340;
+const svgHeight = 120;
+
+onMounted(() => {
+    setupLineAreaChart(props.countriesList)
+})
+
+const setupLineAreaChart = async (countriesList) => {
+    const data = await collaborationStore.prepareCombinedCollaborationData(countriesList.map(country => country.properties.iso_a2))
+
+    console.log(`combined data ${JSON.stringify(data)}`)
+
+    const svg = d3.select("#svgLineChartContainer")
+        .append("svg")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight);
+
+    // Create the D3.js bar chart within the SVG container
+    const chartWidth = 700;
+    const chartHeight = 400;
+    const chart = svg.append("g")
+        .attr("transform", `scale(${svgWidth / chartWidth}, ${svgHeight / chartHeight})`)
+        .attr("width", chartWidth)
+        .attr("height", chartHeight);
+
+    const lineChartArea = chart.append("g")
+        .attr("transform", `translate(20,-20)`)
+        .attr("width", chartWidth - 20)
+        .attr("height", chartHeight - 20);
+    //         const collaborationProperties = ['collaboration_emissions', 'collaboration_cost', 'autarky_emissions', 'autarky_cost']
+    // draw a line chart with two lines - one for collaboration - emissions along x axis and cost along y axis 
+    // and one for autarky
+
+    const maxCollabCost = d3.max(data, d => d['collaboration_cost'])
+    const maxAutarkyCost = d3.max(data, d => d['autarky_cost'])
+
+    const maxCollabEmissions = d3.max(data, d => d['collaboration_emissions'])
+    const maxAutarkyEmissions = d3.max(data, d => d['autarky_emissions'])
+
+    console.log(`max cost ${Math.max(maxCollabCost, maxAutarkyCost)}`)
+    console.log(`max emissions ${Math.max(maxCollabEmissions, maxAutarkyEmissions)}`)
+    // Define scales for x and y axes
+    const xScale = d3.scaleLinear()
+        .domain([0, Math.max(maxCollabEmissions, maxAutarkyEmissions)])
+        .range([0, chartWidth]);
+
+
+    const yScale = d3.scaleLinear()
+        .domain([0, Math.max(maxCollabCost, maxAutarkyCost)])
+        .range([chartHeight, 0]);
+
+
+    // Create a line generator
+    const lineAutarky = d3.line()
+        .x(d => xScale(d['autarky_emissions']))
+        .y(d => yScale(d['autarky_cost']))
+        .curve(d3.curveNatural); // Use a natural curve for the line
+
+    // Append the line to the chart
+    lineChartArea.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "blue")
+        .attr("stroke-width", 8)
+        .attr("d", lineAutarky);
+        const autarkyArea = d3.area()
+  .x(d => xScale(d['autarky_emissions']))
+  .y0(chartHeight) // The bottom of the area is at the height of the chart
+  .y1(d => yScale(d['autarky_cost']))
+  .curve(d3.curveNatural); // Use a natural curve for the area
+
+// Append the area path to the chart
+lineChartArea.append("path")
+  .datum(data)
+  .attr("fill", "darkblue") // Fill color for the area
+  .attr("d", autarkyArea);
+
+
+    // Create a line generator
+    const lineCollaboration = d3.line()
+        .x(d => xScale(d['collaboration_emissions']))
+        .y(d => yScale(d['collaboration_cost']))
+        .curve(d3.curveNatural); // Use a natural curve for the line
+
+    // Append the line to the chart
+    lineChartArea.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "orange")
+        .attr("stroke-width", 8)
+        .attr("d", lineCollaboration);
+
+        const area = d3.area()
+  .x(d => xScale(d['collaboration_emissions']))
+  .y0(chartHeight) // The bottom of the area is at the height of the chart
+  .y1(d => yScale(d['collaboration_cost']))
+  .curve(d3.curveNatural); // Use a natural curve for the area
+
+// Append the area path to the chart
+lineChartArea.append("path")
+  .datum(data)
+  .attr("fill", "orange") // Fill color for the area
+  .attr("d", area);
+
+    // Add x-axis
+    chart.append("g")
+        .attr("transform", `translate(20,${chartHeight - 20})`)
+        .call(d3.axisBottom(xScale));
+
+
+
+    chart.append("g")
+        .attr("transform", `translate(0,${chartHeight})`)
+        .call(d3.axisBottom(xScale)
+            .ticks(5)
+            .tickSize(5) // Set the size of the ticks (adjust as needed)
+            .tickPadding(5) // Set the distance between ticks and labels (adjust as needed)
+            .tickFormat(d3.format(".0f")))
+        .attr("fill", "black"); 
+
+            // Add y-axis
+    chart.append("g")
+    .attr("transform", `translate(20,-20)`)
+        .call(d3.axisLeft(yScale));
+
+    // Create y-axis ticks
+    chart.append("g")
+        .call(d3.axisLeft(yScale).ticks(10)           
+         .tickSize(5) // Set the size of the ticks (adjust as needed)
+            .tickPadding(5) // Set the distance between ticks and labels (adjust as needed)
+            .tickFormat(d3.format(".0f")))
+            .attr("fill", "black"); 
+;
+
+
+chart
+        .append('text')
+        .attr('class', 'x-axis-title')
+        .attr('x',  chartWidth/2)
+        .attr('y', chartHeight - 35) // Adjusted y position
+        .style('text-anchor', 'middle')
+        .text('Emissions in Mt CO2e');
+
+    chart
+        .append('g')
+        .attr('transform', 'translate(50 , 350)')
+        .append('text')
+        .attr('text-anchor', 'start')
+        .attr('transform', 'rotate(-90)')
+        .text('Total Costs in Billion $');
+
+
+
+
+
+
+}
+</script>
+
+<style></style>

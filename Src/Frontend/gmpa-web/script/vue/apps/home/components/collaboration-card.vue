@@ -58,10 +58,16 @@
                     </div>
                     <maximumPitigationPotentialGauge :countriesList="selectedCountries" />
                 </div>
-                <div class="card-top">
-                    <div class="title">Coalition Maximum Mitigation Potential (Absolute with Collaboration)</div>
-                </div>
-                <div class="card-top">
+                <div>
+                    <div class="card-top">
+                        <div class="title">Coalition Maximum Mitigation Potential (Absolute with Collaboration)</div>
+
+
+                    </div>
+                    <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
+                        </coalitionMaximumMitigationPotential>                </div>
+                <div>
+                        <div class="card-top">
                     <div class="title">View Country Statistics</div>
                 </div>
                 <div class="country-navigations">
@@ -74,6 +80,7 @@
                         Mitigation Potential Diagram</button>
                 </div>
             </div>
+            </div>
         </div>
     </div>
 </template>
@@ -84,6 +91,7 @@ import { useSelectedCountries } from '../composables/useSelectedCountries';
 import closeIcon from '../assets/cross.svg';
 import filterIcon from '../assets/filter.svg';
 import maximumPitigationPotentialGauge from './maximum-mitigation-potential-gauge.vue';
+import coalitionMaximumMitigationPotential from './coalition-maximum-mitigation-potential.vue'
 
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
@@ -240,13 +248,13 @@ const props = defineProps({
 .card-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: top;
     color: #214b63;
 }
 
 .country-navigations {
     justify-content: space-between;
-    align-items: center;
+    align-items:center;
     color: #214b63;
 }
 

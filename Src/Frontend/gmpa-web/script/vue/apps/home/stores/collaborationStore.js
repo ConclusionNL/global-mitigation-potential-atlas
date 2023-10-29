@@ -30,6 +30,9 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         return dataSet.value;
     };
 
+    const prepareCombinedCollaborationData = async (countries) => {
+        return prepareCombinedData(combinedCollaborationData.value, countries);
+    };
 
     // create an array that contains entries for each individual supported collaboration country set (each combination of countries for which we have a collaboration dat)
     const prepareCountryCollaborations = async () => {
@@ -125,6 +128,32 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         return data
     }
 
+    const prepareCombinedData = (raw, countries) => {
+        const data = []
+        const countryKey = deriveCountryKey(countries)
+        // determine the country key for each record: alphabetical concatenation of country_1..country_4
+        // filter on records with the right country key
+        const collaborationProperties = ['collaboration_emissions', 'collaboration_cost', 'autarky_emissions', 'autarky_cost']
+        for (const rec of raw) {
+            const collaboratingCountries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
+            const collabKey = deriveCountryKey(collaboratingCountries)
+
+            if (collabKey == countryKey) {
+                // add all records for this collaboration to the data object
+                // and for each record all properties from the collaborationProperties array
+                const consolidatedRecord = {}
+                collaborationProperties.forEach( (property) => {
+                    const x = parseFloat(rec[property])
+                    consolidatedRecord[property] = x
+                })
+                data.push(consolidatedRecord)
+            }
+        }
+
+
+        return data
+    }
+
 
     return {
         collaborationData,
@@ -135,7 +164,8 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         prepareCountryCollaborations,
         findCollaboratingCountries,
         combinedCollaborationData,
-        prepareCollaborationData
+        prepareCollaborationData,
+        prepareCombinedCollaborationData
     };
 });
 // return an array of arrays of two letter country codes of potentially collaborating countries
