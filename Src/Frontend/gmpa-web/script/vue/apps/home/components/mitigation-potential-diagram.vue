@@ -25,8 +25,7 @@ const props = defineProps({
     countriesList: []
 });
 const handleTechnologySelected = (payload) => {
-      // Access the payload passed to the event handler
-      console.log(`Technology selected: ${JSON.stringify(payload)}`);
+      emit('technology-selected', payload);
     }
 
 const selectedCountry = ref({"value":"all"})
