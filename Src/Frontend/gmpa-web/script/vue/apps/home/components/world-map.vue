@@ -4,10 +4,10 @@
             <searchBar class="search-box" :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
-        <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box" />
+        <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box" @countryNavigation="navigateToCountry"/>
         <collabCard v-if="inCollabMode && selectedCountries && selectedCountries.length > 0" class="countries-box" 
             :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)" @show-benefits="stackedAreaModalVisible=true"
-            @countryNavigation="console.log(`country selected for navigation in collab card`)"/>
+            @countryNavigation="navigateToCountry"/>
         <div class="zoom-box">
             <div class="zoom-flex">
                 <div @click="
@@ -72,6 +72,11 @@ const height = window.innerHeight - 86;
 const props = defineProps({
     countries: {},
 });
+
+const navigateToCountry = (countryNavigationEvent) => {
+    const countryName = countryNavigationEvent.properties.name
+    window.location.href = `/Countries/${countryName}`;
+}
 
 function highlightCollaborationCandidates() {
     const selectedCountryCodes = selectedCountries.value.map(country => country.properties.iso_a2)
