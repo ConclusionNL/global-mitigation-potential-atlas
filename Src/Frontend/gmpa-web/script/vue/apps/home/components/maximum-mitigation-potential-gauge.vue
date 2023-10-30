@@ -169,20 +169,25 @@ const setupGauge = async (countriesList) => {
         .attr("ry", cornerRadius)
         .attr("fill", lowValueFillColor)
         .attr("clip-path", "url(#left-clip)")
+        .attr("class","maximum-potential")
         ;
 
     chart.append("rect")
         .attr("width", rectWidth * lowPercentage - (cornerRadius * 2)+1)
         .attr("height", rectHeight)
         .attr("x", cornerRadius * 2-1)
-        .attr("fill", lowValueFillColor);
+        .attr("fill", lowValueFillColor)
+        .attr("class","maximum-potential")
+;
 
     // Create the central part for the high value  with no curved corners
     chart.append("rect")
         .attr("width", rectWidth * (highPercentage - lowPercentage))
         .attr("height", rectHeight)
         .attr("x", rectWidth * lowPercentage) // Position it after the orange part
-        .attr("fill", highValueFillColor);
+        .attr("fill", highValueFillColor)
+        .attr("class","maximum-potential")
+;
 
     // // Create the right empty part with a curved corner on the right
     // chart.append("rect")
@@ -250,8 +255,8 @@ const setupGauge = async (countriesList) => {
 }
 </script>
 
-<style>
-rect {
+<style scoped>
+.maximum-potential {
     opacity: 1.0;
 }
 </style>
