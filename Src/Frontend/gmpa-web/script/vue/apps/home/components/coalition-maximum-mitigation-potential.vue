@@ -111,7 +111,7 @@ const setupLineAreaChart = async (countriesList) => {
     // Append the area path to the chart
     lineChartArea.append("path")
         .datum(data)
-        .attr("fill", "orange") // Fill color for the area
+        .attr("fill", "#f07004") // Fill color for the area
         .attr("d", area);
 
     // Add x-axis
