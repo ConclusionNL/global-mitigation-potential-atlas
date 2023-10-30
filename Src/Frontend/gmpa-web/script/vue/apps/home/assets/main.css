@@ -67,3 +67,7 @@ rect {
 p {
     padding-left: 10px;
 } */
+
+.d-flex {
+    display: flex;
+}
