@@ -1,5 +1,135 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@model GMPA.Core.Models.ViewModels.PoliciesViewModel
 @{
-	Layout = "Main.cshtml";
+    Layout = "Main.cshtml";
 }
+
+<h1>@Model.PageTitle</h1>
+
+<div class="container text-center mt-3">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary toggle-container mr-3" id="btnStrategy" data-target="ClimateStrategy">Climate Strategies</button>
+            <button class="btn btn-primary toggle-container" id="btnInventory" data-target="PolicyInventory">Policy Inventory</button>
+        </div>
+    </div>
+</div>
+
+<div class="toggle-content" id="ClimateStrategy">
+    @{
+        <h2>Climate Strategies</h2>
+        @foreach (var strategy in Model.ClimateStrategiesBlockList)
+        {
+
+            <div class="divider">
+                <div class="row">
+                    <div class="col-2">
+                        <h3>@strategy.PolicyDocumentName</h3>
+                    </div>
+                    <div class="col-10">
+                        <h5>Key Objectives/Targets</h5>
+                        @Html.Raw(strategy.KeyObjectivesTargets)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1">
+                        <h5>Start Year</h5>
+                        @strategy.StartYear
+                    </div>
+                    <div class="col-1">
+                        <h5>Valid till</h5>
+                        @strategy.EndYear
+                    </div>
+                    <div class="col-3">
+                        <h5>Source</h5>
+                        <a href="@strategy.SourceLink">Source for @strategy.PolicyDocumentName</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="hidden toggle-content" id="PolicyInventory">
+    @{
+
+        <h2>Policy Inventory</h2>
+        @foreach (var policy in Model.PolicyInventoryBlockList)
+        {
+            <div class="divider">
+                <div class="row">
+                    <div class="col-4">
+                        <h3>@policy.PolicyDocumentName</h3>
+                        <div class="d-flex">
+                            <h5>Sector: </h5>
+                            @policy.Sector
+                        </div>
+                        <div class="d-flex">
+                            <h5>Sub-sector: </h5>
+                            @policy.SubSector
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        @Html.Raw(policy.Objectives)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1">
+                        <h5>Start Year</h5>
+                        @policy.StartDate
+                    </div>
+                    <div class="col-1">
+                        <h5>Valid till</h5>
+                        @policy.EndDate
+                    </div>
+                    <div class="col-1">
+                        <h5>Policy Level</h5>
+                        @policy.PolicyLevel
+                    </div>
+                    <div class="col-1">
+                        <h5>Policy Origin</h5>
+                        @policy.PolicyOrigin
+                    </div>
+                    <div class="col-3">
+                        <h5>Source</h5>
+                        <a href="@policy.SourceLink">Source for @policy.PolicyDocumentName</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<script>
+    // Get all elements with the class 'toggle-container'
+    var toggleButtons = document.querySelectorAll('.toggle-container');
+
+    toggleButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            var targetId = this.getAttribute('data-target');
+            var targetElement = document.getElementById(targetId);
+
+            // Hide all containers
+            document.querySelectorAll('.toggle-content').forEach(container => {
+                container.classList.add('hidden');
+            });
+
+            // Show the selected container
+            targetElement.classList.remove('hidden');
+        });
+    });
+</script>
+
+<style>
+    .divider {
+        border-bottom: 1px solid #000000;
+        margin-block: 10px;
+    }
+
+    h5 {
+        margin-right: 5px;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>

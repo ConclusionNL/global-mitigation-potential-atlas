@@ -1,9 +1,12 @@
-﻿@model CountryViewModel
+﻿@model GMPA.Core.Models.ViewModels.CountryViewModel
 @{
     Layout = "Main.cshtml";
 }
 
-<h1>@Model.PageTitle</h1>
+
+<h1>
+    @Model.PageTitle
+</h1>
 
 <div id="Normal">
     @{
@@ -47,8 +50,6 @@
                 {
                     continue;
                 }
-
-
 
                 <center>
                     <img src="@collapsibleBlock.ImageUrl" alt="" />
