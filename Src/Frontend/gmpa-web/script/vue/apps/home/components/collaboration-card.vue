@@ -65,21 +65,23 @@
 
                     </div>
                     <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
-                        </coalitionMaximumMitigationPotential>                </div>
-                <div>
-                        <div class="card-top">
-                    <div class="title">View Country Statistics</div>
-                </div>
-                <div class="country-navigations">
-                    <div v-for="country in selectedCountries" :key="country">
-                        <div class="country-navigation">
-                            <a @click="emit('country-navigation', country)">{{ country.properties.name }} -></a>
-                        </div>
-                    </div>
+                    </coalitionMaximumMitigationPotential>
                     <button class="benefits-btn" @click="emit('show-benefits')">Show
                         Mitigation Potential Diagram</button>
                 </div>
-            </div>
+                <div>
+                    <div class="card-top">
+                        <div class="title">View Country Statistics</div>
+                    </div>
+                    <div class="country-navigations">
+                        <div v-for="country in selectedCountries" :key="country">
+                            <div class="country-navigation">
+                                <a @click="emit('country-navigation', country)">{{ country.properties.name }} -></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -193,13 +195,13 @@ const props = defineProps({
     border-radius: 4px;
     cursor: pointer;
     font-weight: 600;
-    height: 68px;
+    height: 38px;
     font-size: 16px;
     width: fit-content;
     color: #f07004;
     border: 1px solid #f07004;
     background-color: white;
-    padding: 12px 16px;
+    padding: 12px 12px;
     flex-shrink: 0;
     margin-top: 20px;
 }
@@ -254,7 +256,7 @@ const props = defineProps({
 
 .country-navigations {
     justify-content: space-between;
-    align-items:center;
+    align-items: center;
     color: #214b63;
 }
 
