@@ -46,7 +46,7 @@ namespace GMPA.Core.Controller.Render
                         SourceLink = b.SourceLink,
                         PolicyLevel = b.PolicyLevel,
                         PolicyOrigin = b.PolicyOrigin,
-                        Objectives = b.Objectives.ToHtmlString()
+                        Objectives = b.Objectives?.ToHtmlString()
                     })
                     .ToList()
             };
