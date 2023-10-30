@@ -222,7 +222,7 @@ const props = defineProps({
     border-radius: 4px;
     gap: 16px;
     height: 60px;
-    width: 340px;
+    width: 220px;
     padding: 8px 12px;
 }
 
