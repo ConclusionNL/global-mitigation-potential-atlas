@@ -290,11 +290,11 @@ const props = defineProps({
 .back-btn {
     color: #214b63;
     gap: 8px;
+    cursor: pointer;
 }
 
 .back-box {
     display: inline-block;
-    cursor: pointer;
     flex: 0.5;
 }
 
