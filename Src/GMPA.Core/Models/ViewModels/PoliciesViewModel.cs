@@ -1,6 +1,6 @@
 ﻿namespace GMPA.Core.Models.ViewModels
 {
-    public class PoliciesViewModel
+    public class PoliciesViewModel : MainViewModel
     {
         public class ClimateStrategy
         {
