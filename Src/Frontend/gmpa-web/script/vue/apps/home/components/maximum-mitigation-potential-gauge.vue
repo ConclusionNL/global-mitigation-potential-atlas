@@ -172,9 +172,9 @@ const setupGauge = async (countriesList) => {
         ;
 
     chart.append("rect")
-        .attr("width", rectWidth * lowPercentage - (cornerRadius * 2))
+        .attr("width", rectWidth * lowPercentage - (cornerRadius * 2)+1)
         .attr("height", rectHeight)
-        .attr("x", cornerRadius * 2)
+        .attr("x", cornerRadius * 2-1)
         .attr("fill", lowValueFillColor);
 
     // Create the central part for the high value  with no curved corners
