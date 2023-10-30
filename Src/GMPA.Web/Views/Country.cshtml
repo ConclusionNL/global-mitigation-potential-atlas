@@ -12,23 +12,21 @@
     @{
         foreach (var normalBlock in Model.NormalBlockList)
         {
-
             <h2 id="@normalBlock.Title">@normalBlock.Title</h2>
             @Html.Raw(normalBlock.BodyText)
 
             if (normalBlock.Url != "")
             {
-
-                <a href="@normalBlock.Url">Learn More about @Model.PageTitle</a>
+                <a href="@normalBlock.Url">Learn More about @Model.PageTitle's policies</a>
             }
 
-            if (normalBlock.ImageUrl != "")
+            if (normalBlock.ImageUrl == "")
             {
-
-                <center>
-                    <img src="@normalBlock.ImageUrl" />
-                </center>
+                continue;
             }
+            <center>
+                <img src="@normalBlock.ImageUrl" />
+            </center>
         }
     }
 </div>
