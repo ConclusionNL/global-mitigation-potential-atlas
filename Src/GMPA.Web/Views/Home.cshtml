@@ -4,8 +4,8 @@
 @{
     Layout = "Main.cshtml";
 
-    string pageName = "home";
-    var clist = @JsonConvert.SerializeObject(Model.Countries);
+    var pageName = "home";
+    var countryList = JsonConvert.SerializeObject(Model.Countries);
 
     <environment include="Development">
         @{
@@ -16,14 +16,14 @@
     <environment exclude="Development">
         @{
             SmidgeHelper.RequiresJs($"~/dist/script/{pageName}.page.js");
-            SmidgeHelper.RequiresCss($"~/dist/script/{pageName}.page.css");
+            SmidgeHelper.RequiresCss($"~/dist/css/{pageName}.app.css");
         }
     </environment>
 }
 
 
 <div id="home">
-    <home-page :countries="@JsonConvert.SerializeObject(Model.Countries)"></home-page>
+    <home-page :countries="@countryList"></home-page>
 </div>
 
 
