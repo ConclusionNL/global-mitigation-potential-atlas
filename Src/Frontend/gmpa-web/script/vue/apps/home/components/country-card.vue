@@ -11,24 +11,24 @@
         </div>
         <div class="card-data-spacing">
             <div key="1" class="data">
-                <div>Mitigation Potential(GtCO2e)</div>
-                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)'] }}</div>
+                <div>Mitigation Potential</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)'] }} GtCO2e</div>
             </div>
             <div key="2" class="data">
-                <div>Mitigation Cost($/GtCO2e)</div>
-                <div>{{ selectedCountries[0].properties['Mitigation_Cost($/GtCO2e)'] }}</div>
+                <div>Mitigation Cost</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Cost($/GtCO2e)'] }} $/GtCO2e</div>
             </div>
             <div key="3" class="data">
-                <div>Mitigation Potential(GtCO2e) at 50</div>
-                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_50'] }}</div>
+                <div>Mitigation Potential at 50</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_50'] }} GtCO2e</div>
             </div>
             <div key="4" class="data">
-                <div>Mitigation Potential(GtCO2e) at 100</div>
-                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_100'] }}</div>
+                <div>Mitigation Potential at 100</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_100'] }} GtCO2e</div>
             </div>
             <div key="5" class="data">
-                <div>Mitigation Potential(GtCO2e) at 200</div>
-                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_200'] }}</div>
+                <div>Mitigation Potential at 200</div>
+                <div>{{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_200'] }} GtCO2e</div>
             </div>
         </div>
         <div class="card-buttons">
