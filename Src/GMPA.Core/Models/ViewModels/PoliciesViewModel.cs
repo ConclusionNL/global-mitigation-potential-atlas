@@ -24,7 +24,7 @@
             public string Objectives { get; set; }
         }
 
-        public List<ClimateStrategy> ClimateStrategies { get; set; }
-        public List<PolicyInventory> PolicyInventories { get; set; }
+        public List<ClimateStrategy> ClimateStrategiesBlockList { get; set; }
+        public List<PolicyInventory> PolicyInventoryBlockList { get; set; }
     }
 }
