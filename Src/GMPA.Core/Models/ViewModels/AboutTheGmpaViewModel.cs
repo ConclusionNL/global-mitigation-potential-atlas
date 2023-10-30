@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Html;
-
-namespace GMPA.Core.Models.ViewModels
+﻿namespace GMPA.Core.Models.ViewModels
 {
     public class AboutTheGmpaViewModel : MainViewModel
     {

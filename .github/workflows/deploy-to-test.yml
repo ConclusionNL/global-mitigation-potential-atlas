@@ -1,0 +1,91 @@
+name: Build and Deploy to Test
+
+env:
+  AZURE_WEBAPP_NAME: 'App-gmpa-t'
+  AZURE_WEBAPP_PACKAGE_PATH: './Publish'
+  PROJECT_FRONTEND: './Src/Frontend/gmpa-web'
+  PROJECT_BACKEND: './Src/GMPA.Web'
+  DOTNET_VERSION: '7.x'
+  NODE_VERSION: '18.x'
+
+on:
+  push:
+    branches: [ "main", "development", "test" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: '${{ env.PROJECT_FRONTEND }}/package-lock.json'
+
+      - name: npm install and build
+        working-directory: ${{ env.PROJECT_FRONTEND }}
+        run: |
+          npm install
+          npm run build
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Set up dependency caching for faster builds
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: dotnet publish
+        working-directory: ${{ env.PROJECT_BACKEND }}
+        run: dotnet publish --configuration Release --runtime win-x64 --self-contained --output ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Zip files before uploading
+        run: tar -cvzf myapp.tar -C ${{env.DOTNET_ROOT}}/myapp .
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .net-app
+          path: myapp.tar
+
+  deploy:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Test'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+
+      - name: Unzip files before uploading
+        run: |
+          mkdir -p ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          tar -xvzf myapp.tar -C ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --strip-components=1
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}

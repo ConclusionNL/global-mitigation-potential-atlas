@@ -10,14 +10,14 @@
         protected GridControl()
         {
             string alias = GetType().Name.Substring(
-                0, 
+                0,
                 GetType().Name.IndexOf("GridControl", StringComparison.InvariantCulture)
             );
 
             Alias = alias;
             ViewPath = $"{alias}.cshtml";
         }
-        
+
         public abstract GridControlViewModel Render(BlockGridControl gridControl, bool preview = false);
 
         protected GridControlViewModel ViewModel(string view, object model = null)

@@ -11,7 +11,7 @@ namespace Arlanet.Umbraco.Grid.Other
         public BlockListGridServerVariablesHandler(IOptions<BlockGridSettings> blockListGridSettings)
         {
             _blockListGridSettings = blockListGridSettings;
-        } 
+        }
 
         public void Handle(ServerVariablesParsingNotification notification)
         {

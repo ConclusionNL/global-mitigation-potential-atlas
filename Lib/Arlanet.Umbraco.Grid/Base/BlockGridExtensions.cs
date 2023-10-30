@@ -61,7 +61,7 @@ namespace Arlanet.Umbraco.Grid.Base
 
         public static IHtmlContent PreviewAttributes(this BlockGridControl gridControl, BlockGrid model)
         {
-            return model.Preview 
+            return model.Preview
                 ? new HtmlString($"data-preview data-preview-id=\"{gridControl.PreviewId}\" data-preview-type=\"control\"")
                 : HtmlString.Empty;
         }
@@ -74,11 +74,11 @@ namespace Arlanet.Umbraco.Grid.Base
                     .Get(gridControl.Alias)
                     ?.Render(gridControl, preview);
 
-                return gridControlViewModel == null ? 
-                    HtmlString.Empty : 
-                    htmlHelper.Partial(gridControlViewModel.View, gridControlViewModel.Model);
+                return gridControlViewModel == null
+                    ? HtmlString.Empty
+                    : htmlHelper.Partial(gridControlViewModel.View, gridControlViewModel.Model);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new HtmlString($"<h1>{gridControl.Alias}</h1><code><pre>{ex}</pre></code>");
             }

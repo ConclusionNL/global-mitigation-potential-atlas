@@ -4,9 +4,6 @@ using GMPA.Core.Models.ApiModels;
 using GMPA.Core.Models.Umbraco;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Text.Json;
-using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Web.Common.Controllers;
 

@@ -1,7 +1,6 @@
 ﻿using GMPA.Core.Extensions;
 using GMPA.Core.Models.Umbraco;
 using GMPA.Core.Models.ViewModels;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;

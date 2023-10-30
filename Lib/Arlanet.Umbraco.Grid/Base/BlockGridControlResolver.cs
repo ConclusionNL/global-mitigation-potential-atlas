@@ -22,8 +22,8 @@ namespace Arlanet.Umbraco.Grid.Base
                 return null;
             }
 
-            return _gridControls.TryGetValue(name.ToLower(), out var control) 
-                ? control 
+            return _gridControls.TryGetValue(name.ToLower(), out var control)
+                ? control
                 : null;
         }
     }
