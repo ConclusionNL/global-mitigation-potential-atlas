@@ -79,7 +79,14 @@
                     </div>
                     <div class="col-1">
                         <h5>Valid till</h5>
-                        @policy.EndDate
+                        @if (@policy.EndDate == "0")
+                        {
+                            <p>Ongoing</p>
+                        }
+                        else
+                        {
+                            @policy.EndDate
+                        }
                     </div>
                     <div class="col-1">
                         <h5>Policy Level</h5>
