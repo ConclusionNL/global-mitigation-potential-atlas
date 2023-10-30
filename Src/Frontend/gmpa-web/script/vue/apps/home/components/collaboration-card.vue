@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="benefits-card" v-if="!showComposeCollaborationSet">
-            <a @click="showComposeCollaborationSet = true">Back </a>
+            <a @click="showComposeCollaborationSet = true" class="back-link"><span class="back-arrow">←</span>Back </a>
             <div class="suggestion-country-container">
                 <div>
                     <div class="card-top">
@@ -271,5 +271,16 @@ const props = defineProps({
   width: 1px;
   margin-right: 30px;
   background-color: #ccc; /* Gray color for the divider */
+}
+
+.back-link {
+    text-decoration: none; /* Suppress underlining */
+  color: #333; /* Change the text color */
+  font-weight: bold; /* Display the text in bold */
+}
+.back-arrow {
+  font-size: 24px; /* Increase the font size for the arrow */
+  font-weight: bold; /* Make the arrow bold */
+  margin-right: 1px; /* Add a little spacing between the arrow and "Back" */
 }
 </style>
