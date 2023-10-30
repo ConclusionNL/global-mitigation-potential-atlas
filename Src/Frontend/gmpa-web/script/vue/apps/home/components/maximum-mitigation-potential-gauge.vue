@@ -206,16 +206,16 @@ const setupGauge = async (countriesList) => {
 
     chart.append("path")
         .attr("d", pathData)
-        .attr("fill", emptyFillColor) 
+        .attr("fill", emptyFillColor)
         .attr("stroke", outlineColor)
-        .attr("stroke-width", borderThickness);    
+        .attr("stroke-width", borderThickness);
 
 
 
     chart.append("rect")
         .attr("width", rectWidth * (1 - highPercentage) - (0.9 * cornerRadius))
         .attr("height", rectHeight)
-        .attr("x", rectWidth * highPercentage) 
+        .attr("x", rectWidth * highPercentage)
         .attr("fill", emptyFillColor)
         .attr("fill-opacity", 0)
 
@@ -250,4 +250,8 @@ const setupGauge = async (countriesList) => {
 }
 </script>
 
-<style></style>
+<style>
+rect {
+    opacity: 1.0;
+}
+</style>
