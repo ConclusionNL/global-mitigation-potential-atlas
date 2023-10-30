@@ -35,7 +35,7 @@
             <button class="btn btn-alt-1" @click="useCountries.setCollabMode(true)">
                 Select for collaboration
             </button>
-            <button class="btn btn-alt-2" @click="emit('country-details')">
+            <button class="btn btn-alt-2" @click="emit('country-navigation', selectedCountries[0])">
                 View country details
             </button>
         </div>
@@ -50,7 +50,7 @@ import closeIcon from '../assets/cross.svg';
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 
-const emit = defineEmits(['country-details']);
+const emit = defineEmits(['country-navigation']);
 </script>
 
 <style scoped>
