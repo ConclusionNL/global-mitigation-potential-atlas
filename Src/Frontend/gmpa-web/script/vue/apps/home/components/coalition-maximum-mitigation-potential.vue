@@ -13,7 +13,7 @@ const props = defineProps({
     countriesList: []
 })
 const svgWidth = 340;
-const svgHeight = 120;
+const svgHeight = 180;
 
 onMounted(() => {
     setupLineAreaChart(props.countriesList)
@@ -33,7 +33,7 @@ const setupLineAreaChart = async (countriesList) => {
     const chartWidth = 700;
     const chartHeight = 400;
     const chart = svg.append("g")
-        .attr("transform", `scale(${0.8 * svgWidth / chartWidth}, ${0.8 * svgHeight / chartHeight}) translate(100,0)`)
+        .attr("transform", `scale(${0.8 * svgWidth / chartWidth}, ${0.65 * svgHeight / chartHeight}) translate(100,120)`)
         .attr("width", chartWidth)
         .attr("height", chartHeight);
 
@@ -123,7 +123,7 @@ const setupLineAreaChart = async (countriesList) => {
             .tickPadding(5) // Set the distance between ticks and labels (adjust as needed)
             .tickFormat(d3.format(".0f")))
         .selectAll("text")
-        .style("font-size", "22px")
+        .style("font-size", "28px")
 
 
     // Add y-axis
@@ -134,7 +134,7 @@ const setupLineAreaChart = async (countriesList) => {
             .tickPadding(5) // Set the distance between ticks and labels (adjust as needed)
             .tickFormat(d3.format(".0f")))
             .selectAll("text")
-  .style("font-size", "22px")
+  .style("font-size", "28px")
 
     chart
         .append('text')
@@ -143,7 +143,7 @@ const setupLineAreaChart = async (countriesList) => {
         .attr('y', chartHeight + 75) // Adjusted y position
         .style('text-anchor', 'start')
         .text('Total system Emissions (Mt CO2e)')
-        .attr("font-size", "32px")
+        .attr("font-size", "42px")
         ;
 
     chart
@@ -153,7 +153,7 @@ const setupLineAreaChart = async (countriesList) => {
         .attr('text-anchor', 'start')
         .attr('transform', 'rotate(-90)')
         .text('Total System Cost (Billion $)')
-        .attr("font-size", "32px")
+        .attr("font-size", "42px")
         ;
 
 
