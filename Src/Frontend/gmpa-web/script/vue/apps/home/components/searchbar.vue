@@ -23,10 +23,13 @@
 
 <script setup>
 import { ref, onMounted, watch, defineProps, computed } from 'vue';
+import { useCollaborationStore } from '../stores/collaborationStore';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
 import searchIcon from '../assets/search.svg';
 
+const collaborationStore = useCollaborationStore();
 const useCountries = useSelectedCountries();
+const selectedCountries = useCountries.selectedCountries;
 const inCollabMode = useCountries.inCollabMode;
 
 const input = ref('');
@@ -68,10 +71,21 @@ const inputContainsCountry = computed(() => {
 });
 
 const onEnter = () => {
+    const selectedCountryCodes = selectedCountries.value.map(
+        (country) => country.properties.iso_a2
+    );
+    const collaborationCandidateCountryCodes =
+        collaborationStore.findCollaboratingCountries(selectedCountryCodes);
+
+    const country = useCountries.getCountryByName(inputContainsCountry.value.Name);
+
     if (!inputContainsCountry.value) {
         errorMsg.value = 'Country could not be found';
         return;
-    } else if (!inputContainsCountry.value.Active) {
+    } else if (
+        collaborationCandidateCountryCodes.length == 0 ||
+        !collaborationCandidateCountryCodes.includes(country.properties.iso_a2)
+    ) {
         errorMsg.value = 'Country is not available in the pilot';
         return;
     }
@@ -81,6 +95,20 @@ const onEnter = () => {
     } else {
         useCountries.setCountry(useCountries.getCountryByName(inputContainsCountry.value.Name));
     }
+};
+
+const findCollaboratingCandidates = (selectedCountries) => {
+    let collaborationCandidateCountries = [];
+    if (selectedCountries.length > 0) {
+        const selectedCountryCodes = selectedCountries.map((country) => country.properties.iso_a2);
+        const collaborationCandidateCountryCodes =
+            collaborationStore.findCollaboratingCountries(selectedCountryCodes);
+        // create an array of country objects for the countries whose code is in collaborationCandidateCountryCodes
+        collaborationCandidateCountries = countryDataSet.features.filter((c) =>
+            collaborationCandidateCountryCodes.includes(c.properties.iso_a2)
+        );
+    }
+    return collaborationCandidateCountries;
 };
 </script>
 
