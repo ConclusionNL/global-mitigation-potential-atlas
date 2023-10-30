@@ -50,11 +50,19 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
-		/// Policies Block List
+		/// Climate Strategy Policies
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("policiesBlockList")]
-		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel PoliciesBlockList => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "policiesBlockList");
+		[ImplementPropertyType("climateStrategyPolicies")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel ClimateStrategyPolicies => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "climateStrategyPolicies");
+
+		///<summary>
+		/// Policy Inventory
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("policyInventory")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel PolicyInventory => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "policyInventory");
 	}
 }

@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace GMPA.Core.Models.Umbraco
 {
-	/// <summary>Climate Strategy</summary>
-	[PublishedModel("policyBlock")]
-	public partial class PolicyBlock : PublishedElementModel
+	/// <summary>Policy Inventory Block</summary>
+	[PublishedModel("policyInventoryBlock")]
+	public partial class PolicyInventoryBlock : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
-		public new const string ModelTypeAlias = "policyBlock";
+		public new const string ModelTypeAlias = "policyInventoryBlock";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
@@ -34,14 +34,14 @@ namespace GMPA.Core.Models.Umbraco
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<PolicyBlock, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<PolicyInventoryBlock, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public PolicyBlock(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public PolicyInventoryBlock(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,12 +50,19 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
-		/// Key objectives/targets
+		/// End Date
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[ImplementPropertyType("endDate")]
+		public virtual int EndDate => this.Value<int>(_publishedValueFallback, "endDate");
+
+		///<summary>
+		/// Objectives
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("keyObjectivestargets")]
-		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString KeyObjectivestargets => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "keyObjectivestargets");
+		[ImplementPropertyType("objectives")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Objectives => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "objectives");
 
 		///<summary>
 		/// Policy Document Name
@@ -66,6 +73,30 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual string PolicyDocumentName => this.Value<string>(_publishedValueFallback, "policyDocumentName");
 
 		///<summary>
+		/// Policy Level
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("policyLevel")]
+		public virtual string PolicyLevel => this.Value<string>(_publishedValueFallback, "policyLevel");
+
+		///<summary>
+		/// Policy Origin
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("policyOrigin")]
+		public virtual string PolicyOrigin => this.Value<string>(_publishedValueFallback, "policyOrigin");
+
+		///<summary>
+		/// Sector
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("sector")]
+		public virtual string Sector => this.Value<string>(_publishedValueFallback, "sector");
+
+		///<summary>
 		/// Source Link
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
@@ -74,17 +105,18 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual string SourceLink => this.Value<string>(_publishedValueFallback, "sourceLink");
 
 		///<summary>
-		/// Start year
+		/// Start Date
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
-		[ImplementPropertyType("startYear")]
-		public virtual int StartYear => this.Value<int>(_publishedValueFallback, "startYear");
+		[ImplementPropertyType("startDate")]
+		public virtual int StartDate => this.Value<int>(_publishedValueFallback, "startDate");
 
 		///<summary>
-		/// Valid till
+		/// Sub-sector
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
-		[ImplementPropertyType("validTill")]
-		public virtual int ValidTill => this.Value<int>(_publishedValueFallback, "validTill");
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("subSector")]
+		public virtual string SubSector => this.Value<string>(_publishedValueFallback, "subSector");
 	}
 }
