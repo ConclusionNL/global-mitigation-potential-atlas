@@ -58,17 +58,17 @@
                     </div>
                     <maximumPitigationPotentialGauge :countriesList="selectedCountries" />
                 </div>
+                <div class="divider"></div>
                 <div>
                     <div class="card-top">
                         <div class="title">Coalition Maximum Mitigation Potential (Absolute with Collaboration)</div>
-
-
                     </div>
                     <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
                     </coalitionMaximumMitigationPotential>
                     <button class="benefits-btn" @click="emit('show-benefits')">Show
                         Mitigation Potential Diagram</button>
                 </div>
+                <div class="divider"></div>
                 <div>
                     <div class="card-top">
                         <div class="title">View Country Statistics</div>
@@ -266,5 +266,10 @@ const props = defineProps({
 
 .selected-collaboration {
     color: orange;
+}
+.divider {
+  width: 1px;
+  margin-right: 30px;
+  background-color: #ccc; /* Gray color for the divider */
 }
 </style>
