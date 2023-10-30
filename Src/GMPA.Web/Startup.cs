@@ -41,9 +41,12 @@ namespace GMPA.Web
                     u.UseWebsiteEndpoints();
                 });
 
-            app.UseSpa(spa =>
-                spa.UseProxyToSpaDevelopmentServer("https://localhost:3000")
-            );
+            if (env.IsDevelopment())
+            {
+                app.UseSpa(spa =>
+                    spa.UseProxyToSpaDevelopmentServer("https://localhost:3000")
+                );
+            }
         }
     }
 }
