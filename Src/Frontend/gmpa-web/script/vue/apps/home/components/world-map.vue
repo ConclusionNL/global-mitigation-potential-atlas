@@ -4,32 +4,23 @@
             <searchBar class="search-box" :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
-        <countryCard
-            v-if="selectedCountries[0] && !inCollabMode"
-            class="country-box"
+        <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box"
             @countryNavigation="navigateToCountry" />
-        <collabCard
-            v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
-            class="countries-box"
+        <collabCard v-if="inCollabMode && selectedCountries && selectedCountries.length > 0" class="countries-box"
             :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)"
-            @show-benefits="stackedAreaModalVisible = true"
-            @countryNavigation="navigateToCountry" />
+            @show-benefits="stackedAreaModalVisible = true" @countryNavigation="navigateToCountry" />
         <div class="zoom-box">
             <div class="zoom-flex">
-                <div
-                    @click="
-                        zoomLevel += 0.5;
-                        zoomToScale(zoomLevel);
-                    "
-                    class="r-btn plus">
+                <div @click="
+                    zoomLevel += 0.5;
+                zoomToScale(zoomLevel);
+                " class="r-btn plus">
                     <plusIcon width="24" height="24" />
                 </div>
-                <div
-                    @click="
-                        zoomLevel -= 0.5;
-                        zoomToScale(zoomLevel);
-                    "
-                    class="r-btn minus">
+                <div @click="
+                    zoomLevel -= 0.5;
+                zoomToScale(zoomLevel);
+                " class="r-btn minus">
                     <minusIcon width="24" height="4" />
                 </div>
             </div>
@@ -37,10 +28,8 @@
         <div class="modal-diagram" v-if="stackedAreaModalVisible">
             <div class="modal-diagram-content">
                 <a href="#" class="close-link" @click="closeModal">Close</a>
-                <mitigationPotentialDiagram
-                    :countries-list="selectedCountries"
-                    @technologySelected="
-                        console.log(`technoogy selected in mitigation potential diagram`)
+                <mitigationPotentialDiagram :countries-list="selectedCountries" @technologySelected="
+                    console.log(`technoogy selected in mitigation potential diagram`)
                     " />
             </div>
         </div>
@@ -185,6 +174,21 @@ onMounted(() => {
         .attr('height', height)
         .attr('preserveAspectRatio', 'xMinYMin')
         .style('background', '#8ab5f9');
+
+    //         Add event listeners to the drag behavior to prevent the drag events from propagating and thus disabling the dragging functionality. This prevents users from dragging the map.
+
+    // With this code, the default drag behavior for the world map will be disabled, and users won't be able to drag the map.
+
+    svg.call(d3.drag()
+        .on("start", () => {
+            // Prevent the drag behavior on mouse down
+            d3.event.sourceEvent.stopPropagation();
+        })
+        .on("drag", () => {
+            // Prevent the drag behavior on drag
+            d3.event.sourceEvent.stopPropagation();
+        })
+    );
 
     //const projection = d3.geoNaturalEarth1().translate([t0.x, t0.y]).scale(t0.k);
     const projection = d3
