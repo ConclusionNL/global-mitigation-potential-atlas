@@ -260,6 +260,13 @@ IN,PH,,,7,2,wonderstuff
 IN,PH,,,8,3,wonderstuff
 IN,PH,,,9,3,wonderstuff
 IN,PH,ID,,9,3,wonderstuff
+ID,KH,PH,,9,3,wonderstuff
+MM,PH,,,9,3,wonderstuff
+VN,KH,MM,,9,3,wonderstuff
+MM,PH,,,9,3,wonderstuff
+VN,KH,MM,,1,6,wonderstuff
+MM,KH,,,1,13,wonderstuff
+VN,MM,,,3,17,wonderstuff
 KH,,,,19200.0,0.322,Electricity Distribution
 KH,,,,19200.0,0.00679,Gas Power Plant (CCGT)
 KH,,,,19200.0,0.736,Electricity Transmission
