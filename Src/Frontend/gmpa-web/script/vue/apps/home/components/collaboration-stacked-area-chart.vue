@@ -23,11 +23,12 @@ watch(() => props.collaborationCountriesList, (newValue, oldValue) => {
 onMounted(() => {
     setupDiagram(props.collaborationCountriesList)
 })
-
+let color
 const setupDiagram = async (collaborationCountriesList) => {
     const data = await collaborationStore.prepareData(collaborationCountriesList.map(country => country.properties.iso_a2))
     // Create a color scale for the series
-    const color = d3
+    //  const x = Object.keys(data[0]).filter((key) => key !== 'x' && key !== 'sum')
+    color = d3
         .scaleOrdinal()
         .domain(Object.keys(data[0]).filter((key) => key !== 'x' && key !== 'sum'))
         .range(d3.schemeCategory10);
@@ -52,9 +53,9 @@ const createAreaChart = (data, color) => {
         .select('#chart')
         .append('svg')
         .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
+        .attr('height', height + margin.top + margin.bottom + 50)
         .append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`);
+        .attr('transform', `translate(${margin.left + 50},${margin.top})`);
 
     const tooltip = d3.select("body")
         .append("div")
@@ -137,7 +138,7 @@ const createAreaChart = (data, color) => {
             tooltipText = `${tooltipText}: Reductions: ${xValue.toFixed(2)} Cost: ${yValue.toFixed(2)}`
             tooltip.text(tooltipText);
             return tooltip.style("left", (event.pageX + 10) + "px")
-             .style("top", (event.pageY - 50) + "px")            
+                .style("top", (event.pageY - 50) + "px")
         })
         .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
         .on('click', function (event, d) {
@@ -157,7 +158,7 @@ const createAreaChart = (data, color) => {
                     value: areaValue.value,
                 });
             }
-            repaintBar(updatedBarData);
+            repaintBar(updatedBarData, color);
         });
 
     // Add x and y axes
@@ -183,7 +184,7 @@ const createAreaChart = (data, color) => {
 
     svg
         .append('g')
-        .attr('transform', 'translate(' + -25 + ', ' + 530 + ')')
+        .attr('transform', 'translate(' + -70 + ', ' + 530 + ')')
         .append('text')
         .attr('text-anchor', 'start')
         .attr('transform', 'rotate(-90)')
@@ -232,7 +233,7 @@ const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse,
         // update horizontal line and marker
         horizontalLine.attr('y1', newY).attr('y2', newY); // Move line
         horizontalLineMarker.attr('y', newY - 10); // Move marker
-        repaintBar(updatedBarData);
+        repaintBar(updatedBarData, color);
     }
 
 
@@ -316,7 +317,7 @@ const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse,
         }
         const valuesAtX = findValuesAtX(nextX, data);
 
-        
+
         const updatedBarData = [];
         let sum = 0;
         for (const areaValue of valuesAtX) {
@@ -334,7 +335,7 @@ const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse,
         verticalLine.attr('x1', newX).attr('x2', newX); // Move line
         verticalLineMarker.attr('x', newX - 10); // Move marker
 
-        repaintBar(updatedBarData);
+        repaintBar(updatedBarData, color);
 
     };
 
@@ -346,8 +347,15 @@ let barXScale, barYScale
 let barXAxis, barYAxis
 const barMargin = { top: 20, right: 30, bottom: 40, left: 40 };
 const barWidth = 900 - barMargin.left - barMargin.right;
-const barHeight = 250 - barMargin.top - barMargin.bottom;
+const barHeight = 250 - barMargin.top - barMargin.bottom ;
 
+const bartooltip = d3.select("body")
+    .append("div")
+    .attr('class', 'bar-tooltip-popup-container')
+    .style("position", "absolute")
+    .style("z-index", "2000")
+    .style("visibility", "hidden")
+    .text("");
 
 const drawBarChart = (barData, color) => {
     d3.select('#bar-chart').selectAll("*").remove();
@@ -356,9 +364,11 @@ const drawBarChart = (barData, color) => {
         .select('#bar-chart')
         .append('svg')
         .attr('width', barWidth + barMargin.left + barMargin.right)
-        .attr('height', barHeight + barMargin.top + barMargin.bottom)
+        .attr('height', barHeight + barMargin.top + barMargin.bottom+50)
         .append('g')
-        .attr('transform', `translate(${barMargin.left},${barMargin.top})`);
+        .attr('transform', `translate(${barMargin.left + 50},${barMargin.top})`);
+
+
 
     // Create x and y scales for the bar chart
     barXScale = d3
@@ -373,23 +383,6 @@ const drawBarChart = (barData, color) => {
         .nice()
         .range([barHeight, 0]);
 
-    // Create the bars for the bar chart
-    barSvg
-        .selectAll('.bar')
-        .data(barData)
-        .enter()
-        .append('rect')
-        .attr('class', 'bar')
-        .attr('x', (d) => barXScale(d.series))
-        .attr('y', (d) => barYScale(d.value))
-        .attr('width', barXScale.bandwidth())
-        .attr('height', (d) => barHeight - barYScale(d.value))
-        .attr('fill', (d, i) => color(d.series)) // d3.schemeCategory10[i])
-        .on('click', (event, data) => {
-            // Emit a custom event when a bar is clicked
-            emit('technology-selected', { data: data });
-        })
-        ;
     // Add x and y axes for the bar chart
     barXAxis = d3.axisBottom(barXScale);
     barYAxis = d3.axisLeft(barYScale);
@@ -401,33 +394,84 @@ const drawBarChart = (barData, color) => {
         .call(barXAxis);
 
     barSvg.append('g').attr('class', 'y-axis').call(barYAxis);
+    repaintBar(barData, color)
 }
 
-const repaintBar = (updatedBarData) => {
+const repaintBar = (updatedBarData, color) => {
     // Replace the bar chart data with the updated dataset
     // TODO only if the values have changed should we proceed (to prevent unnecessary repaints)
 
-    barSvg
+    barSvg.selectAll(".bar").remove();
+
+    const cutOffPercentage = 1 // % that the value of a series entry must at least represent of the total sum in order to be displayed
+    const topX = Math.min(updatedBarData.length,10) // no more than 10 bars, no more than we actually have
+
+    // find out the value associated with topX
+    const cutoffTopXValue = updatedBarData.slice().sort((a, b) => b.value - a.value)[topX-1].value;
+
+    // find out value associated with cutoffPercentage of the total sum
+    const cutoffPercentageValue = updatedBarData.reduce((sum, obj) => sum + obj.value, 0) * cutOffPercentage/100;
+    // use the highest  of the two cutoff values to filter the series
+
+    const cutoffValue = Math.max(cutoffTopXValue, cutoffPercentageValue)
+    const topNBarData = updatedBarData.filter(d => d.value >= cutoffValue) 
+
+    const updatedBars = barSvg
         .selectAll('.bar')
-        .data(updatedBarData, d => d.series)
-        .transition()
-        .duration(1) // Add a transition for a smooth update
+        .data(topNBarData)
+
+    // Create x and y scales for the bar chart
+    barXScale = d3
+        .scaleBand()
+        .domain(topNBarData.map((d) => d.series))
+        .range([0, barWidth])
+        .padding(0.1);
+
+    barYScale = d3
+        .scaleLinear()
+        .domain([0, d3.max(topNBarData, (d) => d.value)])
+        .nice()
+        .range([barHeight, 0]);
+
+
+
+    updatedBars.enter()
+        .append('rect')
+        .attr('class', 'bar')
         .attr('x', (d) => barXScale(d.series))
         .attr('y', (d) => barYScale(d.value))
         .attr('width', barXScale.bandwidth())
-        .attr('height', (d) => barHeight - barYScale(d.value));
+        .attr('height', (d) => barHeight - barYScale(d.value))
+        .attr('fill', (d, i) => color(d.series))
+        .on('click', (event, data) => {
+            // Emit a custom event when a bar is clicked
+            emit('technology-selected', { data: data });
+        })
+        .on("mouseover", function (event, d) {
+            let tooltipText = `System Cost: ${d.value.toFixed(2)} ,  Technology:  ${d.series}`;
+            bartooltip.text(tooltipText);
+            return bartooltip.style("visibility", "visible");
+        })
+        .on("mousemove", function (event, d) {
+            let tooltipText = `System Cost: ${d.value.toFixed(2)} ,  Technology:  ${d.series}`;
+            bartooltip.text(tooltipText);
+            return bartooltip.style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 50) + "px")
+        })
+        .on("mouseout", function () { return bartooltip.style("visibility", "hidden"); })
 
-    // Update the x and y domains of the bar chart scales
-
-    barYScale.domain([0, d3.max(updatedBarData, (d) => d.value)]);
+    barXAxis = d3.axisBottom(barXScale);
     barYAxis = d3.axisLeft(barYScale);
 
-
     // Update the x and y axes
-    barSvg.select('.x-axis').transition().duration(1000).call(barXAxis);
-
+    barSvg.select('.x-axis').transition().duration(300).call(barXAxis);
     barSvg.select('.y-axis').transition().duration(1000).call(barYAxis);
 
+    barSvg.selectAll(".x-axis text")
+  .style("text-anchor", "end") // Set the anchor to the end of the text
+  .attr("dx", "-0.5em") // Offset the text leftwards to center it correctly
+  .attr("dy", "0.5em") // Offset the text downwards to center it correctly
+  .attr("transform", "rotate(-15)"); // Rotate the text by -45 degrees
 }
 
 // Function to find values for every area at a given x-coordinate
@@ -519,6 +563,14 @@ function findYforXinSerie(serie, xValue, data) {
 
 
 .popup-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Add other styling properties as needed */
+}
+
+.bar-tooltip-popup-container {
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 10px;
