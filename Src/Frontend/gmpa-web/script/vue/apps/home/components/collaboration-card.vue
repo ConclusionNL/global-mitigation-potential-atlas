@@ -82,7 +82,7 @@
                 <div class="cost-of-achieving">
                     <div class="card-top bot-pad">
                         <div class="title">
-                            Cost of achieving maximum mitigation potential in
+                            {{absoluteCO2e? "Maximum":"Cost of achieving maximum"}} mitigation potential in
                             <span class="selected-collaboration">{{
                                 selectedCountries
                                     .map((country) => country.properties.name)
@@ -91,7 +91,7 @@
                             in autarky vs collaboration
                         </div>
                     </div>
-                    <maximumPitigationPotentialGauge :countriesList="selectedCountries" />
+                    <maximumPitigationPotentialGauge :countriesList="selectedCountries" :showAbsolutePotential="absoluteCO2e" />
                 </div>
                 <div class="divider"></div>
                 <div class="coalition-potential">

@@ -1,35 +1,54 @@
 ﻿<template>
-    <h1></h1>
     <div id="svgContainer"></div>
 </template>
 
 <script setup>
 import { ref, watch, onMounted, defineProps, defineEmits, computed } from 'vue';
 import * as d3 from 'd3';
+import { useCollaborationStore } from '../stores/collaborationStore';
 
+const collaborationStore = useCollaborationStore();
 const props = defineProps({
-    countriesList: [],
+      countriesList: []
+    , showAbsolutePotential: Boolean
 });
 const svgWidth = 420;
 const svgHeight = 180;
+const showAbsolutePotentialProxy = ref(props.showAbsolutePotential);
+
 
 onMounted(() => {
-    setupGauge(props.countriesList);
+    setupGauge(props.countriesList, showAbsolutePotentialProxy);
 });
 
-const setupGauge = async (countriesList) => {
-    const maxValue = 250;
-    const highValue = 160;
-    const lowValue = 110;
 
-    const lowPercentage = lowValue / maxValue;
-    const highPercentage = highValue / maxValue;
+watch(() => props.showAbsolutePotential, (newValue, oldValue) => {
+        setupGauge(props.countriesList, newValue);
+    })
+
+const setupGauge = async (countriesList, showAbsolutePotential) => {
+    d3
+        .select('.chartContainer').remove()
 
     const svg = d3
         .select('#svgContainer')
         .append('svg')
+        .attr('class','chartContainer')
         .attr('width', svgWidth)
         .attr('height', svgHeight);
+    const data = collaborationStore.getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration(countriesList)
+
+    const costNotPotential = !showAbsolutePotential
+    const unit = costNotPotential ? '$/tCO2e' : 'MtCO2e'
+    const highValue = costNotPotential ? data.mitigationCostAutarky : data.mitigationPotentialCollaboration;
+    const lowValue = costNotPotential ? data.mitigationCostCollaboration : data.mitigationPotentialAutarky;;
+
+    const maxValue = Math.round(highValue * 0.14) * 10;
+
+    const lowPercentage = lowValue / maxValue;
+    const highPercentage = highValue / maxValue;
+
+
 
     // Create the D3.js bar chart within the SVG container
     const chartWidth = 600;
@@ -62,7 +81,7 @@ const setupGauge = async (countriesList) => {
 
     const balloonHeight = 90;
     const balloonWidth = 130;
-    const balloonPrompt = '$/tCO2e';
+    const balloonPrompt = unit;
 
     // text balloon
     const lowValueBalloon = balloonArea
@@ -106,8 +125,7 @@ const setupGauge = async (countriesList) => {
         .attr('d', triangleSymbol.size(300)()) // Adjust the size as needed
         .attr(
             'transform',
-            `translate(${rectWidth * lowPercentage - 0}, ${
-                balloonHeight + 10 + borderThickness + 3
+            `translate(${rectWidth * lowPercentage - 0}, ${balloonHeight + 10 + borderThickness + 3
             }) rotate(180)`
         ) // Position the triangle
         .attr('fill', lowValueFillColor); // Fill color
@@ -152,8 +170,7 @@ const setupGauge = async (countriesList) => {
         .attr('d', triangleSymbol.size(300)()) // Adjust the size as needed
         .attr(
             'transform',
-            `translate(${rectWidth * highPercentage - 0}, ${
-                balloonHeight + 10 + borderThickness + 3
+            `translate(${rectWidth * highPercentage - 0}, ${balloonHeight + 10 + borderThickness + 3
             }) rotate(180)`
         ) // Position the triangle
         .attr('fill', highValueFillColor); // Fill color
@@ -219,9 +236,8 @@ const setupGauge = async (countriesList) => {
     const radius = 0.5 * rectHeight - 0.5 * borderThickness; // Radius of the semicircle
 
     // Create a path for the semicircle
-    const pathData = `M ${centerX} ${centerY - radius} A ${radius} ${radius} 0 1 1 ${centerX} ${
-        centerY + radius
-    }`;
+    const pathData = `M ${centerX} ${centerY - radius} A ${radius} ${radius} 0 1 1 ${centerX} ${centerY + radius
+        }`;
 
     chart
         .append('path')
