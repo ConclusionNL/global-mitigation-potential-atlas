@@ -56,6 +56,11 @@
                             <div class="label-title">
                                 {{ collaborationCandidate.properties.name }}
                             </div>
+                            <div class="label-details">
+                                <div class="label-subtitle" v-if="collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt50']">{{collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt50']}} Gt CO2e at 50</div>
+                                <div class="label-subtitle" v-if="collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt100']">{{collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt100']}} Gt CO2e at 100</div>
+                                <div class="label-subtitle" v-if="collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt200']">{{collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt200']}} Gt CO2e at 200</div>
+                                </div>
                         </div>
                         <div class="other-info"></div>
                     </div>
@@ -137,6 +142,10 @@ import forwardIcon from '../assets/arrow-right.svg';
 import maximumPitigationPotentialGauge from './maximum-mitigation-potential-gauge.vue';
 import coalitionMaximumMitigationPotential from './coalition-maximum-mitigation-potential.vue';
 
+import { useCollaborationStore } from '../stores/collaborationStore';
+
+const collaborationStore = useCollaborationStore();
+
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 const emit = defineEmits(['show-benefits', 'country-navigation']);
@@ -152,7 +161,7 @@ const props = defineProps({
 .collab-card {
     padding: 16px;
     height: fit-content;
-    width: 776px;
+    width: 876px;
     color: #214b63;
     background-color: white;
     border-radius: 8px;
@@ -204,6 +213,12 @@ const props = defineProps({
     padding: 8px;
 }
 
+.label-details {
+    display: flex;
+    flex-direction: row;
+
+}
+
 .filter-box {
     display: flex;
     flex-direction: row;
@@ -250,8 +265,8 @@ const props = defineProps({
     border: 1px solid #f07004;
     border-radius: 4px;
     gap: 16px;
-    height: 60px;
-    width: 240px;
+    height: 76px;
+    width: 270px;
     padding: 8px 12px;
 }
 
@@ -273,7 +288,16 @@ const props = defineProps({
 }
 
 .label-subtitle {
-    font-size: 14px;
+    font-size: 10px;
+    border: 1px solid #f07004;
+    border-radius: 2px;
+    align-items: center;
+    gap: 4px;
+    height: 38px;
+    width: 62px;
+    padding: 2px 1px;
+    margin: 4px;
+    
 }
 
 .card-top {
