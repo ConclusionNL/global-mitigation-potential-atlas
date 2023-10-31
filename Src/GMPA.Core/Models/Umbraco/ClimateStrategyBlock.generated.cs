@@ -50,6 +50,14 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
+		/// Country Tag
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countryTag")]
+		public virtual global::System.Collections.Generic.IEnumerable<string> CountryTag => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "countryTag");
+
+		///<summary>
 		/// Key objectives/targets
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
