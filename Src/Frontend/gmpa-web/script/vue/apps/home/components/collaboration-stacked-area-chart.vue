@@ -1,6 +1,5 @@
 ﻿<template>
-    <div id="chart">
-    </div>
+    <div id="chart"></div>
     <!-- Create a container for the bar chart -->
     <div id="bar-chart"></div>
 </template>
@@ -14,18 +13,23 @@ const collaborationStore = useCollaborationStore();
 const emit = defineEmits(['technology-selected']);
 
 const props = defineProps({
-    collaborationCountriesList: []
+    collaborationCountriesList: [],
 });
-watch(() => props.collaborationCountriesList, (newValue, oldValue) => {
-    setupDiagram(newValue)
-})
+watch(
+    () => props.collaborationCountriesList,
+    (newValue, oldValue) => {
+        setupDiagram(newValue);
+    }
+);
 
 onMounted(() => {
     setupDiagram(props.collaborationCountriesList)
 })
 let color
 const setupDiagram = async (collaborationCountriesList) => {
-    const data = await collaborationStore.prepareData(collaborationCountriesList.map(country => country.properties.iso_a2))
+    const data = await collaborationStore.prepareData(
+        collaborationCountriesList.map((country) => country.properties.iso_a2)
+    );
     // Create a color scale for the series
     //  const x = Object.keys(data[0]).filter((key) => key !== 'x' && key !== 'sum')
     color = d3
@@ -34,20 +38,21 @@ const setupDiagram = async (collaborationCountriesList) => {
         .range(d3.schemeCategory10);
     createAreaChart(data, color);
     // create BAR CHART
-    const barData = []
-    Object.keys(data[0]).filter((key) => key !== 'x' && key !== 'sum').forEach((key) => barData.push({ series: key, value: data[0][key] }))
+    const barData = [];
+    Object.keys(data[0])
+        .filter((key) => key !== 'x' && key !== 'sum')
+        .forEach((key) => barData.push({ series: key, value: data[0][key] }));
 
     drawBarChart(barData, color);
-}
+};
 
-let xScale, yScale
+let xScale, yScale;
 const createAreaChart = (data, color) => {
-
     // Create an SVG container
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
     const width = 900 - margin.left - margin.right;
     const height = 600 - margin.top - margin.bottom;
-    d3.select('#chart').selectAll("*").remove();
+    d3.select('#chart').selectAll('*').remove();
 
     const svg = d3
         .select('#chart')
@@ -57,15 +62,16 @@ const createAreaChart = (data, color) => {
         .append('g')
         .attr('transform', `translate(${margin.left + 50},${margin.top})`);
 
-    const tooltip = d3.select("body")
-        .append("div")
+    const tooltip = d3
+        .select('body')
+        .append('div')
         .attr('class', 'popup-container')
-        .style("position", "absolute")
-        .style("z-index", "2000")
-        .style("visibility", "hidden")
-        .text("");
+        .style('position', 'absolute')
+        .style('z-index', '2000')
+        .style('visibility', 'hidden')
+        .text('');
 
-    let minimumX = d3.min(data, (d) => d.x)
+    let minimumX = d3.min(data, (d) => d.x);
     // Create x and y scales
     xScale = d3
         .scaleLinear()
@@ -103,15 +109,14 @@ const createAreaChart = (data, color) => {
         .curve(d3.curveMonotoneX); // Use curved shape  d3.curveBasis , curveLinear
 
     // Draw the stacked areas
-    svg
-        .selectAll('.area')
+    svg.selectAll('.area')
         .data(seriesData)
         .enter()
         .append('path')
         .attr('class', 'area')
         .attr('fill', (d) => color(d.key))
         .attr('d', area)
-        .on("mouseover", function (event, d) {
+        .on('mouseover', function (event, d) {
             let tooltipText = `Technology:  ${d.key}`;
             var coordinates = d3.pointer(event);
 
@@ -119,13 +124,14 @@ const createAreaChart = (data, color) => {
             var y = coordinates[1];
             const xValue = xValueFromMouse(x);
             const yValue = yValueFromMouse(y);
-            tooltipText = `${tooltipText}: Reductions: ${xValue.toFixed(2)} Cost: ${yValue.toFixed(2)}`
+            tooltipText = `${tooltipText}: Reductions: ${xValue.toFixed(2)} Cost: ${yValue.toFixed(
+                2
+            )}`;
             tooltip.text(tooltipText);
 
-
-            return tooltip.style("visibility", "visible");
+            return tooltip.style('visibility', 'visible');
         })
-        .on("mousemove", function (event, d) {
+        .on('mousemove', function (event, d) {
             let tooltipText = `Technology:  ${d.key}`;
             var coordinates = d3.pointer(event);
 
@@ -135,12 +141,13 @@ const createAreaChart = (data, color) => {
             const xValue = xValueFromMouse(x);
             // find the Y value for the selected series
             const yValue = findYforXinSerie(d.key, xValue, data);
-            tooltipText = `${tooltipText}: Reductions: ${xValue.toFixed(2)} Cost: ${yValue.toFixed(2)}`
+            tooltipText = `${tooltipText}: Reductions: ${xValue.toFixed(2)} Cost: ${yValue.toFixed(
+                2
+            )}`;
             tooltip.text(tooltipText);
             return tooltip.style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY - 50) + "px")
         })
-        .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
         .on('click', function (event, d) {
             var coordinates = d3.pointer(event);
             var x = coordinates[0];
@@ -165,17 +172,12 @@ const createAreaChart = (data, color) => {
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale);
 
-    svg
-        .append('g')
-        .attr('class', 'x-axis')
-        .attr('transform', `translate(0,${height})`)
-        .call(xAxis);
+    svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0,${height})`).call(xAxis);
 
     svg.append('g').attr('class', 'y-axis').call(yAxis);
 
     // Add x-axis and y-axis titles to the area chart
-    svg
-        .append('text')
+    svg.append('text')
         .attr('class', 'x-axis-title')
         .attr('x', margin.left + 100)
         .attr('y', height + 35) // Adjusted y position
@@ -190,14 +192,21 @@ const createAreaChart = (data, color) => {
         .attr('transform', 'rotate(-90)')
         .text('Total System Cost (Billion $)');
 
-    drawCrosshairLines(svg, data, minimumX, height, width, xValueFromMouse, yValueFromMouse)
+    drawCrosshairLines(svg, data, minimumX, height, width, xValueFromMouse, yValueFromMouse);
+};
 
-}
-
-const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse, yValueFromMouse) => {
+const drawCrosshairLines = (
+    svg,
+    data,
+    minimumX,
+    height,
+    width,
+    xValueFromMouse,
+    yValueFromMouse
+) => {
     // Create the vertical line
     // determine the X coord for the minimumX value
-    let minimumXCoord = xScale(minimumX)
+    let minimumXCoord = xScale(minimumX);
     const verticalLine = svg
         .append('line')
         .attr('class', 'vertical-line')
@@ -208,11 +217,12 @@ const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse,
 
     function draggingVerticalLineMarker(event, d) {
         // note: 10 = half of width marker
-        if (event.x < minimumXCoord - 10 || event.x > width + 20) { return }
-        const x = Math.min(width, Math.max(event.x - 10, minimumXCoord))
+        if (event.x < minimumXCoord - 10 || event.x > width + 20) {
+            return;
+        }
+        const x = Math.min(width, Math.max(event.x - 10, minimumXCoord));
 
-        d3.select(this)
-            .attr("x", x - 10)  // 10 is half of the rectangle's width
+        d3.select(this).attr('x', x - 10); // 10 is half of the rectangle's width
 
         verticalLine.attr('x1', x).attr('x2', x); // Move line
 
@@ -236,8 +246,6 @@ const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse,
         repaintBar(updatedBarData, color);
     }
 
-
-
     // vertical line Marker
     const verticalLineMarker = svg
         .append('rect')
@@ -246,10 +254,11 @@ const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse,
         .attr('y', height + 20)
         .attr('width', 20)
         .attr('height', 20)
-        .call(d3.drag()  // Call the drag behavior
-            .on("drag", draggingVerticalLineMarker)
-        )
-        ;
+        .call(
+            d3
+                .drag() // Call the drag behavior
+                .on('drag', draggingVerticalLineMarker)
+        );
     // calculate the Y coordindate from the the sum of all series values at the first, most left data point in order to position the horizontal line correctly
     const newY = yScale(data[0].sum);
     // Create the horizontal line
@@ -269,51 +278,54 @@ const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse,
         .attr('y', newY - 10)
         .attr('width', 20)
         .attr('height', 20)
-        .call(d3.drag()  // Call the drag behavior
-            .on("drag", draggingHorizontalLineMarker)
-        )
-        ;
-
-
+        .call(
+            d3
+                .drag() // Call the drag behavior
+                .on('drag', draggingHorizontalLineMarker)
+        );
     function draggingHorizontalLineMarker(event, d) {
-        if (event.y < 0 || event.y > height) { return }
+        if (event.y < 0 || event.y > height) {
+            return;
+        }
 
-        d3.select(this)
-            .attr("y", event.y - 10);  // 10 is half of the rectangle's height
-        const y = event.y
+        d3.select(this).attr('y', event.y - 10); // 10 is half of the rectangle's height
+        const y = event.y;
 
         horizontalLine.attr('y1', y).attr('y2', y); // Move line
 
         // find current x coordinate and synchronize bar chart
         const yCoordToFind = yValueFromMouse(y);
-        // find the X that goes with this total sum of Capacity - the X that produces this stack   
+        // find the X that goes with this total sum of Capacity - the X that produces this stack
         // iterate over data, take sum for each X
         // find the first X where the previous sum is larger and the next is smaller than yCoordToFind or the prev is smaller and the next is larger
 
         // this code looks for the first data that is lower, assuming declining sum
-        let prevX = data[0].x, nextX
-        let prevSum = data[0].sum, nextSum
+        let prevX = data[0].x,
+            nextX;
+        let prevSum = data[0].sum,
+            nextSum;
 
         for (const obj of data) {
-            nextSum = obj.sum
-            nextX = obj.x
-            if (nextSum < yCoordToFind) { // && prevSum > yCoordToFind) {
-                break
+            nextSum = obj.sum;
+            nextX = obj.x;
+            if (nextSum < yCoordToFind) {
+                // && prevSum > yCoordToFind) {
+                break;
             }
             // we can assume that sum is only decreasing
             // if (obj.sum > yCoordToFind && prevSum < yCoordToFind) {
             //     nextX = obj.x
             //     break
-            // } 
+            // }
             else {
                 prevX = nextX;
                 prevSum = nextSum;
             }
         }
-        // if the previous x has a value closer to the set Y value than the nextX then use prevX 
+        // if the previous x has a value closer to the set Y value than the nextX then use prevX
 
         if (Math.abs(prevSum - yCoordToFind) < Math.abs(nextSum - yCoordToFind)) {
-            nextX = prevX
+            nextX = prevX;
         }
         const valuesAtX = findValuesAtX(nextX, data);
 
@@ -327,9 +339,8 @@ const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse,
             });
             sum = sum + areaValue.value;
         }
-        // calculate interpolated X?? 
+        // calculate interpolated X??
         const newX = xScale(nextX);
-
 
         //update vertical line and marker
         verticalLine.attr('x1', newX).attr('x2', newX); // Move line
@@ -342,9 +353,9 @@ const drawCrosshairLines = (svg, data, minimumX, height, width, xValueFromMouse,
 }
 
 let barSvg;
-let barXScale, barYScale
+let barXScale, barYScale;
 
-let barXAxis, barYAxis
+let barXAxis, barYAxis;
 const barMargin = { top: 20, right: 30, bottom: 40, left: 40 };
 const barWidth = 900 - barMargin.left - barMargin.right;
 const barHeight = 250 - barMargin.top - barMargin.bottom ;
@@ -358,7 +369,7 @@ const bartooltip = d3.select("body")
     .text("");
 
 const drawBarChart = (barData, color) => {
-    d3.select('#bar-chart').selectAll("*").remove();
+    d3.select('#bar-chart').selectAll('*').remove();
     // Create an SVG container for the bar chart
     barSvg = d3
         .select('#bar-chart')
@@ -524,16 +535,14 @@ function findYforXinSerie(serie, xValue, data) {
         }
     }
 
-
     // get the cost values for for these two: y0 and y1
-    const y0 = largestXObject[serie]
-    const y1 = smallestXObject[serie]
+    const y0 = largestXObject[serie];
+    const y1 = smallestXObject[serie];
 
     // interpolate: return y0 + (x-x0/x1-x0) * (y1-y0)
-    const interpolatedValue = y0 + y1 * (xValue - largestX) / (smallestX - largestX)
+    const interpolatedValue = y0 + (y1 * (xValue - largestX)) / (smallestX - largestX);
     return interpolatedValue;
 }
-
 </script>
 
 <style>
@@ -560,7 +569,6 @@ function findYforXinSerie(serie, xValue, data) {
     cursor: pointer;
     fill: red;
 }
-
 
 .popup-container {
     background-color: #fff;

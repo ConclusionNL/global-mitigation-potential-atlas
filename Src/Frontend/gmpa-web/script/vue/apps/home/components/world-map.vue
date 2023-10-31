@@ -10,16 +10,20 @@
             @countryNavigation="navigateToCountry"/>
         <div class="zoom-box">
             <div class="zoom-flex">
-                <div @click="
-                    zoomLevel += 0.5;
-                zoomToScale(zoomLevel);
-                " class="r-btn plus">
+                <div
+                    @click="
+                        zoomLevel += 0.5;
+                        zoomToScale(zoomLevel);
+                    "
+                    class="r-btn plus">
                     <plusIcon width="24" height="24" />
                 </div>
-                <div @click="
-                    zoomLevel -= 0.5;
-                zoomToScale(zoomLevel);
-                " class="r-btn minus">
+                <div
+                    @click="
+                        zoomLevel -= 0.5;
+                        zoomToScale(zoomLevel);
+                    "
+                    class="r-btn minus">
                     <minusIcon width="24" height="4" />
                 </div>
             </div>
@@ -27,7 +31,11 @@
         <div class="modal-diagram" v-if="stackedAreaModalVisible">
             <div class="modal-diagram-content">
                 <a href="#" class="close-link" @click="closeModal">Close</a>
-                <mitigationPotentialDiagram :countries-list="selectedCountries" @technologySelected="console.log(`technoogy selected in mitigation potential diagram`)"/>
+                <mitigationPotentialDiagram
+                    :countries-list="selectedCountries"
+                    @technologySelected="
+                        console.log(`technoogy selected in mitigation potential diagram`)
+                    " />
             </div>
         </div>
     </div>
@@ -53,8 +61,8 @@ const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 const inCollabMode = useCountries.inCollabMode;
 
-const stackedAreaModalVisible = ref(false)
-const closeModal = () => stackedAreaModalVisible.value=false
+const stackedAreaModalVisible = ref(false);
+const closeModal = () => (stackedAreaModalVisible.value = false);
 
 // const emit = defineEmits(['country-clicked']);
 
@@ -79,11 +87,13 @@ const navigateToCountry = (countryNavigationEvent) => {
 }
 
 function highlightCollaborationCandidates() {
-    const selectedCountryCodes = selectedCountries.value.map(country => country.properties.iso_a2)
-    const collaborationCandidateCountryCodes = collaborationStore.findCollaboratingCountries(selectedCountryCodes)
+    const selectedCountryCodes = selectedCountries.value.map(
+        (country) => country.properties.iso_a2
+    );
+    const collaborationCandidateCountryCodes =
+        collaborationStore.findCollaboratingCountries(selectedCountryCodes);
     // unhighlight all currently highlighted collaboration candidates
-    getCountryNodes()
-        .classed('suggested-country-collab', false);
+    getCountryNodes().classed('suggested-country-collab', false);
     // given the the currently selected countries in selectedCountries
     // find the collaboration candidates and highlight each of them;
     if (collaborationCandidateCountryCodes.length > 0 && inCollabMode.value) {
@@ -93,9 +103,9 @@ function highlightCollaborationCandidates() {
     }
 }
 const handleChangeInCountriesSelection = () => {
-    highlightCollaborationCandidates()
-    zoomInOnSelectedCountries()
-}
+    highlightCollaborationCandidates();
+    zoomInOnSelectedCountries();
+};
 
 watch(
     selectedCountries,
@@ -120,7 +130,7 @@ watch(
         if (selectedCountries.value.length < 1) {
             useCountries.setCollabMode(false);
         }
-        handleChangeInCountriesSelection()
+        handleChangeInCountriesSelection();
     },
     { deep: true }
 );
@@ -137,16 +147,20 @@ watch(inCollabMode, (newVal) => {
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
 };
+
 const findCollaboratingCandidates = (selectedCountries) => {
-    let collaborationCandidateCountries = []
+    let collaborationCandidateCountries = [];
     if (selectedCountries.length > 0) {
-        const selectedCountryCodes = selectedCountries.map(country => country.properties.iso_a2)
-        const collaborationCandidateCountryCodes = collaborationStore.findCollaboratingCountries(selectedCountryCodes)
+        const selectedCountryCodes = selectedCountries.map((country) => country.properties.iso_a2);
+        const collaborationCandidateCountryCodes =
+            collaborationStore.findCollaboratingCountries(selectedCountryCodes);
         // create an array of country objects for the countries whose code is in collaborationCandidateCountryCodes
-        collaborationCandidateCountries = countryDataSet.features.filter((c) => collaborationCandidateCountryCodes.includes(c.properties.iso_a2))
+        collaborationCandidateCountries = countryDataSet.features.filter((c) =>
+            collaborationCandidateCountryCodes.includes(c.properties.iso_a2)
+        );
     }
-    return collaborationCandidateCountries
-}
+    return collaborationCandidateCountries;
+};
 
 onMounted(() => {
     watch(mitigation, (newValue) => {
@@ -157,7 +171,6 @@ onMounted(() => {
         drawVerticalAxis();
     });
 
-    
     const t0 = { k: width / 2 / Math.PI, x: width / 2, y: height / 2 };
     svg = d3
         .select('#mapcontainer')
@@ -232,8 +245,8 @@ onMounted(() => {
                                 d.properties[key] = c[key];
                             }
                         }
-                              // set the property in_heatmap to true to indicate that there is heatmap data for this country 
-                              d.properties['in_heatmap'] = true
+                        // set the property in_heatmap to true to indicate that there is heatmap data for this country
+                        d.properties['in_heatmap'] = true;
                     });
 
                 // todo - these properties are added in a not very efficient way
@@ -262,7 +275,7 @@ onMounted(() => {
 
     loadAndProcessData().then((countries) => {
         countryDataSet = countries;
-        collaborationStore.prepareCountryCollaborations()
+        collaborationStore.prepareCountryCollaborations();
         useCountries.dataSet.value = countries.features;
         // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
         // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
@@ -333,7 +346,7 @@ onMounted(() => {
             .attr('x', -660) // Position it at the middle of the axis
             .attr('dy', '1em') // Adjustments for positioning
             .style('text-anchor', 'middle') // Center the text
-            .text(mitigation.value.replace(/_/g, " "));
+            .text(mitigation.value.replace(/_/g, ' '));
     }
 
     function drawAllCountries(countries) {
@@ -343,11 +356,10 @@ onMounted(() => {
             // fill with gray (#dcdcdc) when the country's data is unknown
             .attr('fill', (d) =>
                 d.properties['in_heatmap']
-                ? ( d.properties.hasOwnProperty(mitigation.value)
-                    ? colorScale2(d.properties[mitigation.value])
-                    : "#ffffff"
-                  )
-                : '#dcdcdc'
+                    ? d.properties.hasOwnProperty(mitigation.value)
+                        ? colorScale2(d.properties[mitigation.value])
+                        : '#ffffff'
+                    : '#dcdcdc'
             )
             .select('title') // Select the child title of each path
             .text(
@@ -365,12 +377,11 @@ onMounted(() => {
             .attr('d', pathGenerator)
             // fill with gray (#dcdcdc) when the country's data is unknown
             .attr('fill', (d) =>
-            d.properties['in_heatmap']
-                ? ( d.properties.hasOwnProperty(mitigation.value)
-                    ? colorScale2(d.properties[mitigation.value])
-                    : "#ffffff"
-                  )
-                : '#dcdcdc'
+                d.properties['in_heatmap']
+                    ? d.properties.hasOwnProperty(mitigation.value)
+                        ? colorScale2(d.properties[mitigation.value])
+                        : '#ffffff'
+                    : '#dcdcdc'
             )
             .on('mouseover', handleMouseOver)
             .on('mouseleave', handleMouseLeave)
@@ -536,11 +547,17 @@ function handleCountryClick(event, d) {
         zoomToCountry(event, d);
     } else {
         // if the user clicked on a countrythat is not a collaboration candidate, then do not process the click
-        const selectedCountryCodes = selectedCountries.value.map(country => country.properties.iso_a2)
-        const collaborationCandidateCountryCodes = collaborationStore.findCollaboratingCountries(selectedCountryCodes)
-        if (collaborationCandidateCountryCodes.length == 0 || !collaborationCandidateCountryCodes.includes(d.properties.iso_a2))   
-          return       
-        
+        const selectedCountryCodes = selectedCountries.value.map(
+            (country) => country.properties.iso_a2
+        );
+        const collaborationCandidateCountryCodes =
+            collaborationStore.findCollaboratingCountries(selectedCountryCodes);
+        if (
+            collaborationCandidateCountryCodes.length == 0 ||
+            !collaborationCandidateCountryCodes.includes(d.properties.iso_a2)
+        )
+            return;
+
         useCountries.addCountry(d);
     }
 }
@@ -552,7 +569,7 @@ function zoomInOnSelectedCountries() {
         var maxX = Number.NEGATIVE_INFINITY;
         var maxY = Number.NEGATIVE_INFINITY;
         selectedCountries.value.forEach((c) => {
-            var selectedCountryGeoJSON = countryDataSet.features.filter((d) => d.id == c.id)
+            var selectedCountryGeoJSON = countryDataSet.features.filter((d) => d.id == c.id);
             // Calculate zoom parameters
             //                var bounds = d3.geoBounds(selectedCountryGeoJSON[0]);
             const bounds = pathGenerator.bounds(selectedCountryGeoJSON[0]);
@@ -560,7 +577,7 @@ function zoomInOnSelectedCountries() {
             minY = Math.min(minY, bounds[0][1]);
             maxX = Math.max(maxX, bounds[1][0]);
             maxY = Math.max(maxY, bounds[1][1]);
-        })
+        });
         const dx = maxX - minX;
         const dy = maxY - minY;
         const x = (minX + maxX) / 2;
@@ -569,10 +586,12 @@ function zoomInOnSelectedCountries() {
         // Transition to the selected feature's position and scale
         svg.transition()
             .duration(750)
-            .call(zoooom.transform, d3.zoomIdentity
-                .translate(width / 2, height / 2)
-                .scale(scale)
-                .translate(-x, -y)
+            .call(
+                zoooom.transform,
+                d3.zoomIdentity
+                    .translate(width / 2, height / 2)
+                    .scale(scale)
+                    .translate(-x, -y)
             );
     }
 }
@@ -712,15 +731,13 @@ p {
     border-radius: 4px;
     max-width: 85%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-
 }
 
 /* Modal Content */
 .modal-diagram-content {
     background-color: #fff;
-    margin: 1% ; 
+    margin: 1%;
     padding: 1px;
     border: 0px;
-
 }
 </style>

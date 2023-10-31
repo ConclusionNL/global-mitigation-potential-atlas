@@ -12,9 +12,11 @@
                 v-if="filterInput && filterInput !== input && !inputContainsCountry"
                 class="results"
                 :class="{ active: !filterInput }">
-                <li @click="onSuggestionClick(country)" v-for="country in filterInput">
-                    {{ country.Name }}
-                </li>
+                <div v-for="country in filterInput">
+                    <li @click="onSuggestionClick(country)">
+                        {{ country.Name }}
+                    </li>
+                </div>
             </div>
         </div>
         <div v-if="errorMsg" class="error justify-center">{{ errorMsg }}</div>
@@ -23,10 +25,13 @@
 
 <script setup>
 import { ref, onMounted, watch, defineProps, computed } from 'vue';
+import { useCollaborationStore } from '../stores/collaborationStore';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
 import searchIcon from '../assets/search.svg';
 
+const collaborationStore = useCollaborationStore();
 const useCountries = useSelectedCountries();
+const selectedCountries = useCountries.selectedCountries;
 const inCollabMode = useCountries.inCollabMode;
 
 const input = ref('');
@@ -36,8 +41,10 @@ const props = defineProps({
     countries: {},
 });
 
-watch(input, (newValue) => {
-    errorMsg.value = '';
+watch(input, (newValue, oldValue) => {
+    if (newValue.length < oldValue.length) {
+        errorMsg.value = '';
+    }
 });
 
 const filterInput = computed(() => {
@@ -49,17 +56,13 @@ const filterInput = computed(() => {
 });
 
 const onSuggestionClick = (country) => {
-    if (!country.Active) {
-        errorMsg.value = 'Country is not available in the pilot';
-        return;
-    }
-
     input.value = country.Name;
     onEnter();
 };
 
 const inputContainsCountry = computed(() => {
     for (const country in props.countries) {
+        console.log(props.countries[country].Name);
         if (props.countries[country].Name.toLocaleLowerCase() === input.value.toLocaleLowerCase()) {
             return props.countries[country];
         }
@@ -68,11 +71,26 @@ const inputContainsCountry = computed(() => {
 });
 
 const onEnter = () => {
+    const selectedCountryCodes = selectedCountries.value.map(
+        (country) => country.properties.iso_a2
+    );
+    const collaborationCandidateCountryCodes =
+        collaborationStore.findCollaboratingCountries(selectedCountryCodes);
+
+    const country = useCountries.getCountryByName(inputContainsCountry.value.Name);
+
     if (!inputContainsCountry.value) {
         errorMsg.value = 'Country could not be found';
         return;
     } else if (!inputContainsCountry.value.Active) {
         errorMsg.value = 'Country is not available in the pilot';
+        return;
+    } else if (
+        inCollabMode.value &&
+        (collaborationCandidateCountryCodes.length == 0 ||
+            !collaborationCandidateCountryCodes.includes(country.properties.iso_a2))
+    ) {
+        errorMsg.value = 'This country could not be collaborated with';
         return;
     }
 
