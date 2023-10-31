@@ -148,6 +148,7 @@ const createAreaChart = (data, color) => {
             return tooltip.style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY - 50) + "px")
         })
+        .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
         .on('click', function (event, d) {
             var coordinates = d3.pointer(event);
             var x = coordinates[0];
