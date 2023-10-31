@@ -21,6 +21,7 @@
 <script setup>
 import { ref } from 'vue';
 
+// Set this to false to remove constant introcard pop-up
 const show = ref(true);
 </script>
 
