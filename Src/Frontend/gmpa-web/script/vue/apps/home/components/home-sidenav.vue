@@ -8,7 +8,7 @@
             </div>
         <li v-for="country in props.countries">
             <div v-if="country.Active">
-                <div @click="!inCollabMode ? useCountries.setCountry(useCountries.getCountryByName(country.Name)) : useCountries.addCountry(useCountries.getCountryByName(country.Name))" class="countries-link-active pointer">{{ country.Name }}</div>
+                <div @click="countryEligible(country.Name)" class="countries-link-active pointer">{{ country.Name }}</div>
             </div>
         </li>
         </li>
@@ -39,9 +39,12 @@
 
 <script lang="ts" setup>
     import { defineProps, ref } from "vue";
+    import { useCollaborationStore } from '../stores/collaborationStore';
     import { useSelectedCountries } from '../composables/useSelectedCountries';
 
+    const collaborationStore = useCollaborationStore();
     const useCountries = useSelectedCountries();
+    const selectedCountries = useCountries.selectedCountries;
     const inCollabMode = useCountries.inCollabMode;
 
     const props = defineProps({
@@ -54,6 +57,30 @@
     continents.forEach(continent => {
         continentsCollapsable.value.push(true);
     });
+
+    const countryEligible = (cName) => {
+        const selectedCountryCodes = selectedCountries.value.map(
+        (country: any) => country.properties.iso_a2
+    );
+    const collaborationCandidateCountryCodes =
+        collaborationStore.findCollaboratingCountries(selectedCountryCodes);
+
+    const country = useCountries.getCountryByName(cName);
+
+    if (
+        inCollabMode.value &&
+        (collaborationCandidateCountryCodes.length == 0 ||
+            !collaborationCandidateCountryCodes.includes(country.properties.iso_a2))
+    ) {
+        return;
+    }
+
+    if (inCollabMode.value) {
+        useCountries.addCountry(country);
+    } else {
+        useCountries.setCountry(country);
+    }
+}
 
 
 </script>

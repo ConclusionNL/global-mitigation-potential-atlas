@@ -40,7 +40,7 @@
                     <filterIcon width="24" height="24" />
                 </div>
             </div>
-            <div class="suggestion-country-container">
+            <div class="suggestion-country-container space-between">
                 <div
                     v-for="collaborationCandidate in collaborationCandidatesList"
                     :key="collaborationCandidate.id">
@@ -56,8 +56,6 @@
                             <div class="label-title">
                                 {{ collaborationCandidate.properties.name }}
                             </div>
-                            <!--                        <div class="label-subtitle">Data with filters from country {{ collaborationCandidate.properties.iso_a2 }}</div>
--->
                         </div>
                         <div class="other-info"></div>
                     </div>
@@ -240,8 +238,11 @@ const props = defineProps({
     flex-direction: row;
 }
 
+.space-between {
+    justify-content: space-between;
+}
+
 .suggestion-country-boxes {
-    flex: 1;
     display: flex;
     flex: auto;
     align-items: center;
@@ -249,7 +250,7 @@ const props = defineProps({
     border-radius: 4px;
     gap: 16px;
     height: 60px;
-    width: 220px;
+    width: 240px;
     padding: 8px 12px;
 }
 
@@ -296,7 +297,7 @@ const props = defineProps({
 }
 
 .selected-collaboration {
-    color: orange;
+    color: #f07004;
 }
 
 .back-btn {
@@ -338,7 +339,6 @@ const props = defineProps({
     background: #dae3e8;
 }
 
-/* The switch - the box around the slider */
 .switch {
     position: relative;
     display: inline-block;
@@ -346,14 +346,12 @@ const props = defineProps({
     height: 62px;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
-/* The slider */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -384,7 +382,6 @@ input:checked + .slider:before {
     transform: translateY(-28px);
 }
 
-/* Rounded sliders */
 .slider.round {
     border-radius: 16px;
 }
