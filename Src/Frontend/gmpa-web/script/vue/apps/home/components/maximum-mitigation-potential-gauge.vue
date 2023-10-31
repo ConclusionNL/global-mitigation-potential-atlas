@@ -1,8 +1,6 @@
 ﻿<template>
     <h1></h1>
-    <div class="test">
-        <div id="svgContainer"></div>
-    </div>
+    <div id="svgContainer"></div>
 </template>
 
 <script setup>
@@ -12,8 +10,8 @@ import * as d3 from 'd3';
 const props = defineProps({
     countriesList: [],
 });
-const svgWidth = 440;
-const svgHeight = 190;
+const svgWidth = 420;
+const svgHeight = 180;
 
 onMounted(() => {
     setupGauge(props.countriesList);
@@ -34,8 +32,8 @@ const setupGauge = async (countriesList) => {
         .attr('height', svgHeight);
 
     // Create the D3.js bar chart within the SVG container
-    const chartWidth = 700;
-    const chartHeight = 400;
+    const chartWidth = 600;
+    const chartHeight = 360;
     const balloonAreaHeight = 0;
     const chart = svg
         .append('g')
@@ -176,32 +174,32 @@ const setupGauge = async (countriesList) => {
         .attr('x', rectWidth - cornerRadius);
 
     // Create the left orange part with a curved corner on the left
-    chart.append("rect")
-        .attr("width", rectWidth * lowPercentage)
-        .attr("height", rectHeight)
-        .attr("rx", cornerRadius)
-        .attr("ry", cornerRadius)
-        .attr("fill", lowValueFillColor)
-        .attr("clip-path", "url(#left-clip)")
-        .attr("class","maximum-potential")
-        ;
+    chart
+        .append('rect')
+        .attr('width', rectWidth * lowPercentage)
+        .attr('height', rectHeight)
+        .attr('rx', cornerRadius)
+        .attr('ry', cornerRadius)
+        .attr('fill', lowValueFillColor)
+        .attr('clip-path', 'url(#left-clip)')
+        .attr('class', 'maximum-potential');
 
-    chart.append("rect")
-        .attr("width", rectWidth * lowPercentage - (cornerRadius * 2)+1)
-        .attr("height", rectHeight)
-        .attr("x", cornerRadius * 2-1)
-        .attr("fill", lowValueFillColor)
-        .attr("class","maximum-potential")
-;
+    chart
+        .append('rect')
+        .attr('width', rectWidth * lowPercentage - cornerRadius * 2 + 1)
+        .attr('height', rectHeight)
+        .attr('x', cornerRadius * 2 - 1)
+        .attr('fill', lowValueFillColor)
+        .attr('class', 'maximum-potential');
 
     // Create the central part for the high value  with no curved corners
-    chart.append("rect")
-        .attr("width", rectWidth * (highPercentage - lowPercentage))
-        .attr("height", rectHeight)
-        .attr("x", rectWidth * lowPercentage) // Position it after the orange part
-        .attr("fill", highValueFillColor)
-        .attr("class","maximum-potential")
-;
+    chart
+        .append('rect')
+        .attr('width', rectWidth * (highPercentage - lowPercentage))
+        .attr('height', rectHeight)
+        .attr('x', rectWidth * lowPercentage) // Position it after the orange part
+        .attr('fill', highValueFillColor)
+        .attr('class', 'maximum-potential');
 
     // // Create the right empty part with a curved corner on the right
     // chart.append("rect")
@@ -225,11 +223,12 @@ const setupGauge = async (countriesList) => {
         centerY + radius
     }`;
 
-    chart.append("path")
-        .attr("d", pathData)
-        .attr("fill", emptyFillColor)
-        .attr("stroke", outlineColor)
-        .attr("stroke-width", borderThickness);
+    chart
+        .append('path')
+        .attr('d', pathData)
+        .attr('fill', emptyFillColor)
+        .attr('stroke', outlineColor)
+        .attr('stroke-width', borderThickness);
 
     chart
         .append('rect')
@@ -247,12 +246,12 @@ const setupGauge = async (countriesList) => {
         .attr('y', rectHeight - borderThickness)
         .attr('fill', highValueFillColor);
 
-    chart.append("rect")
-        .attr("width", rectWidth * (1 - highPercentage) - (0.9 * cornerRadius))
-        .attr("height", rectHeight)
-        .attr("x", rectWidth * highPercentage)
-        .attr("fill", emptyFillColor)
-        .attr("fill-opacity", 0)
+    chart
+        .append('rect')
+        .attr('width', rectWidth * (1 - highPercentage) - 0.9 * cornerRadius)
+        .attr('height', borderThickness)
+        .attr('x', rectWidth * highPercentage)
+        .attr('fill', highValueFillColor);
 
     chart
         .append('text')
@@ -274,6 +273,6 @@ const setupGauge = async (countriesList) => {
 
 <style scoped>
 .maximum-potential {
-    opacity: 1.0;
+    opacity: 1;
 }
 </style>
