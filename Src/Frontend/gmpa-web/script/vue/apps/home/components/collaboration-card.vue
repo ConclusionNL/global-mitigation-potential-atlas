@@ -153,6 +153,7 @@ const props = defineProps({
     padding: 16px;
     height: fit-content;
     width: 776px;
+    color: #214b63;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0px 4px 8px 0px #214b6352;
