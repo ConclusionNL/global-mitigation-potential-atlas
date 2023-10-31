@@ -4,10 +4,16 @@
             <searchBar class="search-box" :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
-        <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box" @countryNavigation="navigateToCountry"/>
-        <collabCard v-if="inCollabMode && selectedCountries && selectedCountries.length > 0" class="countries-box" 
-            :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)" @show-benefits="stackedAreaModalVisible=true"
-            @countryNavigation="navigateToCountry"/>
+        <countryCard
+            v-if="selectedCountries[0] && !inCollabMode"
+            class="country-box"
+            @countryNavigation="navigateToCountry" />
+        <collabCard
+            v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
+            class="countries-box"
+            :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)"
+            @show-benefits="stackedAreaModalVisible = true"
+            @countryNavigation="navigateToCountry" />
         <div class="zoom-box">
             <div class="zoom-flex">
                 <div
@@ -82,9 +88,9 @@ const props = defineProps({
 });
 
 const navigateToCountry = (countryNavigationEvent) => {
-    const countryName = countryNavigationEvent.properties.name
+    const countryName = countryNavigationEvent.properties.name;
     window.location.href = `/Countries/${countryName}`;
-}
+};
 
 function highlightCollaborationCandidates() {
     const selectedCountryCodes = selectedCountries.value.map(
@@ -633,10 +639,6 @@ function zoomInOnSelectedCountries() {
     font-size: 1em;
     font-family: sans-serif;
     fill: black;
-}
-
-rect {
-    opacity: 0.7;
 }
 
 p {

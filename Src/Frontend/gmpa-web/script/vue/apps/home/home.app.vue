@@ -1,5 +1,6 @@
 ﻿<template>
     <div>
+        <introCard></introCard>
         <div class="row">
             <div class="side-nav">
                 <homeSidenav :countries="props.countries"></homeSidenav>
@@ -14,6 +15,7 @@
 <script setup lang="ts">
 import homeSidenav from './components/home-sidenav.vue';
 import worldMap from './components/world-map.vue';
+import introCard from './components/intro-card.vue';
 import { useCollaborationStore } from './stores/collaborationStore';
 import { ref, computed, defineProps } from 'vue';
 
