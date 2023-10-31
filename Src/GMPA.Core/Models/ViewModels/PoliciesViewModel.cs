@@ -9,6 +9,7 @@
             public string EndYear { get; set; }
             public string SourceLink { get; set; }
             public string KeyObjectivesTargets { get; set; }
+            public string FromCountry { get; set; }
         }
 
         public class PolicyInventory
@@ -22,6 +23,7 @@
             public string PolicyLevel { get; set; }
             public string PolicyOrigin { get; set; }
             public string Objectives { get; set; }
+            public string FromCountry { get; set; }
         }
 
         public List<ClimateStrategy> ClimateStrategiesBlockList { get; set; }

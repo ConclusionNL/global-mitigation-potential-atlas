@@ -50,14 +50,6 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
-		/// Countries
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("countries")]
-		public virtual global::System.Collections.Generic.IEnumerable<string> Countries => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "countries");
-
-		///<summary>
 		/// End Date
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
@@ -79,6 +71,14 @@ namespace GMPA.Core.Models.Umbraco
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("policyDocumentName")]
 		public virtual string PolicyDocumentName => this.Value<string>(_publishedValueFallback, "policyDocumentName");
+
+		///<summary>
+		/// Policy Inventory Country
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("policyInventoryCountry")]
+		public virtual string PolicyInventoryCountry => this.Value<string>(_publishedValueFallback, "policyInventoryCountry");
 
 		///<summary>
 		/// Policy Level

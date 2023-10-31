@@ -30,7 +30,8 @@ namespace GMPA.Core.Controller.Render
                         StartYear = b.StartYear.ToString(),
                         EndYear = b.ValidTill.ToString(),
                         SourceLink = b.SourceLink,
-                        KeyObjectivesTargets = b.KeyObjectivestargets?.ToHtmlString()
+                        KeyObjectivesTargets = b.KeyObjectivestargets?.ToHtmlString(),
+                        FromCountry = b.ClimateStrategyCountry
                     })
                     .ToList(),
 
@@ -46,7 +47,8 @@ namespace GMPA.Core.Controller.Render
                         SourceLink = b.SourceLink,
                         PolicyLevel = b.PolicyLevel,
                         PolicyOrigin = b.PolicyOrigin,
-                        Objectives = b.Objectives?.ToHtmlString()
+                        Objectives = b.Objectives?.ToHtmlString(),
+                        FromCountry = b.PolicyInventoryCountry
                     })
                     .ToList()
             };
