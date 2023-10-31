@@ -16,7 +16,7 @@
         {
             public string PolicyDocumentName { get; set; }
             public string Sector { get; set; }
-            public string SubSector { get; set;}
+            public string SubSector { get; set; }
             public string StartDate { get; set; }
             public string EndDate { get; set; }
             public string SourceLink { get; set; }
