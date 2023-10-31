@@ -2,3 +2,11 @@
 @{
 	Layout = "Main.cshtml";
 }
+
+@{
+    foreach (var caseItem in Model.Cases)
+    {
+        <h1>@caseItem.CaseName</h1>
+    }
+}
+
