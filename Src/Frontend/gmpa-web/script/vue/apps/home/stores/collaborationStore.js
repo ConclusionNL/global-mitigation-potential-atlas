@@ -34,6 +34,14 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         return prepareCombinedData(combinedCollaborationData.value, countries);
     };
 
+    const getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration = (collaboratingCountries) => {
+        // given an array list of two two letter country codes (for example ['ID','SG']) return an object with four values: 
+        // { mitigationPotentialAutarky: 210, mitigationPotentialCollaboration: 300, mitigationCostAutarky: 50, mitigationCostCollaboration: 30 }
+        return { mitigationPotentialAutarky: 40, mitigationPotentialCollaboration: 70, mitigationCostAutarky: 150, mitigationCostCollaboration: 110 }
+    }
+
+
+
     // create an array that contains entries for each individual supported collaboration country set (each combination of countries for which we have a collaboration dat)
     const prepareCountryCollaborations = async () => {
         collaborations = identifyAllCountryCollaborations(collaborationData.value)
@@ -142,7 +150,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 // add all records for this collaboration to the data object
                 // and for each record all properties from the collaborationProperties array
                 const consolidatedRecord = {}
-                collaborationProperties.forEach( (property) => {
+                collaborationProperties.forEach((property) => {
                     const x = parseFloat(rec[property])
                     consolidatedRecord[property] = x
                 })
@@ -165,7 +173,8 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         findCollaboratingCountries,
         combinedCollaborationData,
         prepareCollaborationData,
-        prepareCombinedCollaborationData
+        prepareCombinedCollaborationData,
+        getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration
     };
 });
 // return an array of arrays of two letter country codes of potentially collaborating countries
