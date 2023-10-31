@@ -71,10 +71,18 @@
                         <backIcon width="24" height="24"></backIcon>
                         <div>Back</div>
                     </div>
+                    <div class="switch-box">
+                        <div>Cost / tCO2e</div>
+                        <label class="switch">
+                            <input type="checkbox" @change="absoluteCO2e = !absoluteCO2e" />
+                            <span class="slider round"></span>
+                        </label>
+                        <div>Absolute tCO2e</div>
+                    </div>
                 </div>
                 <div class="divider"></div>
                 <div class="cost-of-achieving">
-                    <div class="card-top">
+                    <div class="card-top bot-pad">
                         <div class="title">
                             Cost of achieving maximum mitigation potential in
                             <span class="selected-collaboration">{{
@@ -89,7 +97,7 @@
                 </div>
                 <div class="divider"></div>
                 <div class="coalition-potential">
-                    <div class="card-top">
+                    <div class="card-top bot-pad">
                         <div class="title">
                             Coalition Maximum Mitigation Potential (Absolute with Collaboration)
                         </div>
@@ -102,7 +110,7 @@
                 </div>
                 <div class="divider"></div>
                 <div class="country-statistics">
-                    <class class="card-top">
+                    <class class="card-top bot-pad">
                         <div class="title">View Country Statistics</div>
                     </class>
                     <div class="country-navigations">
@@ -135,6 +143,7 @@ const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 const emit = defineEmits(['show-benefits', 'country-navigation']);
 const showComposeCollaborationSet = ref(true);
+const absoluteCO2e = ref(true);
 
 const props = defineProps({
     collaborationCandidatesList: [],
@@ -269,6 +278,9 @@ const props = defineProps({
     display: flex;
     justify-content: space-between;
     align-items: top;
+}
+
+.bot-pad {
     padding-bottom: 20px;
 }
 
@@ -294,8 +306,11 @@ const props = defineProps({
 }
 
 .back-box {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     flex: 0.5;
+    padding-right: 12px;
 }
 
 .cost-of-achieving {
@@ -321,5 +336,71 @@ const props = defineProps({
 .divider {
     width: 1px;
     background: #dae3e8;
+}
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 106px;
+    height: 62px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px solid gray;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: '';
+    height: 28px;
+    width: 100px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateY(-28px);
+    -ms-transform: translateY(-28px);
+    transform: translateY(-28px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 16px;
+}
+
+.slider.round:before {
+    background: #214b63;
+    border-radius: 14px;
+}
+
+.switch-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    align-self: center;
+    justify-self: center;
 }
 </style>
