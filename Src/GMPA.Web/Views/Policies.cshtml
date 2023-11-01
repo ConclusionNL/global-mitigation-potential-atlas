@@ -36,26 +36,26 @@
         <h2>Climate Strategies</h2>
         @foreach (var strategy in Model.ClimateStrategiesBlockList)
         {
-            <div class="divider strategy-item" data-from-country="@strategy.FromCountry">
-                <div class="row">
-                    <div class="col-2">
-                        <h3>@strategy.PolicyDocumentName</h3>
-                    </div>
-                    <div class="col-10">
-                        <h5>Key Objectives/Targets</h5>
-                        @Html.Raw(strategy.KeyObjectivesTargets)
-                    </div>
+            <div class="card md-3 strategy-item" data-from-country="@strategy.FromCountry">
+
+                <div class="card-header">
+                    <h3>@strategy.PolicyDocumentName</h3>
                 </div>
-                <div class="row">
-                    <div class="col-1">
+                <div class="card-body">
+                    <h5>Key Objectives/Targets</h5>
+                    @Html.Raw(strategy.KeyObjectivesTargets)
+                </div>
+
+                <div class="d-flex justify-content-between card-footer">
+                    <div class="p-2">
                         <h5>Start Year</h5>
                         @strategy.StartYear
                     </div>
-                    <div class="col-1">
+                    <div class="p-2">
                         <h5>Valid till</h5>
                         @strategy.EndYear
                     </div>
-                    <div class="col-3">
+                    <div class="ms-auto p-2">
                         <h5>Source</h5>
                         <a href="@strategy.SourceLink">Source for @strategy.PolicyDocumentName</a>
                     </div>
@@ -171,5 +171,9 @@
 
     .hidden {
         display: none;
+    }
+
+    .card {
+        margin-bottom: 10px
     }
 </style>
