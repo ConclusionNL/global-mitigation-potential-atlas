@@ -180,13 +180,14 @@ onMounted(() => {
     // With this code, the default drag behavior for the world map will be disabled, and users won't be able to drag the map.
 
     svg.call(d3.drag()
-        .on("start", () => {
+        .on("start", (event, d) => {
             // Prevent the drag behavior on mouse down
-            d3.event.sourceEvent.stopPropagation();
+
+            event.sourceEvent.stopPropagation();
         })
-        .on("drag", () => {
+        .on("drag", (event, d) => {
             // Prevent the drag behavior on drag
-            d3.event.sourceEvent.stopPropagation();
+            event.sourceEvent.stopPropagation();
         })
     );
 
@@ -493,16 +494,25 @@ function zoomToCountry(event, d) {
         .call(
             zoooom.transform,
             d3.zoomIdentity
-                .translate(width / 2, height / 2)
-                .scale(scale)
-                .translate(-x, -y)
+                .translate(width / 2, height / 2)  // move to center of map
+                .scale(scale) // scale with calculated factor, focusing on the center of the map
+                .translate(-x, -y) // 
         );
 }
 
 function zoomToScale(scale) {
+    if (scale<1) return;
+    // Determine the current center point
+    const currentCenter = [width / 2, height / 2];
+
+    // Calculate the new translation to keep the current center fixed
+    const newTranslation = [
+        currentCenter[0] - currentCenter[0] * scale,
+        currentCenter[1] - currentCenter[1] * scale
+    ];
     svg.transition()
         .duration(750)
-        .call(zoooom.transform, d3.zoomIdentity.translate(0, 0).scale(scale));
+        .call(zoooom.transform, d3.zoomIdentity.translate(newTranslation[0], newTranslation[1]).scale(scale));
 }
 
 function getCountryNodes() {
