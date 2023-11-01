@@ -3,7 +3,7 @@
         <div class="content">
             <div class="title">Welcome to the Global Mitigation Potential Atlas</div>
             <div class="instructions">
-                With this altas, it is our goal to inspire you to see what is possible if we work
+                With this atlas, it is our goal to inspire you to see what is possible if we work
                 together, and to bring you into contact with the right people to take action!
             </div>
             <div class="instructions">Aniq Ashan</div>
