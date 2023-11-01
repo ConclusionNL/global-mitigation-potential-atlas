@@ -1,12 +1,52 @@
-﻿@model  CasesViewModel
+﻿@model CasesViewModel
 @{
-	Layout = "Main.cshtml";
+    Layout = "Main.cshtml";
 }
+
+<h1>Cases Overview</h1>
 
 @{
     foreach (var caseItem in Model.Cases)
     {
-        <h1>@caseItem.CaseName</h1>
+        <div class="card">
+            <div class="card-header">
+                <h3>@caseItem.CaseName</h3>
+            </div>
+            <div class="card-body">
+                <div>@Html.Raw(caseItem.CaseDescription)</div>
+                <div>
+                    <a href="@caseItem.Url">Read more...</a>
+                </div>
+                <h5>Tags</h5>
+                <ul class="tagList">
+                    @{
+                        var tagCount = caseItem.CaseTags.Count;
+                        for (int i = 0; i < tagCount; i++)
+                        {
+                            <li>@caseItem.CaseTags[i]@(i < tagCount - 1 ? "," : "")</li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
     }
 }
 
+<style>
+    .tagList {
+        display: inline;
+        list-style-type: none;
+    }
+
+        .tagList li {
+            display: inline;
+            color: darkgray;
+            font-style: italic;
+            font-size: 16px;
+            margin-right: 5px;
+        }
+
+    .card {
+        margin-bottom: 10px;
+    }
+</style>

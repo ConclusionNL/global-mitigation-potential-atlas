@@ -53,7 +53,8 @@ namespace GMPA.Core.Extensions
                 {
                     CaseName = caseItem.Name,
                     CaseDescription = caseItem.CaseIntroduction?.ToHtmlString(),
-                    CaseTags = caseItem.Tags?.ToList()
+                    CaseTags = caseItem.Tags?.ToList(),
+                    Url = caseItem.Url()
                 });
             }
             #endregion
