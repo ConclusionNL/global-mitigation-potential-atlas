@@ -1,47 +1,51 @@
-﻿@model CasesViewModel
+﻿@using Umbraco.Cms.Web.Common.UmbracoContext
+@model CasesViewModel
 @{
     Layout = "Main.cshtml";
 }
 
 <h1>Cases Overview</h1>
 
-<div class="container">
-    <input type="checkbox" id="checkboxPower" class="tagCheckbox" /> Power
-    <input type="checkbox" id="checkboxSolar" class="tagCheckbox" /> Solar
-    <input type="checkbox" id="checkboxLorem" class="tagCheckbox" /> Lorem
-</div>
+<div class="row">
+    <div class="col-1">
+        <h4>Tag Filter</h4>
+            <label>Power</label>
+            <input type="checkbox" id="checkboxPower" class="tagCheckbox" />
+            <label>Solar</label>
+            <input type="checkbox" id="checkboxSolar" class="tagCheckbox" />
+            <label>Lorem</label>
+            <input type="checkbox" id="checkboxLorem" class="tagCheckbox" />
+    </div>
 
-
-@{
-    foreach (var caseItem in Model.Cases)
-    {
-        <div class="card mb-3 @string.Join(" ", caseItem.CaseTags.Select(tag => $"tag-{tag.ToLower()}"))" data-tags="@string.Join(",", caseItem.CaseTags)">
-            <div class="card-header">
-                <h3>@caseItem.CaseName</h3>
-            </div>
-            <div class="card-body">
-                @if (caseItem.CaseTags.Contains("Power"))
-                {
-
-                }
-                <div>@Html.Raw(caseItem.CaseDescription)</div>
-                <div>
-                    <a href="@caseItem.Url">Read more...</a>
+<div class="col-11">
+    @{
+        foreach (var caseItem in Model.Cases)
+        {
+            <div class="card mb-3 @string.Join(" ", caseItem.CaseTags.Select(tag => $"tag-{tag.ToLower()}"))" data-tags="@string.Join(",", caseItem.CaseTags)">
+                <div class="card-header">
+                    <h3>@caseItem.CaseName</h3>
                 </div>
-                <h5>Tags</h5>
-                <ul class="tagList">
-                    @{
-                        var tagCount = caseItem.CaseTags.Count;
-                        foreach (var tag in caseItem.CaseTags)
-                        {
-                            <li><span class="badge bg-info text-dark">@tag</span></li>
+                <div class="card-body">
+                    <div>@Html.Raw(caseItem.CaseDescription)</div>
+                    <div>
+                        <a href="@caseItem.Url">Read more...</a>
+                    </div>
+                    <h5>Tags</h5>
+                    <ul class="tagList">
+                        @{
+                            var tagCount = caseItem.CaseTags.Count;
+                            foreach (var tag in caseItem.CaseTags)
+                            {
+                                <li><span class="badge bg-info text-dark">@tag</span></li>
+                            }
                         }
-                    }
-                </ul>
+                    </ul>
+                </div>
             </div>
-        </div>
+        }
     }
-}
+</div>
+</div>
 
 <script>
     var checkboxes = document.querySelectorAll('.tagCheckbox');
