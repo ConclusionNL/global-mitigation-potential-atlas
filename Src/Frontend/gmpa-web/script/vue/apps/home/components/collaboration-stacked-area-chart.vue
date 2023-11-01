@@ -10,6 +10,7 @@ import * as d3 from 'd3';
 
 const collaborationStore = useCollaborationStore();
 
+
 const emit = defineEmits(['technology-selected']);
 
 const props = defineProps({
@@ -118,41 +119,38 @@ const createAreaChart = (data, color) => {
         .attr('d', area)
         .on('mouseover', function (event, d) {
             let tooltipText = `Technology:  ${d.key}`;
-            var coordinates = d3.pointer(event);
+            const coordinates = d3.pointer(event);
 
-            var x = coordinates[0];
-            var y = coordinates[1];
+            const x = coordinates[0];
+            const y = coordinates[1];
             const xValue = xValueFromMouse(x);
             const yValue = yValueFromMouse(y);
-            tooltipText = `${tooltipText}: Reductions: ${xValue.toFixed(2)} Cost: ${yValue.toFixed(
-                2
-            )}`;
+            tooltipText = `${tooltipText}: Reductions: ${parseFloat(xValue.toPrecision(2))} Cost: ${parseFloat(yValue.toPrecision(2))}`;
             tooltip.text(tooltipText);
 
             return tooltip.style('visibility', 'visible');
         })
         .on('mousemove', function (event, d) {
             let tooltipText = `Technology:  ${d.key}`;
-            var coordinates = d3.pointer(event);
+            const coordinates = d3.pointer(event);
 
-            var x = coordinates[0];
-            var y = coordinates[1];
+            const x = coordinates[0];
+            const y = coordinates[1];
 
-            const xValue = xValueFromMouse(x);
+            const xValue = xValueFromMouse(x)
+            parseFloat(xValue.toPrecision(3))
             // find the Y value for the selected series
             const yValue = findYforXinSerie(d.key, xValue, data);
-            tooltipText = `${tooltipText}: Reductions: ${xValue.toFixed(2)} Cost: ${yValue.toFixed(
-                2
-            )}`;
+            tooltipText = `${tooltipText}: Reductions: ${parseFloat(xValue.toPrecision(2))} Cost: ${parseFloat(yValue.toPrecision(2))}`;
             tooltip.text(tooltipText);
             return tooltip.style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY - 50) + "px")
         })
         .on("mouseout", function () { return tooltip.style("visibility", "hidden"); })
         .on('click', function (event, d) {
-            var coordinates = d3.pointer(event);
-            var x = coordinates[0];
-            var y = coordinates[1];
+            const coordinates = d3.pointer(event);
+            const x = coordinates[0];
+            const y = coordinates[1];
             // Determine which series was clicked
             const series = d.key;
 
