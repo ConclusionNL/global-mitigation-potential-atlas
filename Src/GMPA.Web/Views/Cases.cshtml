@@ -5,14 +5,25 @@
 
 <h1>Cases Overview</h1>
 
+<div class="container">
+    <input type="checkbox" id="checkboxPower" class="tagCheckbox" /> Power
+    <input type="checkbox" id="checkboxSolar" class="tagCheckbox" /> Solar
+    <input type="checkbox" id="checkboxLorem" class="tagCheckbox" /> Lorem
+</div>
+
+
 @{
     foreach (var caseItem in Model.Cases)
     {
-        <div class="card">
+        <div class="card mb-3 @string.Join(" ", caseItem.CaseTags.Select(tag => $"tag-{tag.ToLower()}"))" data-tags="@string.Join(",", caseItem.CaseTags)">
             <div class="card-header">
                 <h3>@caseItem.CaseName</h3>
             </div>
             <div class="card-body">
+                @if (caseItem.CaseTags.Contains("Power"))
+                {
+
+                }
                 <div>@Html.Raw(caseItem.CaseDescription)</div>
                 <div>
                     <a href="@caseItem.Url">Read more...</a>
@@ -21,9 +32,9 @@
                 <ul class="tagList">
                     @{
                         var tagCount = caseItem.CaseTags.Count;
-                        for (int i = 0; i < tagCount; i++)
+                        foreach (var tag in caseItem.CaseTags)
                         {
-                            <li>@caseItem.CaseTags[i]@(i < tagCount - 1 ? "," : "")</li>
+                            <li><span class="badge bg-info text-dark">@tag</span></li>
                         }
                     }
                 </ul>
@@ -31,6 +42,45 @@
         </div>
     }
 }
+
+<script>
+    var checkboxes = document.querySelectorAll('.tagCheckbox');
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', applyTagFilters);
+    });
+
+    function applyTagFilters() {
+        var selectedTags = Array.from(checkboxes)
+            .filter(function (checkbox) {
+                return checkbox.checked;
+            })
+            .map(function (checkbox) {
+                return checkbox.id.replace('checkbox', '');
+            });
+
+        var cards = document.querySelectorAll('.card');
+
+        cards.forEach(function (card) {
+            var caseTags = card.getAttribute('data-tags').split(',');
+
+            if (selectedTags.length === 0 || containsAny(caseTags, selectedTags)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function containsAny(source, target) {
+        for (var i = 0; i < target.length; i++) {
+            if (source.includes(target[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+</script>
 
 <style>
     .tagList {
@@ -40,7 +90,7 @@
 
         .tagList li {
             display: inline;
-            color: darkgray;
+            color: white;
             font-style: italic;
             font-size: 16px;
             margin-right: 5px;
