@@ -135,19 +135,39 @@
     var policyItems = document.querySelectorAll('.policy-item');
     var countryDropdown = document.getElementById('pilotCountryFilter');
 
-    countryDropdown.addEventListener('change', function () {
-        var selectedCountry = this.value;
+    countryDropdown.addEventListener('change',
+        function() {
+            var selectedCountry = this.value;
+            updateContent(selectedCountry)
+        });
 
+    updateContent = (selectedCountry) => {
         strategyItems.forEach(function (item) {
             var country = item.dataset.fromCountry; // assuming you store the country in a data attribute
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
-
+ 
         policyItems.forEach(function (item) {
             var country = item.dataset.fromCountry; // assuming you store the country in a data attribute
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
-    });
+    }
+ 
+    function getQueryParam(name) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+ 
+    initializeContent = () => {
+        var paramName = 'country';
+        var selectedCountry = getQueryParam(paramName);
+        if (selectedCountry !== null) {
+            countryDropdown.value = selectedCountry;
+            updateContent(selectedCountry);
+        } 
+    }
+
+    initializeContent();
 
     toggleButtons.forEach(button => {
         button.addEventListener('click', function () {
