@@ -7,7 +7,9 @@
         <countryCard
             v-if="selectedCountries[0] && !inCollabMode"
             class="country-box"
-            @countryNavigation="navigateToCountry" />
+            @countryNavigation="navigateToCountry" 
+            @countryMitigationPotentialDiagram="stackedAreaModalVisible = true"
+            />
         <collabCard
             v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
             class="countries-box"
@@ -40,7 +42,7 @@
                 <mitigationPotentialDiagram
                     :countries-list="selectedCountries"
                     @technologySelected="
-                        console.log(`technoogy selected in mitigation potential diagram`)
+                        console.log(`technology bar selected in mitigation potential diagram (bar chart)`)
                     " />
             </div>
         </div>
@@ -91,6 +93,7 @@ const navigateToCountry = (countryNavigationEvent) => {
     const countryName = countryNavigationEvent.properties.name;
     window.location.href = `/Countries/${countryName}`;
 };
+
 
 function highlightCollaborationCandidates() {
     const selectedCountryCodes = selectedCountries.value.map(

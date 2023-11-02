@@ -3,13 +3,14 @@
         <span class="selected-collaboration">{{ selectedCollaboration }}</span
         >'s Mitigation Potential Diagram 2030/2050
     </h1>
-
+<div    v-if="countriesList.length>1">
     <label for="countrySelect">Select one Country or Full collaboration:</label>
     <select
         id="countrySelect"
         v-model="selectedCountry"
         @change="handleCountryChange"
-        class="select-element">
+        class="select-element"
+        >
         <option
             v-for="option in selectListOptions.concat(
                 countriesList.map((country) => ({
@@ -21,6 +22,7 @@
             {{ option.label }}
         </option>
     </select>
+    </div>
     <collaborationStackedAreaChart
         :collaborationCountriesList="collaborationCountriesList"
         @technologySelected="handleTechnologySelected" />

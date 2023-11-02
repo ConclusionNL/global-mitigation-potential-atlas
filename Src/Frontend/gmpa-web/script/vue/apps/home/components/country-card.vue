@@ -48,6 +48,9 @@
             <button class="btn btn-alt-1" @click="useCountries.setCollabMode(true)">
                 Select for collaboration
             </button>
+            <button class="btn btn-alt-1" @click="emit('country-mitigation-potential-diagram', selectedCountries[0] )">
+                Mitigation Potential Diagram
+            </button>
             <button class="btn btn-alt-2" @click="emit('country-navigation', selectedCountries[0])">
                 View country details
             </button>
@@ -63,7 +66,7 @@ import closeIcon from '../assets/cross.svg';
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 
-const emit = defineEmits(['country-navigation']);
+const emit = defineEmits(['country-navigation','country-mitigation-potential-diagram']);
 </script>
 
 <style scoped>
