@@ -5,6 +5,10 @@ const dataSet = ref([]);
 const inCollabMode = ref(false);
 
 export function useSelectedCountries() {
+    function getCountryById(countryId) {
+        return dataSet.value.find((c) => c.id === countryId);
+    }
+
     function getCountryByName(countryName) {
         return dataSet.value.find(
             (c) => c.properties.name.toLocaleLowerCase() === countryName.toLocaleLowerCase()
@@ -18,7 +22,7 @@ export function useSelectedCountries() {
     }
 
     function addCountry(country) {
-        if (selectedCountries.value.map((c) => c.id).includes(country.id) || !country) return;
+        if (isCountryInList(country) || !country) return;
         selectedCountries.value.push(country);
     }
 
@@ -34,15 +38,21 @@ export function useSelectedCountries() {
         inCollabMode.value = boolean;
     }
 
+    function isCountryInList(country) {
+        return selectedCountries.value.map((c) => c.id).includes(country.id);
+    }
+
     return {
         dataSet,
         selectedCountries,
         inCollabMode,
         setCollabMode,
+        getCountryById,
         getCountryByName,
         setCountry,
         addCountry,
         removeCountry,
         resetCountries,
+        isCountryInList,
     };
 }
