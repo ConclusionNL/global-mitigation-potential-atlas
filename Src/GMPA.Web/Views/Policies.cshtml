@@ -3,124 +3,129 @@
     Layout = "Main.cshtml";
 }
 
-<h1>@Model.PageTitle</h1>
+<h1 class="d-flex justify-content-center">@Model.PageTitle</h1>
 
-<div class="container text-center justify-content-center">
-    <label for="pilotCountryFilter">Select a country:</label>
-    <select name="pilotCountryFilter" id="pilotCountryFilter">
-        <option value=""></option>
-        <option value="Australia">Australia</option>
-        <option value="Brunei">Brunei</option>
-        <option value="Cambodia">Cambodia</option>
-        <option value="India">India</option>
-        <option value="Indonesia">Indonesia</option>
-        <option value="Lao PDR">Loa PDR</option>
-        <option value="Malaysia">Malaysia</option>
-        <option value="Philippines">Philippines</option>
-        <option value="Singapore">Singapore</option>
-        <option value="Thailand">Thailand</option>
-        <option value="Vietnam">Vietnam</option>
-    </select>
-</div>
-<div class="container text-center mt-3">
-    <div class="row">
-        <div class="col">
-            <button class="btn btn-primary toggle-container mr-3" id="btnStrategy" data-target="ClimateStrategy">Climate Strategies</button>
-            <button class="btn btn-primary toggle-container" id="btnInventory" data-target="PolicyInventory">Policy Inventory</button>
+<div class="row">
+    <div class="col-1">
+        <div class="container text-center justify-content-center">
+            <label for="pilotCountryFilter">Select a country:</label>
+            <select name="pilotCountryFilter" id="pilotCountryFilter">
+                <option value=""></option>
+                <option value="Australia">Australia</option>
+                <option value="Brunei">Brunei</option>
+                <option value="Cambodia">Cambodia</option>
+                <option value="India">India</option>
+                <option value="Indonesia">Indonesia</option>
+                <option value="Lao PDR">Loa PDR</option>
+                <option value="Malaysia">Malaysia</option>
+                <option value="Philippines">Philippines</option>
+                <option value="Singapore">Singapore</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Vietnam">Vietnam</option>
+            </select>
+        </div>
+        <div class="container text-center mt-3">
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary toggle-container mr-3" id="btnStrategy" data-target="ClimateStrategy">Climate Strategies</button>
+                    <button class="btn btn-primary toggle-container" id="btnInventory" data-target="PolicyInventory">Policy Inventory</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="toggle-content" id="ClimateStrategy">
-    @{
-        <h2>Climate Strategies</h2>
-        @foreach (var strategy in Model.ClimateStrategiesBlockList)
-        {
+    <div class="col-11">
+        <div class="toggle-content" id="ClimateStrategy">
+            @{
+                <h2>Climate Strategies</h2>
+                @foreach (var strategy in Model.ClimateStrategiesBlockList)
+                {
+                    <div class="card md-3 strategy-item" data-from-country="@strategy.FromCountry">
 
-            <div class="divider strategy-item" data-from-country="@strategy.FromCountry">
-                <div class="row">
-                    <div class="col-2">
-                        <h3>@strategy.PolicyDocumentName</h3>
-                    </div>
-                    <div class="col-10">
-                        <h5>Key Objectives/Targets</h5>
-                        @Html.Raw(strategy.KeyObjectivesTargets)
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-1">
-                        <h5>Start Year</h5>
-                        @strategy.StartYear
-                    </div>
-                    <div class="col-1">
-                        <h5>Valid till</h5>
-                        @strategy.EndYear
-                    </div>
-                    <div class="col-3">
-                        <h5>Source</h5>
-                        <a href="@strategy.SourceLink">Source for @strategy.PolicyDocumentName</a>
-                    </div>
-                </div>
-            </div>
-        }
-    }
-</div>
-
-<div class="hidden toggle-content" id="PolicyInventory">
-    @{
-
-        <h2>Policy Inventory</h2>
-        @foreach (var policy in Model.PolicyInventoryBlockList)
-        {
-            <div class="divider policy-item" data-from-country="@policy.FromCountry">
-                <div class="row">
-                    <div class="col-4">
-                        <h3>@policy.PolicyDocumentName</h3>
-                        <div class="d-flex">
-                            <h5>Sector: </h5>
-                            @policy.Sector
+                        <div class="card-header">
+                            <h3>@strategy.PolicyDocumentName</h3>
                         </div>
-                        <div class="d-flex">
-                            <h5>Sub-sector: </h5>
-                            @policy.SubSector
+                        <div class="card-body">
+                            <h5>Key Objectives/Targets</h5>
+                            @Html.Raw(strategy.KeyObjectivesTargets)
+                        </div>
+
+                        <div class="d-flex justify-content-between card-footer">
+                            <div class="p-2">
+                                <h5>Start Year</h5>
+                                @strategy.StartYear
+                            </div>
+                            <div class="p-2">
+                                <h5>Valid till</h5>
+                                @strategy.EndYear
+                            </div>
+                            <div class="ms-auto p-2">
+                                <h5>Source</h5>
+                                <a href="@strategy.SourceLink">Source for @strategy.PolicyDocumentName</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-8">
-                        @Html.Raw(policy.Objectives)
+                }
+            }
+        </div>
+
+        <div class="hidden toggle-content" id="PolicyInventory">
+            @{
+
+                <h2>Policy Inventory</h2>
+                @foreach (var policy in Model.PolicyInventoryBlockList)
+                {
+                    <div class="card policy-item" data-from-country="@policy.FromCountry">
+                        <div class="row">
+                            <div class="card-header">
+                                <h3>@policy.PolicyDocumentName</h3>
+                                <div class="d-flex">
+                                    <h5>Sector: </h5>
+                                    @policy.Sector
+                                </div>
+                                <div class="d-flex">
+                                    <h5>Sub-sector: </h5>
+                                    @policy.SubSector
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                @Html.Raw(policy.Objectives)
+                            </div>
+                        </div>
+                        <div class="d-flex card-footer justify-content-between">
+                            <div class="col-1">
+                                <h5>Start Year</h5>
+                                @policy.StartDate
+                            </div>
+                            <div class="col-1">
+                                <h5>Valid till</h5>
+                                @if (@policy.EndDate == "0")
+                                {
+                                    <p>Ongoing</p>
+                                }
+                                else
+                                {
+                                    @policy.EndDate
+                                }
+                            </div>
+                            <div class="col-1">
+                                <h5>Policy Level</h5>
+                                @policy.PolicyLevel
+                            </div>
+                            <div class="col-1">
+                                <h5>Policy Origin</h5>
+                                @policy.PolicyOrigin
+                            </div>
+                            <div class="col-3">
+                                <h5>Source</h5>
+                                <a href="@policy.SourceLink">Source for @policy.PolicyDocumentName</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-1">
-                        <h5>Start Year</h5>
-                        @policy.StartDate
-                    </div>
-                    <div class="col-1">
-                        <h5>Valid till</h5>
-                        @if (@policy.EndDate == "0")
-                        {
-                            <p>Ongoing</p>
-                        }
-                        else
-                        {
-                            @policy.EndDate
-                        }
-                    </div>
-                    <div class="col-1">
-                        <h5>Policy Level</h5>
-                        @policy.PolicyLevel
-                    </div>
-                    <div class="col-1">
-                        <h5>Policy Origin</h5>
-                        @policy.PolicyOrigin
-                    </div>
-                    <div class="col-3">
-                        <h5>Source</h5>
-                        <a href="@policy.SourceLink">Source for @policy.PolicyDocumentName</a>
-                    </div>
-                </div>
-            </div>
-        }
-    }
+                }
+            }
+        </div>
+    </div>
 </div>
 
 <script>
@@ -130,15 +135,15 @@
     var policyItems = document.querySelectorAll('.policy-item');
     var countryDropdown = document.getElementById('pilotCountryFilter');
 
-    countryDropdown.addEventListener('change', function() {
+    countryDropdown.addEventListener('change', function () {
         var selectedCountry = this.value;
-        
-        strategyItems.forEach(function(item) {
+
+        strategyItems.forEach(function (item) {
             var country = item.dataset.fromCountry; // assuming you store the country in a data attribute
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
 
-        policyItems.forEach(function(item) {
+        policyItems.forEach(function (item) {
             var country = item.dataset.fromCountry; // assuming you store the country in a data attribute
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
@@ -172,5 +177,9 @@
 
     .hidden {
         display: none;
+    }
+
+    .card {
+        margin-bottom: 10px
     }
 </style>

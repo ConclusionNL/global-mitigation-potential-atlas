@@ -1,4 +1,5 @@
 ﻿using GMPA.Core.Extensions;
+using GMPA.Core.Models;
 using GMPA.Core.Models.Umbraco;
 using GMPA.Core.Models.ViewModels;
 using Microsoft.AspNetCore.Html;
@@ -28,8 +29,15 @@ namespace GMPA.Core.Controller.Render
 
             var viewModel = new CaseViewModel
             {
+                CaseModel = new CaseModel
+                {
+                    CaseName = caseDocument.Name,
+                    CaseDescription = caseDocument.CaseIntroduction?.ToHtmlString(),
+                    CaseTags = caseDocument.Tags?.ToList()
+                },
+
                 SectorTag = caseDocument.SectorTag.FirstOrDefault(),
-                CaseIntro = new HtmlString(caseDocument.CaseIntroduction.ToHtmlString()),
+                CaseIntro = new HtmlString(caseDocument.CaseIntroduction?.ToHtmlString()),
 
                 CaseCountryContextBlock = caseDocument.CaseCountryBlockList?
                     .Select(a => a.Content as CaseCountryContext)
@@ -45,7 +53,7 @@ namespace GMPA.Core.Controller.Render
                     .Select(b => new CaseViewModel.CasePolicyBlockList
                     {
                         Title = b.Title,
-                        InstrumentText = b.InstrumentsText.ToHtmlString(),
+                        InstrumentText = b.InstrumentsText?.ToHtmlString(),
                         PolicyDecision = b.PolicyDecision,
                         PolicyOrigin = b.PolicyOrigin,
                         TypeOfPolicyInstrument = b.TypeOfPolicyInstrumentDropdown,
@@ -73,7 +81,7 @@ namespace GMPA.Core.Controller.Render
                     {
                         NegativePositive = b.NegativePositive,
                         LockInType = b.LockInType,
-                        BodyText = b.BodyText.ToHtmlString()
+                        BodyText = b.BodyText?.ToHtmlString()
                     })
                     .ToList(),
 
