@@ -27,7 +27,7 @@ export function useSelectedCountries() {
     }
 
     function removeCountry(country) {
-        selectedCountries.value = selectedCountries.value.filter((c) => c !== country);
+        selectedCountries.value = selectedCountries.value.filter((c) => c.id !== country.id);
     }
 
     function resetCountries() {
