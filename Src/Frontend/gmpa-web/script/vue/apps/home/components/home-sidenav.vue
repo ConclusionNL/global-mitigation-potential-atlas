@@ -23,7 +23,7 @@
                     <li v-if="country.Continent == continent">
                         <div class="countries-list-item-active">
                             <div v-if="country.Active">
-                                <a class="countries-link-active" :href=country.Url>{{ country.Name }}</a>
+                                <div @click="countryEligible(country.Name)" class="countries-link-active pointer">{{ country.Name }}</div>
                             </div>
                             <div v-else class="countries-list-item-disabled">
                                 {{ country.Name }}

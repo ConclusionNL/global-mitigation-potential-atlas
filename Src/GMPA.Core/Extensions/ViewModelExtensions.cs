@@ -16,6 +16,7 @@ namespace GMPA.Core.Extensions
 
             model.PageTitle = content.Name;
 
+            #region countries
             var countries = home
                 .Descendant<Countries>()
                 .Descendants<Country>();
@@ -36,6 +37,27 @@ namespace GMPA.Core.Extensions
             model.Countries = model.Countries
                 .OrderBy(a => a.Name)
                 .ToList();
+            #endregion
+
+            #region cases
+
+            var cases = home
+                .Descendant<Cases>()
+                .Descendants<Case>();
+
+            model.Cases = new List<CaseModel>();
+
+            foreach (var caseItem in cases)
+            {
+                model.Cases.Add(new CaseModel
+                {
+                    CaseName = caseItem.Name,
+                    CaseDescription = caseItem.CaseIntroduction?.ToHtmlString(),
+                    CaseTags = caseItem.Tags?.ToList(),
+                    Url = caseItem.Url()
+                });
+            }
+            #endregion
 
             ConstructGrid(model, content);
         }

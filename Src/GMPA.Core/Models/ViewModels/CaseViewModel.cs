@@ -35,6 +35,7 @@ namespace GMPA.Core.Models.ViewModels
             public string BodyText { get; set; }
         }
 
+        public CaseModel CaseModel { get; set; }
         public string SectorTag { get; set; }
         public HtmlString CaseIntro { get; set; }
         public List<CaseCountryContextBlockList> CaseCountryContextBlock { get; set; }

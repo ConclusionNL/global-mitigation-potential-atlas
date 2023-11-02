@@ -4,23 +4,32 @@
             <searchBar class="search-box" :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
-        <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box"
+        <countryCard
+            v-if="selectedCountries[0] && !inCollabMode"
+            class="country-box"
             @countryNavigation="navigateToCountry" />
-        <collabCard v-if="inCollabMode && selectedCountries && selectedCountries.length > 0" class="countries-box"
+        <collabCard
+            v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
+            class="countries-box"
             :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)"
-            @show-benefits="stackedAreaModalVisible = true" @countryNavigation="navigateToCountry" />
+            @show-benefits="stackedAreaModalVisible = true"
+            @countryNavigation="navigateToCountry" />
         <div class="zoom-box">
             <div class="zoom-flex">
-                <div @click="
-                    zoomLevel += 0.5;
-                zoomToScale(zoomLevel);
-                " class="r-btn plus">
+                <div
+                    @click="
+                        zoomLevel += 0.5;
+                        zoomToScale(zoomLevel);
+                    "
+                    class="r-btn plus">
                     <plusIcon width="24" height="24" />
                 </div>
-                <div @click="
-                    zoomLevel -= 0.5;
-                zoomToScale(zoomLevel);
-                " class="r-btn minus">
+                <div
+                    @click="
+                        zoomLevel -= 0.5;
+                        zoomToScale(zoomLevel);
+                    "
+                    class="r-btn minus">
                     <minusIcon width="24" height="4" />
                 </div>
             </div>
@@ -28,8 +37,10 @@
         <div class="modal-diagram" v-if="stackedAreaModalVisible">
             <div class="modal-diagram-content">
                 <a href="#" class="close-link" @click="closeModal">Close</a>
-                <mitigationPotentialDiagram :countries-list="selectedCountries" @technologySelected="
-                    console.log(`technoogy selected in mitigation potential diagram`)
+                <mitigationPotentialDiagram
+                    :countries-list="selectedCountries"
+                    @technologySelected="
+                        console.log(`technoogy selected in mitigation potential diagram`)
                     " />
             </div>
         </div>
@@ -563,10 +574,21 @@ function handleCountryClick(event, d) {
     if (!inCollabMode.value) {
         unmarkAllSelectedCountries();
 
-        useCountries.setCountry(d);
+        if (!useCountries.isCountryInList(d)) {
+            useCountries.setCountry(d);
+        } else {
+            useCountries.resetCountries();
+        }
+
         zoomToCountry(event, d);
     } else {
         // if the user clicked on a countrythat is not a collaboration candidate, then do not process the click
+
+        if (useCountries.isCountryInList(d)) {
+            useCountries.removeCountry(useCountries.getCountryById(d.id));
+            return;
+        }
+
         const selectedCountryCodes = selectedCountries.value.map(
             (country) => country.properties.iso_a2
         );

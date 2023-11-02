@@ -35,35 +35,46 @@
             </div>
             <div class="suggestions-container">
                 <div style="font-weight: 500">Our suggestions</div>
-                <div class="filter-box">
+                <div @click="filterBox = !filterBox" class="filter-box">
                     <div>Filters</div>
                     <filterIcon width="24" height="24" />
                 </div>
             </div>
+            <div v-if="filterBox" class="filter-options-dropdown">
+                <div v-for="filter in mitTypes">
+                    <li
+                        @click="
+                            mitType = filter;
+                            filterBox = !filterBox;
+                        ">
+                        GtCO2 at {{ filter.replaceAll(/[a-zA-Z]/g, '') }}
+                    </li>
+                </div>
+            </div>
             <div class="suggestion-country-container space-between">
                 <div
-                    v-for="collaborationCandidate in collaborationCandidatesList"
-                    :key="collaborationCandidate.id">
-                    <div class="suggestion-country-boxes">
-                        <input
-                            :id="collaborationCandidate.id"
-                            type="checkbox"
-                            :name="`checkbox-${n}`"
-                            :value="collaborationCandidate"
-                            class="checkbox"
-                            @change="useCountries.addCountry(collaborationCandidate)" />
-                        <div class="label-box">
-                            <div class="label-title">
-                                {{ collaborationCandidate.properties.name }}
-                            </div>
-                            <div class="label-details">
-                                <div class="label-subtitle" v-if="collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt50']">{{collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt50']}} Gt CO2e at 50</div>
-                                <div class="label-subtitle" v-if="collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt100']">{{collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt100']}} Gt CO2e at 100</div>
-                                <div class="label-subtitle" v-if="collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt200']">{{collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(selectedCountries, collaborationCandidate)['mitigationPotentialAt200']}} Gt CO2e at 200</div>
-                                </div>
+                    class="suggestion-country-boxes"
+                    v-for="collabCandidate in collaborationCandidatesList"
+                    :key="collabCandidate.id">
+                    <input
+                        :id="collabCandidate.id"
+                        type="checkbox"
+                        :name="`checkbox-${n}`"
+                        :value="collabCandidate"
+                        class="checkbox"
+                        @change="useCountries.addCountry(collabCandidate)" />
+                    <div class="label-box">
+                        <div class="label-title">
+                            {{ collabCandidate.properties.name }}
                         </div>
-                        <div class="other-info"></div>
+                        <div class="label-details">
+                            <div class="mit-amount">
+                                {{ getMitPotCollabCountries(collabCandidate, mitType) ?? '' }}
+                            </div>
+                            <div>GtCO2 at {{ mitType.replaceAll(/[a-zA-Z]/g, '') }}</div>
+                        </div>
                     </div>
+                    <div class="other-info"></div>
                 </div>
             </div>
         </div>
@@ -87,7 +98,8 @@
                 <div class="cost-of-achieving">
                     <div class="card-top bot-pad">
                         <div class="title">
-                            {{absoluteCO2e? "Maximum":"Cost of achieving maximum"}} mitigation potential in
+                            {{ absoluteCO2e ? 'Maximum' : 'Cost of achieving maximum' }} mitigation
+                            potential in
                             <span class="selected-collaboration">{{
                                 selectedCountries
                                     .map((country) => country.properties.name)
@@ -96,7 +108,9 @@
                             in autarky vs collaboration
                         </div>
                     </div>
-                    <maximumPitigationPotentialGauge :countriesList="selectedCountries" :showAbsolutePotential="absoluteCO2e" />
+                    <maximumPitigationPotentialGauge
+                        :countriesList="selectedCountries"
+                        :showAbsolutePotential="absoluteCO2e" />
                 </div>
                 <div class="divider"></div>
                 <div class="coalition-potential">
@@ -155,6 +169,25 @@ const absoluteCO2e = ref(true);
 const props = defineProps({
     collaborationCandidatesList: [],
 });
+
+const filterBox = ref(false);
+
+const mitTypes = [
+    'mitigationPotentialAt50',
+    'mitigationPotentialAt100',
+    'mitigationPotentialAt200',
+];
+
+const mitType = ref(mitTypes[0]);
+
+console.log(mitType.value);
+
+const getMitPotCollabCountries = (collabCandidate, mitType) => {
+    return collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(
+        selectedCountries.value,
+        collabCandidate
+    )[mitType];
+};
 </script>
 
 <style scoped>
@@ -214,9 +247,22 @@ const props = defineProps({
 }
 
 .label-details {
+    background-color: #bac5cb;
     display: flex;
+    align-items: center;
     flex-direction: row;
+    font-size: 13px;
+    line-height: 18px;
+    border-radius: 2px;
+    padding: 2px 4px 2px 2px;
+    gap: 8px;
+}
 
+.mit-amount {
+    background-color: white;
+    padding: 1px 2px;
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
 }
 
 .filter-box {
@@ -224,6 +270,7 @@ const props = defineProps({
     flex-direction: row;
     gap: 10px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .flex-collab {
@@ -251,7 +298,8 @@ const props = defineProps({
 
 .suggestion-country-container {
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
+    gap: 16px;
 }
 
 .space-between {
@@ -260,14 +308,14 @@ const props = defineProps({
 
 .suggestion-country-boxes {
     display: flex;
-    flex: auto;
+    flex: 1;
     align-items: center;
     border: 1px solid #f07004;
     border-radius: 4px;
-    gap: 16px;
-    height: 76px;
-    width: 270px;
-    padding: 8px 12px;
+    gap: 14px;
+    max-width: calc(50% - 8px);
+    height: fit-content;
+    padding: 8px 8px 8px 12px;
 }
 
 .checkbox {
@@ -297,7 +345,6 @@ const props = defineProps({
     width: 62px;
     padding: 2px 1px;
     margin: 4px;
-    
 }
 
 .card-top {
@@ -424,5 +471,27 @@ input:checked + .slider:before {
     font-size: 14px;
     align-self: center;
     justify-self: center;
+}
+
+.filter-options-dropdown {
+    position: absolute;
+    right: 0;
+    padding: 0;
+    cursor: pointer;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    font-size: 12px;
+    box-shadow: 0px 4px 8px 0px #214b6352;
+}
+
+.filter-options-dropdown li {
+    list-style: none;
+    padding: 8px;
+    background-color: white;
+}
+
+.filter-options-dropdown li:hover {
+    background: lightgray;
 }
 </style>
