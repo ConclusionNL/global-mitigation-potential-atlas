@@ -190,16 +190,18 @@ onMounted(() => {
 
     // With this code, the default drag behavior for the world map will be disabled, and users won't be able to drag the map.
 
-    svg.call(d3.drag()
-        .on("start", (event, d) => {
-            // Prevent the drag behavior on mouse down
+    svg.call(
+        d3
+            .drag()
+            .on('start', (event, d) => {
+                // Prevent the drag behavior on mouse down
 
-            event.sourceEvent.stopPropagation();
-        })
-        .on("drag", (event, d) => {
-            // Prevent the drag behavior on drag
-            event.sourceEvent.stopPropagation();
-        })
+                event.sourceEvent.stopPropagation();
+            })
+            .on('drag', (event, d) => {
+                // Prevent the drag behavior on drag
+                event.sourceEvent.stopPropagation();
+            })
     );
 
     //const projection = d3.geoNaturalEarth1().translate([t0.x, t0.y]).scale(t0.k);
@@ -407,17 +409,23 @@ onMounted(() => {
             )
             .on('mouseover', handleMouseOver)
             .on('mouseleave', handleMouseLeave)
-            .on('click', handleCountryClick)
-            .append('title')
-            .text(
-                (d) =>
-                    d.properties.name +
-                    ' : ' +
-                    (d.properties.hasOwnProperty(mitigation.value)
-                        ? d.properties[mitigation.value] + ` ${mitigation.value}`
-                        : '')
-            )
-            .attr('class', 'country');
+            .on('click', handleCountryClick);
+
+        countryNodes
+            .enter()
+            .append('text')
+            .text(function (d) {
+                return d.properties.name;
+            })
+            .attr('transform', function (d) {
+                return `translate(${pathGenerator.centroid(d)})`;
+            })
+            .attr('dx', function (d) {
+                return '0.3em';
+            })
+            .attr('dy', function (d) {
+                return '0.35em';
+            });
 
         zoooom = d3
             .zoom()
@@ -505,25 +513,28 @@ function zoomToCountry(event, d) {
         .call(
             zoooom.transform,
             d3.zoomIdentity
-                .translate(width / 2, height / 2)  // move to center of map
+                .translate(width / 2, height / 2) // move to center of map
                 .scale(scale) // scale with calculated factor, focusing on the center of the map
-                .translate(-x, -y) // 
+                .translate(-x, -y) //
         );
 }
 
 function zoomToScale(scale) {
-    if (scale<1) return;
+    if (scale < 1) return;
     // Determine the current center point
     const currentCenter = [width / 2, height / 2];
 
     // Calculate the new translation to keep the current center fixed
     const newTranslation = [
         currentCenter[0] - currentCenter[0] * scale,
-        currentCenter[1] - currentCenter[1] * scale
+        currentCenter[1] - currentCenter[1] * scale,
     ];
     svg.transition()
         .duration(750)
-        .call(zoooom.transform, d3.zoomIdentity.translate(newTranslation[0], newTranslation[1]).scale(scale));
+        .call(
+            zoooom.transform,
+            d3.zoomIdentity.translate(newTranslation[0], newTranslation[1]).scale(scale)
+        );
 }
 
 function getCountryNodes() {
