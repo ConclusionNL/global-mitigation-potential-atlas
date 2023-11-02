@@ -47,7 +47,7 @@
                             mitType = filter;
                             filterBox = !filterBox;
                         ">
-                        {{ filter }}
+                        GtCO2 at {{ filter.replaceAll(/[a-zA-Z]/g, '') }}
                     </li>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                             <div class="mit-amount">
                                 {{ getMitPotCollabCountries(collabCandidate, mitType) ?? '' }}
                             </div>
-                            <div class="mit-type">{{ mitType }}</div>
+                            <div>GtCO2 at {{ mitType.replaceAll(/[a-zA-Z]/g, '') }}</div>
                         </div>
                     </div>
                     <div class="other-info"></div>
@@ -249,9 +249,11 @@ const getMitPotCollabCountries = (collabCandidate, mitType) => {
 .label-details {
     background-color: #bac5cb;
     display: flex;
+    align-items: center;
     flex-direction: row;
-    font-size: 14px;
-    border-radius: 4px;
+    font-size: 13px;
+    line-height: 18px;
+    border-radius: 2px;
     padding: 2px 4px 2px 2px;
     gap: 8px;
 }
@@ -261,10 +263,6 @@ const getMitPotCollabCountries = (collabCandidate, mitType) => {
     padding: 1px 2px;
     border-bottom-left-radius: 2px;
     border-top-left-radius: 2px;
-}
-
-.mit-type {
-    font-weight: 500;
 }
 
 .filter-box {
@@ -314,10 +312,10 @@ const getMitPotCollabCountries = (collabCandidate, mitType) => {
     align-items: center;
     border: 1px solid #f07004;
     border-radius: 4px;
-    gap: 16px;
+    gap: 14px;
     max-width: calc(50% - 8px);
     height: fit-content;
-    padding: 8px 12px;
+    padding: 8px 8px 8px 12px;
 }
 
 .checkbox {
