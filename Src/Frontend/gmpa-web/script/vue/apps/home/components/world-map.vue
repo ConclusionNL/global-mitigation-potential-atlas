@@ -648,22 +648,15 @@ function zoomInOnSelectedCountries() {
     stroke-width: 1.75px;
 }
 
-.suggested-country-collab {
-    fill: #e081b4;
-    fill-opacity: 0.6;
-    stroke: #833d04;
-    stroke-width: 1px;
-}
-
 .selected-country {
-    fill: #95ad28;
-    stroke: white;
-    stroke-width: 1px;
+    /*fill: #95ad28;*/
+    stroke: #f07004; /*white;*/
+    stroke-width: 2px;
 }
 
 .selected-country-collab {
-    fill: #f07004;
-    stroke: white;
+    /*fill: #f07004;*/
+    stroke: #f07004; /*white;*/
     stroke-width: 1px;
 }
 
