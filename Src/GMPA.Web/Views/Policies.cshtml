@@ -75,9 +75,9 @@
                 <h2>Policy Inventory</h2>
                 @foreach (var policy in Model.PolicyInventoryBlockList)
                 {
-                    <div class="divider policy-item" data-from-country="@policy.FromCountry">
+                    <div class="card policy-item" data-from-country="@policy.FromCountry">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="card-header">
                                 <h3>@policy.PolicyDocumentName</h3>
                                 <div class="d-flex">
                                     <h5>Sector: </h5>
@@ -88,11 +88,11 @@
                                     @policy.SubSector
                                 </div>
                             </div>
-                            <div class="col-8">
+                            <div class="card-body">
                                 @Html.Raw(policy.Objectives)
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="d-flex card-footer justify-content-between">
                             <div class="col-1">
                                 <h5>Start Year</h5>
                                 @policy.StartDate
