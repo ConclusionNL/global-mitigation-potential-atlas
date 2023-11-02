@@ -15,6 +15,8 @@ const props = defineProps({
 const svgWidth = 420;
 const svgHeight = 180;
 const showAbsolutePotentialProxy = ref(props.showAbsolutePotential);
+const autarkyColor = "darkblue"
+const collaborationColor ="#f07004"
 
 
 onMounted(() => {
@@ -42,7 +44,11 @@ const setupGauge = async (countriesList, showAbsolutePotential) => {
     const unit = costNotPotential ? '$/tCO2e' : 'MtCO2e'
     const highValue = costNotPotential ? data.mitigationCostAutarky : data.mitigationPotentialCollaboration;
     const lowValue = costNotPotential ? data.mitigationCostCollaboration : data.mitigationPotentialAutarky;;
+    const lowValueFillColor = costNotPotential ? collaborationColor:autarkyColor;
+    const highValueFillColor = costNotPotential ? autarkyColor : collaborationColor;
 
+    const lowValuePrompt = costNotPotential ?  "Collaboration": "Autarky" 
+    const highValuePrompt = costNotPotential ?  "Autarky": "Collaboration" 
     const maxValue = Math.round(highValue * 0.14) * 10;
 
     const lowPercentage = lowValue / maxValue;
@@ -58,7 +64,7 @@ const setupGauge = async (countriesList, showAbsolutePotential) => {
         .append('g')
         .attr(
             'transform',
-            `scale(${svgWidth / chartWidth}, ${svgHeight / chartHeight}) translate(0, 140)`
+            `scale(${svgWidth / chartWidth}, ${svgHeight / chartHeight}) translate(0, 160)`
         )
         .attr('width', chartWidth)
         .attr('height', chartHeight);
@@ -74,12 +80,11 @@ const setupGauge = async (countriesList, showAbsolutePotential) => {
     const cornerRadius = 3 + 0.5 * rectHeight; // Adjust this value to control the curvature
 
     const emptyFillColor = 'white';
-    const lowValueFillColor = '#f07004';
-    const highValueFillColor = 'darkblue';
+
     const outlineColor = highValueFillColor;
     const borderThickness = 4;
 
-    const balloonHeight = 90;
+    const balloonHeight = 130;
     const balloonWidth = 130;
     const balloonPrompt = unit;
 
@@ -87,13 +92,23 @@ const setupGauge = async (countriesList, showAbsolutePotential) => {
     const lowValueBalloon = balloonArea
         .append('rect')
         .attr('width', balloonWidth)
-        .attr('height', balloonHeight)
+        .attr('height', balloonHeight-50)
         .attr('x', rectWidth * lowPercentage - balloonWidth + 30)
-        .attr('y', 10)
+        .attr('y', 57)
         .attr('fill', emptyFillColor)
-        .attr('stroke', lowValueFillColor) // Add a dark blue outline
-        .attr('stroke-width', borderThickness); // Adjust the outline width
-    const balloonPromptArea = balloonArea
+        .attr('stroke', lowValueFillColor)
+        .attr('stroke-width', borderThickness);
+
+        balloonArea
+        .append('text')
+        .text(lowValuePrompt)
+        .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
+        .attr('font-size', '24px')
+        .attr('x', rectWidth * lowPercentage - 0.5 * balloonWidth + 30)
+        .attr('y', 47);
+
+        
+        const balloonUnitArea = balloonArea
         .append('rect')
         .attr('width', balloonWidth)
         .attr('height', 40)
@@ -114,7 +129,7 @@ const setupGauge = async (countriesList, showAbsolutePotential) => {
         .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
         .attr('font-size', '38px')
         .attr('x', rectWidth * lowPercentage - 0.5 * balloonWidth + 30)
-        .attr('y', 50);
+        .attr('y', 92);
 
     // Create a symbol generator for triangles
     const triangleSymbol = d3.symbol().type(d3.symbolTriangle);
@@ -134,13 +149,22 @@ const setupGauge = async (countriesList, showAbsolutePotential) => {
     const highValueBalloon = balloonArea
         .append('rect')
         .attr('width', balloonWidth)
-        .attr('height', balloonHeight)
+        .attr('height', balloonHeight-50)
         .attr('x', rectWidth * highPercentage - 30)
-        .attr('y', 10)
+        .attr('y', 57)
         .attr('fill', emptyFillColor)
         .attr('stroke', highValueFillColor) // Add a dark blue outline
         .attr('stroke-width', borderThickness); // Adjust the outline width
-    // highvalue balloon
+
+        balloonArea
+        .append('text')
+        .text(highValuePrompt)
+        .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
+        .attr('font-size', '24px')
+        .attr('x', rectWidth * highPercentage - 30 + 0.5 * balloonWidth)
+        .attr('y', 47);
+
+        // highvalue balloon
     balloonArea
         .append('rect')
         .attr('width', balloonWidth)
@@ -162,7 +186,7 @@ const setupGauge = async (countriesList, showAbsolutePotential) => {
         .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
         .attr('font-size', '38px')
         .attr('x', rectWidth * highPercentage - 30 + 0.5 * balloonWidth)
-        .attr('y', 50);
+        .attr('y', 92);
 
     // Draw a triangle symbol
     balloonArea
