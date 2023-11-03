@@ -629,6 +629,8 @@ function zoomInOnSelectedCountries() {
         const y = (minY + maxY) / 2;
         const scale = Math.max(1, Math.min(3, 0.9 / Math.max(dx / width, dy / height)));
         // Transition to the selected feature's position and scale
+        const xcorrectionfactor =  inCollabMode.value?1:1.1 // *  to position box more to the left of the center and out of overlap with country details popup window
+        const ycorrectionfactor =  inCollabMode.value?1.2:1 // *  to position box a little bit higher to prevent too much overlap with collaboration panel 
         svg.transition()
             .duration(750)
             .call(
@@ -636,7 +638,7 @@ function zoomInOnSelectedCountries() {
                 d3.zoomIdentity
                     .translate(width / 2, height / 2)
                     .scale(scale)
-                    .translate(-x, -y)
+                    .translate(- xcorrectionfactor * x , -y) 
             );
     }
 }
