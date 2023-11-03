@@ -48,11 +48,14 @@
             <button class="btn btn-alt-1" @click="useCountries.setCollabMode(true)">
                 Select for collaboration
             </button>
-            <button class="btn btn-alt-1" @click="emit('country-mitigation-potential-diagram', selectedCountries[0] )">
-                Mitigation Potential Diagram
-            </button>
             <button class="btn btn-alt-2" @click="emit('country-navigation', selectedCountries[0])">
                 View country details
+            </button>
+            <button
+                class="btn btn-alt-3"
+                style="width: 100%"
+                @click="emit('country-mitigation-potential-diagram', selectedCountries[0])">
+                Mitigation Potential Diagram
             </button>
         </div>
     </div>
@@ -66,7 +69,7 @@ import closeIcon from '../assets/cross.svg';
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 
-const emit = defineEmits(['country-navigation','country-mitigation-potential-diagram']);
+const emit = defineEmits(['country-navigation', 'country-mitigation-potential-diagram']);
 </script>
 
 <style scoped>
@@ -98,7 +101,7 @@ const emit = defineEmits(['country-navigation','country-mitigation-potential-dia
 
 .card-buttons {
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     justify-content: space-between;
     gap: 10px;
 }
@@ -124,6 +127,12 @@ const emit = defineEmits(['country-navigation','country-mitigation-potential-dia
     color: white;
     border: 1px solid #214b63;
     background-color: #214b63;
+}
+
+.btn-alt-3 {
+    color: white;
+    border: 1px solid #f07004;
+    background-color: #f07004;
 }
 
 .data {

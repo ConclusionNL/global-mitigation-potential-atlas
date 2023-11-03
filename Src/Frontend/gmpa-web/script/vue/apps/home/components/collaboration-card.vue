@@ -389,14 +389,15 @@ const getMitPotCollabCountries = (collabCandidate, mitType) => {
 .cost-of-achieving {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     flex: 1.5;
     padding-inline: 12px;
+    padding-bottom: 20px;
 }
 
 .coalition-potential {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     flex: 1.5;
     padding-inline: 12px;
 }
