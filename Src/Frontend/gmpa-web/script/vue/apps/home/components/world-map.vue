@@ -7,9 +7,8 @@
         <countryCard
             v-if="selectedCountries[0] && !inCollabMode"
             class="country-box"
-            @countryNavigation="navigateToCountry" 
-            @countryMitigationPotentialDiagram="stackedAreaModalVisible = true"
-            />
+            @countryNavigation="navigateToCountry"
+            @countryMitigationPotentialDiagram="stackedAreaModalVisible = true" />
         <collabCard
             v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
             class="countries-box"
@@ -38,11 +37,13 @@
         </div>
         <div class="modal-diagram" v-if="stackedAreaModalVisible">
             <div class="modal-diagram-content">
-                <a href="#" class="close-link" @click="closeModal">Close</a>
+                <closeIcon width="24" height="24" class="close-icon" @click="closeModal" />
                 <mitigationPotentialDiagram
                     :countries-list="selectedCountries"
                     @technologySelected="
-                        console.log(`technology bar selected in mitigation potential diagram (bar chart)`)
+                        console.log(
+                            `technology bar selected in mitigation potential diagram (bar chart)`
+                        )
                     " />
             </div>
         </div>
@@ -63,6 +64,7 @@ import collabCard from './collaboration-card.vue';
 import searchBar from './searchbar.vue';
 import plusIcon from '../assets/plus.svg';
 import minusIcon from '../assets/minus.svg';
+import closeIcon from '../assets/cross.svg';
 import mitigationPotentialDiagram from './mitigation-potential-diagram.vue';
 
 const useCountries = useSelectedCountries();
@@ -93,7 +95,6 @@ const navigateToCountry = (countryNavigationEvent) => {
     const countryName = countryNavigationEvent.properties.name;
     window.location.href = `/Countries/${countryName}`;
 };
-
 
 function highlightCollaborationCandidates() {
     const selectedCountryCodes = selectedCountries.value.map(
@@ -193,16 +194,18 @@ onMounted(() => {
 
     // With this code, the default drag behavior for the world map will be disabled, and users won't be able to drag the map.
 
-    svg.call(d3.drag()
-        .on("start", (event, d) => {
-            // Prevent the drag behavior on mouse down
+    svg.call(
+        d3
+            .drag()
+            .on('start', (event, d) => {
+                // Prevent the drag behavior on mouse down
 
-            event.sourceEvent.stopPropagation();
-        })
-        .on("drag", (event, d) => {
-            // Prevent the drag behavior on drag
-            event.sourceEvent.stopPropagation();
-        })
+                event.sourceEvent.stopPropagation();
+            })
+            .on('drag', (event, d) => {
+                // Prevent the drag behavior on drag
+                event.sourceEvent.stopPropagation();
+            })
     );
 
     //const projection = d3.geoNaturalEarth1().translate([t0.x, t0.y]).scale(t0.k);
@@ -508,25 +511,28 @@ function zoomToCountry(event, d) {
         .call(
             zoooom.transform,
             d3.zoomIdentity
-                .translate(width / 2, height / 2)  // move to center of map
+                .translate(width / 2, height / 2) // move to center of map
                 .scale(scale) // scale with calculated factor, focusing on the center of the map
-                .translate(-x, -y) // 
+                .translate(-x, -y) //
         );
 }
 
 function zoomToScale(scale) {
-    if (scale<1) return;
+    if (scale < 1) return;
     // Determine the current center point
     const currentCenter = [width / 2, height / 2];
 
     // Calculate the new translation to keep the current center fixed
     const newTranslation = [
         currentCenter[0] - currentCenter[0] * scale,
-        currentCenter[1] - currentCenter[1] * scale
+        currentCenter[1] - currentCenter[1] * scale,
     ];
     svg.transition()
         .duration(750)
-        .call(zoooom.transform, d3.zoomIdentity.translate(newTranslation[0], newTranslation[1]).scale(scale));
+        .call(
+            zoooom.transform,
+            d3.zoomIdentity.translate(newTranslation[0], newTranslation[1]).scale(scale)
+        );
 }
 
 function getCountryNodes() {
@@ -629,8 +635,8 @@ function zoomInOnSelectedCountries() {
         const y = (minY + maxY) / 2;
         const scale = Math.max(1, Math.min(3, 0.9 / Math.max(dx / width, dy / height)));
         // Transition to the selected feature's position and scale
-        const xcorrectionfactor =  inCollabMode.value?1:1.1 // *  to position box more to the left of the center and out of overlap with country details popup window
-        const ycorrectionfactor =  inCollabMode.value?1.2:1 // *  to position box a little bit higher to prevent too much overlap with collaboration panel 
+        const xcorrectionfactor = inCollabMode.value ? 1 : 1.1; // *  to position box more to the left of the center and out of overlap with country details popup window
+        const ycorrectionfactor = inCollabMode.value ? 1.2 : 1; // *  to position box a little bit higher to prevent too much overlap with collaboration panel
         svg.transition()
             .duration(750)
             .call(
@@ -638,7 +644,7 @@ function zoomInOnSelectedCountries() {
                 d3.zoomIdentity
                     .translate(width / 2, height / 2)
                     .scale(scale)
-                    .translate(- xcorrectionfactor * x , -y) 
+                    .translate(-xcorrectionfactor * x, -y)
             );
     }
 }
@@ -750,30 +756,33 @@ p {
 }
 
 .modal-diagram {
-    display: block;
-    /* Initially hidden */
-    position: fixed;
-    top: 3%;
-    left: 10%;
-    width: 85%;
-    height: 95%;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: calc(50vw + 8px);
+    height: calc(100vh - 142px);
     background: rgba(255, 255, 255, 0.95);
-    /* Semi-transparent background */
     z-index: 1500;
-    /* Ensure the modal is on top of other content */
-    overflow: auto;
-    padding: 2px;
+    overflow-y: scroll;
     border: 1px solid #ccc;
     border-radius: 4px;
-    max-width: 85%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* Modal Content */
 .modal-diagram-content {
     background-color: #fff;
-    margin: 1%;
-    padding: 1px;
+    padding: 4px 16px;
     border: 0px;
+}
+
+.close-icon {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
 }
 </style>
