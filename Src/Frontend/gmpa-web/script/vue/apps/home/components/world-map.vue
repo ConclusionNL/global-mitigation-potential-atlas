@@ -762,7 +762,7 @@ p {
     top: 10%;
     left: 50%;
     transform: translate(-50%, 0);
-    width: calc(50vw + 8px);
+    width: calc(52vw + 48px);
     height: calc(100vh - 142px);
     background: rgba(255, 255, 255, 0.95);
     z-index: 1500;
