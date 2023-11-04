@@ -4,33 +4,23 @@
             <searchBar class="search-box" :countries="props.countries" />
         </div>
         <toggleBox class="toggle-box" @mitigation-value="handleMitigation" />
-        <countryCard
-            v-if="selectedCountries[0] && !inCollabMode"
-            class="country-box"
-            @countryNavigation="navigateToCountry"
+        <countryCard v-if="selectedCountries[0] && !inCollabMode" class="country-box" @countryNavigation="navigateToCountry"
             @countryMitigationPotentialDiagram="stackedAreaModalVisible = true" />
-        <collabCard
-            v-if="inCollabMode && selectedCountries && selectedCountries.length > 0"
-            class="countries-box"
+        <collabCard v-if="inCollabMode && selectedCountries && selectedCountries.length > 0" class="countries-box"
             :collaboration-candidates-list="findCollaboratingCandidates(selectedCountries)"
-            @show-benefits="stackedAreaModalVisible = true"
-            @countryNavigation="navigateToCountry" />
+            @show-benefits="stackedAreaModalVisible = true" @countryNavigation="navigateToCountry" />
         <div class="zoom-box">
             <div class="zoom-flex">
-                <div
-                    @click="
-                        zoomLevel += 0.5;
-                        zoomToScale(zoomLevel);
-                    "
-                    class="r-btn plus">
+                <div @click="
+                    zoomLevel += 0.5;
+                zoomToScale(zoomLevel);
+                " class="r-btn plus">
                     <plusIcon width="24" height="24" />
                 </div>
-                <div
-                    @click="
-                        zoomLevel -= 0.5;
-                        zoomToScale(zoomLevel);
-                    "
-                    class="r-btn minus">
+                <div @click="
+                    zoomLevel -= 0.5;
+                zoomToScale(zoomLevel);
+                " class="r-btn minus">
                     <minusIcon width="24" height="4" />
                 </div>
             </div>
@@ -38,12 +28,10 @@
         <div class="modal-diagram" v-if="stackedAreaModalVisible">
             <div class="modal-diagram-content">
                 <closeIcon width="24" height="24" class="close-icon" @click="closeModal" />
-                <mitigationPotentialDiagram
-                    :countries-list="selectedCountries"
-                    @technologySelected="
-                        console.log(
-                            `technology bar selected in mitigation potential diagram (bar chart)`
-                        )
+                <mitigationPotentialDiagram :countries-list="selectedCountries" @technologySelected="
+                    console.log(
+                        `technology bar selected in mitigation potential diagram (bar chart)`
+                    )
                     " />
             </div>
         </div>
@@ -76,13 +64,14 @@ const closeModal = () => (stackedAreaModalVisible.value = false);
 
 // const emit = defineEmits(['country-clicked']);
 
-let svg, g, countryDataSet, pathGenerator, zoooom;
+let svg, countriesGroup, countryDataSet, pathGenerator, zoooom;
 
 const collaborationStore = useCollaborationStore();
 const heatmapData = collaborationStore.heatmapData;
 
 const mitigation = ref('None');
 const zoomLevel = ref(1);
+const maxScaleFactor = 6
 
 const width = window.innerWidth - 200;
 const height = window.innerHeight - 86;
@@ -171,6 +160,7 @@ const findCollaboratingCandidates = (selectedCountries) => {
     }
     return collaborationCandidateCountries;
 };
+let zoomBehavior
 
 onMounted(() => {
     watch(mitigation, (newValue) => {
@@ -190,35 +180,31 @@ onMounted(() => {
         .attr('preserveAspectRatio', 'xMinYMin')
         .style('background', '#8ab5f9');
 
-    //         Add event listeners to the drag behavior to prevent the drag events from propagating and thus disabling the dragging functionality. This prevents users from dragging the map.
-
-    // With this code, the default drag behavior for the world map will be disabled, and users won't be able to drag the map.
-
-    svg.call(
-        d3
-            .drag()
-            .on('start', (event, d) => {
-                // Prevent the drag behavior on mouse down
-
-                event.sourceEvent.stopPropagation();
-            })
-            .on('drag', (event, d) => {
-                // Prevent the drag behavior on drag
-                event.sourceEvent.stopPropagation();
-            })
-    );
-
-    //const projection = d3.geoNaturalEarth1().translate([t0.x, t0.y]).scale(t0.k);
     const projection = d3
         .geoEquirectangular()
         .rotate([-148, 0]) // rotate sets the spherical rotation angles. The default rotation is [0, 0], which centers the map on Greenwich (0° longitude). By adjusting the first value (longitude), you can center the map on a different region.
         .translate([t0.x, t0.y])
         .scale(t0.k);
-    //const projection = d3.geoAlbers().translate([t0.x, t0.y]).scale(t0.k);
 
     pathGenerator = d3.geoPath().projection(projection);
 
-    g = svg.append('g');
+    countriesGroup = svg.append('g');
+
+    zoomBehavior = d3.zoom()
+        .scaleExtent([1, maxScaleFactor])
+        .translateExtent([[0, 0], [width, height]])
+        .on("zoom", handleZoom)
+
+    // Attach the zoom behavior to the SVG
+    countriesGroup.call(zoomBehavior)
+
+    // Function to handle zooming
+    // zooming applies to all paths in a specific group - that includes countries but not legend etc
+    function handleZoom(event) {
+        console.log(`event transform ${event.transform}`)
+        countriesGroup.selectAll('path').attr('transform', event.transform); // Apply the zoom transform to map elements
+    }
+
 
     const colorLegendG = svg.append('g').attr('transform', `translate(40,310)`);
 
@@ -379,7 +365,7 @@ onMounted(() => {
 
     function drawAllCountries(countries) {
         // draw all countries
-        countryNodes = g.selectAll('path').data(countries.features);
+        countryNodes = countriesGroup.selectAll('path').data(countries.features);
         countryNodes
             // fill with gray (#dcdcdc) when the country's data is unknown
             .attr('fill', (d) =>
@@ -425,24 +411,11 @@ onMounted(() => {
             )
             .attr('class', 'country');
 
-        zoooom = d3
-            .zoom()
-            .scaleExtent([1, 5]) // Set the zoom extent
-            .on('zoom', zoomed);
 
-        // Attach the zoom behavior to the SVG
-        svg.call(zoooom);
 
-        // // Let the zoom take care of modifying the projection:
-        // // thanks to https://stackoverflow.com/questions/62228556/reactjs-d3-how-to-zoom-in-d3-geo-world-map
-        // zoom = d3.zoom()
-        //   .on("zoom", function () {
-        //     g.attr("transform", d3.zoomTransform(this))
-        //     countryNodes.style("stroke-width", 1 / d3.zoomTransform(this).k); // update stroke width.
-        //   })
-
-        // svg.call(zoom);
     }
+
+
 
     function writeHTMLInLegend(htmlContent) {
         // Define the legend's dimensions and position
@@ -489,11 +462,7 @@ onMounted(() => {
     }
 });
 
-// Function to handle zooming
-// zooming applies to all paths in a specific group - that includes countries but not legend etc
-function zoomed(event) {
-    g.selectAll('path').attr('transform', event.transform); // Apply the zoom transform to map elements
-}
+
 
 // Function to zoom to a specific country
 function zoomToCountry(event, d) {
@@ -505,38 +474,30 @@ function zoomToCountry(event, d) {
     const y = (bounds[0][1] + bounds[1][1]) / 2;
     const scale = Math.max(1, Math.min(3, 0.9 / Math.max(dx / width, dy / height)));
 
-    // Transition to the selected feature's position and scale
-    svg.transition()
-        .duration(750)
-        .call(
-            zoooom.transform,
-            d3.zoomIdentity
-                .translate(width / 2, height / 2) // move to center of map
-                .scale(scale) // scale with calculated factor, focusing on the center of the map
-                .translate(-x, -y) //
-        );
+    // // Transition to the selected feature's position and scale
+    // svg.transition()
+    //     .duration(750)
+    //     .call(
+    //         zoooom.transform,
+    //         d3.zoomIdentity
+    //             .translate(width / 2, height / 2) // move to center of map
+    //             .scale(scale) // scale with calculated factor, focusing on the center of the map
+    //             .translate(-x, -y) //
+    //     );
+
+    countriesGroup
+        .transition()
+        .call(zoomBehavior.translateTo, x, y); // if scale > maxScaleFactor then nothing happens
 }
 
 function zoomToScale(scale) {
-    if (scale < 1) return;
-    // Determine the current center point
-    const currentCenter = [width / 2, height / 2];
-
-    // Calculate the new translation to keep the current center fixed
-    const newTranslation = [
-        currentCenter[0] - currentCenter[0] * scale,
-        currentCenter[1] - currentCenter[1] * scale,
-    ];
-    svg.transition()
-        .duration(750)
-        .call(
-            zoooom.transform,
-            d3.zoomIdentity.translate(newTranslation[0], newTranslation[1]).scale(scale)
-        );
+    countriesGroup
+        .transition()
+        .call(zoomBehavior.scaleTo, scale); // if scale > maxScaleFactor then nothing happens
 }
 
 function getCountryNodes() {
-    return g.selectAll('path').data(countryDataSet.features);
+    return countriesGroup.selectAll('path').data(countryDataSet.features);
 }
 
 function markCollabCountry(country) {
@@ -589,7 +550,8 @@ function handleCountryClick(event, d) {
             useCountries.resetCountries();
         }
 
-        zoomToCountry(event, d);
+        //zoomToCountry(event, d);
+        zoomInOnSelectedCountries()
     } else {
         // if the user clicked on a countrythat is not a collaboration candidate, then do not process the click
 
@@ -637,15 +599,41 @@ function zoomInOnSelectedCountries() {
         // Transition to the selected feature's position and scale
         const xcorrectionfactor = inCollabMode.value ? 1 : 1.1; // *  to position box more to the left of the center and out of overlap with country details popup window
         const ycorrectionfactor = inCollabMode.value ? 1.2 : 1; // *  to position box a little bit higher to prevent too much overlap with collaboration panel
-        svg.transition()
-            .duration(750)
-            .call(
-                zoooom.transform,
-                d3.zoomIdentity
-                    .translate(width / 2, height / 2)
-                    .scale(scale)
-                    .translate(-xcorrectionfactor * x, -y)
-            );
+
+
+        // countriesGroup
+        // .call(zoomBehavior.scaleTo, scale)
+        // .transition()
+        // call(zoomBehavior.translateTo, x+100 ,y)
+
+        countriesGroup
+            .transition()
+            .duration(350)
+            .call(zoomBehavior.translateTo, x + 100, y)
+            .transition()
+            .duration(350)
+            .call(zoomBehavior.scaleTo, scale)
+
+        // var t = d3.zoomIdentity.translate(x, y).scale(1);
+
+        // countriesGroup
+        // .transition()
+        // .call(zoomBehavior.transform, t)
+
+        //scaleTo, scale).call(zoomBehavior.translateTo, x+100 ,y); 
+
+
+        console.log(`translate to ${x} , ${y} `)
+        console.log(`scale  to ${scale} `)
+        // svg.transition()
+        //     .duration(750)
+        //     .call(
+        //         zoooom.transform,
+        //         d3.zoomIdentity
+        //             .translate(width / 2, height / 2)
+        //             .scale(scale)
+        //             .translate(-xcorrectionfactor * x, -y)
+        //     );
     }
 }
 </script>
@@ -658,13 +646,15 @@ function zoomInOnSelectedCountries() {
 
 .selected-country {
     /*fill: #95ad28;*/
-    stroke: #f07004; /*white;*/
+    stroke: #f07004;
+    /*white;*/
     stroke-width: 2px;
 }
 
 .selected-country-collab {
     /*fill: #f07004;*/
-    stroke: #f07004; /*white;*/
+    stroke: #f07004;
+    /*white;*/
     stroke-width: 1px;
 }
 
