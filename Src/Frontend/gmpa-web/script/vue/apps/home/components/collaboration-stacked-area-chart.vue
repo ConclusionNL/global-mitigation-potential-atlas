@@ -58,7 +58,7 @@ const createAreaChart = (data, color) => {
     const svg = d3
         .select('#chart')
         .append('svg')
-        .attr('width', width + margin.left + margin.right)
+        .attr('width', 50+width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom + 50)
         .append('g')
         .attr('transform', `translate(${margin.left + 50},${margin.top})`);
