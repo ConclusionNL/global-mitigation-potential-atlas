@@ -12,11 +12,11 @@
         <div class="zoom-box">
             <div class="zoom-flex">
                 <div @click="zoomIn()
-                " class="r-btn plus">
+                    " class="r-btn plus">
                     <plusIcon width="24" height="24" />
                 </div>
                 <div @click="zoomOut()
-                " class="r-btn minus">
+                    " class="r-btn minus">
                     <minusIcon width="24" height="4" />
                 </div>
             </div>
@@ -98,6 +98,7 @@ function highlightCollaborationCandidates() {
     }
 }
 const handleChangeInCountriesSelection = () => {
+    console.log('handleChangeInCountriesSelection')
     highlightCollaborationCandidates();
     zoomInOnSelectedCountries();
 };
@@ -468,13 +469,13 @@ function zoomToScale(scale) {
 function zoomOut() {
     countriesGroup
         .transition()
-        .call(zoomBehavior.scaleBy, 0.667); 
+        .call(zoomBehavior.scaleBy, 0.667);
 }
 
 function zoomIn() {
     countriesGroup
         .transition()
-        .call(zoomBehavior.scaleBy, 1.5); 
+        .call(zoomBehavior.scaleBy, 1.5);
 }
 function getCountryNodes() {
     return countriesGroup.selectAll('path').data(countryDataSet.features);
@@ -529,7 +530,7 @@ function handleCountryClick(event, d) {
         } else {
             useCountries.resetCountries();
         }
-      //  zoomInOnSelectedCountries()
+        //  zoomInOnSelectedCountries()
     } else {
         // if the user clicked on a countrythat is not a collaboration candidate, then do not process the click
 
@@ -578,41 +579,37 @@ function zoomInOnSelectedCountries() {
         const xcorrectionfactor = inCollabMode.value ? 1 : 1.1; // *  to position box more to the left of the center and out of overlap with country details popup window
         const ycorrectionfactor = inCollabMode.value ? 1.2 : 1; // *  to position box a little bit higher to prevent too much overlap with collaboration panel
 
+        // the transition consists of two steps - scale and translate. if we reverse the steps, the selected country is not in the right place
+        // possible solution: calculate one transform that does both scale and translate
+        const transform = d3.zoomTransform(countriesGroup.node());
+        // Access the current scale factor
+        let currentScaleFactor = transform.k;
+        console.log("Current Scale Factor:", currentScaleFactor);
 
-        // countriesGroup
-        // .call(zoomBehavior.scaleTo, scale)
-        // .transition()
-        // call(zoomBehavior.translateTo, x+100 ,y)
+        // if the current scale factor is close to the desired one, we can use a smooth transition for translate; scale will hardly be noticeable 
+        if (currentScaleFactor / scale > 0.8 && currentScaleFactor / scale < 1.2) {
+            countriesGroup
+                .transition()
+                .duration(10)
+                .call(zoomBehavior.scaleTo, scale)
+                .transition()
+                .duration(500)
+                .call(zoomBehavior.translateTo, x + 75, y + 20)
+        } else {
+            // if the scale is not close to the intended scale, we need to use a fast transition
+            countriesGroup
+                .transition()
+                .duration(1)
+                .call(zoomBehavior.scaleTo, scale)
+                .transition()
+                .duration(1)
+                .call(zoomBehavior.translateTo, x + 75, y + 20)
 
-        countriesGroup
-            .transition()
-            .duration(350)
-            .call(zoomBehavior.translateTo, x + 100, y)
-            .transition()
-            .duration(350)
-            .call(zoomBehavior.scaleTo, scale)
-
-        // var t = d3.zoomIdentity.translate(x, y).scale(1);
-
-        // countriesGroup
-        // .transition()
-        // .call(zoomBehavior.transform, t)
-
-        //scaleTo, scale).call(zoomBehavior.translateTo, x+100 ,y); 
+        }
 
 
-        console.log(`translate to ${x} , ${y} `)
-        console.log(`scale  to ${scale} `)
-        // svg.transition()
-        //     .duration(750)
-        //     .call(
-        //         zoooom.transform,
-        //         d3.zoomIdentity
-        //             .translate(width / 2, height / 2)
-        //             .scale(scale)
-        //             .translate(-xcorrectionfactor * x, -y)
-        //     );
     }
+
 }
 </script>
 
