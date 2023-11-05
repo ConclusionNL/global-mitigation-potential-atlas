@@ -187,6 +187,17 @@ onMounted(() => {
 
     countriesGroup = svg.append('g');
 
+
+    // Append a <rect> element with fill and opacity 0 (invisible) to allow every pixel in the area to be zoomable and draggable 
+    countriesGroup.append("rect")
+        .attr("x", 0) // X-coordinate
+        .attr("y", 0) // Y-coordinate
+        .attr("width", width) // Width
+        .attr("height", height) // Height
+        .attr("fill", "blue") // Fill color - however: invisible
+        .attr("opacity", 0); // Opacity set to 0 (invisible)
+
+
     zoomBehavior = d3.zoom()
         .scaleExtent([1, maxScaleFactor])
         .translateExtent([[0, 0], [width, height]])
