@@ -11,15 +11,11 @@
             @show-benefits="stackedAreaModalVisible = true" @countryNavigation="navigateToCountry" />
         <div class="zoom-box">
             <div class="zoom-flex">
-                <div @click="
-                    zoomLevel += 0.5;
-                zoomToScale(zoomLevel);
+                <div @click="zoomIn()
                 " class="r-btn plus">
                     <plusIcon width="24" height="24" />
                 </div>
-                <div @click="
-                    zoomLevel -= 0.5;
-                zoomToScale(zoomLevel);
+                <div @click="zoomOut()
                 " class="r-btn minus">
                     <minusIcon width="24" height="4" />
                 </div>
@@ -70,7 +66,7 @@ const collaborationStore = useCollaborationStore();
 const heatmapData = collaborationStore.heatmapData;
 
 const mitigation = ref('None');
-const zoomLevel = ref(1);
+
 const maxScaleFactor = 6
 
 const width = window.innerWidth - 200;
@@ -463,39 +459,23 @@ onMounted(() => {
 });
 
 
-
-// Function to zoom to a specific country
-function zoomToCountry(event, d) {
-    // Calculate the bounding box of the selected feature
-    const bounds = pathGenerator.bounds(d);
-    const dx = bounds[1][0] - bounds[0][0];
-    const dy = bounds[1][1] - bounds[0][1];
-    const x = (bounds[0][0] + bounds[1][0]) / 2;
-    const y = (bounds[0][1] + bounds[1][1]) / 2;
-    const scale = Math.max(1, Math.min(3, 0.9 / Math.max(dx / width, dy / height)));
-
-    // // Transition to the selected feature's position and scale
-    // svg.transition()
-    //     .duration(750)
-    //     .call(
-    //         zoooom.transform,
-    //         d3.zoomIdentity
-    //             .translate(width / 2, height / 2) // move to center of map
-    //             .scale(scale) // scale with calculated factor, focusing on the center of the map
-    //             .translate(-x, -y) //
-    //     );
-
-    countriesGroup
-        .transition()
-        .call(zoomBehavior.translateTo, x, y); // if scale > maxScaleFactor then nothing happens
-}
-
 function zoomToScale(scale) {
     countriesGroup
         .transition()
         .call(zoomBehavior.scaleTo, scale); // if scale > maxScaleFactor then nothing happens
 }
 
+function zoomOut() {
+    countriesGroup
+        .transition()
+        .call(zoomBehavior.scaleBy, 0.667); 
+}
+
+function zoomIn() {
+    countriesGroup
+        .transition()
+        .call(zoomBehavior.scaleBy, 1.5); 
+}
 function getCountryNodes() {
     return countriesGroup.selectAll('path').data(countryDataSet.features);
 }
@@ -549,9 +529,7 @@ function handleCountryClick(event, d) {
         } else {
             useCountries.resetCountries();
         }
-
-        //zoomToCountry(event, d);
-        zoomInOnSelectedCountries()
+      //  zoomInOnSelectedCountries()
     } else {
         // if the user clicked on a countrythat is not a collaboration candidate, then do not process the click
 
