@@ -209,7 +209,6 @@ onMounted(() => {
     // Function to handle zooming
     // zooming applies to all paths in a specific group - that includes countries but not legend etc
     function handleZoom(event) {
-        console.log(`event transform ${event.transform}`)
         countriesGroup.selectAll('path').attr('transform', event.transform); // Apply the zoom transform to map elements
     }
 
@@ -572,20 +571,27 @@ function zoomInOnSelectedCountries() {
         var maxX = Number.NEGATIVE_INFINITY;
         var maxY = Number.NEGATIVE_INFINITY;
         selectedCountries.value.forEach((c) => {
+
             var selectedCountryGeoJSON = countryDataSet.features.filter((d) => d.id == c.id);
             // Calculate zoom parameters
             //                var bounds = d3.geoBounds(selectedCountryGeoJSON[0]);
-            const bounds = pathGenerator.bounds(selectedCountryGeoJSON[0]);
+
+
+            selectedCountryGeoJSON.forEach((geojson) => { // for example australia consists of multiple polygons
+            
+            const bounds = pathGenerator.bounds(geojson);
             minX = Math.min(minX, bounds[0][0]);
             minY = Math.min(minY, bounds[0][1]);
             maxX = Math.max(maxX, bounds[1][0]);
             maxY = Math.max(maxY, bounds[1][1]);
+            
+            })
         });
         const dx = maxX - minX;
         const dy = maxY - minY;
         const x = (minX + maxX) / 2;
         const y = (minY + maxY) / 2;
-        const scale = Math.max(1, Math.min(3, 0.9 / Math.max(dx / width, dy / height)));
+        const newScale = Math.max(1, Math.min(3, 0.9 / Math.max(dx / width, dy / height)));
         // Transition to the selected feature's position and scale
         const xcorrectionfactor = inCollabMode.value ? 1 : 1.1; // *  to position box more to the left of the center and out of overlap with country details popup window
         const ycorrectionfactor = inCollabMode.value ? 1.2 : 1; // *  to position box a little bit higher to prevent too much overlap with collaboration panel
@@ -595,27 +601,26 @@ function zoomInOnSelectedCountries() {
         const transform = d3.zoomTransform(countriesGroup.node());
         // Access the current scale factor
         let currentScaleFactor = transform.k;
-        console.log("Current Scale Factor:", currentScaleFactor);
+        let currentTranslateX = 0, currentTranslateY = 0
+            try {
+                const matrix = countriesGroup.node().transform.baseVal.consolidate().matrix
+                currentTranslateX = matrix.e
+                currentTranslateY = matrix.f
+
+            } catch (e) { }
 
         // if the current scale factor is close to the desired one, we can use a smooth transition for translate; scale will hardly be noticeable 
-        if (currentScaleFactor / scale > 0.8 && currentScaleFactor / scale < 1.2) {
+        if (currentScaleFactor / newScale > 0.8 && currentScaleFactor / newScale < 1.2) {
             countriesGroup
                 .transition()
                 .duration(10)
-                .call(zoomBehavior.scaleTo, scale)
+                .call(zoomBehavior.scaleTo, newScale)
                 .transition()
                 .duration(500)
                 .call(zoomBehavior.translateTo, x + 75, y + 20)
         } else {
-            // if the scale is not close to the intended scale, we need to use a fast transition
-            countriesGroup
-                .transition()
-                .duration(1)
-                .call(zoomBehavior.scaleTo, scale)
-                .transition()
-                .duration(1)
-                .call(zoomBehavior.translateTo, x + 75, y + 20)
-
+            const transform = d3.zoomIdentity.scale(newScale).translate((-x-0.5 * dx)/newScale  - 180,(-y-0.5 * dy)/newScale  - 120)
+            countriesGroup.transition().duration(750).call(zoomBehavior.transform, transform);
         }
 
 
