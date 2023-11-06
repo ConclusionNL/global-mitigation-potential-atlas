@@ -72,6 +72,18 @@
     </div>
 </div>
 
+@if (Model.ReferenceBlock.Count != 0)
+{
+    <h2 class="referenceDivider">References</h2>
+    @foreach (var reference in Model.ReferenceBlock)
+    {
+        <div class="reference">
+            <b>@reference.Title</b>
+            @Html.Raw(reference.Reference)
+        </div>
+    }
+}
+
 <style>
     .collapsibleHeader {
         cursor: pointer;
@@ -85,4 +97,12 @@
         .contactSection img {
             border-radius: 25px;
         }
+
+    .referenceDivider {
+        border-top: 1px solid #000000
+    }
+
+    .reference {
+        padding: 5px;
+    }
 </style>

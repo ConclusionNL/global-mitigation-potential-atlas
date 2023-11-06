@@ -18,9 +18,16 @@
             public string Id { get; set; }
         }
 
+        public class CountryReferenceBlockList
+        {
+            public string Title { get; set; }
+            public string Reference { get; set; }
+        }
+
         public CountryModel Country { get; set; }
         public List<NormalBlockListItem> NormalBlockList { get; set; }
         public List<CollapsibleBlockListItem> CollapsibleBlockList { get; set; }
+        public List<CountryReferenceBlockList> ReferenceBlock { get; set; }
 
         #region Contact
         public string ContactName { get; set; }

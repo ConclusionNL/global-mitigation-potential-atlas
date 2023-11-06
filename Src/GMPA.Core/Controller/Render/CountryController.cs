@@ -57,6 +57,15 @@ namespace GMPA.Core.Controller.Render
                 })
             .ToList(),
 
+                ReferenceBlock = country.References
+                    .Select(a => a.Content as CountryReferenceBlock)
+                    .Select(b => new CountryViewModel.CountryReferenceBlockList()
+                    {
+                        Title = b.ReferenceName,
+                        Reference = b.ReferenceContent.ToHtmlString(),
+                    })
+                    .ToList(),
+
                 ContactName = country.ContactName,
                 ContactTitle = country.TitleOrJob,
                 ContactImageUrl = country.PictureOfContactPerson?.Url() ?? "/media/xaaonxl0/dummypicture.jpg",

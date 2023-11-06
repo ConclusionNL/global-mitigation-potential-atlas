@@ -121,6 +121,14 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops PictureOfContactPerson => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "pictureOfContactPerson");
 
 		///<summary>
+		/// References
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("references")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel References => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "references");
+
+		///<summary>
 		/// Title or Job: The Title or Job this contact person has for the country
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
