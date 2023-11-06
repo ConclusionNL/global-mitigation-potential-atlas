@@ -2,40 +2,40 @@
 Ashmore and Cartier Is.,Ashmore and Cartier Islands,-99,-99,36,Oceania,Oceania,Australia and New Zealand
 Aruba,Aruba,AW,ABW,533,North America,Americas,Caribbean
 Afghanistan,Afghanistan,AF,AFG,004,Asia,Asia,Southern Asia
-Angola,Angola,AO,AGO,24,Africa,Africa,Middle Africa
+Angola,Angola,AO,AGO,024,Africa,Africa,Middle Africa
 Anguilla,Anguilla,AI,AIA,660,North America,Americas,Caribbean
 Aland,Aland Islands,AX,ALA,248,Europe,Europe,Northern Europe
 Albania,Albania,AL,ALB,008,Europe,Europe,Southern Europe
-Andorra,Andorra,AD,AND,20,Europe,Europe,Southern Europe
+Andorra,Andorra,AD,AND,020,Europe,Europe,Southern Europe
 United Arab Emirates,United Arab Emirates,AE,ARE,784,Asia,Asia,Western Asia
-Argentina,Argentina,AR,ARG,32,South America,Americas,South America
-Armenia,Armenia,AM,ARM,51,Asia,Asia,Western Asia
-American Samoa,American Samoa,AS,ASM,16,Oceania,Oceania,Polynesia
-Antarctica,Antarctica,AQ,ATA,10,Antarctica,Antarctica,Antarctica
+Argentina,Argentina,AR,ARG,032,South America,Americas,South America
+Armenia,Armenia,AM,ARM,051,Asia,Asia,Western Asia
+American Samoa,American Samoa,AS,ASM,016,Oceania,Oceania,Polynesia
+Antarctica,Antarctica,AQ,ATA,010,Antarctica,Antarctica,Antarctica
 Fr. S. Antarctic Lands,French Southern and Antarctic Lands,TF,ATF,260,Seven seas (open ocean),Seven seas (open ocean),Seven seas (open ocean)
-Antigua and Barb.,Antigua and Barbuda,AG,ATG,28,North America,Americas,Caribbean
+Antigua and Barb.,Antigua and Barbuda,AG,ATG,028,North America,Americas,Caribbean
 Australia,Australia,AU,AUS,036,Oceania,Oceania,Australia and New Zealand
-Austria,Austria,AT,AUT,40,Europe,Europe,Western Europe
-Azerbaijan,Azerbaijan,AZ,AZE,31,Asia,Asia,Western Asia
+Austria,Austria,AT,AUT,040,Europe,Europe,Western Europe
+Azerbaijan,Azerbaijan,AZ,AZE,031,Asia,Asia,Western Asia
 Burundi,Burundi,BI,BDI,108,Africa,Africa,Eastern Africa
-Belgium,Belgium,BE,BEL,56,Europe,Europe,Western Europe
+Belgium,Belgium,BE,BEL,056,Europe,Europe,Western Europe
 Benin,Benin,BJ,BEN,204,Africa,Africa,Western Africa
 Burkina Faso,Burkina Faso,BF,BFA,854,Africa,Africa,Western Africa
-Bangladesh,Bangladesh,BD,BGD,50,Asia,Asia,Southern Asia
+Bangladesh,Bangladesh,BD,BGD,050,Asia,Asia,Southern Asia
 Bulgaria,Bulgaria,BG,BGR,100,Europe,Europe,Eastern Europe
-Bahrain,Bahrain,BH,BHR,48,Asia,Asia,Western Asia
-Bahamas,Bahamas,BS,BHS,44,North America,Americas,Caribbean
-Bosnia and Herz.,Bosnia and Herzegovina,BA,BIH,70,Europe,Europe,Southern Europe
+Bahrain,Bahrain,BH,BHR,048,Asia,Asia,Western Asia
+Bahamas,Bahamas,BS,BHS,044,North America,Americas,Caribbean
+Bosnia and Herz.,Bosnia and Herzegovina,BA,BIH,070,Europe,Europe,Southern Europe
 St-Barthélemy,Saint-Barthélemy,BL,BLM,652,North America,Americas,Caribbean
 Belarus,Belarus,BY,BLR,112,Europe,Europe,Eastern Europe
-Belize,Belize,BZ,BLZ,84,North America,Americas,Central America
-Bermuda,Bermuda,BM,BMU,60,North America,Americas,Northern America
-Bolivia,Bolivia,BO,BOL,68,South America,Americas,South America
-Brazil,Brazil,BR,BRA,76,South America,Americas,South America
-Barbados,Barbados,BB,BRB,52,North America,Americas,Caribbean
-Brunei,Brunei Darussalam,BN,BRN,96,Asia,Asia,South-Eastern Asia
-Bhutan,Bhutan,BT,BTN,64,Asia,Asia,Southern Asia
-Botswana,Botswana,BW,BWA,72,Africa,Africa,Southern Africa
+Belize,Belize,BZ,BLZ,084,North America,Americas,Central America
+Bermuda,Bermuda,BM,BMU,060,North America,Americas,Northern America
+Bolivia,Bolivia,BO,BOL,068,South America,Americas,South America
+Brazil,Brazil,BR,BRA,076,South America,Americas,South America
+Barbados,Barbados,BB,BRB,052,North America,Americas,Caribbean
+Brunei,Brunei Darussalam,BN,BRN,096,Asia,Asia,South-Eastern Asia
+Bhutan,Bhutan,BT,BTN,064,Asia,Asia,Southern Asia
+Botswana,Botswana,BW,BWA,072,Africa,Africa,Southern Africa
 Central African Rep.,Central African Republic,CF,CAF,140,Africa,Africa,Middle Africa
 Canada,Canada,CA,CAN,124,North America,Americas,Northern America
 Switzerland,Switzerland,CH,CHE,756,Europe,Europe,Western Europe
@@ -60,7 +60,7 @@ Djibouti,Djibouti,DJ,DJI,262,Africa,Africa,Eastern Africa
 Dominica,Dominica,DM,DMA,212,North America,Americas,Caribbean
 Denmark,Denmark,DK,DNK,208,Europe,Europe,Northern Europe
 Dominican Rep.,Dominican Republic,DO,DOM,214,North America,Americas,Caribbean
-Algeria,Algeria,DZ,DZA,12,Africa,Africa,Northern Africa
+Algeria,Algeria,DZ,DZA,012,Africa,Africa,Northern Africa
 Ecuador,Ecuador,EC,ECU,218,South America,Americas,South America
 Egypt,Egypt,EG,EGY,818,Africa,Africa,Northern Africa
 Eritrea,Eritrea,ER,ERI,232,Africa,Africa,Eastern Africa
@@ -98,7 +98,7 @@ Hungary,Hungary,HU,HUN,348,Europe,Europe,Eastern Europe
 Indonesia,Indonesia,ID,IDN,360,Asia,Asia,South-Eastern Asia
 Isle of Man,Isle of Man,IM,IMN,833,Europe,Europe,Northern Europe
 India,India,IN,IND,356,Asia,Asia,Southern Asia
-Br. Indian Ocean Ter.,British Indian Ocean Territory,IO,IOT,86,Seven seas (open ocean),Seven seas (open ocean),Seven seas (open ocean)
+Br. Indian Ocean Ter.,British Indian Ocean Territory,IO,IOT,086,Seven seas (open ocean),Seven seas (open ocean),Seven seas (open ocean)
 Ireland,Ireland,IE,IRL,372,Europe,Europe,Northern Europe
 Iran,Iran,IR,IRN,364,Asia,Asia,Southern Asia
 Iraq,Iraq,IQ,IRQ,368,Asia,Asia,Western Asia
