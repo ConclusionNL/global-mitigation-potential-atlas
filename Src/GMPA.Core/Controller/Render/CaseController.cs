@@ -32,6 +32,7 @@ namespace GMPA.Core.Controller.Render
                 CaseModel = new CaseModel
                 {
                     CaseName = caseDocument.Name,
+                    SectorTag = caseDocument.SectorTag.FirstOrDefault(),
                     CaseDescription = caseDocument.CaseIntroduction?.ToHtmlString(),
                     CaseTags = caseDocument.Tags?.ToList()
                 },

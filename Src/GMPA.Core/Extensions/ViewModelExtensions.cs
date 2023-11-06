@@ -52,6 +52,7 @@ namespace GMPA.Core.Extensions
                 model.Cases.Add(new CaseModel
                 {
                     CaseName = caseItem.Name,
+                    SectorTag = caseItem.SectorTag.FirstOrDefault(),
                     CaseDescription = caseItem.CaseIntroduction?.ToHtmlString(),
                     CaseTags = caseItem.Tags?.ToList(),
                     Url = caseItem.Url()
