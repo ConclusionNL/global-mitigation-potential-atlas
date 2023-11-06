@@ -109,6 +109,7 @@ const emit = defineEmits(['country-navigation', 'country-mitigation-potential-di
     flex-flow: row wrap;
     justify-content: space-between;
     gap: 10px;
+    margin-top: 15px;
 }
 
 .btn {
