@@ -40,6 +40,7 @@ import * as topojson from 'topojson';
 import { geoAlbers, geoEquirectangular, geoEqualEarth } from 'd3-geo';
 import { scaleSequential } from 'd3-scale';
 import { useCollaborationStore } from '../stores/collaborationStore';
+import { useCountriesDataStore } from '../stores/countriesDataStore';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
 import { ref, watch, onMounted, defineProps, defineEmits, computed } from 'vue';
 import toggleBox from './toggle-box.vue';
@@ -52,6 +53,7 @@ import closeIcon from '../assets/cross.svg';
 import mitigationPotentialDiagram from './mitigation-potential-diagram.vue';
 
 const useCountries = useSelectedCountries();
+const countriesDataStore = useCountriesDataStore();
 const selectedCountries = useCountries.selectedCountries;
 const inCollabMode = useCountries.inCollabMode;
 
@@ -241,10 +243,10 @@ onMounted(() => {
 
     const loadAndProcessData = () =>
         Promise.all([
-            d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
+          //  d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
             d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json'),
-        ]).then(([tsvData, topoJSONdata]) => {
-            const rowById = tsvData.reduce((accumulator, d) => {
+        ]).then(([ topoJSONdata]) => {
+            const countriesById = countriesDataStore.countryData.reduce((accumulator, d) => {
                 accumulator[d.iso_n3] = d;
                 return accumulator;
             }, {});
@@ -253,7 +255,7 @@ onMounted(() => {
 
             countries.features.forEach((d) => {
                 // add all country properties from the TSV file to the features of the countries
-                Object.assign(d.properties, rowById[d.id]);
+                Object.assign(d.properties, countriesById[d.id]);
 
                 // using the ISo2 country code (iso_a2), check heatmapData array for an object with the right COUnTRY property value
                 const countryCode = d.properties.iso_a2;
@@ -385,7 +387,7 @@ onMounted(() => {
             .select('title') // Select the child title of each path
             .text(
                 (d) =>
-                    d.properties.name +
+                    d.properties.name_long +
                     ' : ' +
                     (d.properties.hasOwnProperty(mitigation.value)
                         ? d.properties[mitigation.value] + ` ${mitigation.value}`
@@ -409,11 +411,10 @@ onMounted(() => {
             .on('click', handleCountryClick)
             .append('title')
             .text(
-                (d) =>
-                    d.properties.name +
-                    ' : ' +
+                (d) => d.properties.name +
+                    
                     (d.properties.hasOwnProperty(mitigation.value)
-                        ? d.properties[mitigation.value] + ` ${mitigation.value}`
+                        ? `: ${d.properties[mitigation.value]} ${mitigation.value}`
                         : '')
             )
             .attr('class', 'country');

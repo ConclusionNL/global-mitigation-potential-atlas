@@ -10,8 +10,9 @@ export function useSelectedCountries() {
     }
 
     function getCountryByName(countryName) {
+        const lowerCaseCountryToFind = countryName.toLocaleLowerCase()
         return dataSet.value.find(
-            (c) => c.properties.name.toLocaleLowerCase() === countryName.toLocaleLowerCase()
+            (c) => c.properties.name && c.properties.name.toLocaleLowerCase() === lowerCaseCountryToFind
         );
     }
 
