@@ -17,6 +17,10 @@ const svgHeight = 180;
 
 onMounted(() => {
     setupLineAreaChart(props.countriesList);
+
+    watch(() => props.countriesList, (newValue, oldValue) => {
+        setupLineAreaChart(newValue)
+    })
 });
 
 const setupLineAreaChart = async (countriesList) => {
@@ -24,11 +28,12 @@ const setupLineAreaChart = async (countriesList) => {
         countriesList.map((country) => country.properties.iso_a2)
     );
 
+    d3.select('#lineChartContainer').remove()
     if (data.length == 0) {return}
-
     const svg = d3
         .select('#svgLineChartContainer')
         .append('svg')
+        .attr('id', "lineChartContainer")
         .attr('width', svgWidth)
         .attr('height', svgHeight);
 
