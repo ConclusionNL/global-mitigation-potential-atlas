@@ -73,6 +73,14 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual string PolicyDocumentName => this.Value<string>(_publishedValueFallback, "policyDocumentName");
 
 		///<summary>
+		/// Policy Instruments
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("policyInstruments")]
+		public virtual string PolicyInstruments => this.Value<string>(_publishedValueFallback, "policyInstruments");
+
+		///<summary>
 		/// Policy Inventory Country
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]

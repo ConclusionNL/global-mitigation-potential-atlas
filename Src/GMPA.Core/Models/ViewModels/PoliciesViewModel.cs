@@ -22,6 +22,7 @@
             public string SourceLink { get; set; }
             public string PolicyLevel { get; set; }
             public string PolicyOrigin { get; set; }
+            public string PolicyInstruments { get; set; }
             public string Objectives { get; set; }
             public string FromCountry { get; set; }
         }
