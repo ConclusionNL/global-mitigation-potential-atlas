@@ -44,6 +44,10 @@
                 </div>
             </div>
         </div>
+        <div class="coalition-potential">
+                    <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
+                    </coalitionMaximumMitigationPotential>
+                </div>
         <div class="card-buttons">
             <button class="btn btn-alt-1" @click="useCountries.setCollabMode(true)">
                 Select for collaboration
@@ -65,6 +69,7 @@
 import { ref, onMounted, watch, defineProps } from 'vue';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
 import closeIcon from '../assets/cross.svg';
+import coalitionMaximumMitigationPotential from './coalition-maximum-mitigation-potential.vue';
 
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;

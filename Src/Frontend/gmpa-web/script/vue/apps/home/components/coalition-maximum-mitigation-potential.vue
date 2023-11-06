@@ -45,9 +45,11 @@ const setupLineAreaChart = async (countriesList) => {
         .attr('transform', `translate(0,0)`)
         .attr('width', chartWidth - 20)
         .attr('height', chartHeight - 20);
-    //         const collaborationProperties = ['collaboration_emissions', 'collaboration_cost', 'autarky_emissions', 'autarky_cost']
-    // draw a line chart with two lines - one for collaboration - emissions along x axis and cost along y axis
+    
+    // if multiple countries are selected, then draw a line chart with two lines - one for collaboration - emissions along x axis and cost along y axis
     // and one for autarky
+
+    // if only one country is selected, then draw a line chart with one line - for autarky only
 
     const maxCollabCost = d3.max(data, (d) => d['collaboration_cost']);
     const maxAutarkyCost = d3.max(data, (d) => d['autarky_cost']);
@@ -95,6 +97,7 @@ const setupLineAreaChart = async (countriesList) => {
         .attr('fill', 'darkblue') // Fill color for the area
         .attr('d', autarkyArea);
 
+    if (countriesList.length > 1) {    
     // Create a line generator
     const lineCollaboration = d3
         .line()
@@ -124,7 +127,7 @@ const setupLineAreaChart = async (countriesList) => {
         .datum(data)
         .attr("fill", "#f07004") // Fill color for the area
         .attr("d", area);
-
+    }
     // Add x-axis
     chart.append("g")
         .attr("transform", `translate(0,${chartHeight})`)
