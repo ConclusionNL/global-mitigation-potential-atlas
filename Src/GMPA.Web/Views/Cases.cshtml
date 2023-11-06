@@ -47,7 +47,8 @@
                      data-tags="@string.Join(",", caseItem.CaseTags)"
                      data-sector-tag="@caseItem.SectorTag">
                     <div class="card-header">
-                        <h3>@caseItem.CaseName</h3>
+                        <h3 class="card-title">@caseItem.CaseName</h3>
+                        <h6 class="sub-title">Sector: @caseItem.SectorTag</h6>
                     </div>
                     <div class="card-body">
                         <div>@Html.Raw(caseItem.CaseDescription)</div>
