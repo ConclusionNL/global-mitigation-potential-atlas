@@ -42,7 +42,7 @@ const handleTechnologySelected = (payload) => {
     emit('technology-selected', payload);
 };
 
-const selectedCountry = ref({ value: 'all' });
+const selectedCountry = ref('all' );
 const selectListOptions = ref([{ label: 'Full Collaboration', value: 'all' }]);
 
 const selectedCollaboration = computed(() => {
