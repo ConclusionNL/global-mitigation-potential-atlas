@@ -254,7 +254,8 @@ onMounted(() => {
         Promise.all([
           //  d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
             d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json'),
-        ]).then(([ topoJSONdata]) => {
+            ]).then(([ topoJSONdata]) => {
+       
             const countriesById = countriesDataStore.countryData.reduce((accumulator, d) => {
                 accumulator[d.iso_n3] = d;
                 return accumulator;
@@ -711,7 +712,7 @@ p {
 
 .country-box {
     position: absolute;
-    top: 400px;
+    top: 350px;
     right: 80px;
 }
 
