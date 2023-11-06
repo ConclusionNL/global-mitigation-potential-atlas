@@ -8,20 +8,44 @@
 
 <div class="row">
     <div class="col-1">
-        <h4>Tag Filter</h4>
-        <label>Power</label>
-        <input type="checkbox" id="checkboxPower" class="tagCheckbox" />
-        <label>Solar</label>
-        <input type="checkbox" id="checkboxSolar" class="tagCheckbox" />
-        <label>Lorem</label>
-        <input type="checkbox" id="checkboxLorem" class="tagCheckbox" />
+        <div class="row">
+            <h4>Tag Filter</h4>
+            <h5>Continent</h5>
+            <div class="container text-center justify-content-center">
+                <label for="continentFilter">Select a continent:</label>
+                <select name="continentFilter" id="continentFilter">
+                    <option value=""></option>
+                    <option value="Africa">Africa</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Oceania">Oceania</option>
+                    <option value="Europe">Europe</option>
+                    <option value="North America">North America</option>
+                    <option value="South America">South America</option>
+                </select>
+            </div>
+            <h5>Sector</h5>
+            <div class="container text-center justify-content-center">
+                <label for="sectorFilter">Select a Sector:</label>
+                <select name="sectorFilter" id="sectorFilter">
+                    <option value=""></option>
+                    <option value="Power">Power</option>
+                    <option value="Electricity">Electricity</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Industry">Industry</option>
+                    <option value="Agriculture">Agriculture</option>
+                </select>
+            </div>
+        </div>
     </div>
+
 
     <div class="col-11">
         @{
             foreach (var caseItem in Model.Cases)
             {
-                <div class="card mb-3 @string.Join(" ", caseItem.CaseTags.Select(tag => $"tag-{tag.ToLower()}"))" data-tags="@string.Join(",", caseItem.CaseTags)">
+                <div class="card mb-3 @string.Join(" ", caseItem.CaseTags.Select(tag => $"tag-{tag.ToLower()}"))" 
+                     data-tags="@string.Join(",", caseItem.CaseTags)"
+                     data-sector-tag="@caseItem.SectorTag">
                     <div class="card-header">
                         <h3>@caseItem.CaseName</h3>
                     </div>
@@ -48,41 +72,39 @@
 </div>
 
 <script>
-    var checkboxes = document.querySelectorAll('.tagCheckbox');
+    // Get the continent filter element and sector filter element
+    var continentFilter = document.getElementById("continentFilter");
+    var sectorFilter = document.getElementById("sectorFilter");
 
-    checkboxes.forEach(function (checkbox) {
-        checkbox.addEventListener('change', applyTagFilters);
-    });
+    // Add event listeners to the select elements for change events
+    continentFilter.addEventListener("change", filterCases);
+    sectorFilter.addEventListener("change", filterCases);
 
-    function applyTagFilters() {
-        var selectedTags = Array.from(checkboxes)
-            .filter(function (checkbox) {
-                return checkbox.checked;
-            })
-            .map(function (checkbox) {
-                return checkbox.id.replace('checkbox', '');
-            });
+    function filterCases() {
+        var selectedContinent = continentFilter.value;
+        var selectedSector = sectorFilter.value;
 
-        var cards = document.querySelectorAll('.card');
+        // Get all case cards
+        var caseCards = document.querySelectorAll('.card');
 
-        cards.forEach(function (card) {
-            var caseTags = card.getAttribute('data-tags').split(',');
+        // Iterate through each case card and show/hide based on tags
+        caseCards.forEach(function (card) {
+            var tags = card.getAttribute('data-tags').split(',');
+            var sectorTag = card.getAttribute('data-sector-tag');
 
-            if (selectedTags.length === 0 || containsAny(caseTags, selectedTags)) {
+            // Check if any tag contains the selected continent or if no continent is selected
+            var showCard = (selectedContinent === "" || tags.some(function(tag) {
+                    return tag.toLowerCase().includes(selectedContinent.toLowerCase());
+                })) &&
+                (selectedSector === "" || sectorTag.toLowerCase().includes(selectedSector.toLowerCase()));
+
+            // Show or hide the card based on tags and sector
+            if (showCard) {
                 card.style.display = 'block';
             } else {
                 card.style.display = 'none';
             }
         });
-    }
-
-    function containsAny(source, target) {
-        for (var i = 0; i < target.length; i++) {
-            if (source.includes(target[i])) {
-                return true;
-            }
-        }
-        return false;
     }
 </script>
 
