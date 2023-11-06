@@ -31,6 +31,13 @@ const setupDiagram = async (collaborationCountriesList) => {
     const data = await collaborationStore.prepareData(
         collaborationCountriesList.map((country) => country.properties.iso_a2)
     );
+
+    if (data.length==0){
+        // remove existing charts
+        d3.select('#chart').selectAll('*').remove();
+        d3.select('#bar-chart').selectAll('*').remove();    
+        return
+    }
     // Create a color scale for the series
     //  const x = Object.keys(data[0]).filter((key) => key !== 'x' && key !== 'sum')
     color = d3
