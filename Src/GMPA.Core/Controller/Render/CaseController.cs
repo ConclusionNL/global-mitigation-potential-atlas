@@ -55,6 +55,9 @@ namespace GMPA.Core.Controller.Render
                     {
                         Title = b.Title,
                         InstrumentText = b.InstrumentsText?.ToHtmlString(),
+                        ImpactLevel = b.ImpactLevel,
+                        ImpactEvaluation = b.ImpactEvaluation,
+                        ImpactIndicator = b.ImpactIndicator?.ToHtmlString(),
                         PolicyDecision = b.PolicyDecision,
                         PolicyOrigin = b.PolicyOrigin,
                         TypeOfPolicyInstrument = b.TypeOfPolicyInstrumentDropdown,

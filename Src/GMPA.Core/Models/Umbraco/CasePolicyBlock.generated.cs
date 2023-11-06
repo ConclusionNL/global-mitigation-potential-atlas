@@ -65,6 +65,30 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual string EnforcementLevel => this.Value<string>(_publishedValueFallback, "enforcementLevel");
 
 		///<summary>
+		/// Impact Evaluation
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("impactEvaluation")]
+		public virtual string ImpactEvaluation => this.Value<string>(_publishedValueFallback, "impactEvaluation");
+
+		///<summary>
+		/// Impact indicator
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("impactIndicator")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString ImpactIndicator => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "impactIndicator");
+
+		///<summary>
+		/// Impact Level
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("impactLevel")]
+		public virtual string ImpactLevel => this.Value<string>(_publishedValueFallback, "impactLevel");
+
+		///<summary>
 		/// Implementation Status
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]

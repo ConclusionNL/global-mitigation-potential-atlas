@@ -28,6 +28,46 @@
             {
                 <h4>@casePolicy.Title</h4>
                 <p>@Html.Raw(casePolicy.InstrumentText)</p>
+                <div style="padding: 10px">
+                    <h5>Policy Impact</h5>
+                    @if (casePolicy.ImpactLevel != "")
+                    {
+                        <div>
+                            Level: @casePolicy.ImpactLevel
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            Level: TBD
+                        </div>
+                    }
+                    @if (casePolicy.ImpactEvaluation != "")
+                    {
+                        <div>
+                            Evaluation: @casePolicy.ImpactEvaluation
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            Evaluation: TBD
+                        </div>
+                    }
+                    @if (casePolicy.ImpactIndicator != "")
+                    {
+                        <div>
+                            Indicator: @Html.Raw(casePolicy.ImpactIndicator)
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            Indicator: TBD
+                        </div>
+                    }
+                </div>
+
                 <div class="row">
                     <div class="col-1">
                         <div class="tagName">
@@ -139,24 +179,35 @@
 </div>
 
 <div id="LockIn">
-    <h2>Positive Lock-Ins</h2>
-    @foreach (var positiveLock in Model.CaseLockInBlock
-    .Where(a => a.NegativePositive))
-    {
-        <div>
-            <h4>@positiveLock.LockInType</h4>
-            @Html.Raw(positiveLock.BodyText)
-        </div>
-    }
+    @{
+        var positiveCases = @Model.CaseLockInBlock
+            .Where(a => a.NegativePositive);
+        var negativeCases = @Model.CaseLockInBlock
+        .Where(a => !a.NegativePositive);
 
-    <h2>Negative Lock-Ins</h2>
-    @foreach (var negativeLock in Model.CaseLockInBlock
-    .Where(a => !a.NegativePositive))
-    {
-        <div>
-            <h4>@negativeLock.LockInType</h4>
-            @Html.Raw(negativeLock.BodyText)
-        </div>
+        if (positiveCases.Count() != 0)
+        {
+            <h2>Positive Lock-Ins</h2>
+            @foreach (var positiveLock in positiveCases)
+            {
+                <div>
+                    <h4>@positiveLock.LockInType</h4>
+                    @Html.Raw(positiveLock.BodyText)
+                </div>
+            }
+        }
+
+        if (negativeCases.Count() != 0)
+        {
+            <h2>Negative Lock-Ins</h2>
+            @foreach (var negativeLock in negativeCases)
+            {
+                <div>
+                    <h4>@negativeLock.LockInType</h4>
+                    @Html.Raw(negativeLock.BodyText)
+                </div>
+            }
+        }
     }
 </div>
 
