@@ -14,6 +14,9 @@ namespace GMPA.Core.Models.ViewModels
         {
             public string Title { get; set; }
             public string InstrumentText { get; set; }
+            public string ImpactLevel { get; set; }
+            public string ImpactEvaluation { get; set; }
+            public string ImpactIndicator { get; set; }
             public string PolicyDecision { get; set; }
             public string PolicyOrigin { get; set; }
             public string TypeOfPolicyInstrument { get; set; }
