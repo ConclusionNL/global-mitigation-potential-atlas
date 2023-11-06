@@ -171,6 +171,8 @@ const findCollaboratingCandidates = (selectedCountries) => {
 let zoomBehavior
 
 onMounted(() => {
+
+
     watch(mitigation, (newValue) => {
         colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value);
         yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value);
@@ -250,45 +252,6 @@ onMounted(() => {
 
     yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value);
 
-    const loadAndProcessData = () =>
-        Promise.all([
-          //  d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/50m.tsv'),
-            d3.json('https://unpkg.com/world-atlas@1.1.4/world/50m.json'),
-            ]).then(([ topoJSONdata]) => {
-       
-            const countriesById = countriesDataStore.countryData.reduce((accumulator, d) => {
-                accumulator[d.iso_n3] = d;
-                return accumulator;
-            }, {});
-
-            const countries = topojson.feature(topoJSONdata, topoJSONdata.objects.countries);
-
-            countries.features.forEach((d) => {
-                // add all country properties from the TSV file to the features of the countries
-                Object.assign(d.properties, countriesById[d.id]);
-
-                // using the ISo2 country code (iso_a2), check heatmapData array for an object with the right COUnTRY property value
-                const countryCode = d.properties.iso_a2;
-                heatmapData
-                    .filter((h) => h['Country'] == countryCode)
-                    .forEach((c) => {
-                        // copy properties from c to d.properties
-                        for (let key in c) {
-                            if (key !== 'Country') {
-                                d.properties[key] = c[key];
-                            }
-                        }
-                        // set the property in_heatmap to true to indicate that there is heatmap data for this country
-                        d.properties['in_heatmap'] = true;
-                    });
-
-                // todo - these properties are added in a not very efficient way
-                // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
-            });
-
-            return countries;
-        });
-
     const heatmapLegend = (selection, props) => {
         const { spacing, textOffset, backgroundRectWidth } = props;
 
@@ -306,7 +269,8 @@ onMounted(() => {
             .attr('height', 350);
     };
 
-    loadAndProcessData().then((countries) => {
+    countriesDataStore.fetchData()
+    .then((countries) => {
         countryDataSet = countries;
         collaborationStore.prepareCountryCollaborations();
         useCountries.dataSet.value = countries.features;
