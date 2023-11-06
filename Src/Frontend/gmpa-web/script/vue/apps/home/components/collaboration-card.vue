@@ -47,7 +47,7 @@
                             mitType = filter;
                             filterBox = !filterBox;
                         ">
-                        GtCO2 at {{ filter.replaceAll(/[a-zA-Z]/g, '') }}
+                        GtCO2 at {{ filter.replaceAll(/[a-zA-Z]/g, '') }} $/MtCO2e
                     </li>
                 </div>
             </div>
