@@ -28,6 +28,7 @@ namespace GMPA.Core.Extensions
                 model.Countries.Add(new CountryModel
                 {
                     Name = country.Name,
+                    CountryId = country.CountryID,
                     Continent = country.Continent?.ToList(),
                     Active = country.Active,
                     Url = country.Url(mode: UrlMode.Absolute),

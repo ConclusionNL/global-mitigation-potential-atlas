@@ -6,5 +6,6 @@
         public bool Active { get; set; }
         public List<string> Continent { get; set; }
         public string Url { get; set; }
+        public string CountryId { get; set; }
     }
 }

@@ -8,7 +8,7 @@
             </div>
         <li v-for="country in props.countries">
             <div v-if="country.Active">
-                <div @click="countryEligible(country.Name)" class="countries-link-active pointer">{{ country.Name }}</div>
+                <div @click="countryEligible(country.CountryId)" class="countries-link-active pointer">{{ country.Name }}</div>
             </div>
         </li>
         </li>
@@ -23,7 +23,7 @@
                     <li v-if="country.Continent == continent">
                         <div class="countries-list-item-active">
                             <div v-if="country.Active">
-                                <div @click="countryEligible(country.Name)" class="countries-link-active pointer">{{ country.Name }}</div>
+                                <div @click="countryEligible(country.CountryId)" class="countries-link-active pointer">{{ country.Name }}</div>
                             </div>
                             <div v-else class="countries-list-item-disabled">
                                 {{ country.Name }}
@@ -60,17 +60,17 @@
 
     const countryEligible = (cName) => {
         const selectedCountryCodes = selectedCountries.value.map(
-        (country: any) => country.properties.iso_a2
+        (country: any) => country.properties.iso_n3
     );
     const collaborationCandidateCountryCodes =
         collaborationStore.findCollaboratingCountries(selectedCountryCodes);
 
-    const country = useCountries.getCountryByName(cName);
+    const country = useCountries.getCountryById(cName);
 
     if (
         inCollabMode.value &&
         (collaborationCandidateCountryCodes.length == 0 ||
-            !collaborationCandidateCountryCodes.includes(country.properties.iso_a2))
+            !collaborationCandidateCountryCodes.includes(country.properties.iso_n3))
     ) {
         return;
     }

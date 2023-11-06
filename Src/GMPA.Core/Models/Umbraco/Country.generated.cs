@@ -81,6 +81,14 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual global::System.Collections.Generic.IEnumerable<string> Continent => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "continent");
 
 		///<summary>
+		/// Country ID
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countryID")]
+		public virtual string CountryID => this.Value<string>(_publishedValueFallback, "countryID");
+
+		///<summary>
 		/// Email: Email of the contact person for the country
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
