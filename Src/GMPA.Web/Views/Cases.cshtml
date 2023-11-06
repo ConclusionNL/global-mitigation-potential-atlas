@@ -77,13 +77,30 @@
     var continentFilter = document.getElementById("continentFilter");
     var sectorFilter = document.getElementById("sectorFilter");
 
+    // Get the URL parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var selectedContinent = urlParams.get('continent');
+    var selectedSector = urlParams.get('sector');
+
+    // Set the selected values in the dropdowns if they exist in the URL parameters
+    if (selectedContinent !== null) {
+        continentFilter.value = selectedContinent;
+    }
+
+    if (selectedSector !== null) {
+        sectorFilter.value = selectedSector;
+    }
+
     // Add event listeners to the select elements for change events
     continentFilter.addEventListener("change", filterCases);
     sectorFilter.addEventListener("change", filterCases);
 
+    // Call the filterCases function to filter the cases based on URL parameters
+    filterCases();
+
     function filterCases() {
-        var selectedContinent = continentFilter.value;
-        var selectedSector = sectorFilter.value;
+        selectedContinent = continentFilter.value;
+        selectedSector = sectorFilter.value;
 
         // Get all case cards
         var caseCards = document.querySelectorAll('.card');
@@ -94,9 +111,9 @@
             var sectorTag = card.getAttribute('data-sector-tag');
 
             // Check if any tag contains the selected continent or if no continent is selected
-            var showCard = (selectedContinent === "" || tags.some(function(tag) {
-                    return tag.toLowerCase().includes(selectedContinent.toLowerCase());
-                })) &&
+            var showCard = (selectedContinent === "" || tags.some(function (tag) {
+                return tag.toLowerCase().includes(selectedContinent.toLowerCase());
+            })) &&
                 (selectedSector === "" || sectorTag.toLowerCase().includes(selectedSector.toLowerCase()));
 
             // Show or hide the card based on tags and sector
@@ -106,6 +123,22 @@
                 card.style.display = 'none';
             }
         });
+
+        // Update the URL parameters when dropdown values change
+        updateUrlParams();
+    }
+
+    function updateUrlParams() {
+        // Get the current URL without parameters
+        var baseUrl = window.location.origin + window.location.pathname;
+
+        // Create a new URL with updated parameters
+        var updatedUrl = new URL(baseUrl);
+        updatedUrl.searchParams.set('continent', selectedContinent);
+        updatedUrl.searchParams.set('sector', selectedSector);
+
+        // Replace the current URL with the updated URL
+        window.history.replaceState(null, null, updatedUrl);
     }
 </script>
 
