@@ -24,7 +24,7 @@ const setupLineAreaChart = async (countriesList) => {
         countriesList.map((country) => country.properties.iso_a2)
     );
 
-    console.log(`combined data ${JSON.stringify(data)}`);
+    if (data.length == 0) {return}
 
     const svg = d3
         .select('#svgLineChartContainer')
