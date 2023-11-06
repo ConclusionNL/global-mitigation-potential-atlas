@@ -21,7 +21,7 @@
                 <option value="Philippines">Philippines</option>
                 <option value="Singapore">Singapore</option>
                 <option value="Thailand">Thailand</option>
-                <option value="Vietnam">Vietnam</option>
+                <option value="Viet Nam">Viet Nam</option>
             </select>
         </div>
         <div class="container text-center mt-3">
@@ -135,29 +135,28 @@
     var policyItems = document.querySelectorAll('.policy-item');
     var countryDropdown = document.getElementById('pilotCountryFilter');
 
-    countryDropdown.addEventListener('change',
-        function() {
-            var selectedCountry = this.value;
-            updateContent(selectedCountry)
-        });
+    countryDropdown.addEventListener('change', function() {
+        var selectedCountry = this.value;
+        updateContent(selectedCountry);
+    });
 
     updateContent = (selectedCountry) => {
         strategyItems.forEach(function (item) {
             var country = item.dataset.fromCountry; // assuming you store the country in a data attribute
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
- 
+
         policyItems.forEach(function (item) {
             var country = item.dataset.fromCountry; // assuming you store the country in a data attribute
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
     }
- 
+
     function getQueryParam(name) {
         var urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
     }
- 
+
     initializeContent = () => {
         var paramName = 'country';
         var selectedCountry = getQueryParam(paramName);
