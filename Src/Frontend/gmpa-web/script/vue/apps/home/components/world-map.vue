@@ -79,8 +79,17 @@ const props = defineProps({
 });
 
 const navigateToCountry = (countryNavigationEvent) => {
-    const countryName = countryNavigationEvent.properties.name;
-    window.location.href = `/Countries/${countryName}`;
+    if (countryNavigationEvent && countryNavigationEvent.properties) {
+        const countryNameWithDashes = countryNavigationEvent.properties.name
+            .replace(/'/g, '')       // Remove single quotes
+            .replace(/%20/g, '-')     // Replace '%20' with '-'
+            .replace(/\s+/g, '-');    // Replace spaces with '-'
+
+
+        window.location.href = `/Countries/${countryNameWithDashes}`;
+    } else {
+        console.log('Invalid countryNavigationEvent object or missing properties.');
+    }
 };
 
 function highlightCollaborationCandidates() {

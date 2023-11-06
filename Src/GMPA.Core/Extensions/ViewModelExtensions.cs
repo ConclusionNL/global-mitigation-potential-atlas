@@ -31,7 +31,7 @@ namespace GMPA.Core.Extensions
                     CountryId = country.CountryID,
                     Continent = country.Continent?.ToList(),
                     Active = country.Active,
-                    Url = country.Url(mode: UrlMode.Absolute),
+                    Url = country.Url(),
                 });
             }
 
