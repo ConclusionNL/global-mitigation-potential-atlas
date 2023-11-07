@@ -2,6 +2,7 @@
 {
     public class MainViewModel
     {
+        public string FavIcon { get; set; }
         public string PageTitle { get; set; }
 
         public List<CountryModel> Countries { get; set; }

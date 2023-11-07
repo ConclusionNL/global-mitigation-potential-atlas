@@ -23,7 +23,7 @@
         <div data-bs-toggle="collapse" data-bs-target="#PolicyTab" aria-expanded="false" aria-controls="PolicyTab">
             <h2 class="policy">Policies (Tab)</h2>
         </div>
-        <div class="show" id="PolicyTab">
+        <div class="collapse" id="PolicyTab">
             @foreach (var casePolicy in Model.CasePolicyBlock)
             {
                 <h4>@casePolicy.Title</h4>
@@ -181,7 +181,7 @@
 <div id="LockIn">
     @{
         var positiveCases = @Model.CaseLockInBlock
-            .Where(a => a.NegativePositive);
+        .Where(a => a.NegativePositive);
         var negativeCases = @Model.CaseLockInBlock
         .Where(a => !a.NegativePositive);
 
@@ -223,6 +223,31 @@
     </ul>
 </div>
 
+@{
+    if (Model.CaseReferenceBlock.Count != 0)
+    {
+        <div class="reference-section" id="references">
+            <h2>References</h2>
+            @{
+                foreach (var reference in Model.CaseReferenceBlock)
+                {
+                    <div class="reference-item">
+                        <h6>@reference.ReferenceName</h6>
+                        @if (@reference.ReferenceUrl == "")
+                        {
+                            <p>No reference link was found</p>
+                        }
+                        else
+                        {
+                            <a href="@reference.ReferenceUrl">@reference.ReferenceUrl</a>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    }
+}
+
 <style>
     .sectorTag {
         color: darkgray;
@@ -257,5 +282,13 @@
     .policy {
         cursor: pointer;
         border-bottom: 1px solid #000000
+    }
+
+    .reference-section h6 {
+        margin-bottom: 0px;
+    }
+
+    .reference-item {
+        margin-bottom: 10px;
     }
 </style>

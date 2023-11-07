@@ -82,6 +82,14 @@ namespace GMPA.Core.Models.Umbraco
 		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel CasePolicyBlockList => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "casePolicyBlockList");
 
 		///<summary>
+		/// Case References
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("caseReferences")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel CaseReferences => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "caseReferences");
+
+		///<summary>
 		/// SectorTag
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]

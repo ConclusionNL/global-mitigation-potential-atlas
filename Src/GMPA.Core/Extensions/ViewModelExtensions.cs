@@ -14,6 +14,8 @@ namespace GMPA.Core.Extensions
         {
             var home = content.AncestorOrSelf<Home>();
 
+            model.FavIcon = home.FavIcon.Url();
+
             model.PageTitle = content.Name;
 
             #region countries
