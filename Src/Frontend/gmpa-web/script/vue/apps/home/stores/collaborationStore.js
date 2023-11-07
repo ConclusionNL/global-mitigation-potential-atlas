@@ -10,6 +10,7 @@ import combinedCollaborationRecords from './autarky-and-collaboration-data/combi
 
 import heatmapRecords from './heatmaps.csv';
 import heatmapAutarkyRecords from './autarky-and-collaboration-data/heatmap_autarky.csv';
+import heatmapCollaborationRecords from './autarky-and-collaboration-data/heatmap_collaboration.csv';
 import { ref } from 'vue';
 
 export const useCollaborationStore = defineStore('collaboration', () => {
@@ -18,7 +19,10 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
     const fakeDataSet = ref(fakeRecords);
     const heatmapData = ref(heatmapRecords);
-    const heatmapAutarkyData = ref(heatmapAutarkyRecords);
+    // TODO preprocess heatmap records to create a map with countrieskey as key
+    let processedHeatmapData = false
+    const heatmapAutarkyData = {};
+    const heatmapCollaborationData = {};
     let dataSet = ref([]);
     let collaborations; // an array that contains string arrays with country codes for collaborating countries. each entry looks like [countryA], [countryB], ... (with up to four countries)
     let processedCombinedData = false
@@ -35,6 +39,29 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         return combinedData
     }
 
+    const processHeatmapData = () => {
+        for (const rec of heatmapAutarkyRecords) {
+            const countries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
+            const countriesKey = deriveCountryKey(countries)
+            const countryRecord = {
+                "Mitigation_Potential(MtCO2e)": rec["Mitigation_Potential(MtCO2e)"]
+                , "Mitigation_Cost($/tCO2e)": rec["Mitigation_Cost($/tCO2e)"]
+            }
+            heatmapAutarkyData[countriesKey] = countryRecord
+        }
+        for (const rec of heatmapCollaborationRecords) {
+            const countries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
+            const countriesKey = deriveCountryKey(countries)
+            const countryRecord = {
+                "Mitigation_Potential(MtCO2e)": rec["Mitigation_Potential(MtCO2e)"]
+                , "Mitigation_Cost($/tCO2e)": rec["Mitigation_Cost($/tCO2e)"]
+            }
+            heatmapCollaborationData[countriesKey] = countryRecord
+        }
+
+
+    }
+
     const prepareCombinedDataFromFiles = () => {
         const data = {}
 
@@ -43,7 +70,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         for (const rec of combinedCollaborationRecords) {
             const collaboratingCountries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
             const collabKey = deriveCountryKey(collaboratingCountries)
-            if (!data[collabKey]) { data[collabKey] = {"collaboration":[],"autarky":[]} }
+            if (!data[collabKey]) { data[collabKey] = { "collaboration": [], "autarky": [] } }
 
             const consolidatedRecord = {}
             collaborationProperties.forEach((property) => {
@@ -57,7 +84,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         for (const rec of combinedAutarkyRecords) {
             const combinedCountries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
             const combinedKey = deriveCountryKey(combinedCountries)
-            if (!data[combinedKey]) { data[combinedKey] = {"collaboration":[],"autarky":[]} }
+            if (!data[combinedKey]) { data[combinedKey] = { "collaboration": [], "autarky": [] } }
 
             const consolidatedRecord = {}
 
@@ -79,21 +106,38 @@ export const useCollaborationStore = defineStore('collaboration', () => {
             prepareFakeData(data);
             dataSet.value = data;
         } else {
-            dataSet.value = prepareCollaborationData(collaborationData.value, countries);
+            dataSet.value = prepareTotalCollaborationData(collaborationData.value, countries);
         }
         return dataSet.value;
     };
 
     const getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration = (collaboratingCountries) => {
+        // used for horizontal level gauge in benefits panel
+        if (!processedHeatmapData) {
+            processHeatmapData()
+            processedHeatmapData = true
+        }
         // given an array list of two two letter country codes (for example ['ID','SG']) return an object with four values: 
         // { mitigationPotentialAutarky: 210, mitigationPotentialCollaboration: 300, mitigationCostAutarky: 50, mitigationCostCollaboration: 30 }
-        return { mitigationPotentialAutarky: 40, mitigationPotentialCollaboration: 70, mitigationCostAutarky: 150, mitigationCostCollaboration: 110 }
+        // get country key for selectedCountries 
+        const countriesKey = deriveCountryKey(collaboratingCountries.map((country) => country.properties.iso_a2))
+        // get Mitigation_Potential(MtCO2e),Mitigation_Cost($/tCO2e) values for countrykey from heatmap_collaboration and from heatmap_autarky
+        // set object properties based on values  
+
+        return { mitigationPotentialAutarky: parseFloat(heatmapAutarkyData[countriesKey]["Mitigation_Potential(MtCO2e)"])
+        , mitigationPotentialCollaboration: parseFloat(heatmapCollaborationData[countriesKey]["Mitigation_Potential(MtCO2e)"])
+        , mitigationCostAutarky: parseFloat(heatmapAutarkyData[countriesKey]["Mitigation_Cost($/tCO2e)"]).toPrecision(3)
+        , mitigationCostCollaboration: parseFloat(heatmapCollaborationData[countriesKey]["Mitigation_Cost($/tCO2e)"]).toPrecision(3) }
     }
 
     // given the currently selected countries - give the collaboration candidate what it can contribute to the global mitigation (at 50, 100 and 200 $/MtCO2e)
     // this can be calculated by taking the currently selected countries plus the collaboration candidate ; find the mitigation potential values for the combination. then take the potential for the selected countries without the collaboration candidate. the delta is the contribution from the candidate
     // return an object with  values for mitigationPotentialAt50, mitigationPotentialAt100, mitigationPotentialAt200 
     const getMitigationPotentialContributionsForCollaborationCandidate = (selectedCountries, collaborationCandidate) => {
+        // get country key for selectedCountries plus collaborationCandidate
+        // get mitigation potential values for countrykey from heatmap_collaboration and from heatmap_autarky
+        // subtract the latter from the former; 
+
         const data = { mitigationPotentialAt50: '', mitigationPotentialAt100: '', mitigationPotentialAt200: '' }
 
 
@@ -101,49 +145,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         data.mitigationPotentialAt100 = (Math.random() * -21.8).toFixed(1);
         data.mitigationPotentialAt200 = (Math.random() * -34.8).toFixed(1);
 
-        // TODO - wait for Aniq to provide data
-        /* The current file Example Data\Heatmap\Heatmaps.csv only has heatmap values as a function of country. I shall give you similar values as a function of collaboration.
-    
-     
-    
-    For example,
-    
-     
-    
-    Country 1             Country 2             Country 3             Country 4             Mitigation_Potential(GtCO2e)_at_50
-    
-    SG                                                                                                                          10
-    
-    ID                                                                                                                            50
-    
-    MY                                                                                                                         60
-    
-    SG                          ID                                                                                            70
-    
-    SG                          MY                                                                                         90
-    
-    ID                            MY                                                                                         120
-    
-    SG                          ID                            MY                                                         150
-    
-     
-    
-    So, if only SG is selected, ID and MY will pop up as potential collaboration options. The values will be the difference between working alone, and working together.
-    
-     
-    
-    ID = [SG_ID] – (SG + ID) =  70 – (10 + 50) = 10 GtCO2e
-    
-    My = [SG_MY] – (SG + MY) = 90 – (10 + 60) = 20 GtCO2e
-    
-     
-    
-    If SG and ID are selected, only MY will pop up as potential collaboration option. The value will be:
-    
-     
-    
-    MY = [SG_ID_MY] – (SG_ID + MY) = 150 – (70 + 60) = 20 GtCO2e
-    */
+
         return data
     }
 
@@ -185,7 +187,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
 
     // input
-    const prepareCollaborationData = (raw, countries) => {
+    const prepareTotalCollaborationData = (raw, countries) => {
         // format:
         // [{x: , techA: , techB: }]
         // all technologies should be present in every data object  - 0 if they have no value
@@ -243,35 +245,35 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         return data
     }
 
-// return an array of arrays of two letter country codes of potentially collaborating countries
-// result can be [['ID','SG'], ['ID','PH'], ['ID','PH,'SG']]
-function identifyAllCountryCollaborations(raw) {
-    const collaborations = []
+    // return an array of arrays of two letter country codes of potentially collaborating countries
+    // result can be [['ID','SG'], ['ID','PH'], ['ID','PH,'SG']]
+    function identifyAllCountryCollaborations(raw) {
+        const collaborations = []
 
-    for (const rec of raw) {
-        const collaboratingCountries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
-        const collabKey = deriveCountryKey(collaboratingCountries)
-        if (!collaborations.includes(collabKey)) collaborations.push(collabKey)
+        for (const rec of raw) {
+            const collaboratingCountries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
+            const collabKey = deriveCountryKey(collaboratingCountries)
+            if (!collaborations.includes(collabKey)) collaborations.push(collabKey)
+        }
+        return collaborations.map(str => str.match(/.{1,2}/g) || []); // return an array of two letter string arrays
     }
-    return collaborations.map(str => str.match(/.{1,2}/g) || []); // return an array of two letter string arrays
-}
 
-const prepareFakeData = (data) => {
-    data.sort((a, b) => d3.ascending(a.x, b.x));
-    // Iterate through the array of objects
-    for (const obj of data) {
-        let sum = Object.keys(obj).reduce(function (sum, key) {
-            if (key !== 'x') {
-                return sum + obj[key];
-            }
-            return sum;
-        }, 0);
-        obj['sum'] = sum;
+    const prepareFakeData = (data) => {
+        data.sort((a, b) => d3.ascending(a.x, b.x));
+        // Iterate through the array of objects
+        for (const obj of data) {
+            let sum = Object.keys(obj).reduce(function (sum, key) {
+                if (key !== 'x') {
+                    return sum + obj[key];
+                }
+                return sum;
+            }, 0);
+            obj['sum'] = sum;
+        }
+    };
+    function deriveCountryKey(countryArray) {
+        return countryArray.sort().join('')
     }
-};
-function deriveCountryKey(countryArray) {
-    return countryArray.sort().join('')
-}
 
 
     return {
@@ -284,12 +286,11 @@ function deriveCountryKey(countryArray) {
         prepareCountryCollaborations,
         findCollaboratingCountries,
         combinedCollaborationData,
-        prepareCollaborationData,
         getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration,
         getMitigationPotentialContributionsForCollaborationCandidate,
-        getCombinedData,   
-        deriveCountryKey,     
-    
+        getCombinedData,
+        deriveCountryKey,
+
     };
 });
 
