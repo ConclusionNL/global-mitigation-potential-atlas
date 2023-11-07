@@ -211,24 +211,6 @@
     }
 </div>
 
-@{
-    if (Model.CaseReferenceBlock.Count != 0)
-    {
-        <div class="reference-section" id="references">
-            <h2>References</h2>
-            @{
-                foreach (var reference in Model.CaseReferenceBlock)
-                {
-                    <div class="reference-item">
-                        <h6>@reference.ReferenceName</h6>
-                        <a href="@reference.ReferenceUrl">@reference.ReferenceUrl</a>
-                    </div>
-                }
-            }
-        </div>
-    }
-}
-
 <div id="tag List">
     <h2>Tags</h2>
     <ul class="tagList">
@@ -240,6 +222,31 @@
         }
     </ul>
 </div>
+
+@{
+    if (Model.CaseReferenceBlock.Count != 0)
+    {
+        <div class="reference-section" id="references">
+            <h2>References</h2>
+            @{
+                foreach (var reference in Model.CaseReferenceBlock)
+                {
+                    <div class="reference-item">
+                        <h6>@reference.ReferenceName</h6>
+                        @if (@reference.ReferenceUrl == "")
+                        {
+                            <p>No reference link was found</p>
+                        }
+                        else
+                        {
+                            <a href="@reference.ReferenceUrl">@reference.ReferenceUrl</a>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    }
+}
 
 <style>
     .sectorTag {
