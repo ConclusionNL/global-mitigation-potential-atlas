@@ -108,7 +108,7 @@
                             in autarky vs collaboration
                         </div>
                     </div>
-                    <maximumPitigationPotentialGauge
+                    <maximumMitigationPotentialGauge
                         :countriesList="selectedCountries"
                         :showAbsolutePotential="absoluteCO2e" />
                 </div>
@@ -153,7 +153,7 @@ import closeIcon from '../assets/cross.svg';
 import filterIcon from '../assets/filter.svg';
 import backIcon from '../assets/arrow-left.svg';
 import forwardIcon from '../assets/arrow-right.svg';
-import maximumPitigationPotentialGauge from './maximum-mitigation-potential-gauge.vue';
+import maximumMitigationPotentialGauge from './maximum-mitigation-potential-gauge.vue';
 import coalitionMaximumMitigationPotential from './coalition-maximum-mitigation-potential.vue';
 
 import { useCollaborationStore } from '../stores/collaborationStore';
