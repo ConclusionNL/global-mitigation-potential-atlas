@@ -110,7 +110,7 @@
                     </div>
                     <maximumMitigationPotentialGauge
                         :countriesList="selectedCountries"
-                        :showAbsolutePotential="mitigationCosts" />
+                        :showMitigationCosts="mitigationCosts" />
                 </div>
                 <div class="divider"></div>
                 <div class="coalition-potential">
