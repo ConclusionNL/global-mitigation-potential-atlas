@@ -88,7 +88,7 @@
                     <div class="switch-box">
                         <div>Cost / tCO2e</div>
                         <label class="switch">
-                            <input type="checkbox" @change="absoluteCO2e = !absoluteCO2e" />
+                            <input type="checkbox"  v-model="mitigationCosts" />
                             <span class="slider round"></span>
                         </label>
                         <div>Absolute tCO2e</div>
@@ -98,7 +98,7 @@
                 <div class="cost-of-achieving">
                     <div class="card-top bot-pad">
                         <div class="title">
-                            {{ absoluteCO2e ? 'Maximum' : 'Cost of achieving maximum' }} mitigation
+                            {{ mitigationCosts ?  'Cost of achieving maximum' :'Maximum'  }} mitigation
                             potential in
                             <span class="selected-collaboration">{{
                                 selectedCountries
@@ -110,7 +110,7 @@
                     </div>
                     <maximumMitigationPotentialGauge
                         :countriesList="selectedCountries"
-                        :showAbsolutePotential="absoluteCO2e" />
+                        :showAbsolutePotential="mitigationCosts" />
                 </div>
                 <div class="divider"></div>
                 <div class="coalition-potential">
@@ -164,7 +164,7 @@ const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 const emit = defineEmits(['show-benefits', 'country-navigation']);
 const showComposeCollaborationSet = ref(true);
-const absoluteCO2e = ref(true);
+const mitigationCosts = ref(true);
 
 const props = defineProps({
     collaborationCandidatesList: [],
@@ -179,8 +179,6 @@ const mitTypes = [
 ];
 
 const mitType = ref(mitTypes[0]);
-
-console.log(mitType.value);
 
 const getMitPotCollabCountries = (collabCandidate, mitType) => {
     return collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(
