@@ -10,25 +10,25 @@ import { useCollaborationStore } from '../stores/collaborationStore';
 const collaborationStore = useCollaborationStore();
 const props = defineProps({
       countriesList: []
-    , showAbsolutePotential: Boolean
+    , showMitigationCosts: Boolean
 });
 const svgWidth = 420;
 const svgHeight = 180;
-const showAbsolutePotentialProxy = ref(props.showAbsolutePotential);
+const showMitigationCostsProxy = ref(props.showMitigationCosts);
 const autarkyColor = "darkblue"
 const collaborationColor ="#f07004"
 
 
 onMounted(() => {
-    setupGauge(props.countriesList, showAbsolutePotentialProxy);
+    setupGauge(props.countriesList, showMitigationCostsProxy.value);
 });
 
 
-watch(() => props.showAbsolutePotential, (newValue, oldValue) => {
+watch(() => props.showMitigationCosts, (newValue, oldValue) => {
         setupGauge(props.countriesList, newValue);
     })
 
-const setupGauge = async (countriesList, showAbsolutePotential) => {
+const setupGauge = async (countriesList, showMitigationCosts) => {
     d3
         .select('.chartContainer').remove()
 
@@ -40,7 +40,7 @@ const setupGauge = async (countriesList, showAbsolutePotential) => {
         .attr('height', svgHeight);
     const data = collaborationStore.getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration(countriesList)
 
-    const costNotPotential = !showAbsolutePotential
+    const costNotPotential = showMitigationCosts
     const unit = costNotPotential ? '$/tCO2e' : 'MtCO2e'
     const highValue = costNotPotential ? data.mitigationCostAutarky : data.mitigationPotentialCollaboration;
     const lowValue = costNotPotential ? data.mitigationCostCollaboration : data.mitigationPotentialAutarky;;
