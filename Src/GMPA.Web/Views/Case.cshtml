@@ -214,13 +214,15 @@
 @{
     if (Model.CaseReferenceBlock.Count != 0)
     {
-        <div id="references">
+        <div class="reference-section" id="references">
             <h2>References</h2>
             @{
                 foreach (var reference in Model.CaseReferenceBlock)
                 {
-                    <h6>@reference.ReferenceName</h6>
-                    <a href="@reference.ReferenceUrl">@reference.ReferenceUrl</a>
+                    <div class="reference-item">
+                        <h6>@reference.ReferenceName</h6>
+                        <a href="@reference.ReferenceUrl">@reference.ReferenceUrl</a>
+                    </div>
                 }
             }
         </div>
@@ -273,5 +275,13 @@
     .policy {
         cursor: pointer;
         border-bottom: 1px solid #000000
+    }
+
+    .reference-section h6 {
+        margin-bottom: 0px;
+    }
+
+    .reference-item {
+        margin-bottom: 10px;
     }
 </style>
