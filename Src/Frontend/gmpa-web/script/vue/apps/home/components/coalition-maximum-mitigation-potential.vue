@@ -24,12 +24,13 @@ onMounted(() => {
 });
 
 const setupLineAreaChart = async (countriesList) => {
-    const data = await collaborationStore.prepareCombinedCollaborationData(
-        countriesList.map((country) => country.properties.iso_a2)
-    );
+
+    const countryKey = collaborationStore.deriveCountryKey(countriesList.map((country) => country.properties.iso_a2))
+    const combinedData =  collaborationStore.getCombinedData()[countryKey]
+
 
     d3.select('#lineChartContainer').remove()
-    if (data.length == 0) {return}
+    if (Object.keys(combinedData).length === 0) {return}
     const svg = d3
         .select('#svgLineChartContainer')
         .append('svg')
@@ -56,11 +57,13 @@ const setupLineAreaChart = async (countriesList) => {
 
     // if only one country is selected, then draw a line chart with one line - for autarky only
 
-    const maxCollabCost = d3.max(data, (d) => d['collaboration_cost']);
-    const maxAutarkyCost = d3.max(data, (d) => d['autarky_cost']);
+        // {collaboration: [{emissions: 34, cost:164}], autarky: [{emissions:53, cost:172 },{emissions:13, cost:72 }]}
 
-    const maxCollabEmissions = d3.max(data, (d) => d['collaboration_emissions']);
-    const maxAutarkyEmissions = d3.max(data, (d) => d['autarky_emissions']);
+    const maxCollabCost = d3.max(combinedData.collaboration, (d) => d['cost']);
+    const maxAutarkyCost = d3.max(combinedData.autarky, (d) => d['cost']);
+
+    const maxCollabEmissions = d3.max(combinedData.collaboration, (d) => d['emissions']);
+    const maxAutarkyEmissions = d3.max(combinedData.autarky, (d) => d['emissions']);
 
     // Define scales for x and y axes
     const xScale = d3
@@ -76,29 +79,29 @@ const setupLineAreaChart = async (countriesList) => {
     // Create a line generator
     const lineAutarky = d3
         .line()
-        .x((d) => xScale(d['autarky_emissions']))
-        .y((d) => yScale(d['autarky_cost']))
+        .x((d) => xScale(d['emissions']))
+        .y((d) => yScale(d['cost']))
         .curve(d3.curveNatural); // Use a natural curve for the line
 
     // Append the line to the chart
     lineChartArea
         .append('path')
-        .datum(data)
+        .datum(combinedData.autarky)
         .attr('fill', 'none')
         .attr('stroke', 'darkblue')
         .attr('stroke-width', 1)
         .attr('d', lineAutarky);
     const autarkyArea = d3
         .area()
-        .x((d) => xScale(d['autarky_emissions']))
+        .x((d) => xScale(d['emissions']))
         .y0(chartHeight) // The bottom of the area is at the height of the chart
-        .y1((d) => yScale(d['autarky_cost']))
+        .y1((d) => yScale(d['cost']))
         .curve(d3.curveNatural); // Use a natural curve for the area
 
     // Append the area path to the chart
     lineChartArea
         .append('path')
-        .datum(data)
+        .datum(combinedData.autarky)
         .attr('fill', 'darkblue') // Fill color for the area
         .attr('d', autarkyArea);
 
@@ -106,14 +109,14 @@ const setupLineAreaChart = async (countriesList) => {
     // Create a line generator
     const lineCollaboration = d3
         .line()
-        .x((d) => xScale(d['collaboration_emissions']))
-        .y((d) => yScale(d['collaboration_cost']))
+        .x((d) => xScale(d['emissions']))
+        .y((d) => yScale(d['cost']))
         .curve(d3.curveNatural); // Use a natural curve for the line
 
     // Append the line to the chart
     lineChartArea
         .append('path')
-        .datum(data)
+        .datum(combinedData.collaboration)
         .attr('fill', 'none')
         .attr('stroke', 'orange')
         .attr('stroke-width', 1)
@@ -121,15 +124,15 @@ const setupLineAreaChart = async (countriesList) => {
 
     const area = d3
         .area()
-        .x((d) => xScale(d['collaboration_emissions']))
+        .x((d) => xScale(d['emissions']))
         .y0(chartHeight) // The bottom of the area is at the height of the chart
-        .y1((d) => yScale(d['collaboration_cost']))
+        .y1((d) => yScale(d['cost']))
         .curve(d3.curveNatural); // Use a natural curve for the area
 
     // Append the area path to the chart
     lineChartArea
         .append('path')
-        .datum(data)
+        .datum(combinedData.collaboration)
         .attr("fill", "#f07004") // Fill color for the area
         .attr("d", area);
     }

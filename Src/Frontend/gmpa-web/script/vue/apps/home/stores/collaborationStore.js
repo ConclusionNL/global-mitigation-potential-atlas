@@ -5,8 +5,11 @@ import * as d3 from 'd3';
 import collabRecords from './collaborationdata.csv';
 import fakeRecords from './fakecollaborationdata.json';
 import combinedAutarkyAndCollabRecords from './combined_data_autarky.csv';
+import combinedAutarkyRecords from './autarky-and-collaboration-data/combined_data_autarky.csv';
+import combinedCollaborationRecords from './autarky-and-collaboration-data/combined_data_collaboration.csv';
 
 import heatmapRecords from './heatmaps.csv';
+import heatmapAutarkyRecords from './autarky-and-collaboration-data/heatmap_autarky.csv';
 import { ref } from 'vue';
 
 export const useCollaborationStore = defineStore('collaboration', () => {
@@ -15,8 +18,59 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
     const fakeDataSet = ref(fakeRecords);
     const heatmapData = ref(heatmapRecords);
+    const heatmapAutarkyData = ref(heatmapAutarkyRecords);
     let dataSet = ref([]);
     let collaborations; // an array that contains string arrays with country codes for collaborating countries. each entry looks like [countryA], [countryB], ... (with up to four countries)
+    let processedCombinedData = false
+    let combinedData
+
+    // combined data is an object with country keys as property names (keys) and objects with array properties 
+    // collaboration and autarky. Each entry in these arrays has two properties: emissions, cost 
+    // { 'ID': {collaboration: [{emissions: 34, cost:164}], autarky: [{emissions:53, cost:172 },{emissions:13, cost:72 }]}, 'SG': {} }
+    const getCombinedData = () => {
+        if (!processedCombinedData) {
+            prepareCombinedDataFromFiles()
+            processedCombinedData = true
+        }
+        return combinedData
+    }
+
+    const prepareCombinedDataFromFiles = () => {
+        const data = {}
+
+        // determine the country key for each record: alphabetical concatenation of country_1..country_4
+        const collaborationProperties = ['emissions', 'cost']
+        for (const rec of combinedCollaborationRecords) {
+            const collaboratingCountries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
+            const collabKey = deriveCountryKey(collaboratingCountries)
+            if (!data[collabKey]) { data[collabKey] = {"collaboration":[],"autarky":[]} }
+
+            const consolidatedRecord = {}
+            collaborationProperties.forEach((property) => {
+                const x = parseFloat(rec[property])
+                consolidatedRecord[property] = x
+            })
+            data[collabKey]["collaboration"].push(consolidatedRecord)
+        }
+
+        // add autarky
+        for (const rec of combinedAutarkyRecords) {
+            const combinedCountries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
+            const combinedKey = deriveCountryKey(combinedCountries)
+            if (!data[combinedKey]) { data[combinedKey] = {"collaboration":[],"autarky":[]} }
+
+            const consolidatedRecord = {}
+
+            collaborationProperties.forEach((property) => {
+                const x = parseFloat(rec[property])
+                consolidatedRecord[property] = x
+            })
+            data[combinedKey]["autarky"].push(consolidatedRecord)
+        }
+
+        combinedData = data
+    }
+
 
 
     const prepareData = async (countries) => {
@@ -30,70 +84,66 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         return dataSet.value;
     };
 
-    const prepareCombinedCollaborationData = async (countries) => {
-        return prepareCombinedData(combinedCollaborationData.value, countries);
-    };
-
     const getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration = (collaboratingCountries) => {
         // given an array list of two two letter country codes (for example ['ID','SG']) return an object with four values: 
         // { mitigationPotentialAutarky: 210, mitigationPotentialCollaboration: 300, mitigationCostAutarky: 50, mitigationCostCollaboration: 30 }
         return { mitigationPotentialAutarky: 40, mitigationPotentialCollaboration: 70, mitigationCostAutarky: 150, mitigationCostCollaboration: 110 }
     }
-    
+
     // given the currently selected countries - give the collaboration candidate what it can contribute to the global mitigation (at 50, 100 and 200 $/MtCO2e)
     // this can be calculated by taking the currently selected countries plus the collaboration candidate ; find the mitigation potential values for the combination. then take the potential for the selected countries without the collaboration candidate. the delta is the contribution from the candidate
     // return an object with  values for mitigationPotentialAt50, mitigationPotentialAt100, mitigationPotentialAt200 
-    const getMitigationPotentialContributionsForCollaborationCandidate= ( selectedCountries, collaborationCandidate) => {
-        const data = {mitigationPotentialAt50: '', mitigationPotentialAt100: '', mitigationPotentialAt200:'' }
+    const getMitigationPotentialContributionsForCollaborationCandidate = (selectedCountries, collaborationCandidate) => {
+        const data = { mitigationPotentialAt50: '', mitigationPotentialAt100: '', mitigationPotentialAt200: '' }
 
 
-        data.mitigationPotentialAt50= -12.3
-        data.mitigationPotentialAt100= (Math.random()*-21.8).toFixed(1);
-        data.mitigationPotentialAt200= (Math.random()*-34.8).toFixed(1);
+        data.mitigationPotentialAt50 = -12.3
+        data.mitigationPotentialAt100 = (Math.random() * -21.8).toFixed(1);
+        data.mitigationPotentialAt200 = (Math.random() * -34.8).toFixed(1);
 
         // TODO - wait for Aniq to provide data
         /* The current file Example Data\Heatmap\Heatmaps.csv only has heatmap values as a function of country. I shall give you similar values as a function of collaboration.
-
- 
-
-For example,
-
- 
-
-Country 1             Country 2             Country 3             Country 4             Mitigation_Potential(GtCO2e)_at_50
-
-SG                                                                                                                          10
-
-ID                                                                                                                            50
-
-MY                                                                                                                         60
-
-SG                          ID                                                                                            70
-
-SG                          MY                                                                                         90
-
-ID                            MY                                                                                         120
-
-SG                          ID                            MY                                                         150
-
- 
-
-So, if only SG is selected, ID and MY will pop up as potential collaboration options. The values will be the difference between working alone, and working together.
-
- 
-
-ID = [SG_ID] – (SG + ID) =  70 – (10 + 50) = 10 GtCO2e
-
-My = [SG_MY] – (SG + MY) = 90 – (10 + 60) = 20 GtCO2e
-
- 
-
-If SG and ID are selected, only MY will pop up as potential collaboration option. The value will be:
-
- 
-
-MY = [SG_ID_MY] – (SG_ID + MY) = 150 – (70 + 60) = 20 GtCO2e
-*/
+    
+     
+    
+    For example,
+    
+     
+    
+    Country 1             Country 2             Country 3             Country 4             Mitigation_Potential(GtCO2e)_at_50
+    
+    SG                                                                                                                          10
+    
+    ID                                                                                                                            50
+    
+    MY                                                                                                                         60
+    
+    SG                          ID                                                                                            70
+    
+    SG                          MY                                                                                         90
+    
+    ID                            MY                                                                                         120
+    
+    SG                          ID                            MY                                                         150
+    
+     
+    
+    So, if only SG is selected, ID and MY will pop up as potential collaboration options. The values will be the difference between working alone, and working together.
+    
+     
+    
+    ID = [SG_ID] – (SG + ID) =  70 – (10 + 50) = 10 GtCO2e
+    
+    My = [SG_MY] – (SG + MY) = 90 – (10 + 60) = 20 GtCO2e
+    
+     
+    
+    If SG and ID are selected, only MY will pop up as potential collaboration option. The value will be:
+    
+     
+    
+    MY = [SG_ID_MY] – (SG_ID + MY) = 150 – (70 + 60) = 20 GtCO2e
+    */
         return data
     }
 
@@ -193,48 +243,6 @@ MY = [SG_ID_MY] – (SG_ID + MY) = 150 – (70 + 60) = 20 GtCO2e
         return data
     }
 
-    const prepareCombinedData = (raw, countries) => {
-        const data = []
-        const countryKey = deriveCountryKey(countries)
-        // determine the country key for each record: alphabetical concatenation of country_1..country_4
-        // filter on records with the right country key
-        const collaborationProperties = ['collaboration_emissions', 'collaboration_cost', 'autarky_emissions', 'autarky_cost']
-        for (const rec of raw) {
-            const collaboratingCountries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
-            const collabKey = deriveCountryKey(collaboratingCountries)
-
-            if (collabKey == countryKey) {
-                // add all records for this collaboration to the data object
-                // and for each record all properties from the collaborationProperties array
-                const consolidatedRecord = {}
-                collaborationProperties.forEach((property) => {
-                    const x = parseFloat(rec[property])
-                    consolidatedRecord[property] = x
-                })
-                data.push(consolidatedRecord)
-            }
-        }
-
-
-        return data
-    }
-
-
-    return {
-        collaborationData,
-        fakeDataSet,
-        heatmapData,
-        dataSet,
-        prepareData,
-        prepareCountryCollaborations,
-        findCollaboratingCountries,
-        combinedCollaborationData,
-        prepareCollaborationData,
-        prepareCombinedCollaborationData,
-        getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration,
-        getMitigationPotentialContributionsForCollaborationCandidate
-    };
-});
 // return an array of arrays of two letter country codes of potentially collaborating countries
 // result can be [['ID','SG'], ['ID','PH'], ['ID','PH,'SG']]
 function identifyAllCountryCollaborations(raw) {
@@ -264,3 +272,24 @@ const prepareFakeData = (data) => {
 function deriveCountryKey(countryArray) {
     return countryArray.sort().join('')
 }
+
+
+    return {
+        collaborationData,
+        fakeDataSet,
+        heatmapData,
+        heatmapAutarkyData,
+        dataSet,
+        prepareData,
+        prepareCountryCollaborations,
+        findCollaboratingCountries,
+        combinedCollaborationData,
+        prepareCollaborationData,
+        getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration,
+        getMitigationPotentialContributionsForCollaborationCandidate,
+        getCombinedData,   
+        deriveCountryKey,     
+    
+    };
+});
+
