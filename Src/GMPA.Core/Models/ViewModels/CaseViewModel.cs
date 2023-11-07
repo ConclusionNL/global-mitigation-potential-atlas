@@ -38,12 +38,19 @@ namespace GMPA.Core.Models.ViewModels
             public string BodyText { get; set; }
         }
 
+        public class CaseReferenceBlockList
+        {
+            public string ReferenceName { get; set; }
+            public string ReferenceUrl { get; set; }
+        }
+
         public CaseModel CaseModel { get; set; }
         public string SectorTag { get; set; }
         public HtmlString CaseIntro { get; set; }
         public List<CaseCountryContextBlockList> CaseCountryContextBlock { get; set; }
         public List<CasePolicyBlockList> CasePolicyBlock { get; set; }
         public List<CaseLockInBlockList> CaseLockInBlock { get; set; }
+        public List<CaseReferenceBlockList> CaseReferenceBlock { get; set; }
         public List<string> TagsList { get; set; }
     }
 }

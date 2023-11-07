@@ -23,7 +23,7 @@
         <div data-bs-toggle="collapse" data-bs-target="#PolicyTab" aria-expanded="false" aria-controls="PolicyTab">
             <h2 class="policy">Policies (Tab)</h2>
         </div>
-        <div class="show" id="PolicyTab">
+        <div class="collapse" id="PolicyTab">
             @foreach (var casePolicy in Model.CasePolicyBlock)
             {
                 <h4>@casePolicy.Title</h4>
@@ -181,7 +181,7 @@
 <div id="LockIn">
     @{
         var positiveCases = @Model.CaseLockInBlock
-            .Where(a => a.NegativePositive);
+        .Where(a => a.NegativePositive);
         var negativeCases = @Model.CaseLockInBlock
         .Where(a => !a.NegativePositive);
 
@@ -210,6 +210,22 @@
         }
     }
 </div>
+
+@{
+    if (Model.CaseReferenceBlock.Count != 0)
+    {
+        <div id="references">
+            <h2>References</h2>
+            @{
+                foreach (var reference in Model.CaseReferenceBlock)
+                {
+                    <h6>@reference.ReferenceName</h6>
+                    <a href="@reference.ReferenceUrl">@reference.ReferenceUrl</a>
+                }
+            }
+        </div>
+    }
+}
 
 <div id="tag List">
     <h2>Tags</h2>

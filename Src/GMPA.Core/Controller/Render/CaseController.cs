@@ -89,6 +89,15 @@ namespace GMPA.Core.Controller.Render
                     })
                     .ToList(),
 
+                CaseReferenceBlock = caseDocument.CaseReferences?
+                    .Select(a => a.Content as CaseReferenceBlock)
+                    .Select(b => new CaseViewModel.CaseReferenceBlockList
+                    {
+                        ReferenceName = b.ReferenceName,
+                        ReferenceUrl = b.ReferenceUrl,
+                    })
+                    .ToList(),
+
                 TagsList = caseDocument.Tags.ToList()
             };
 
