@@ -14,23 +14,34 @@ const collaborationStore = useCollaborationStore();
 const emit = defineEmits(['technology-selected']);
 
 const props = defineProps({
-    collaborationCountriesList: [],
+    collaborationCountriesList: [], autarky : Boolean
 });
 watch(
     () => props.collaborationCountriesList,
     (newValue, oldValue) => {
-        setupDiagram(newValue);
+        setupDiagram(newValue, props.autarky);
+    }
+);
+
+watch(
+    () => props.autarky,
+    (newValue, oldValue) => {
+        setupDiagram(props.collaborationCountriesList, newValue);
     }
 );
 
 onMounted(() => {
-    setupDiagram(props.collaborationCountriesList)
+    setupDiagram(props.collaborationCountriesList, props.autarky);
 })
 let color
-const setupDiagram = async (collaborationCountriesList) => {
-    const data = await collaborationStore.prepareData(
+const setupDiagram = async (collaborationCountriesList, autarky) => {
+    let data0 = await collaborationStore.prepareData(
         collaborationCountriesList.map((country) => country.properties.iso_a2)
     );
+    const countriesKey = collaborationCountriesList.map((country) => country.properties.iso_a2).sort().join('')
+    const data = autarky ? collaborationStore.getTotalData()[countriesKey].autarky
+    :collaborationStore.getTotalData()[countriesKey].collaboration
+
 
     if (data.length==0){
         // remove existing charts
@@ -265,7 +276,7 @@ const drawCrosshairLines = (
                 .drag() // Call the drag behavior
                 .on('drag', draggingVerticalLineMarker)
         );
-    // calculate the Y coordindate from the the sum of all series values at the first, most left data point in order to position the horizontal line correctly
+    // calculate the Y coordinate from the the sum of all series values at the first, most left data point in order to position the horizontal line correctly
     const newY = yScale(data[0].sum);
     // Create the horizontal line
     const horizontalLine = svg

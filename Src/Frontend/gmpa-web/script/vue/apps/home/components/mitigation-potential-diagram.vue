@@ -4,7 +4,7 @@
         >'s Mitigation Potential Diagram 2030/2050
     </h1>
     <div v-if="countriesList.length > 1">
-        <label for="countrySelect">Select one Country or Full collaboration:</label>
+        <label for="countrySelect">Select one Country, Full collaboration or Autarky:</label>
         <select
             id="countrySelect"
             v-model="selectedCountry"
@@ -23,7 +23,7 @@
         </select>
     </div>
     <collaborationStackedAreaChart
-        :collaborationCountriesList="collaborationCountriesList"
+        :collaborationCountriesList="collaborationCountriesList" :autarky="showAutarky"
         @technologySelected="handleTechnologySelected" />
 </template>
 
@@ -36,25 +36,31 @@ import collaborationStackedAreaChart from './collaboration-stacked-area-chart.vu
 const emit = defineEmits(['technology-selected']);
 
 const props = defineProps({
-    countriesList: [],
+    countriesList: [], 
 });
 const handleTechnologySelected = (payload) => {
     emit('technology-selected', payload);
 };
 
 const selectedCountry = ref('all' );
-const selectListOptions = ref([{ label: 'Full Collaboration', value: 'all' }]);
+const selectListOptions = ref([{ label: 'Full Collaboration', value: 'all' }, { label: 'Autarky', value: 'all-autarky' }]);
 
 const selectedCollaboration = computed(() => {
-    if (selectedCountry.value == 'all' || selectedCountry.value.value == 'all') {
+    if (selectedCountry.value == 'all' || selectedCountry.value.value == 'all'
+    || selectedCountry.value == 'all-autarky' || selectedCountry.value.value == 'all-autarky') {
         return props.countriesList.map((country) => country.properties.name).join(', ');
     } else return selectedCountry.value.properties.name;
 });
 
 const collaborationCountriesList = computed(() => {
-    if (selectedCountry.value == 'all' || selectedCountry.value.value == 'all') {
+    if (selectedCountry.value == 'all' || selectedCountry.value.value == 'all'  || selectedCountry.value == 'all-autarky' || selectedCountry.value.value == 'all-autarky')  {
         return props.countriesList;
     } else return [selectedCountry.value];
+});
+
+const showAutarky = computed(() => {
+    return (selectedCountry.value == 'all-autarky' || selectedCountry.value.value == 'all-autarky') 
+    
 });
 </script>
 

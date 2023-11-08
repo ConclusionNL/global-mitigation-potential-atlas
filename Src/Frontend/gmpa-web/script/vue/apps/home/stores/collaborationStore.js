@@ -8,6 +8,12 @@ import combinedAutarkyAndCollabRecords from './combined_data_autarky.csv';
 import combinedAutarkyRecords from './autarky-and-collaboration-data/combined_data_autarky.csv';
 import combinedCollaborationRecords from './autarky-and-collaboration-data/combined_data_collaboration.csv';
 
+
+// these two files contain the finegrained data used for the stacked area chart (mitigation potential diagram) per technology
+import totalAutarkyRecords from './autarky-and-collaboration-data/total_data_autarky.csv';
+import totalCollaborationRecords from './autarky-and-collaboration-data/total_data_collaboration.csv';
+
+
 import heatmapRecords from './heatmaps.csv';
 import heatmapAutarkyRecords from './autarky-and-collaboration-data/heatmap_autarky.csv';
 import heatmapCollaborationRecords from './autarky-and-collaboration-data/heatmap_collaboration.csv';
@@ -25,8 +31,8 @@ export const useCollaborationStore = defineStore('collaboration', () => {
     const heatmapCollaborationData = {};
     let dataSet = ref([]);
     let collaborations; // an array that contains string arrays with country codes for collaborating countries. each entry looks like [countryA], [countryB], ... (with up to four countries)
-    let processedCombinedData = false
-    let combinedData
+    let processedCombinedData = false, processedTotalData = false
+    let combinedData, totalData = {}
 
     // combined data is an object with country keys as property names (keys) and objects with array properties 
     // collaboration and autarky. Each entry in these arrays has two properties: emissions, cost 
@@ -37,6 +43,85 @@ export const useCollaborationStore = defineStore('collaboration', () => {
             processedCombinedData = true
         }
         return combinedData
+    }
+
+    // total data is an object with country keys as property names (keys) and objects with two properties: 
+    // collaboration and autarky. These are both arrays of objects. The properties of these objects are all the same:
+    // - x - the value for the emission reduction potential 
+    // - one property for each technology that has the cost associated with the x value for that technology
+    // { 'ID': {collaboration: [{x: 1200, Coal Power Plant:0.076,Electricity Distribution:0.215, Floating Solar PV:23 }, {x: 2400, Coal Power Plant:0.176,Electricity Distribution:2.15, Floating Solar PV:38 }]
+    //        , autarky: [{x: 1200, Coal Power Plant:0.12,Electricity Distribution:0.815, Floating Solar PV:11 }, {x: 2400, Coal Power Plant:8.176,Electricity Distribution:1.15, Floating Solar PV:12 }]}, 'SG': {} }
+    const getTotalData = () => {
+        if (!processedTotalData) {
+            prepareTotalDataFromFiles()
+            processedTotalData = true
+        }
+        return totalData
+    }
+
+
+
+    const prepareTotalDataFromFiles = () => {
+        function prepareTotalDataFromRecords(collaborationOrAutarky, records) {
+            const data = {}
+            for (const rec of records) {
+                const countries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
+                const countriesKey = deriveCountryKey(countries)
+                if (!data[countriesKey]) {
+                    data[countriesKey] = {}
+                }
+                // create a map for each country with the x value (collaboration_emissions as key and all technologies as properties)
+                const x = parseFloat(rec.collaboration_emissions)
+                if (!data[countriesKey][x]) data[countriesKey][x] = {}
+                data[countriesKey][x][rec["technology_name"]] = parseFloat(rec.technology_cost)
+            }
+            // loop over all country combinations (all keys/properties in data )
+            // - find per combination the set of all technologies that occur, even if only once for one x value
+            // - make sure that all maps (one for each x value) contain entries for all technologies
+            for (let countryCombination in data) {
+
+                const uniquePropertyNames = new Set();
+
+                // find the unique technologyNames
+                for (let prop in data[countryCombination]) {  // this prop refers to x values or emissions
+                    if (data[countryCombination].hasOwnProperty(prop)) {
+                        // Iterate over properties of each property of data[countryCombination]
+                        Object.keys(data[countryCombination][prop]).forEach(technologyName => { //technologyName refers to technology name
+                            uniquePropertyNames.add(technologyName);
+                        });
+                    }
+                }
+                const technologyNames = [...uniquePropertyNames]
+                // make sure that all entries in consolidation have entries for all technologies
+                for (let prop in data[countryCombination]) { // loop over all X values
+                    // loop over technologyNames
+                    let sum = 0
+                    for (let technology of technologyNames) {
+                        if (!data[countryCombination][prop].hasOwnProperty(technology)) {
+                            data[countryCombination][prop][technology] = 0
+                        } else sum += data[countryCombination][prop][technology]
+                    }
+                    data[countryCombination][prop]["sum"] = sum
+                }
+
+                const dataArray = []
+                for (let prop in data[countryCombination]) { // loop over all X values               
+                    data[countryCombination][prop].x = parseFloat(prop)
+                    dataArray.push(data[countryCombination][prop])
+                }
+                dataArray.sort((a, b) => d3.ascending(a.x, b.x));
+
+
+                if (!totalData[countryCombination]) {
+                    totalData[countryCombination] = { "collaboration": [], "autarky": [] }
+                }
+                totalData[countryCombination][collaborationOrAutarky] = dataArray
+            }
+
+        }
+        prepareTotalDataFromRecords("autarky", totalAutarkyRecords)
+        prepareTotalDataFromRecords("collaboration", totalCollaborationRecords)
+        console.log('done')
     }
 
     const processHeatmapData = () => {
@@ -124,10 +209,12 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         // get Mitigation_Potential(MtCO2e),Mitigation_Cost($/tCO2e) values for countrykey from heatmap_collaboration and from heatmap_autarky
         // set object properties based on values  
 
-        return { mitigationPotentialAutarky: parseFloat(heatmapAutarkyData[countriesKey]["Mitigation_Potential(MtCO2e)"])
-        , mitigationPotentialCollaboration: parseFloat(heatmapCollaborationData[countriesKey]["Mitigation_Potential(MtCO2e)"])
-        , mitigationCostAutarky: parseFloat(heatmapAutarkyData[countriesKey]["Mitigation_Cost($/tCO2e)"]).toPrecision(3)
-        , mitigationCostCollaboration: parseFloat(heatmapCollaborationData[countriesKey]["Mitigation_Cost($/tCO2e)"]).toPrecision(3) }
+        return {
+            mitigationPotentialAutarky: parseFloat(heatmapAutarkyData[countriesKey]["Mitigation_Potential(MtCO2e)"])
+            , mitigationPotentialCollaboration: parseFloat(heatmapCollaborationData[countriesKey]["Mitigation_Potential(MtCO2e)"])
+            , mitigationCostAutarky: parseFloat(heatmapAutarkyData[countriesKey]["Mitigation_Cost($/tCO2e)"]).toPrecision(3)
+            , mitigationCostCollaboration: parseFloat(heatmapCollaborationData[countriesKey]["Mitigation_Cost($/tCO2e)"]).toPrecision(3)
+        }
     }
 
     // given the currently selected countries - give the collaboration candidate what it can contribute to the global mitigation (at 50, 100 and 200 $/MtCO2e)
@@ -188,6 +275,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
     // input
     const prepareTotalCollaborationData = (raw, countries) => {
+        getTotalData()
         // format:
         // [{x: , techA: , techB: }]
         // all technologies should be present in every data object  - 0 if they have no value
@@ -196,7 +284,6 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         const data = []
 
         const countryKey = deriveCountryKey(countries)
-        console.log(`countryKey= ${countryKey}`)
 
         // determine the country key for each record: alphabetical concatenation of country_1..country_4
         // filter on records with the right country key
@@ -221,8 +308,8 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         for (let prop in consolidation) {
             if (consolidation.hasOwnProperty(prop)) {
                 // Iterate over properties of each property of consolidation
-                Object.keys(consolidation[prop]).forEach(innerProp => {
-                    uniquePropertyNames.add(innerProp);
+                Object.keys(consolidation[prop]).forEach(technologyName => {
+                    uniquePropertyNames.add(technologyName);
                 });
             }
         }
@@ -260,7 +347,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
     const prepareFakeData = (data) => {
         data.sort((a, b) => d3.ascending(a.x, b.x));
-        // Iterate through the array of objects
+
         for (const obj of data) {
             let sum = Object.keys(obj).reduce(function (sum, key) {
                 if (key !== 'x') {
@@ -290,6 +377,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         getMitigationPotentialContributionsForCollaborationCandidate,
         getCombinedData,
         deriveCountryKey,
+        getTotalData,
 
     };
 });
