@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Web.Common.Controllers;
 
+#pragma warning disable IDE1006
 namespace GMPA.Core.Controller.Api.v1
+#pragma warning restore IDE1006
 {
     [Route("api/content")]
     [Produces("application/json")]
