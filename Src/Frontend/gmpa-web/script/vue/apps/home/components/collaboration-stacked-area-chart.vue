@@ -35,9 +35,7 @@ onMounted(() => {
 })
 let color
 const setupDiagram = async (collaborationCountriesList, autarky) => {
-    let data0 = await collaborationStore.prepareData(
-        collaborationCountriesList.map((country) => country.properties.iso_a2)
-    );
+
     const countriesKey = collaborationCountriesList.map((country) => country.properties.iso_a2).sort().join('')
     const data = autarky ? collaborationStore.getTotalData()[countriesKey].autarky
     :collaborationStore.getTotalData()[countriesKey].collaboration
