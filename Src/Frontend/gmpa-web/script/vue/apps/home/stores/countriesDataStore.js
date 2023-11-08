@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
-
+import { useCollaborationStore } from '../stores/collaborationStore';
 import countryDataRecords from './countries-data/country-details.csv';
 import countryGeoJSON from './countries-data/50m-world-atlas-geojson.json';
-import heatmapRecords from './heatmaps.csv';
+
 import * as topojson from 'topojson';
+
+let collaborationStore , heatmapData 
 
 let countries
 
@@ -22,6 +24,10 @@ export const useCountriesDataStore = defineStore('countriesData', () => {
     const fetchData = async () => {
         if (countries) return countries
 
+        collaborationStore = useCollaborationStore();
+        heatmapData = collaborationStore.getHeatmapData();
+
+
         const countriesById = countryData.reduce((accumulator, d) => {
             accumulator[d.iso_n3] = d;
             return accumulator;
@@ -33,21 +39,17 @@ export const useCountriesDataStore = defineStore('countriesData', () => {
 
             // using the ISo2 country code (iso_a2), check heatmapData array for an object with the right COUnTRY property value
             const countryCode = d.properties.iso_a2;
-            heatmapRecords
-                .filter((h) => h['Country'] == countryCode)
-                .forEach((c) => {
+            if (heatmapData[ countryCode]) {
+            heatmapData[ countryCode]
                     // copy properties from c to d.properties
-                    for (let key in c) {
+                    for (let key in heatmapData[ countryCode]) {
                         if (key !== 'Country') {
-                            d.properties[key] = c[key];
+                            d.properties[key] = heatmapData[ countryCode][key];
                         }
                     }
                     // set the property in_heatmap to true to indicate that there is heatmap data for this country
                     d.properties['in_heatmap'] = true;
-                });
-
-            // todo - these properties are added in a not very efficient way
-            // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
+            }
         });
         return countries
     }

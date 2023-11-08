@@ -65,7 +65,7 @@ const closeModal = () => (stackedAreaModalVisible.value = false);
 let svg, countriesGroup, countryDataSet, pathGenerator, zoooom;
 
 const collaborationStore = useCollaborationStore();
-const heatmapData = collaborationStore.heatmapData;
+const heatmapData = collaborationStore.getHeatmapData();
 
 const mitigation = ref('None');
 
@@ -232,8 +232,9 @@ onMounted(() => {
 
     let colorScale2, yAxisScale;
 
-    function findMinMax(collection, theProperty) {
-        const values = collection.map((item) => item[theProperty]);
+    function findMinMax(someObject, theProperty) {
+        
+        const values = Object.keys(someObject).map((key) => someObject[key][theProperty]);
         return {
             min: Math.min(...values),
             max: Math.max(...values),
