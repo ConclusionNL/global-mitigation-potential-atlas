@@ -28,8 +28,8 @@ const setupLineAreaChart = async (countriesList) => {
     const countryKey = collaborationStore.deriveCountryKey(countriesList.map((country) => country.properties.iso_a2))
     const combinedData =  collaborationStore.getCombinedData()[countryKey]
 
-
     d3.select('#lineChartContainer').remove()
+    if (!combinedData) return
     if (Object.keys(combinedData).length === 0) {return}
     const svg = d3
         .select('#svgLineChartContainer')
