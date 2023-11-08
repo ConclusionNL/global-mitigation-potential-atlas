@@ -49,6 +49,8 @@ const setupGauge = async (countriesList, showMitigationCosts) => {
 
     const lowValuePrompt = costNotPotential ?  "Collaboration": "Autarky" 
     const highValuePrompt = costNotPotential ?  "Autarky": "Collaboration" 
+// if the MAX value is very close to the highvalue, the chart is not rendered correctly   
+// const maxValue = costNotPotential ? Math.round(highValue * 0.14) * 10: data.mitigationPotentialCollaborationMax ;
     const maxValue = Math.round(highValue * 0.14) * 10;
 
     const lowPercentage = lowValue / maxValue;
