@@ -174,8 +174,8 @@ onMounted(() => {
 
 
     watch(mitigation, (newValue) => {
-        colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value);
-        yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value);
+        colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
+        yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
 
         drawAllCountries(countryDataSet);
         drawVerticalAxis();
@@ -243,14 +243,14 @@ onMounted(() => {
         const result = findMinMax(heatmapData, property);
         return scaleSequential(d3.interpolateBlues).domain([result.min, result.max]);
     }
-    colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value);
+    colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
 
     function createYAxisScaleForHeatmapProperty(heatmapData, property) {
         const result = findMinMax(heatmapData, property);
         return d3.scaleLinear().domain([result.min, result.max]).range([300, 0]); // Adjust the range to match the desired height of your axis
     }
 
-    yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value);
+    yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
 
     const heatmapLegend = (selection, props) => {
         const { spacing, textOffset, backgroundRectWidth } = props;
@@ -343,7 +343,7 @@ onMounted(() => {
             .attr('x', -660) // Position it at the middle of the axis
             .attr('dy', '1em') // Adjustments for positioning
             .style('text-anchor', 'middle') // Center the text
-            .text(mitigation.value.replace(/_/g, ' '));
+            .text(mitigation.label);
     }
 
     function drawAllCountries(countries) {
@@ -353,8 +353,8 @@ onMounted(() => {
             // fill with gray (#dcdcdc) when the country's data is unknown
             .attr('fill', (d) =>
                 d.properties['in_heatmap']
-                    ? d.properties.hasOwnProperty(mitigation.value)
-                        ? colorScale2(d.properties[mitigation.value])
+                    ? d.properties.hasOwnProperty(mitigation.value.value)
+                        ? colorScale2(d.properties[mitigation.value.value])
                         : '#ffffff'
                     : '#dcdcdc'
             )
@@ -363,8 +363,8 @@ onMounted(() => {
                 (d) =>
                     d.properties.name_long +
                     ' : ' +
-                    (d.properties.hasOwnProperty(mitigation.value)
-                        ? d.properties[mitigation.value] + ` ${mitigation.value}`
+                    (d.properties.hasOwnProperty(mitigation.value.value)
+                        ? d.properties[mitigation.value.value] + ` ${mitigation.value.label}`
                         : '')
             );
 
@@ -375,8 +375,8 @@ onMounted(() => {
             // fill with gray (#dcdcdc) when the country's data is unknown
             .attr('fill', (d) =>
                 d.properties['in_heatmap']
-                    ? d.properties.hasOwnProperty(mitigation.value)
-                        ? colorScale2(d.properties[mitigation.value])
+                    ? d.properties.hasOwnProperty(mitigation.value.value)
+                        ? colorScale2(d.properties[mitigation.value.value])
                         : '#ffffff'
                     : '#dcdcdc'
             )
@@ -387,8 +387,8 @@ onMounted(() => {
             .text(
                 (d) => d.properties.name +
                     
-                    (d.properties.hasOwnProperty(mitigation.value)
-                        ? `: ${d.properties[mitigation.value]} ${mitigation.value}`
+                    (d.properties.hasOwnProperty(mitigation.value.value)
+                        ? `: ${d.properties[mitigation.value.value]} ${mitigation.value.label}`
                         : '')
             )
             .attr('class', 'country');

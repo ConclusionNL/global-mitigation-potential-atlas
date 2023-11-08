@@ -1,17 +1,17 @@
 <template>
     <div class="mitigation-card">
-        <div v-for="(mitigation, i) in mitgiationList" :key="i" class="radio-text">
-            <input :id="mitigation" :checked="i == 0" type="radio" :value="mitigation" name="mitigation"
+        <div v-for="(mitigation, i) in mitigationList" :key="i" class="radio-text">
+            <input :id="mitigation" :checked="i == 0" type="radio" :value="mitigation.value" name="mitigation"
                 @change="selectedMitigation = mitigation" />
-            <label :for="mitigation">{{ mitigation.replace(/_/g, " ") }}</label>
+            <label :for="mitigation">{{ mitigation.label }}</label>
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-const mitgiationList = ref([]);
-const selectedMitigation = ref(mitgiationList.value[0]);
+const mitigationList = ref([]);
+const selectedMitigation = ref(mitigationList.value[0]);
 
 const emit = defineEmits(['mitigation-value']);
 
@@ -20,16 +20,21 @@ watch(selectedMitigation, (newMitigation) => {
 });
 
 onMounted(() => {
-    mitgiationList.value = [
-        'None',
-        'Mitigation_Potential(GtCO2e)',
-        'Mitigation_Cost($/GtCO2e)',
-        'Mitigation_Potential(GtCO2e)_at_50',
-        'Mitigation_Potential(GtCO2e)_at_100',
-        'Mitigation_Potential(GtCO2e)_at_200',
+    mitigationList.value = [
+    {label: 'None', value:"None"},
+    {label: 'Mitigation Potential (MtCO2e)', value:"Mitigation_Potential(GtCO2e)"},
+    {label: 'Mitigation Cost ($/tCO2e)', value:"Mitigation_Cost($/GtCO2e)"},
+    {label: 'Mitigation Potential (MtCO2e) at 50', value:"Mitigation_Potential(GtCO2e)_at_50"},
+    {label: 'Mitigation Potential (MtCO2e) at 100', value:"Mitigation_Potential(GtCO2e)_at_100"},
+    {label: 'Mitigation Potential (MtCO2e) at 200', value:"Mitigation_Potential(GtCO2e)_at_200"},
+        // 'Mitigation_Potential(GtCO2e)',
+        // 'Mitigation_Cost($/GtCO2e)',
+        // 'Mitigation_Potential(GtCO2e)_at_50',
+        // 'Mitigation_Potential(GtCO2e)_at_100',
+        // 'Mitigation_Potential(GtCO2e)_at_200',
     ];
 
-    emit('mitigation-value', mitgiationList.value[0]);
+    emit('mitigation-value', mitigationList.value[0]);
 });
 </script>
 
