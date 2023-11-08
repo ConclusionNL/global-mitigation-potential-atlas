@@ -33,6 +33,15 @@
                 </div>
             </div>
         </div>
+        <div class="container text-center justify-content-center hidden" id="sectorFilter">
+            <label for="filterSector">Filter by Sector:</label>
+            <select name="filterSector" id="filterSector" class="sector-dropdown">
+                <option value=""></option>
+                <option value="Energy">Energy</option>
+                <option value="Transport">Transport</option>
+                <option value="Industry">Industry</option>
+            </select>
+        </div>
     </div>
 
     <div class="col-11">
@@ -76,7 +85,7 @@
                 <h2>Policy Inventory</h2>
                 @foreach (var policy in Model.PolicyInventoryBlockList)
                 {
-                    <div class="card policy-item" data-from-country="@policy.FromCountry">
+                    <div class="card policy-item" data-from-country="@policy.FromCountry" data-sector="@policy.Sector">
                         <div class="row">
                             <div class="card-header">
                                 <h3>@policy.PolicyDocumentName</h3>
@@ -134,25 +143,30 @@
 </div>
 
 <script>
-    // Get all elements with the class 'toggle-container'
     var toggleButtons = document.querySelectorAll('.toggle-container');
     var strategyItems = document.querySelectorAll('.strategy-item');
     var policyItems = document.querySelectorAll('.policy-item');
     var countryDropdown = document.getElementById('pilotCountryFilter');
+    var sectorDropdown = document.getElementById('filterSector');
 
-    countryDropdown.addEventListener('change', function() {
+    countryDropdown.addEventListener('change', function () {
         var selectedCountry = this.value;
         updateContent(selectedCountry);
     });
 
-    updateContent = (selectedCountry) => {
+    sectorDropdown.addEventListener('change', function () {
+        var selectedSector = this.value;
+        filterPolicyInventory(selectedSector);
+    });
+
+    function updateContent(selectedCountry) {
         strategyItems.forEach(function (item) {
-            var country = item.dataset.fromCountry; // assuming you store the country in a data attribute
+            var country = item.dataset.fromCountry;
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
 
         policyItems.forEach(function (item) {
-            var country = item.dataset.fromCountry; // assuming you store the country in a data attribute
+            var country = item.dataset.fromCountry;
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
     }
@@ -162,13 +176,13 @@
         return urlParams.get(name);
     }
 
-    initializeContent = () => {
+    function initializeContent() {
         var paramName = 'country';
         var selectedCountry = getQueryParam(paramName);
         if (selectedCountry !== null) {
             countryDropdown.value = selectedCountry;
             updateContent(selectedCountry);
-        } 
+        }
     }
 
     initializeContent();
@@ -177,16 +191,39 @@
         button.addEventListener('click', function () {
             var targetId = this.getAttribute('data-target');
             var targetElement = document.getElementById(targetId);
+            var sectorFilterContainer = document.getElementById('sectorFilter');
 
-            // Hide all containers
             document.querySelectorAll('.toggle-content').forEach(container => {
                 container.classList.add('hidden');
             });
 
-            // Show the selected container
+            sectorFilterContainer.classList.add('hidden');
+            sectorDropdown.value = ''; // Reset sector dropdown when toggling between views
+
             targetElement.classList.remove('hidden');
+
+            if (targetId === 'PolicyInventory') {
+                sectorFilterContainer.classList.remove('hidden');
+            }
         });
     });
+
+    function filterPolicyInventory(selectedSector) {
+        policyItems.forEach(function (item) {
+            var sector = item.dataset.sector;
+            var itemElement = item.closest('.policy-item'); // Get the parent policy item element
+
+            console.log(item.dataset);
+
+            if (selectedSector === '' || sector === selectedSector) {
+                itemElement.classList.remove('hidden'); // Show the item if it matches the selected sector or no sector is selected
+            } else {
+                itemElement.classList.add('hidden'); // Hide the item if it doesn't match the selected sector
+            }
+        });
+
+    }
+
 </script>
 
 <style>
