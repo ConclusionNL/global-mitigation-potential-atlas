@@ -21,7 +21,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
     const combinedCollaborationData = ref(combinedAutarkyAndCollabRecords); // aggregates per country collaboration set - both autarky and collaboration, both costs and emission reduction
 
     const fakeDataSet = ref(fakeRecords);
-    // TODO preprocess heatmap records to create a map with countrieskey as key
+
     let processedHeatmapData = false
 
     const heatmapCollaborationData = {};
@@ -141,6 +141,15 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 , "Mitigation_Cost($/GtCO2e)": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
                 , "Mitigation_Potential_at_Average_50($/tCO2e)": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
                 , "BAU_Emissions(MtCO2e)": parseFloat(rec["BAU_Emissions(MtCO2e)"])
+                // here are some better names for the heatmap properties
+
+                , "Mitigation_Potential": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
+                , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_50($/tCO2e)"])
+                , "Mitigation_Potential_at_100": parseFloat(rec["Mitigation_Potential_at_100($/tCO2e)"])
+                , "Mitigation_Potential_at_200": parseFloat(rec["Mitigation_Potential_at_200($/tCO2e)"])
+                , "Mitigation_Cost": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
+                , "Mitigation_Potential_at_Average_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
+                , "BAU_Emissions": parseFloat(rec["BAU_Emissions(MtCO2e)"])
             }
             heatmapCollaborationData[countriesKey] = countryRecord
         }
@@ -208,30 +217,52 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
         return {
             mitigationPotentialAutarky: Mitigation_Potential_at_Average_50_sum // sum for the individual values of the collaborating countries
-            , mitigationPotentialCollaborationMax: parseFloat(heatmapData[countriesKey]["BAU_Emissions(MtCO2e)"])
-            , mitigationPotentialCollaboration: parseFloat(heatmapData[countriesKey]["Mitigation_Potential(MtCO2e)"])
+            , mitigationPotentialCollaborationMax: parseFloat(heatmapData[countriesKey]["BAU_Emissions"])
+            , mitigationPotentialCollaboration: parseFloat(heatmapData[countriesKey]["Mitigation_Potential"])
 
-            , mitigationCostAutarky: parseFloat(heatmapData[countriesKey]["Mitigation_Cost($/tCO2e)"]).toPrecision(3)
-            , mitigationCostCollaboration: parseFloat(heatmapData[countriesKey]["Mitigation_Cost($/tCO2e)"]).toPrecision(3)
+            , mitigationCostAutarky: parseFloat(heatmapData[countriesKey]["Mitigation_Cost"]).toPrecision(3) // this one is not meaningful - TODO has to go?!
+
+            , mitigationCostCollaboration: parseFloat(heatmapData[countriesKey]["Mitigation_Cost"]).toPrecision(3)
         }
     }
 
-    // given the currently selected countries - give the collaboration candidate what it can contribute to the global mitigation (at 50, 100 and 200 $/MtCO2e)
-    // this can be calculated by taking the currently selected countries plus the collaboration candidate ; find the mitigation potential values for the combination. then take the potential for the selected countries without the collaboration candidate. the delta is the contribution from the candidate
+    // given the currently selected countries - give the collaboration candidate what it can contribute to the global mitigation (at 50, 100 and 200)
+    // Benefit (contribution for collaboration candidate) = (New Collaboration)– { (Old Collaboration)+ (new country)}
+    // or: {selectedCountries + candidate} - {selectedCountries} - {candidate in autarky}
+
+    // this can be calculated by taking the currently selected countries plus the collaboration candidate 
+    // - A find the mitigation potential values for the combination. 
+    // - B then take the potential for the selected countries without the collaboration candidate. 
+    // - C and find the potential for the candidate by itself
+    // the delta (A - B - C) is the contribution from the candidate
     // return an object with  values for mitigationPotentialAt50, mitigationPotentialAt100, mitigationPotentialAt200 
     const getMitigationPotentialContributionsForCollaborationCandidate = (selectedCountries, collaborationCandidate) => {
-        // get country key for selectedCountries plus collaborationCandidate
-        // get mitigation potential values for countrykey from heatmap_collaboration and from heatmap_autarky
-        // subtract the latter from the former; 
 
-        const data = { mitigationPotentialAt50: '', mitigationPotentialAt100: '', mitigationPotentialAt200: '' }
+        // get country key for selectedCountries 
+        // get mitigation potential values for countrykey from heatmap_collaboration 
+        const selectedCountriesIsoa2Array = selectedCountries.map((country) => country.properties.iso_a2)
+        const selectedCountriesKey = deriveCountryKey(selectedCountriesIsoa2Array)
 
+        const properties = ["50", "100", "200"]
+        const data = {}
 
-        data.mitigationPotentialAt50 = -12.3
-        data.mitigationPotentialAt100 = (Math.random() * -21.8).toFixed(1);
-        data.mitigationPotentialAt200 = (Math.random() * -34.8).toFixed(1);
+        for (const property of properties) {
 
+            const mpSelected = getHeatmapData()[selectedCountriesKey][`Mitigation_Potential_at_${property}`]
 
+            // get country key for selectedCountries plus collaborationCandidate
+            // get mitigation potential values for countrykey from heatmap_collaboration 
+            const collaboratingCountriesIsoa2Array = [...selectedCountriesIsoa2Array]
+            collaboratingCountriesIsoa2Array.push(collaborationCandidate.properties.iso_a2)
+            const collaboratingCountriesKey = deriveCountryKey(collaboratingCountriesIsoa2Array)
+            const mpCollaborating = getHeatmapData()[collaboratingCountriesKey][`Mitigation_Potential_at_${property}`]
+
+            // get mitigation potential values for just the candidate country from heatmap_collaboration 
+            const mpCountry = getHeatmapData()[collaborationCandidate.properties.iso_a2][`Mitigation_Potential_at_${property}`]
+            // subtract the latter two from the first; 
+            data[`mitigationPotentialAt${property}`] = mpCollaborating - mpSelected - mpCountry
+        }
+      
         return data
     }
 
