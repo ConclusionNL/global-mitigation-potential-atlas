@@ -8,7 +8,7 @@
             </div>
             <div class="instructions">Aniq Ashan</div>
             <div class="buttons">
-                <button @click="show = !show" class="btn btn-alt-1">Explore the map</button>
+                <button @click="handleExploreMapClick" class="btn btn-alt-1">Explore the map</button>
                 <button class="btn btn-alt-2">Discover opportunities</button>
             </div>
         </div>
@@ -22,7 +22,12 @@
 import { ref } from 'vue';
 
 // Set this to false to remove constant introcard pop-up
-const show = ref(true);
+const show = ref((!sessionStorage.getItem("AtlasWelcomeCardWasShown")));
+
+const handleExploreMapClick = () => {
+    sessionStorage.setItem("AtlasWelcomeCardWasShown", true)
+    show.value = !show.value
+} 
 </script>
 
 <style scoped>
