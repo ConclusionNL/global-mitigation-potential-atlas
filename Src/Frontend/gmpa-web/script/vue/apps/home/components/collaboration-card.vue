@@ -47,7 +47,7 @@
                             mitType = filter;
                             filterBox = !filterBox;
                         ">
-                        GtCO2 at {{ filter.replaceAll(/[a-zA-Z]/g, '') }} $/MtCO2e
+                        MtCO2 at {{ filter.replaceAll(/[a-zA-Z]/g, '') }} $/tCO2e
                     </li>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                             <div class="mit-amount">
                                 {{ getMitPotCollabCountries(collabCandidate, mitType) ?? '' }}
                             </div>
-                            <div>GtCO2 at {{ mitType.replaceAll(/[a-zA-Z]/g, '') }}</div>
+                            <div>MtCO2 at {{ mitType.replaceAll(/[a-zA-Z]/g, '') }}</div>
                         </div>
                     </div>
                     <div class="other-info"></div>
