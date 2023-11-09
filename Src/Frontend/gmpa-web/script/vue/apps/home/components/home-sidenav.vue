@@ -1,8 +1,8 @@
 ﻿<template>
     <div class="navigation-container">
         <div class="d-grid gap-2">
-            <button type="button" class="btn btn-light" @click="goToPage('/cases')">Cases</button>
-            <button type="button" class="btn btn-light" @click="goToPage('/policies')">Policies</button>
+            <button type="button" class="btn btn-light" @click="goToPage('/cases')">Facilitative policies</button>
+            <button type="button" class="btn btn-light" @click="goToPage('/policies')">National policies</button>
         </div>
         <h4 class="country-divider">Countries</h4>
         <ul class="countries-list">
