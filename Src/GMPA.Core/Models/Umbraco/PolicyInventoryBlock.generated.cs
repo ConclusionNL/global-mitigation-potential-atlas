@@ -118,7 +118,7 @@ namespace GMPA.Core.Models.Umbraco
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("sourceLink")]
-		public virtual string SourceLink => this.Value<string>(_publishedValueFallback, "sourceLink");
+		public virtual global::System.Collections.Generic.IEnumerable<string> SourceLink => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "sourceLink");
 
 		///<summary>
 		/// Start Date
