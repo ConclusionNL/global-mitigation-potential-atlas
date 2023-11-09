@@ -36,6 +36,16 @@ namespace GMPA.Core.Controller.Render
                         Title = b.ReferenceName,
                         Reference = b.ReferenceContent.ToHtmlString(),
                     })
+                    .ToList(),
+
+                MethodologySectionBlock = methodology.MethodologySections
+                    .Select(a => a.Content as MethodologyBlock)
+                    .Select(b => new MethodologyViewModel.MethodologySectionBlockList
+                    {
+                        SectionHeader = b.SectionHeader,
+                        SectionBody = b.SectionBody.ToHtmlString(),
+                        SectionId = b.SectionID
+                    })
                     .ToList()
             };
 
