@@ -64,5 +64,13 @@ namespace GMPA.Core.Models.Umbraco
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("pageTitle")]
 		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString PageTitle => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "pageTitle");
+
+		///<summary>
+		/// WebsiteLogo
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("websiteLogo")]
+		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops WebsiteLogo => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "websiteLogo");
 	}
 }

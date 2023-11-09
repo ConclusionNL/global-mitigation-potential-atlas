@@ -15,6 +15,7 @@ namespace GMPA.Core.Extensions
             var home = content.AncestorOrSelf<Home>();
 
             model.FavIcon = home.FavIcon.Url();
+            model.WebsiteLogo = home.WebsiteLogo.Url();
 
             model.PageTitle = content.Name;
 
