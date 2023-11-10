@@ -456,6 +456,11 @@ input:checked+.slider:before {
     transform: translateY(-28px);
 }
 
+
+input[type='radio'] {
+    margin-right: 8px;
+}
+
 .slider.round {
     border-radius: 16px;
 }
@@ -468,11 +473,12 @@ input:checked+.slider:before {
 .switch-box {
     display: flex;
     flex-direction: column;
+    font-size: 14px;
+/*    align-self: center;
+    justify-self: center;
     justify-content: center;
     align-items: center;
-    font-size: 14px;
-    align-self: center;
-    justify-self: center;
+    */
 }
 
 .filter-options-dropdown {
