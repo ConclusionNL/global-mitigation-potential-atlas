@@ -344,7 +344,7 @@ onMounted(() => {
             .attr('x', -660) // Position it at the middle of the axis
             .attr('dy', '1em') // Adjustments for positioning
             .style('text-anchor', 'middle') // Center the text
-            .text(mitigation.label);
+            .text( mitigation.value.label);
     }
 
     function drawAllCountries(countries) {
