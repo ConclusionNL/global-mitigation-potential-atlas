@@ -114,6 +114,9 @@ jobs:
         run: |
           mkdir -p ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
           tar -xvzf myapp.tar -C ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --strip-components=1
+          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/uSync/Content
+          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/uSync/Media
+          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/media
 
       #- name: Login to Azure CLI
       #  uses: azure/login@v1
@@ -147,6 +150,9 @@ jobs:
         run: |
           mkdir -p ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
           tar -xvzf myapp.tar -C ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --strip-components=1
+          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/uSync/Content
+          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/uSync/Media
+          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/media
 
       #- name: Login to Azure CLI
       #  uses: azure/login@v1
