@@ -69,7 +69,7 @@
                     </div>
                     <div class="switch-box">
                         <div v-for="(mitigation, i) in mitigationList" :key="i" class="radio-text">
-                            <input :id="mitigation" :checked="i == 0" type="radio" :value="mitigation.value"
+                            <input :id="mitigation" :checked="((mitigation.value == selectedMitigation.value) || (!selectedMitigation.value && i==0)) " type="radio" :value="mitigation.value"
                                 name="mitigation" @change="selectedMitigation = mitigation" />
                             <label :for="mitigation">{{ mitigation.label }}</label>
                         </div>
@@ -163,7 +163,7 @@ onMounted(() => {
         { label: 'Potential at 200', value: "At200" },
     ];
 
-    
+    console.log(`reset selected mitigation in onmounted`)
     selectedMitigation.value = mitigationList.value[0]
 });
 
