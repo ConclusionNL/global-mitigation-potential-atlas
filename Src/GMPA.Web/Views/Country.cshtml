@@ -36,7 +36,8 @@
         foreach (var collapsibleBlock in Model.CollapsibleBlockList)
         {
 
-            <div data-bs-toggle="collapse" data-bs-target="#@collapsibleBlock.Id" aria-expanded="false" aria-controls="@collapsibleBlock.Id">
+            <div data-bs-toggle="collapse" data-bs-target="#@collapsibleBlock.Id" aria-expanded="false" 
+                 aria-controls="@collapsibleBlock.Id">
                 <h2 class="collapsibleHeader">
                     @collapsibleBlock.Title
                 </h2>
@@ -104,5 +105,10 @@
 
     .reference {
         padding: 5px;
+    }
+
+
+    td, tr {
+        border-width: 1px;
     }
 </style>

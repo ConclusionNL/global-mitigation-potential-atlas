@@ -71,7 +71,17 @@
                             </div>
                             <div class="ms-auto p-2">
                                 <h5>Source</h5>
-                                <a href="@strategy.SourceLink">Source for @strategy.PolicyDocumentName</a>
+                                @{
+                                    var sourceNumber = 1;
+                                }
+
+                                @foreach (var sourceItem in strategy.SourceLink)
+                                {
+                                    <div>
+                                        <a href="@sourceItem">Source @sourceNumber of @strategy.PolicyDocumentName</a>
+                                    </div>
+                                    sourceNumber++;
+                                }
                             </div>
                         </div>
                     </div>
@@ -132,7 +142,17 @@
                             </div>
                             <div class="col-3">
                                 <h5>Source</h5>
-                                <a href="@policy.SourceLink">Source for @policy.PolicyDocumentName</a>
+                                @{
+                                    var sourceNumber = 1;
+                                }
+
+                                @foreach (var sourceItem in policy.SourceLink)
+                                {
+                                    <div>
+                                        <a href="@sourceItem">Source @sourceNumber of @policy.PolicyDocumentName</a>
+                                    </div>
+                                    sourceNumber++;
+                                }
                             </div>
                         </div>
                     </div>

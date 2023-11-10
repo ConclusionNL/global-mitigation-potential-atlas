@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace GMPA.Core.Models.Umbraco
 {
-	/// <summary>Home</summary>
-	[PublishedModel("home")]
-	public partial class Home : PublishedContentModel
+	/// <summary>Methodology Block</summary>
+	[PublishedModel("methodologyBlock")]
+	public partial class MethodologyBlock : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
-		public new const string ModelTypeAlias = "home";
+		public new const string ModelTypeAlias = "methodologyBlock";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
@@ -34,14 +34,14 @@ namespace GMPA.Core.Models.Umbraco
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<Home, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<MethodologyBlock, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public Home(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public MethodologyBlock(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,27 +50,27 @@ namespace GMPA.Core.Models.Umbraco
 		// properties
 
 		///<summary>
-		/// FavIcon
+		/// Section Body
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("favIcon")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops FavIcon => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "favIcon");
+		[ImplementPropertyType("sectionBody")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString SectionBody => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "sectionBody");
 
 		///<summary>
-		/// Page Title
+		/// Section Header
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("pageTitle")]
-		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString PageTitle => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "pageTitle");
+		[ImplementPropertyType("sectionHeader")]
+		public virtual string SectionHeader => this.Value<string>(_publishedValueFallback, "sectionHeader");
 
 		///<summary>
-		/// WebsiteLogo
+		/// Section ID: No spaces are allowed in this string. Valid examples: - Example - examPle - Examp7e
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("websiteLogo")]
-		public virtual global::Umbraco.Cms.Core.Models.MediaWithCrops WebsiteLogo => this.Value<global::Umbraco.Cms.Core.Models.MediaWithCrops>(_publishedValueFallback, "websiteLogo");
+		[ImplementPropertyType("sectionID")]
+		public virtual string SectionID => this.Value<string>(_publishedValueFallback, "sectionID");
 	}
 }

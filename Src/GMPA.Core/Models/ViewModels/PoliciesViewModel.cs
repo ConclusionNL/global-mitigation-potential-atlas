@@ -7,7 +7,7 @@
             public string PolicyDocumentName { get; set; }
             public string StartYear { get; set; }
             public string EndYear { get; set; }
-            public string SourceLink { get; set; }
+            public List<string> SourceLink { get; set; }
             public string KeyObjectivesTargets { get; set; }
             public string FromCountry { get; set; }
         }
@@ -19,7 +19,7 @@
             public string SubSector { get; set; }
             public string StartDate { get; set; }
             public string EndDate { get; set; }
-            public string SourceLink { get; set; }
+            public List<string> SourceLink { get; set; }
             public string PolicyLevel { get; set; }
             public string PolicyOrigin { get; set; }
             public string PolicyInstruments { get; set; }
