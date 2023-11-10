@@ -23,15 +23,10 @@ onMounted(() => {
     mitigationList.value = [
     {label: 'None', value:"None"},
     {label: 'Mitigation Potential (MtCO2e)', value:"Mitigation_Potential(GtCO2e)"},
-    {label: 'Mitigation Cost ($/tCO2e)', value:"Mitigation_Cost($/GtCO2e)"},
-    {label: 'Mitigation Potential (MtCO2e) at 50', value:"Mitigation_Potential(GtCO2e)_at_50"},
-    {label: 'Mitigation Potential (MtCO2e) at 100', value:"Mitigation_Potential(GtCO2e)_at_100"},
-    {label: 'Mitigation Potential (MtCO2e) at 200', value:"Mitigation_Potential(GtCO2e)_at_200"},
-        // 'Mitigation_Potential(GtCO2e)',
-        // 'Mitigation_Cost($/GtCO2e)',
-        // 'Mitigation_Potential(GtCO2e)_at_50',
-        // 'Mitigation_Potential(GtCO2e)_at_100',
-        // 'Mitigation_Potential(GtCO2e)_at_200',
+    {label: 'Mitigation Potential (MtCO2e) at 0', value:"Mitigation_Potential_at_0"},
+    {label: 'Mitigation Potential (MtCO2e) at 50', value:"Mitigation_Potential_at_50"},
+    {label: 'Mitigation Potential (MtCO2e) at 100', value:"Mitigation_Potential_at_100"},
+    {label: 'Mitigation Potential (MtCO2e) at 200', value:"Mitigation_Potential_at_200"},
     ];
 
     emit('mitigation-value', mitigationList.value[0]);

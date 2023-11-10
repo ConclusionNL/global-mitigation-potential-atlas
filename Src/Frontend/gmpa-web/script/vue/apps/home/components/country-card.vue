@@ -17,29 +17,29 @@
                 </div>
             </div>
             <div key="2" class="data">
-                <div>Mitigation Cost</div>
+                <div>Mitigation Potential at 0</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Cost($/GtCO2e)'] }} $/tCO2e
+                    {{ selectedCountries[0].properties['Mitigation_Potential_at_0'] }} MtCO2e
                 </div>
             </div>
             <div key="3" class="data">
                 <div>Mitigation Potential at 50</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_50'] }}
+                    {{ selectedCountries[0].properties['Mitigation_Potential_at_50'] }}
                     MtCO2e
                 </div>
             </div>
             <div key="4" class="data">
                 <div>Mitigation Potential at 100</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_100'] }}
+                    {{ selectedCountries[0].properties['Mitigation_Potential_at_100'] }}
                     MtCO2e
                 </div>
             </div>
             <div key="5" class="data">
                 <div>Mitigation Potential at 200</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)_at_200'] }}
+                    {{ selectedCountries[0].properties['Mitigation_Potential_at_200'] }}
                     MtCO2e
                 </div>
             </div>

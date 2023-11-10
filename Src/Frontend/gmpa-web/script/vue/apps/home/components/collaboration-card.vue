@@ -3,32 +3,22 @@
         <div class="collab-card" v-if="showComposeCollaborationSet">
             <div class="card-top">
                 <div class="title">Select multiple countries to view collaboration potentials</div>
-                <closeIcon
-                    class="close-btn"
-                    alt="close-button"
-                    height="24"
-                    width="24"
-                    @click="
-                        useCountries.resetCountries();
-                        useCountries.setCollabMode(false);
-                    " />
+                <closeIcon class="close-btn" alt="close-button" height="24" width="24" @click="
+                    useCountries.resetCountries();
+                useCountries.setCollabMode(false);
+                " />
             </div>
             <div class="flex-collab">
                 <div class="countries-collab-list">
                     <div v-for="country in selectedCountries" :key="country">
                         <div class="small-card">
                             <div>{{ country.properties.name }}</div>
-                            <closeIcon
-                                width="24"
-                                height="24"
-                                style="cursor: pointer"
+                            <closeIcon width="24" height="24" style="cursor: pointer"
                                 @click="useCountries.removeCountry(country)" />
                         </div>
                     </div>
                 </div>
-                <button
-                    v-if="selectedCountries.length > 1"
-                    class="benefits-btn"
+                <button v-if="selectedCountries.length > 1" class="benefits-btn"
                     @click="showComposeCollaborationSet = false">
                     View benefits
                 </button>
@@ -42,27 +32,19 @@
             </div>
             <div v-if="filterBox" class="filter-options-dropdown">
                 <div v-for="filter in mitTypes">
-                    <li
-                        @click="
-                            mitType = filter;
-                            filterBox = !filterBox;
-                        ">
+                    <li @click="
+                        mitType = filter;
+                    filterBox = !filterBox;
+                    ">
                         MtCO2 at {{ filter.replaceAll(/[a-zA-Z]/g, '') }} $/tCO2e
                     </li>
                 </div>
             </div>
             <div class="suggestion-country-container space-between">
-                <div
-                    class="suggestion-country-boxes"
-                    v-for="collabCandidate in collaborationCandidatesList"
+                <div class="suggestion-country-boxes" v-for="collabCandidate in collaborationCandidatesList"
                     :key="collabCandidate.id">
-                    <input
-                        :id="collabCandidate.id"
-                        type="checkbox"
-                        :name="`checkbox-${n}`"
-                        :value="collabCandidate"
-                        class="checkbox"
-                        @change="useCountries.addCountry(collabCandidate)" />
+                    <input :id="collabCandidate.id" type="checkbox" :name="`checkbox-${n}`" :value="collabCandidate"
+                        class="checkbox" @change="useCountries.addCountry(collabCandidate)" />
                     <div class="label-box">
                         <div class="label-title">
                             {{ collabCandidate.properties.name }}
@@ -86,31 +68,30 @@
                         <div>Back</div>
                     </div>
                     <div class="switch-box">
-                        <div>Cost / tCO2e</div>
-                        <label class="switch">
-                            <input type="checkbox"  v-model="mitigationCosts" />
-                            <span class="slider round"></span>
-                        </label>
-                        <div>Absolute tCO2e</div>
+                        <div v-for="(mitigation, i) in mitigationList" :key="i" class="radio-text">
+                            <input :id="mitigation" :checked="i == 0" type="radio" :value="mitigation.value"
+                                name="mitigation" @change="selectedMitigation = mitigation" />
+                            <label :for="mitigation">{{ mitigation.label }}</label>
+                        </div>
+
                     </div>
                 </div>
                 <div class="divider"></div>
                 <div class="cost-of-achieving">
                     <div class="card-top bot-pad">
                         <div class="title">
-                            {{ mitigationCosts ?  'Cost of achieving maximum' :'Maximum'  }} mitigation
+                            Maximum mitigation
                             potential in
                             <span class="selected-collaboration">{{
                                 selectedCountries
                                     .map((country) => country.properties.name)
                                     .join(', ')
                             }}</span>
-                            in autarky vs collaboration
+                            in autarky vs collaboration at {{ selectedMitigation.value.substring(2) }} $/tCO2e
                         </div>
                     </div>
-                    <maximumMitigationPotentialGauge
-                        :countriesList="selectedCountries"
-                        :showMitigationCosts="mitigationCosts" />
+                    <maximumMitigationPotentialGauge :countriesList="selectedCountries"
+                        :mitigationLevel="selectedMitigation.value" />
                 </div>
                 <div class="divider"></div>
                 <div class="coalition-potential">
@@ -132,9 +113,7 @@
                     </class>
                     <div class="country-navigations">
                         <div v-for="country in selectedCountries" :key="country">
-                            <div
-                                @click="emit('country-navigation', country)"
-                                class="small-card statistics-btn">
+                            <div @click="emit('country-navigation', country)" class="small-card statistics-btn">
                                 <div>{{ country.properties.name }}</div>
                                 <forwardIcon width="24" height="24" />
                             </div>
@@ -164,7 +143,29 @@ const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
 const emit = defineEmits(['show-benefits', 'country-navigation']);
 const showComposeCollaborationSet = ref(true);
-const mitigationCosts = ref(true);
+
+
+
+const mitigationList = ref([]);
+const selectedMitigation = ref()
+
+
+
+watch(selectedMitigation, (newMitigation) => {
+    console.log(`new mitigation ${newMitigation.value}`)
+});
+
+onMounted(() => {
+    mitigationList.value = [
+        { label: 'Potential at 0', value: "At0" },
+        { label: 'Potential at 50', value: "At50" },
+        { label: 'Potential at 100', value: "At100" },
+        { label: 'Potential at 200', value: "At200" },
+    ];
+
+    
+    selectedMitigation.value = mitigationList.value[0]
+});
 
 const props = defineProps({
     collaborationCandidatesList: [],
@@ -186,6 +187,8 @@ const getMitPotCollabCountries = (collabCandidate, mitType) => {
         collabCandidate
     )[mitType];
 };
+
+
 </script>
 
 <style scoped>
@@ -447,7 +450,7 @@ const getMitPotCollabCountries = (collabCandidate, mitType) => {
     transition: 0.4s;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     -webkit-transform: translateY(-28px);
     -ms-transform: translateY(-28px);
     transform: translateY(-28px);

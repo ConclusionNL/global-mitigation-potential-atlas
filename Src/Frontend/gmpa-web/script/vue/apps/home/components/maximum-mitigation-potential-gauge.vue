@@ -1,4 +1,5 @@
 ﻿<template>
+    {{ props.mitigationLevel }}
     <div id="svgContainer"></div>
 </template>
 
@@ -9,48 +10,55 @@ import { useCollaborationStore } from '../stores/collaborationStore';
 
 const collaborationStore = useCollaborationStore();
 const props = defineProps({
-      countriesList: []
-    , showMitigationCosts: Boolean
+    countriesList: []
+    , mitigationLevel: ''
 });
 const svgWidth = 420;
 const svgHeight = 180;
 const showMitigationCostsProxy = ref(props.showMitigationCosts);
 const autarkyColor = "darkblue"
-const collaborationColor ="#f07004"
+const collaborationColor = "#f07004"
 
 
 onMounted(() => {
-    setupGauge(props.countriesList, showMitigationCostsProxy.value);
+    setupGauge(props.countriesList, props.mitigationLevel);
 });
 
 
-watch(() => props.showMitigationCosts, (newValue, oldValue) => {
-        setupGauge(props.countriesList, newValue);
-    })
+watch(() => props.mitigationLevel, (newValue, oldValue) => {
+    setupGauge(props.countriesList, newValue);
+})
 
-const setupGauge = async (countriesList, showMitigationCosts) => {
+
+watch(() => props.countriesList, (newValue, oldValue) => {
+    setupGauge(newValue,  props.mitigationLevel);
+})
+
+const setupGauge = async (countriesList, mitigationLevel) => {
     d3
         .select('.chartContainer').remove()
 
     const svg = d3
         .select('#svgContainer')
         .append('svg')
-        .attr('class','chartContainer')
+        .attr('class', 'chartContainer')
         .attr('width', svgWidth)
         .attr('height', svgHeight);
     const data = collaborationStore.getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration(countriesList)
 
-    const costNotPotential = showMitigationCosts
-    const unit = costNotPotential ? '$/tCO2e' : 'MtCO2e'
-    const highValue = costNotPotential ? data.mitigationCostAutarky : data.mitigationPotentialCollaboration;
-    const lowValue = costNotPotential ? data.mitigationCostCollaboration : data.mitigationPotentialAutarky;;
-    const lowValueFillColor = costNotPotential ? collaborationColor:autarkyColor;
-    const highValueFillColor = costNotPotential ? autarkyColor : collaborationColor;
+    const unit = 'MtCO2e'
 
-    const lowValuePrompt = costNotPotential ?  "Collaboration": "Autarky" 
-    const highValuePrompt = costNotPotential ?  "Autarky": "Collaboration" 
-// if the MAX value is very close to the highvalue, the chart is not rendered correctly   
-// const maxValue = costNotPotential ? Math.round(highValue * 0.14) * 10: data.mitigationPotentialCollaborationMax ;
+    const highValue = data[`mitigationPotentialCollaboration${mitigationLevel}`];
+    const lowValue = data[`mitigationPotentialAutarky${mitigationLevel}`];
+
+
+    const lowValueFillColor = autarkyColor;
+    const highValueFillColor = collaborationColor;
+
+    const lowValuePrompt = "Autarky"
+    const highValuePrompt = "Collaboration"
+    // if the MAX value is very close to the highvalue, the chart is not rendered correctly   
+    // const maxValue = costNotPotential ? Math.round(highValue * 0.14) * 10: data.mitigationPotentialCollaborationMax ;
     const maxValue = Math.round(highValue * 0.14) * 10;
 
     const lowPercentage = lowValue / maxValue;
@@ -94,14 +102,14 @@ const setupGauge = async (countriesList, showMitigationCosts) => {
     const lowValueBalloon = balloonArea
         .append('rect')
         .attr('width', balloonWidth)
-        .attr('height', balloonHeight-50)
+        .attr('height', balloonHeight - 50)
         .attr('x', rectWidth * lowPercentage - balloonWidth + 30)
         .attr('y', 57)
         .attr('fill', emptyFillColor)
         .attr('stroke', lowValueFillColor)
         .attr('stroke-width', borderThickness);
 
-        balloonArea
+    balloonArea
         .append('text')
         .text(lowValuePrompt)
         .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
@@ -109,8 +117,8 @@ const setupGauge = async (countriesList, showMitigationCosts) => {
         .attr('x', rectWidth * lowPercentage - 0.5 * balloonWidth + 30)
         .attr('y', 47);
 
-        
-        const balloonUnitArea = balloonArea
+
+    const balloonUnitArea = balloonArea
         .append('rect')
         .attr('width', balloonWidth)
         .attr('height', 40)
@@ -151,14 +159,14 @@ const setupGauge = async (countriesList, showMitigationCosts) => {
     const highValueBalloon = balloonArea
         .append('rect')
         .attr('width', balloonWidth)
-        .attr('height', balloonHeight-50)
+        .attr('height', balloonHeight - 50)
         .attr('x', rectWidth * highPercentage - 30)
         .attr('y', 57)
         .attr('fill', emptyFillColor)
         .attr('stroke', highValueFillColor) // Add a dark blue outline
         .attr('stroke-width', borderThickness); // Adjust the outline width
 
-        balloonArea
+    balloonArea
         .append('text')
         .text(highValuePrompt)
         .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
@@ -166,7 +174,7 @@ const setupGauge = async (countriesList, showMitigationCosts) => {
         .attr('x', rectWidth * highPercentage - 30 + 0.5 * balloonWidth)
         .attr('y', 47);
 
-        // highvalue balloon
+    // highvalue balloon
     balloonArea
         .append('rect')
         .attr('width', balloonWidth)

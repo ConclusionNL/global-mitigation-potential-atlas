@@ -134,9 +134,9 @@ export const useCollaborationStore = defineStore('collaboration', () => {
             const countryRecord = {
                 "Mitigation_Potential(MtCO2e)": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
                 , "Mitigation_Potential(GtCO2e)": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
-                , "Mitigation_Potential(GtCO2e)_at_50": parseFloat(rec["Mitigation_Potential_at_50($/tCO2e)"])
-                , "Mitigation_Potential(GtCO2e)_at_100": parseFloat(rec["Mitigation_Potential_at_100($/tCO2e)"])
-                , "Mitigation_Potential(GtCO2e)_at_200": parseFloat(rec["Mitigation_Potential_at_200($/tCO2e)"])
+                , "Mitigation_Potential(GtCO2e)_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
+                , "Mitigation_Potential(GtCO2e)_at_100": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
+                , "Mitigation_Potential(GtCO2e)_at_200": parseFloat(rec["Mitigation_Potential_at_Average_200($/tCO2e)"])
                 , "Mitigation_Cost($/tCO2e)": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
                 , "Mitigation_Cost($/GtCO2e)": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
                 , "Mitigation_Potential_at_Average_50($/tCO2e)": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
@@ -144,9 +144,10 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 // here are some better names for the heatmap properties
 
                 , "Mitigation_Potential": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
-                , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_50($/tCO2e)"])
-                , "Mitigation_Potential_at_100": parseFloat(rec["Mitigation_Potential_at_100($/tCO2e)"])
-                , "Mitigation_Potential_at_200": parseFloat(rec["Mitigation_Potential_at_200($/tCO2e)"])
+                , "Mitigation_Potential_at_0": parseFloat(rec["Mitigation_Potential_at_Average_0($/tCO2e)"])
+                , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
+                , "Mitigation_Potential_at_100": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
+                , "Mitigation_Potential_at_200": parseFloat(rec["Mitigation_Potential_at_Average_200($/tCO2e)"])
                 , "Mitigation_Cost": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
                 , "Mitigation_Potential_at_Average_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
                 , "BAU_Emissions": parseFloat(rec["BAU_Emissions(MtCO2e)"])
@@ -194,36 +195,31 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
 
     const getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration = (collaboratingCountries) => {
+        const data = {}
         // used for horizontal level gauge in benefits panel
-
         const heatmapData = getHeatmapData()
-        // given an array list of two two letter country codes (for example ['ID','SG']) return an object with four values: 
-        // { mitigationPotentialAutarky: 210, mitigationPotentialCollaboration: 300, mitigationCostAutarky: 50, mitigationCostCollaboration: 30 }
+        // given an array list of two two letter country codes (for example ['ID','SG']) return an object with these values: 
+        // { mitigationPotentialAutarkyAt0 (50, 100, 200): 210, mitigationPotentialCollaborationAt0 (50,100,200): 300
+        // , mitigationPotentialCollaborationMax:300 }
+
         // get country key for selectedCountries 
         const countriesKey = deriveCountryKey(collaboratingCountries.map((country) => country.properties.iso_a2))
-        // get Mitigation_Potential_at_Average_50($/tCO2e), BAU_Emissions(MtCO2e) values for countrykey from heatmap_collaboration 
+
+        const levels = ['0', '50', '100', '200']
+        for (const level of levels) {
+            // for every individual country, get Mitigation_Potential_at_Average_<current value> ($/tCO2e) values for country from heatmap_collaboration 
+            // add the individual country values together to get the autarky value
+            let Mitigation_Potential_sum = 0
+            for (const country of collaboratingCountries) {
+                Mitigation_Potential_sum += heatmapData[country.properties.iso_a2][`Mitigation_Potential_at_${level}`]
+            }
+            data[`mitigationPotentialAutarkyAt${level}`] = Mitigation_Potential_sum
+            data[`mitigationPotentialCollaborationAt${level}`] = parseFloat(heatmapData[countriesKey][`Mitigation_Potential_at_${level}`])            
+        }
+        // BAU_Emissions(MtCO2e) values for countrykey from heatmap_collaboration 
         // this latter value (BAU) provides the maximum value displayed at the far right of the horizontal gauge
-
-        // for every individual country, get Mitigation_Potential_at_Average_50($/tCO2e) values for country from heatmap_collaboration 
-        // add the individual country values together to get the autarky value
-        let Mitigation_Potential_at_Average_50_sum = 0
-        for (const country of collaboratingCountries) {
-            Mitigation_Potential_at_Average_50_sum += heatmapData[country.properties.iso_a2]["Mitigation_Potential_at_Average_50($/tCO2e)"]
-        }
-        console.log(`Mitigation_Potential_at_Average_50_sum ${Mitigation_Potential_at_Average_50_sum}`)
-
-
-        // set object properties based on values  
-
-        return {
-            mitigationPotentialAutarky: Mitigation_Potential_at_Average_50_sum // sum for the individual values of the collaborating countries
-            , mitigationPotentialCollaborationMax: parseFloat(heatmapData[countriesKey]["BAU_Emissions"])
-            , mitigationPotentialCollaboration: parseFloat(heatmapData[countriesKey]["Mitigation_Potential"])
-
-            , mitigationCostAutarky: parseFloat(heatmapData[countriesKey]["Mitigation_Cost"]).toPrecision(3) // this one is not meaningful - TODO has to go?!
-
-            , mitigationCostCollaboration: parseFloat(heatmapData[countriesKey]["Mitigation_Cost"]).toPrecision(3)
-        }
+        data['mitigationPotentialCollaborationMax'] = parseFloat(heatmapData[countriesKey]["BAU_Emissions"])
+        return data
     }
 
     // given the currently selected countries - give the collaboration candidate what it can contribute to the global mitigation (at 50, 100 and 200)
@@ -262,7 +258,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
             // subtract the latter two from the first; 
             data[`mitigationPotentialAt${property}`] = mpCollaborating - mpSelected - mpCountry
         }
-      
+
         return data
     }
 
