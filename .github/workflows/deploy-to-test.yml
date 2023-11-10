@@ -1,9 +1,7 @@
-name: Build and Deploy to DTAP
+name: Build and Deploy to Test
 
 env:
   AZURE_WEBAPP_NAME_TEST: 'App-gmpa-t'
-  AZURE_WEBAPP_NAME_STAGING: 'App-gmpa-a'
-  AZURE_WEBAPP_NAME_PRODUCTION: 'App-gmpa-p'
   AZURE_WEBAPP_PACKAGE_PATH: './Publish'
   PROJECT_FRONTEND: './Src/Frontend/gmpa-web'
   PROJECT_BACKEND: './Src/GMPA.Web'
@@ -11,6 +9,8 @@ env:
   NODE_VERSION: '18.x'
 
 on:
+  push:
+    branches: [ "development" ]
   workflow_dispatch:
 
 permissions:
@@ -92,71 +92,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME_TEST }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-  deploy-staging:
-    permissions:
-      contents: none
-    runs-on: ubuntu-latest
-    needs: deploy-test
-    environment:
-      name: 'Staging'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: .net-app
-
-      - name: Unzip files before uploading
-        run: |
-          mkdir -p ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-          tar -xvzf myapp.tar -C ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --strip-components=1
-
-      #- name: Login to Azure CLI
-      #  uses: azure/login@v1
-      #  with:
-      #    creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME_STAGING }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-  deploy-production:
-    permissions:
-      contents: none
-    runs-on: ubuntu-latest
-    needs: deploy-staging
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: .net-app
-
-      - name: Unzip files before uploading
-        run: |
-          mkdir -p ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-          tar -xvzf myapp.tar -C ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --strip-components=1
-
-      #- name: Login to Azure CLI
-      #  uses: azure/login@v1
-      #  with:
-      #    creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME_PRODUCTION }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
