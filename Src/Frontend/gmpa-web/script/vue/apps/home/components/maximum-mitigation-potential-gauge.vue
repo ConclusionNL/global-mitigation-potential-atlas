@@ -1,5 +1,4 @@
 ﻿<template>
-    {{ props.mitigationLevel }}
     <div id="svgContainer"></div>
 </template>
 
@@ -49,15 +48,25 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .attr('width', chartWidth)
             .attr('height', chartHeight);
 
-        const autarkyBalloon = balloonArea.append('g').attr('transform', `translate(50,0)`)
-        const collaborationBalloon = balloonArea.append('g').attr('transform', `translate(50,0)`)
+        let autarkyTranslate = Math.max(100, rectWidth * lowPercentage)
+        let collaborationTranslate = Math.min(rectWidth - 135, rectWidth * highPercentage - 30)
+
+        if ((collaborationTranslate - autarkyTranslate) < 100) {
+            // too close together
+            if (autarkyTranslate > 500) {
+                autarkyTranslate -= 150
+            } else { collaborationTranslate += 150 }
+        }
+
+        const autarkyBalloon = balloonArea.append('g').attr('transform', `translate(${autarkyTranslate},0)`)
+        const collaborationBalloon = balloonArea.append('g').attr('transform', `translate(${collaborationTranslate},0)`)
 
         // text balloon
         const lowValueBalloon = autarkyBalloon
             .append('rect')
             .attr('width', balloonWidth)
             .attr('height', balloonHeight - 50)
-            .attr('x', rectWidth * lowPercentage - balloonWidth + 30)
+            .attr('x', - balloonWidth + 30)
             .attr('y', 57)
             .attr('fill', emptyFillColor)
             .attr('stroke', lowValueFillColor)
@@ -70,15 +79,15 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .text(lowValuePrompt)
             .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
             .attr('font-size', '24px')
-            .attr('x', rectWidth * lowPercentage - 0.5 * balloonWidth + 30)
+            .attr('x', - 0.5 * balloonWidth + 30)
             .attr('y', 47);
 
 
-        const balloonUnitArea = autarkyBalloon
+        autarkyBalloon
             .append('rect')
             .attr('width', balloonWidth)
             .attr('height', 40)
-            .attr('x', rectWidth * lowPercentage - balloonWidth + 30)
+            .attr('x', - balloonWidth + 30)
             .attr('y', 10 + balloonHeight - 40)
             .attr('fill', lowValueFillColor);
         autarkyBalloon
@@ -86,7 +95,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .text(balloonPrompt)
             .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
             .attr('font-size', '28px')
-            .attr('x', rectWidth * lowPercentage - 0.5 * balloonWidth + 30)
+            .attr('x', - 0.5 * balloonWidth + 30)
             .attr('y', 10 + balloonHeight - 10)
             .attr('fill', 'white');
         autarkyBalloon
@@ -94,19 +103,19 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .text(lowValue)
             .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
             .attr('font-size', '38px')
-            .attr('x', rectWidth * lowPercentage - 0.5 * balloonWidth + 30)
+            .attr('x', - 0.5 * balloonWidth + 30)
             .attr('y', 92);
 
         // Create a symbol generator for triangles
         const triangleSymbol = d3.symbol().type(d3.symbolTriangle);
 
         // Draw a triangle symbol
-        autarkyBalloon
+        balloonArea
             .append('path')
             .attr('d', triangleSymbol.size(300)()) // Adjust the size as needed
             .attr(
                 'transform',
-                `translate(${rectWidth * lowPercentage - 0}, ${balloonHeight + 10 + borderThickness + 3
+                `translate(${Math.max(10, rectWidth * lowPercentage)}, ${balloonHeight + 10 + borderThickness + 3
                 }) rotate(180)`
             ) // Position the triangle
             .attr('fill', lowValueFillColor); // Fill color
@@ -117,7 +126,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .append('rect')
             .attr('width', balloonWidth)
             .attr('height', balloonHeight - 50)
-            .attr('x', rectWidth * highPercentage - 30)
+            .attr('x', 0)
             .attr('y', 57)
             .attr('fill', emptyFillColor)
             .attr('stroke', highValueFillColor) // Add a dark blue outline
@@ -128,7 +137,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .text(highValuePrompt)
             .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
             .attr('font-size', '24px')
-            .attr('x', rectWidth * highPercentage - 30 + 0.5 * balloonWidth)
+            .attr('x', 0.5 * balloonWidth)
             .attr('y', 47);
 
         // highvalue balloon
@@ -136,7 +145,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .append('rect')
             .attr('width', balloonWidth)
             .attr('height', 40)
-            .attr('x', rectWidth * highPercentage - 30)
+            .attr('x', 0)
             .attr('y', 10 + balloonHeight - 40)
             .attr('fill', highValueFillColor);
         collaborationBalloon
@@ -144,7 +153,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .text(balloonPrompt)
             .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
             .attr('font-size', '28px')
-            .attr('x', rectWidth * highPercentage - 30 + 0.5 * balloonWidth)
+            .attr('x', 0.5 * balloonWidth)
             .attr('y', 10 + balloonHeight - 10)
             .attr('fill', 'white');
         collaborationBalloon
@@ -152,16 +161,16 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .text(highValue)
             .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
             .attr('font-size', '38px')
-            .attr('x', rectWidth * highPercentage - 30 + 0.5 * balloonWidth)
+            .attr('x', 0.5 * balloonWidth)
             .attr('y', 92);
 
         // Draw a triangle symbol
-        collaborationBalloon
+        balloonArea
             .append('path')
             .attr('d', triangleSymbol.size(300)()) // Adjust the size as needed
             .attr(
                 'transform',
-                `translate(${rectWidth * highPercentage - 0}, ${balloonHeight + 10 + borderThickness + 3
+                `translate(${Math.max(20, Math.min(rectWidth - 10, rectWidth * highPercentage - 0))}, ${balloonHeight + 10 + borderThickness + 3
                 }) rotate(180)`
             ) // Position the triangle
             .attr('fill', highValueFillColor); // Fill color
@@ -182,11 +191,12 @@ const setupGauge = async (countriesList, mitigationLevel) => {
 
     const unit = 'MtCO2e'
 
-    // TODO remove Math.min and Math.max
-    const highValue = Math.max( data[`mitigationPotentialAutarky${mitigationLevel}`],data[`mitigationPotentialCollaboration${mitigationLevel}`]);
-    const lowValue = Math.min( data[`mitigationPotentialAutarky${mitigationLevel}`],data[`mitigationPotentialCollaboration${mitigationLevel}`]);
-    const maxValue =  Math.max( data['mitigationPotentialCollaborationMax'], 1.1 * highValue);
-    
+    const lowValue = data[`mitigationPotentialAutarky${mitigationLevel}`];
+    const highValue = data[`mitigationPotentialCollaboration${mitigationLevel}`];
+    const maxValue = Math.max(data['mitigationPotentialCollaborationMax'], 1.1 * highValue);
+
+    console.log(`low : ${lowValue} high : ${highValue} max: ${maxValue}`)
+
     // TODO check on values highValue > lowValue  and highValue < maxValue
 
 
@@ -228,21 +238,6 @@ const setupGauge = async (countriesList, mitigationLevel) => {
     const balloonWidth = 130;
     const balloonPrompt = unit;
 
-    chart
-        .append('text')
-        .text(lowValue)
-        .attr('text-anchor', 'start') // Align the text to the end (rightmost) of the rectangle
-        .attr('font-size', '28px')
-        .attr('x', 1) // Adjust the x-coordinate as needed
-        .attr('y', -35 + rectHeight + borderThickness + 70);
-
-    chart
-        .append('text')
-        .text(highValue)
-        .attr('text-anchor', 'end') // Align the text to the end (rightmost) of the rectangle
-        .attr('font-size', '28px')
-        .attr('x', rectWidth) // Adjust the x-coordinate as needed
-        .attr('y', -25 + rectHeight + borderThickness + 70);
 
     drawBalloon()
     let leftCenterX = 0.5 * rectHeight;
@@ -266,6 +261,8 @@ const setupGauge = async (countriesList, mitigationLevel) => {
         .attr('fill', highValueFillColor)
         .attr('stroke', highValueFillColor)
         .attr('stroke-width', borderThickness);
+
+
     leftEnd
         .append('rect')
         .attr('width', rectWidth * lowPercentage)
@@ -350,16 +347,17 @@ const setupGauge = async (countriesList, mitigationLevel) => {
         .attr('stroke', outlineColor)
         .attr('stroke-width', borderThickness);
 
-    chart // empty borderless rectangle on top of (to hide) right border of "empty" rectangle 
-        .append('rect')
-        .attr('width', borderThickness)
-        .attr('height', rectHeight - 2 * borderThickness)
-        .attr('x', rectWidth - 0.5 * rectHeight - borderThickness)
-        .attr('y', borderThickness)
-        .attr('fill', emptyFillColor)
-        .attr('stroke', emptyFillColor)
-        .attr('stroke-width', borderThickness);
-
+    if (highPercentage < (1 - 0.5 * rectHeight / rectWidth)) {
+        chart // empty borderless rectangle on top of (to hide) right border of "empty" rectangle 
+            .append('rect')
+            .attr('width', borderThickness + 2)
+            .attr('height', rectHeight - 2 * borderThickness)
+            .attr('x', rectWidth - 0.5 * rectHeight - borderThickness)
+            .attr('y', borderThickness)
+            .attr('fill', emptyFillColor)
+            .attr('stroke', emptyFillColor)
+            .attr('stroke-width', borderThickness);
+    }
     if (highPercentage > 0.5 * rectHeight / rectWidth) {
         chart
             .append('rect')
@@ -371,7 +369,17 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .attr('stroke', highValueFillColor)
             .attr('stroke-width', borderThickness);
     }
-
+    if (highPercentage < 0.5 * rectHeight / rectWidth) {
+        chart // empty borderless rectangle on top of (to hide) left border of "empty" rectangle 
+            .append('rect')
+            .attr('width', borderThickness + 2)
+            .attr('height', rectHeight - 2 * borderThickness)
+            .attr('x', 0.5 * rectHeight - borderThickness)
+            .attr('y', borderThickness)
+            .attr('fill', emptyFillColor)
+            .attr('stroke', emptyFillColor)
+            .attr('stroke-width', borderThickness);
+    }
     if (lowPercentage > 0.5 * rectHeight / rectWidth) {
         chart
             .append('rect')
