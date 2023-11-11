@@ -218,7 +218,8 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         }
         // BAU_Emissions(MtCO2e) values for countrykey from heatmap_collaboration 
         // this latter value (BAU) provides the maximum value displayed at the far right of the horizontal gauge
-        data['mitigationPotentialCollaborationMax'] = parseFloat(heatmapData[countriesKey]["BAU_Emissions"])
+        // TODO BAU should always be there!!
+        data['mitigationPotentialCollaborationMax'] = heatmapData[countriesKey]["BAU_Emissions"]?parseFloat(heatmapData[countriesKey]["BAU_Emissions"]):1.5*data[`mitigationPotentialCollaborationAt200`]
         return data
     }
 
