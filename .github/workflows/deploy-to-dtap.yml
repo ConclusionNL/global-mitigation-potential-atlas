@@ -12,6 +12,10 @@ env:
 
 on:
   workflow_dispatch:
+    inputs:
+      skip-test:
+        type: boolean
+        description: Skip deploying to the Test-environment
 
 permissions:
   contents: read
@@ -73,11 +77,13 @@ jobs:
 
     steps:
       - name: Download artifact from build job
+        if: ${{ !fromJson(github.event.inputs.skip-test) }} 
         uses: actions/download-artifact@v3
         with:
           name: .net-app
 
       - name: Unzip files before uploading
+        if: ${{ !fromJson(github.event.inputs.skip-test) }} 
         run: |
           mkdir -p ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
           tar -xvzf myapp.tar -C ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --strip-components=1
@@ -88,6 +94,7 @@ jobs:
       #    creds: ${{ secrets.AZURE_SERVICE_PRINCIPAL }}
 
       - name: Deploy to Azure Web App
+        if: ${{ !fromJson(github.event.inputs.skip-test) }} 
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
@@ -114,9 +121,9 @@ jobs:
         run: |
           mkdir -p ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
           tar -xvzf myapp.tar -C ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --strip-components=1
-          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/uSync/Content
-          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/uSync/Media
-          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/media
+          rm -rf ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/v9/Content
+          rm -rf ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/v9/Media
+          rm -rf ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/media
 
       #- name: Login to Azure CLI
       #  uses: azure/login@v1
@@ -150,9 +157,9 @@ jobs:
         run: |
           mkdir -p ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
           tar -xvzf myapp.tar -C ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} --strip-components=1
-          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/uSync/Content
-          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/uSync/Media
-          rm -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/media
+          rm -rf ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/v9/Content
+          rm -rf ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/uSync/v9/Media
+          rm -rf ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/wwwroot/media
 
       #- name: Login to Azure CLI
       #  uses: azure/login@v1
