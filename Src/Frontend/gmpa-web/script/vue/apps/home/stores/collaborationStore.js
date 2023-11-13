@@ -2,11 +2,8 @@
 import { defineStore } from 'pinia';
 import * as d3 from 'd3';
 
-
-import fakeRecords from './fakecollaborationdata.json';
 import combinedAutarkyRecords from './autarky-and-collaboration-data/combined_data_autarky.csv';
 import combinedCollaborationRecords from './autarky-and-collaboration-data/combined_data_collaboration.csv';
-
 
 // these two files contain the finegrained data used for the stacked area chart (mitigation potential diagram) per technology
 import totalAutarkyRecords from './autarky-and-collaboration-data/total_data_autarky.csv';
@@ -19,9 +16,6 @@ import heatmapCollaborationRecords from './autarky-and-collaboration-data/heatma
 import { ref } from 'vue';
 
 export const useCollaborationStore = defineStore('collaboration', () => {
-
-   
-    const fakeDataSet = ref(fakeRecords);
 
     let processedHeatmapData = false
 
@@ -321,7 +315,6 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
 
     return {
-        fakeDataSet,
         dataSet,
         prepareCountryCollaborations,
         findCollaboratingCountries,
