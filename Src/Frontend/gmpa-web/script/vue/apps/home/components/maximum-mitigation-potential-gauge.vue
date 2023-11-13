@@ -51,11 +51,15 @@ const setupGauge = async (countriesList, mitigationLevel) => {
         let autarkyTranslate = Math.max(100, rectWidth * lowPercentage)
         let collaborationTranslate = Math.min(rectWidth - 135, rectWidth * highPercentage - 30)
 
+        // cater for low and high close together
+        // high close to max
+        // high close 0  (compared to max)
         if ((collaborationTranslate - autarkyTranslate) < 100) {
             // too close together
-            if (autarkyTranslate > 500) {
-                autarkyTranslate -= 150
-            } else { collaborationTranslate += 150 }
+            if (autarkyTranslate > 300) {
+                autarkyTranslate -= 30
+                collaborationTranslate += 17
+            } else { collaborationTranslate += 30 }
         }
 
         const autarkyBalloon = balloonArea.append('g').attr('transform', `translate(${autarkyTranslate},0)`)
@@ -240,7 +244,6 @@ const setupGauge = async (countriesList, mitigationLevel) => {
 
 
     drawBalloon()
-    let leftCenterX = 0.5 * rectHeight;
     let centerY = 0.5 * rectHeight; // Y-coordinate of the center
     let radius = 0.5 * rectHeight - 0.5 * borderThickness; // Radius of the semicircle
 

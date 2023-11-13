@@ -4,7 +4,6 @@ import * as d3 from 'd3';
 
 
 import fakeRecords from './fakecollaborationdata.json';
-import combinedAutarkyAndCollabRecords from './combined_data_autarky.csv';
 import combinedAutarkyRecords from './autarky-and-collaboration-data/combined_data_autarky.csv';
 import combinedCollaborationRecords from './autarky-and-collaboration-data/combined_data_collaboration.csv';
 
@@ -12,14 +11,16 @@ import combinedCollaborationRecords from './autarky-and-collaboration-data/combi
 // these two files contain the finegrained data used for the stacked area chart (mitigation potential diagram) per technology
 import totalAutarkyRecords from './autarky-and-collaboration-data/total_data_autarky.csv';
 import totalCollaborationRecords from './autarky-and-collaboration-data/total_data_collaboration.csv';
+// this file contains finegrained data per country with detailed national modelling data
+import totalDetailedNationalModellingRecords from './autarky-and-collaboration-data/total_data.csv';
+
 
 import heatmapCollaborationRecords from './autarky-and-collaboration-data/heatmap_collaboration.csv';
 import { ref } from 'vue';
 
 export const useCollaborationStore = defineStore('collaboration', () => {
 
-    const combinedCollaborationData = ref(combinedAutarkyAndCollabRecords); // aggregates per country collaboration set - both autarky and collaboration, both costs and emission reduction
-
+   
     const fakeDataSet = ref(fakeRecords);
 
     let processedHeatmapData = false
@@ -58,7 +59,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
 
     const prepareTotalDataFromFiles = () => {
-        function prepareTotalDataFromRecords(collaborationOrAutarky, records) {
+        function prepareTotalDataFromRecords(dataSetType, records) {
             const data = {}
             for (const rec of records) {
                 const countries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
@@ -109,15 +110,16 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
 
                 if (!totalData[countryCombination]) {
-                    totalData[countryCombination] = { "collaboration": [], "autarky": [] }
+                    totalData[countryCombination] = { "collaboration": [], "autarky": [] , "detailedNationalModelling":[]}
                 }
-                totalData[countryCombination][collaborationOrAutarky] = dataArray
+                totalData[countryCombination][dataSetType] = dataArray
             }
 
         }
         prepareTotalDataFromRecords("autarky", totalAutarkyRecords)
         prepareTotalDataFromRecords("collaboration", totalCollaborationRecords)
-        console.log('done')
+        prepareTotalDataFromRecords("detailedNationalModelling", totalDetailedNationalModellingRecords)
+        
     }
 
     const getHeatmapData = () => {
@@ -132,18 +134,18 @@ export const useCollaborationStore = defineStore('collaboration', () => {
             const countries = [rec.country_1, rec.country_2, rec.country_3, rec.country_4]
             const countriesKey = deriveCountryKey(countries)
             const countryRecord = {
-                "Mitigation_Potential(MtCO2e)": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
-                , "Mitigation_Potential(GtCO2e)": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
-                , "Mitigation_Potential(GtCO2e)_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
-                , "Mitigation_Potential(GtCO2e)_at_100": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
-                , "Mitigation_Potential(GtCO2e)_at_200": parseFloat(rec["Mitigation_Potential_at_Average_200($/tCO2e)"])
-                , "Mitigation_Cost($/tCO2e)": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
-                , "Mitigation_Cost($/GtCO2e)": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
-                , "Mitigation_Potential_at_Average_50($/tCO2e)": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
-                , "BAU_Emissions(MtCO2e)": parseFloat(rec["BAU_Emissions(MtCO2e)"])
+                // "Mitigation_Potential(MtCO2e)": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
+                // , "Mitigation_Potential(GtCO2e)": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
+                // , "Mitigation_Potential(GtCO2e)_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
+                // , "Mitigation_Potential(GtCO2e)_at_100": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
+                // , "Mitigation_Potential(GtCO2e)_at_200": parseFloat(rec["Mitigation_Potential_at_Average_200($/tCO2e)"])
+                // , "Mitigation_Cost($/tCO2e)": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
+                // , "Mitigation_Cost($/GtCO2e)": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
+                // , "Mitigation_Potential_at_Average_50($/tCO2e)": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
+                // , "BAU_Emissions(MtCO2e)": parseFloat(rec["BAU_Emissions(MtCO2e)"])
                 // here are some better names for the heatmap properties
 
-                , "Mitigation_Potential": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
+                 "Mitigation_Potential": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
                 , "Mitigation_Potential_at_0": parseFloat(rec["Mitigation_Potential_at_Average_0($/tCO2e)"])
                 , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
                 , "Mitigation_Potential_at_100": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
@@ -323,7 +325,6 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         dataSet,
         prepareCountryCollaborations,
         findCollaboratingCountries,
-        combinedCollaborationData,
         getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration,
         getMitigationPotentialContributionsForCollaborationCandidate,
         getCombinedData,

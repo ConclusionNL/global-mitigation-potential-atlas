@@ -14,32 +14,34 @@ const collaborationStore = useCollaborationStore();
 const emit = defineEmits(['technology-selected']);
 
 const props = defineProps({
-    collaborationCountriesList: [], autarky : Boolean
+    collaborationCountriesList: [], dataSetType : String
 });
 watch(
     () => props.collaborationCountriesList,
     (newValue, oldValue) => {
-        setupDiagram(newValue, props.autarky);
+        setupDiagram(newValue, props.dataSetType);
     }
 );
 
 watch(
-    () => props.autarky,
+    () => props.dataSetType,
     (newValue, oldValue) => {
         setupDiagram(props.collaborationCountriesList, newValue);
     }
 );
 
 onMounted(() => {
-    setupDiagram(props.collaborationCountriesList, props.autarky);
+    setupDiagram(props.collaborationCountriesList, props.dataSetType);
 })
 let color
-const setupDiagram = async (collaborationCountriesList, autarky) => {
-
+const setupDiagram = async (collaborationCountriesList, dataSetType) => {
+    const isDetailedNationalModelling = collaborationCountriesList.length==1 && collaborationCountriesList[0]['DNM']
+    console.log(`isDetailedNationalModelling ${isDetailedNationalModelling}`)
+    if (isDetailedNationalModelling) {
+        console.log(`get data from total_data.csv`)
+    }
     const countriesKey = collaborationCountriesList.map((country) => country.properties.iso_a2).sort().join('')
-    const data = autarky ? collaborationStore.getTotalData()[countriesKey].autarky
-    :collaborationStore.getTotalData()[countriesKey].collaboration
-
+    const data = collaborationStore.getTotalData()[countriesKey][dataSetType]
 
     if (data.length==0){
         // remove existing charts
