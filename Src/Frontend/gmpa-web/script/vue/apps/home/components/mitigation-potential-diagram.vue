@@ -3,18 +3,25 @@
         <span class="selected-collaboration">{{ selectedCollaboration }}</span
         >'s Mitigation Potential Diagram 2030/2050
     </h1>
-    <div v-if="countriesList.length > 1">
-        <label for="countrySelect">Select one Country, Full collaboration or Autarky:</label>
+    <div v-if="countriesList.length > 0">
+        <label for="countryDataSetSelect" v-if="countriesList.length > 1">Select one Country, Full collaboration or Autarky:</label>
+        <label for="countryDataSetSelect" v-else>Select Overall or Detailed National Modelling:</label>
         <select
-            id="countrySelect"
-            v-model="selectedCountry"
-            @change="handleCountryChange"
+            id="countryDataSetSelect"
+            v-model="selectedCountryDataSet"
+            @change="handleCountryDataSetChange"
             class="select-element">
             <option
-                v-for="option in selectListOptions.concat(
+                v-for="option in (countriesList.length> 1? selectListOptions:[])
+                .concat(
                     countriesList.map((country) => ({
                         label: country.properties.name,
                         value: country,
+                    })))
+                .concat(
+                    countriesList.map((country) => ({
+                        label: `${country.properties.name } - Detailed National Modelling`,
+                        value: {...country,'DNM':true}
                     }))
                 )"
                 :value="option.value">
@@ -23,7 +30,7 @@
         </select>
     </div>
     <collaborationStackedAreaChart
-        :collaborationCountriesList="collaborationCountriesList" :autarky="showAutarky"
+        :collaborationCountriesList="collaborationCountriesList" :dataSetType="dataSetTypeToShow"
         @technologySelected="handleTechnologySelected" />
 </template>
 
@@ -42,24 +49,28 @@ const handleTechnologySelected = (payload) => {
     emit('technology-selected', payload);
 };
 
-const selectedCountry = ref('all' );
+const selectedCountryDataSet = ref('all' );
 const selectListOptions = ref([{ label: 'Full Collaboration', value: 'all' }, { label: 'Autarky', value: 'all-autarky' }]);
 
 const selectedCollaboration = computed(() => {
-    if (selectedCountry.value == 'all' || selectedCountry.value.value == 'all'
-    || selectedCountry.value == 'all-autarky' || selectedCountry.value.value == 'all-autarky') {
+    if (selectedCountryDataSet.value == 'all' || selectedCountryDataSet.value.value == 'all'
+    || selectedCountryDataSet.value == 'all-autarky' || selectedCountryDataSet.value.value == 'all-autarky') {
         return props.countriesList.map((country) => country.properties.name).join(', ');
-    } else return selectedCountry.value.properties.name;
+    } else return selectedCountryDataSet.value.properties.name;
 });
 
 const collaborationCountriesList = computed(() => {
-    if (selectedCountry.value == 'all' || selectedCountry.value.value == 'all'  || selectedCountry.value == 'all-autarky' || selectedCountry.value.value == 'all-autarky')  {
+    if (selectedCountryDataSet.value == 'all' || selectedCountryDataSet.value.value == 'all'  || selectedCountryDataSet.value == 'all-autarky' || selectedCountryDataSet.value.value == 'all-autarky')  {
         return props.countriesList;
-    } else return [selectedCountry.value];
+    } else return [selectedCountryDataSet.value];
 });
 
-const showAutarky = computed(() => {
-    return (selectedCountry.value == 'all-autarky' || selectedCountry.value.value == 'all-autarky') 
+const dataSetTypeToShow = computed(() => {
+    let dataSetType ="collaboration"
+    if (selectedCountryDataSet.value == 'all-autarky' || selectedCountryDataSet.value.value == 'all-autarky')  dataSetType = "autarky"
+    if (selectedCountryDataSet.value['DNM'] ){dataSetType ="detailedNationalModelling"}
+    console.log(`data set type ${dataSetType}`)
+    return dataSetType;
     
 });
 </script>
