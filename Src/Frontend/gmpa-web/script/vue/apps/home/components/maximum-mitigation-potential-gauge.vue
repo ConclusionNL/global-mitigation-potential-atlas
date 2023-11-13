@@ -48,68 +48,71 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .attr('width', chartWidth)
             .attr('height', chartHeight);
 
-        let autarkyTranslate = Math.max(100, rectWidth * lowPercentage)
-        let collaborationTranslate = Math.min(rectWidth - 135, rectWidth * highPercentage - 30)
+        let autarkyTranslate = Math.min( rectWidth - 2* balloonWidth - 10, Math.max(rectWidth * lowPercentage - balloonWidth+10,3))
+        let collaborationTranslate = Math.max( Math.min( rectWidth * highPercentage - 10, rectWidth- balloonWidth-3),  balloonWidth+10)
 
-        // cater for low and high close together
-        // high close to max
-        // high close 0  (compared to max)
-        if ((collaborationTranslate - autarkyTranslate) < 100) {
-            // too close together
-            if (autarkyTranslate > 300) {
-                autarkyTranslate -= 30
-                collaborationTranslate += 17
-            } else { collaborationTranslate += 30 }
-        }
+        // // cater for low and high close together
+        // // high close to max
+        // // high close 0  (compared to max)
+        // if ((collaborationTranslate - autarkyTranslate) < 100) {
+        //     // too close together
+        //     if (autarkyTranslate > 300) {
+        //         autarkyTranslate -= 30
+        //         collaborationTranslate += 17
+        //     } else { collaborationTranslate += 30 }
+        // }
 
         const autarkyBalloon = balloonArea.append('g').attr('transform', `translate(${autarkyTranslate},0)`)
         const collaborationBalloon = balloonArea.append('g').attr('transform', `translate(${collaborationTranslate},0)`)
 
-        // text balloon
-        const lowValueBalloon = autarkyBalloon
-            .append('rect')
-            .attr('width', balloonWidth)
-            .attr('height', balloonHeight - 50)
-            .attr('x', - balloonWidth + 30)
-            .attr('y', 57)
-            .attr('fill', emptyFillColor)
-            .attr('stroke', lowValueFillColor)
-            .attr('stroke-width', borderThickness)
+        const createBalloon = (balloonGroup,value, prompt, valueFillColor) => {
+            // text balloon
+            balloonGroup
+                .append('rect')
+                .attr('width', balloonWidth)
+                .attr('height', balloonHeight - 50)
+                .attr('x', 0)
+                .attr('y', 57)
+                .attr('fill', emptyFillColor)
+                .attr('stroke', valueFillColor)
+                .attr('stroke-width', borderThickness)
 
-            ;
+                ;
 
-        autarkyBalloon
-            .append('text')
-            .text(lowValuePrompt)
-            .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
-            .attr('font-size', '24px')
-            .attr('x', - 0.5 * balloonWidth + 30)
-            .attr('y', 47);
+            balloonGroup
+                .append('text')
+                .text(prompt)
+                .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
+                .attr('font-size', '24px')
+                .attr('x', 0.5 * balloonWidth)
+                .attr('y', 47);
 
 
-        autarkyBalloon
-            .append('rect')
-            .attr('width', balloonWidth)
-            .attr('height', 40)
-            .attr('x', - balloonWidth + 30)
-            .attr('y', 10 + balloonHeight - 40)
-            .attr('fill', lowValueFillColor);
-        autarkyBalloon
-            .append('text')
-            .text(balloonPrompt)
-            .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
-            .attr('font-size', '28px')
-            .attr('x', - 0.5 * balloonWidth + 30)
-            .attr('y', 10 + balloonHeight - 10)
-            .attr('fill', 'white');
-        autarkyBalloon
-            .append('text')
-            .text(lowValue)
-            .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
-            .attr('font-size', '38px')
-            .attr('x', - 0.5 * balloonWidth + 30)
-            .attr('y', 92);
-
+            balloonGroup
+                .append('rect')
+                .attr('width', balloonWidth)
+                .attr('height', 40)
+                .attr('x', 0)
+                .attr('y', 10 + balloonHeight - 40)
+                .attr('fill', valueFillColor);
+            balloonGroup
+                .append('text')
+                .text(balloonUnitPrompt)
+                .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
+                .attr('font-size', '28px')
+                .attr('x', 0.5 * balloonWidth)
+                .attr('y', 10 + balloonHeight - 10)
+                .attr('fill', 'white');
+            balloonGroup
+                .append('text')
+                .text(value)
+                .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
+                .attr('font-size', '38px')
+                .attr('x', 0.5 * balloonWidth)
+                .attr('y', 92);
+        }
+        createBalloon(autarkyBalloon,lowValue,lowValuePrompt, lowValueFillColor)
+        createBalloon(collaborationBalloon,highValue,highValuePrompt, highValueFillColor)
         // Create a symbol generator for triangles
         const triangleSymbol = d3.symbol().type(d3.symbolTriangle);
 
@@ -124,49 +127,6 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             ) // Position the triangle
             .attr('fill', lowValueFillColor); // Fill color
 
-
-        // text balloon
-        const highValueBalloon = collaborationBalloon
-            .append('rect')
-            .attr('width', balloonWidth)
-            .attr('height', balloonHeight - 50)
-            .attr('x', 0)
-            .attr('y', 57)
-            .attr('fill', emptyFillColor)
-            .attr('stroke', highValueFillColor) // Add a dark blue outline
-            .attr('stroke-width', borderThickness); // Adjust the outline width
-
-        collaborationBalloon
-            .append('text')
-            .text(highValuePrompt)
-            .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
-            .attr('font-size', '24px')
-            .attr('x', 0.5 * balloonWidth)
-            .attr('y', 47);
-
-        // highvalue balloon
-        collaborationBalloon
-            .append('rect')
-            .attr('width', balloonWidth)
-            .attr('height', 40)
-            .attr('x', 0)
-            .attr('y', 10 + balloonHeight - 40)
-            .attr('fill', highValueFillColor);
-        collaborationBalloon
-            .append('text')
-            .text(balloonPrompt)
-            .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
-            .attr('font-size', '28px')
-            .attr('x', 0.5 * balloonWidth)
-            .attr('y', 10 + balloonHeight - 10)
-            .attr('fill', 'white');
-        collaborationBalloon
-            .append('text')
-            .text(highValue)
-            .attr('text-anchor', 'middle') // Align the text to the end (rightmost) of the rectangle
-            .attr('font-size', '38px')
-            .attr('x', 0.5 * balloonWidth)
-            .attr('y', 92);
 
         // Draw a triangle symbol
         balloonArea
@@ -198,12 +158,13 @@ const setupGauge = async (countriesList, mitigationLevel) => {
     const lowValue = data[`mitigationPotentialAutarky${mitigationLevel}`];
     const highValue = data[`mitigationPotentialCollaboration${mitigationLevel}`];
     const maxValue = Math.max(data['mitigationPotentialCollaborationMax'], 1.1 * highValue);
+    // const lowValue = 0.2
+    // const highValue = 0.4
+    // const maxValue = 10
 
     console.log(`low : ${lowValue} high : ${highValue} max: ${maxValue}`)
 
     // TODO check on values highValue > lowValue  and highValue < maxValue
-
-
     const lowValueFillColor = autarkyColor;
     const highValueFillColor = collaborationColor;
 
@@ -240,7 +201,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
 
     const balloonHeight = 130;
     const balloonWidth = 130;
-    const balloonPrompt = unit;
+    const balloonUnitPrompt = unit;
 
 
     drawBalloon()
