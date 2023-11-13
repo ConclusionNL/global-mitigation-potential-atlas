@@ -163,56 +163,68 @@
 </div>
 
 <script>
+    // Selectors for DOM elements
     var toggleButtons = document.querySelectorAll('.toggle-container');
     var strategyItems = document.querySelectorAll('.strategy-item');
     var policyItems = document.querySelectorAll('.policy-item');
     var countryDropdown = document.getElementById('pilotCountryFilter');
     var sectorDropdown = document.getElementById('filterSector');
 
-    countryDropdown.addEventListener('change', function () {
-        var selectedCountry = this.value;
-        updateContent(selectedCountry);
-    });
+    // Function to filter policies based on selected country and sector
+    function filterPolicies() {
+        var selectedCountry = countryDropdown.value;
+        var selectedSector = sectorDropdown.value;
 
-    sectorDropdown.addEventListener('change', function () {
-        var selectedSector = this.value;
-        filterPolicyInventory(selectedSector);
-    });
-
-    function updateContent(selectedCountry) {
+        // Filter strategies based on selected country
         strategyItems.forEach(function (item) {
             var country = item.dataset.fromCountry;
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
 
+        // Filter policies based on selected country and sector
         policyItems.forEach(function (item) {
             var country = item.dataset.fromCountry;
-            item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
+            var sector = item.dataset.sector;
+            var itemElement = item.closest('.policy-item');
+
+            if ((selectedCountry === '' || country === selectedCountry) &&
+                (selectedSector === '' || sector === selectedSector)) {
+                itemElement.classList.remove('hidden');
+            } else {
+                itemElement.classList.add('hidden');
+            }
         });
     }
 
-    function getQueryParam(name) {
-        var urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name);
-    }
+    // Event listener for country dropdown change
+    countryDropdown.addEventListener('change', filterPolicies);
 
+    // Event listener for sector dropdown change
+    sectorDropdown.addEventListener('change', filterPolicies);
+
+    // Function to initialize content based on query parameter
     function initializeContent() {
         var paramName = 'country';
         var selectedCountry = getQueryParam(paramName);
+
+        // Set selected country and filter policies
         if (selectedCountry !== null) {
             countryDropdown.value = selectedCountry;
-            updateContent(selectedCountry);
+            filterPolicies();
         }
     }
 
+    // Initialize content on page load
     initializeContent();
 
+    // Event listeners for toggle buttons
     toggleButtons.forEach(button => {
         button.addEventListener('click', function () {
             var targetId = this.getAttribute('data-target');
             var targetElement = document.getElementById(targetId);
             var sectorFilterContainer = document.getElementById('sectorFilter');
 
+            // Hide all content containers
             document.querySelectorAll('.toggle-content').forEach(container => {
                 container.classList.add('hidden');
             });
@@ -220,31 +232,23 @@
             sectorFilterContainer.classList.add('hidden');
             sectorDropdown.value = ''; // Reset sector dropdown when toggling between views
 
+            // Show the selected content container
             targetElement.classList.remove('hidden');
 
+            // Show sector filter container for PolicyInventory view
             if (targetId === 'PolicyInventory') {
                 sectorFilterContainer.classList.remove('hidden');
             }
         });
     });
 
-    function filterPolicyInventory(selectedSector) {
-        policyItems.forEach(function (item) {
-            var sector = item.dataset.sector;
-            var itemElement = item.closest('.policy-item'); // Get the parent policy item element
-
-            console.log(item.dataset);
-
-            if (selectedSector === '' || sector === selectedSector) {
-                itemElement.classList.remove('hidden'); // Show the item if it matches the selected sector or no sector is selected
-            } else {
-                itemElement.classList.add('hidden'); // Hide the item if it doesn't match the selected sector
-            }
-        });
-
+    // Function to get query parameter from URL
+    function getQueryParam(name) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
     }
-
 </script>
+
 
 <style>
     .divider {
