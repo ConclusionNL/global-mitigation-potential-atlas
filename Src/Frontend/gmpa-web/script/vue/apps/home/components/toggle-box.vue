@@ -22,7 +22,7 @@ watch(selectedMitigation, (newMitigation) => {
 onMounted(() => {
     mitigationList.value = [
     {label: 'None', value:"None"},
-    {label: 'Mitigation Potential (MtCO2e)', value:"Mitigation_Potential(GtCO2e)"},
+    {label: 'Mitigation Potential (MtCO2e)', value:"Mitigation_Potential"},
     {label: 'Mitigation Potential (MtCO2e) at 0', value:"Mitigation_Potential_at_0"},
     {label: 'Mitigation Potential (MtCO2e) at 50', value:"Mitigation_Potential_at_50"},
     {label: 'Mitigation Potential (MtCO2e) at 100', value:"Mitigation_Potential_at_100"},
