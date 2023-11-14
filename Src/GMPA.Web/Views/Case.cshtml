@@ -8,7 +8,7 @@
     <h3 class="sectorTag">Sector: @Model.SectorTag</h3>
     <p>@Model.CaseIntro</p>
 
-    <div id="traction">
+    <div class="divider" id="traction">
         @{
             <h2>Traction</h2>
             foreach (var countryContext in Model.CaseCountryContextBlock)
@@ -19,7 +19,7 @@
         }
     </div>
 
-    <div id="policies">
+    <div class="divider" id="policies">
         @{
             <div data-bs-toggle="collapse" data-bs-target="#PolicyTab" aria-expanded="false" aria-controls="PolicyTab">
                 <h2 class="policy">Policies (Tab)</h2>
@@ -179,8 +179,9 @@
         }
     </div>
 
-    <div id="LockIn">
+    <div class="divider" id="LockIn">
         @{
+            <h2>Lock-ins</h2>
             var positiveCases = @Model.CaseLockInBlock
             .Where(a => a.NegativePositive);
             var negativeCases = @Model.CaseLockInBlock
@@ -188,7 +189,7 @@
 
             if (positiveCases.Count() != 0)
             {
-                <h2>Positive Lock-Ins</h2>
+                <h3>Positive Lock-ins</h3>
                 @foreach (var positiveLock in positiveCases)
                 {
                     <div>
@@ -200,7 +201,7 @@
 
             if (negativeCases.Count() != 0)
             {
-                <h2>Negative Lock-Ins</h2>
+                <h3>Negative Lock-ins</h3>
                 @foreach (var negativeLock in negativeCases)
                 {
                     <div>
@@ -283,7 +284,6 @@
 
     .policy {
         cursor: pointer;
-        border-bottom: 1px solid #000000
     }
 
     .reference-section h6 {
@@ -293,4 +293,19 @@
     .reference-item {
         margin-bottom: 10px;
     }
+
+    .divider {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 75%;
+            border-bottom: 1px solid gray;
+        }
 </style>
