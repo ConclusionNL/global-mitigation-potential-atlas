@@ -111,8 +111,8 @@ const setupGauge = async (countriesList, mitigationLevel) => {
                 .attr('x', 0.5 * balloonWidth)
                 .attr('y', 92);
         }
-        createBalloon(autarkyBalloon,lowValue,lowValuePrompt, lowValueFillColor)
-        createBalloon(collaborationBalloon,highValue,highValuePrompt, highValueFillColor)
+        createBalloon(autarkyBalloon,lowValue.toFixed(1),lowValuePrompt, lowValueFillColor)
+        createBalloon(collaborationBalloon,highValue.toFixed(1),highValuePrompt, highValueFillColor)
         // Create a symbol generator for triangles
         const triangleSymbol = d3.symbol().type(d3.symbolTriangle);
 
@@ -157,7 +157,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
 
     const lowValue = data[`mitigationPotentialAutarky${mitigationLevel}`];
     const highValue = data[`mitigationPotentialCollaboration${mitigationLevel}`];
-    const maxValue = Math.max(data['mitigationPotentialCollaborationMax'], 1.1 * highValue);
+    const maxValue = data['mitigationPotentialCollaborationMax'];
     // const lowValue = 0.2
     // const highValue = 0.4
     // const maxValue = 10
@@ -347,7 +347,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
     if (lowPercentage > 0.5 * rectHeight / rectWidth) {
         chart
             .append('rect')
-            .attr('width', rectWidth * lowPercentage - 0.5 * rectHeight)
+            .attr('width', Math.min(rectWidth * lowPercentage - 0.5 * rectHeight, rectWidth - rectHeight))
             .attr('height', rectHeight)
             .attr('x', 0.5 * rectHeight)
             .attr('fill', lowValueFillColor)
@@ -367,7 +367,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
 
     chart
         .append('text')
-        .text(maxValue)
+        .text(parseFloat(maxValue).toFixed(1))
         .attr('text-anchor', 'end') // Align the text to the end (rightmost) of the rectangle
         .attr('font-size', '48px')
         .attr('x', rectWidth) // Adjust the x-coordinate as needed

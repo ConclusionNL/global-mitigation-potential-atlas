@@ -144,9 +144,9 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
                 , "Mitigation_Potential_at_100": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
                 , "Mitigation_Potential_at_200": parseFloat(rec["Mitigation_Potential_at_Average_200($/tCO2e)"])
-                , "Mitigation_Cost": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
                 , "Mitigation_Potential_at_Average_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
-                , "BAU_Emissions": parseFloat(rec["BAU_Emissions(MtCO2e)"])
+                , "BAU_Emissions": parseFloat(rec["BAU_Emissions(MtCO2e)"]).toFixed(1)
+                , "mitigationPotentialCollaborationMax": rec["BAU_Emissions(MtCO2e)"]
             }
             heatmapCollaborationData[countriesKey] = countryRecord
         }
@@ -210,12 +210,9 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 Mitigation_Potential_sum += heatmapData[country.properties.iso_a2][`Mitigation_Potential_at_${level}`]
             }
             data[`mitigationPotentialAutarkyAt${level}`] = Mitigation_Potential_sum
-            data[`mitigationPotentialCollaborationAt${level}`] = parseFloat(heatmapData[countriesKey][`Mitigation_Potential_at_${level}`])            
+            data[`mitigationPotentialCollaborationAt${level}`] = heatmapData[countriesKey][`Mitigation_Potential_at_${level}`]           
         }
-        // BAU_Emissions(MtCO2e) values for countrykey from heatmap_collaboration 
-        // this latter value (BAU) provides the maximum value displayed at the far right of the horizontal gauge
-        // TODO BAU should always be there!!
-            data['mitigationPotentialCollaborationMax'] = heatmapData[countriesKey]["BAU_Emissions(MtCO2e)"]?parseFloat(heatmapData[countriesKey]["BAU_Emissions(MtCO2e)"]):1.5*data[`mitigationPotentialCollaborationAt200`]
+        data['mitigationPotentialCollaborationMax'] = heatmapData[countriesKey]["mitigationPotentialCollaborationMax"]
         return data
     }
 

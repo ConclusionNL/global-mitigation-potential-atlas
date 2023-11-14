@@ -185,7 +185,7 @@ const getMitPotCollabCountries = (collabCandidate, mitType) => {
     return collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(
         selectedCountries.value,
         collabCandidate
-    )[mitType];
+    )[mitType].toFixed(1);
 };
 
 
