@@ -3,250 +3,252 @@
     Layout = "Main.cshtml";
 }
 
-<h1>@Model.PageTitle</h1>
-<h3 class="sectorTag">Sector: @Model.SectorTag</h3>
-<p>@Model.CaseIntro</p>
+<div class="container">
+    <h1>@Model.PageTitle</h1>
+    <h3 class="sectorTag">Sector: @Model.SectorTag</h3>
+    <p>@Model.CaseIntro</p>
 
-<div id="traction">
-    @{
-        <h2>Traction</h2>
-        foreach (var countryContext in Model.CaseCountryContextBlock)
-        {
-            <h4>@countryContext.Traction</h4>
-            @Html.Raw(countryContext.TractionDescription)
-        }
-    }
-</div>
-
-<div id="policies">
-    @{
-        <div data-bs-toggle="collapse" data-bs-target="#PolicyTab" aria-expanded="false" aria-controls="PolicyTab">
-            <h2 class="policy">Policies (Tab)</h2>
-        </div>
-        <div class="collapse" id="PolicyTab">
-            @foreach (var casePolicy in Model.CasePolicyBlock)
-            {
-                <h4>@casePolicy.Title</h4>
-                <p>@Html.Raw(casePolicy.InstrumentText)</p>
-                <div style="padding: 10px">
-                    <h5>Policy Impact</h5>
-                    @if (casePolicy.ImpactLevel != "")
-                    {
-                        <div>
-                            Level: @casePolicy.ImpactLevel
-                        </div>
-                    }
-                    else
-                    {
-                        <div>
-                            Level: TBD
-                        </div>
-                    }
-                    @if (casePolicy.ImpactEvaluation != "")
-                    {
-                        <div>
-                            Evaluation: @casePolicy.ImpactEvaluation
-                        </div>
-                    }
-                    else
-                    {
-                        <div>
-                            Evaluation: TBD
-                        </div>
-                    }
-                    @if (casePolicy.ImpactIndicator != "")
-                    {
-                        <div>
-                            Indicator: @Html.Raw(casePolicy.ImpactIndicator)
-                        </div>
-                    }
-                    else
-                    {
-                        <div>
-                            Indicator: TBD
-                        </div>
-                    }
-                </div>
-
-                <div class="row">
-                    <div class="col-1">
-                        <div class="tagName">
-                            Policy Decision
-                        </div>
-                        <div class="tags">
-                            @casePolicy.PolicyDecision
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Policy Origin
-                        </div>
-                        <div class="tags">
-                            @casePolicy.PolicyOrigin
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Type of Policy
-                        </div>
-                        <div class="tags">
-                            @casePolicy.TypeOfPolicyInstrument
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Jurisdiction
-                        </div>
-                        <div class="tags">
-                            @casePolicy.Jurisdiction
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Enforcement level
-                        </div>
-                        <div class="tags">
-                            @casePolicy.EnforcementLevel
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Sectoral coverage
-                        </div>
-                        <div class="tags">
-                            @casePolicy.SectoralCoverage
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Target group
-                        </div>
-                        <div class="tags">
-                            @casePolicy.TargetGroup
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Institutional requirement
-                        </div>
-                        <div class="tags">
-                            @casePolicy.InstitutionalRequirement
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Implementation status
-                        </div>
-                        <div class="tags">
-                            @casePolicy.ImplementationStatus
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Monitoring and evaluation
-                        </div>
-                        <div class="tags">
-                            @casePolicy.MonitoringAndEvaluation
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            Start date of implementation
-                        </div>
-                        <div class="tags">
-                            @casePolicy.StartDate
-                        </div>
-                    </div>
-                    <div class="col-1 tags">
-                        <div class="tagName">
-                            End date of implementation
-                        </div>
-                        <div class="tags">
-                            @if (casePolicy.EndDate != "1/1/1")
-                            {
-                                @casePolicy.EndDate
-                            }
-                            else
-                            {
-                                <div>Ongoing</div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
-</div>
-
-<div id="LockIn">
-    @{
-        var positiveCases = @Model.CaseLockInBlock
-        .Where(a => a.NegativePositive);
-        var negativeCases = @Model.CaseLockInBlock
-        .Where(a => !a.NegativePositive);
-
-        if (positiveCases.Count() != 0)
-        {
-            <h2>Positive Lock-Ins</h2>
-            @foreach (var positiveLock in positiveCases)
-            {
-                <div>
-                    <h4>@positiveLock.LockInType</h4>
-                    @Html.Raw(positiveLock.BodyText)
-                </div>
-            }
-        }
-
-        if (negativeCases.Count() != 0)
-        {
-            <h2>Negative Lock-Ins</h2>
-            @foreach (var negativeLock in negativeCases)
-            {
-                <div>
-                    <h4>@negativeLock.LockInType</h4>
-                    @Html.Raw(negativeLock.BodyText)
-                </div>
-            }
-        }
-    }
-</div>
-
-<div id="tag List">
-    <h2>Tags</h2>
-    <ul class="tagList">
+    <div id="traction">
         @{
-            foreach (var tag in Model.TagsList)
+            <h2>Traction</h2>
+            foreach (var countryContext in Model.CaseCountryContextBlock)
             {
-                <li>@tag</li>
+                <h4>@countryContext.Traction</h4>
+                @Html.Raw(countryContext.TractionDescription)
             }
         }
-    </ul>
-</div>
+    </div>
 
-@{
-    if (Model.CaseReferenceBlock.Count != 0)
-    {
-        <div class="reference-section" id="references">
-            <h2>References</h2>
-            @{
-                foreach (var reference in Model.CaseReferenceBlock)
+    <div id="policies">
+        @{
+            <div data-bs-toggle="collapse" data-bs-target="#PolicyTab" aria-expanded="false" aria-controls="PolicyTab">
+                <h2 class="policy">Policies (Tab)</h2>
+            </div>
+            <div class="collapse" id="PolicyTab">
+                @foreach (var casePolicy in Model.CasePolicyBlock)
                 {
-                    <div class="reference-item">
-                        <h6>@reference.ReferenceName</h6>
-                        @if (@reference.ReferenceUrl == "")
+                    <h4>@casePolicy.Title</h4>
+                    <p>@Html.Raw(casePolicy.InstrumentText)</p>
+                    <div style="padding: 10px">
+                        <h5>Policy Impact</h5>
+                        @if (casePolicy.ImpactLevel != "")
                         {
-                            <p>No reference link was found</p>
+                            <div>
+                                Level: @casePolicy.ImpactLevel
+                            </div>
                         }
                         else
                         {
-                            <a href="@reference.ReferenceUrl">@reference.ReferenceUrl</a>
+                            <div>
+                                Level: TBD
+                            </div>
                         }
+                        @if (casePolicy.ImpactEvaluation != "")
+                        {
+                            <div>
+                                Evaluation: @casePolicy.ImpactEvaluation
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                Evaluation: TBD
+                            </div>
+                        }
+                        @if (casePolicy.ImpactIndicator != "")
+                        {
+                            <div>
+                                Indicator: @Html.Raw(casePolicy.ImpactIndicator)
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                Indicator: TBD
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row">
+                        <div class="col-1">
+                            <div class="tagName">
+                                Policy Decision
+                            </div>
+                            <div class="tags">
+                                @casePolicy.PolicyDecision
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Policy Origin
+                            </div>
+                            <div class="tags">
+                                @casePolicy.PolicyOrigin
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Type of Policy
+                            </div>
+                            <div class="tags">
+                                @casePolicy.TypeOfPolicyInstrument
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Jurisdiction
+                            </div>
+                            <div class="tags">
+                                @casePolicy.Jurisdiction
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Enforcement level
+                            </div>
+                            <div class="tags">
+                                @casePolicy.EnforcementLevel
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Sectoral coverage
+                            </div>
+                            <div class="tags">
+                                @casePolicy.SectoralCoverage
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Target group
+                            </div>
+                            <div class="tags">
+                                @casePolicy.TargetGroup
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Institutional requirement
+                            </div>
+                            <div class="tags">
+                                @casePolicy.InstitutionalRequirement
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Implementation status
+                            </div>
+                            <div class="tags">
+                                @casePolicy.ImplementationStatus
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Monitoring and evaluation
+                            </div>
+                            <div class="tags">
+                                @casePolicy.MonitoringAndEvaluation
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                Start date of implementation
+                            </div>
+                            <div class="tags">
+                                @casePolicy.StartDate
+                            </div>
+                        </div>
+                        <div class="col-1 tags">
+                            <div class="tagName">
+                                End date of implementation
+                            </div>
+                            <div class="tags">
+                                @if (casePolicy.EndDate != "1/1/1")
+                                {
+                                    @casePolicy.EndDate
+                                }
+                                else
+                                {
+                                    <div>Ongoing</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div id="LockIn">
+        @{
+            var positiveCases = @Model.CaseLockInBlock
+            .Where(a => a.NegativePositive);
+            var negativeCases = @Model.CaseLockInBlock
+            .Where(a => !a.NegativePositive);
+
+            if (positiveCases.Count() != 0)
+            {
+                <h2>Positive Lock-Ins</h2>
+                @foreach (var positiveLock in positiveCases)
+                {
+                    <div>
+                        <h4>@positiveLock.LockInType</h4>
+                        @Html.Raw(positiveLock.BodyText)
                     </div>
                 }
             }
-        </div>
+
+            if (negativeCases.Count() != 0)
+            {
+                <h2>Negative Lock-Ins</h2>
+                @foreach (var negativeLock in negativeCases)
+                {
+                    <div>
+                        <h4>@negativeLock.LockInType</h4>
+                        @Html.Raw(negativeLock.BodyText)
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    <div id="tag List">
+        <h2>Tags</h2>
+        <ul class="tagList">
+            @{
+                foreach (var tag in Model.TagsList)
+                {
+                    <li>@tag</li>
+                }
+            }
+        </ul>
+    </div>
+
+    @{
+        if (Model.CaseReferenceBlock.Count != 0)
+        {
+            <div class="reference-section" id="references">
+                <h2>References</h2>
+                @{
+                    foreach (var reference in Model.CaseReferenceBlock)
+                    {
+                        <div class="reference-item">
+                            <h6>@reference.ReferenceName</h6>
+                            @if (@reference.ReferenceUrl == "")
+                            {
+                                <p>No reference link was found</p>
+                            }
+                            else
+                            {
+                                <a href="@reference.ReferenceUrl">@reference.ReferenceUrl</a>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        }
     }
-}
+</div>
 
 <style>
     .sectorTag {
