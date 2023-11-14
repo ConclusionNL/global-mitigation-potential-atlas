@@ -27,150 +27,154 @@
             <div class="collapse" id="PolicyTab">
                 @foreach (var casePolicy in Model.CasePolicyBlock)
                 {
-                    <h4>@casePolicy.Title</h4>
-                    <p>@Html.Raw(casePolicy.InstrumentText)</p>
-                    <div style="padding: 10px">
-                        <h5>Policy Impact</h5>
-                        @if (casePolicy.ImpactLevel != "")
-                        {
-                            <div>
-                                Level: @casePolicy.ImpactLevel
-                            </div>
-                        }
-                        else
-                        {
-                            <div>
-                                Level: TBD
-                            </div>
-                        }
-                        @if (casePolicy.ImpactEvaluation != "")
-                        {
-                            <div>
-                                Evaluation: @casePolicy.ImpactEvaluation
-                            </div>
-                        }
-                        else
-                        {
-                            <div>
-                                Evaluation: TBD
-                            </div>
-                        }
-                        @if (casePolicy.ImpactIndicator != "")
-                        {
-                            <div>
-                                Indicator: @Html.Raw(casePolicy.ImpactIndicator)
-                            </div>
-                        }
-                        else
-                        {
-                            <div>
-                                Indicator: TBD
-                            </div>
-                        }
-                    </div>
-
-                    <div class="row">
-                        <div class="col-1">
-                            <div class="tagName">
-                                Policy Decision
-                            </div>
-                            <div class="tags">
-                                @casePolicy.PolicyDecision
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Policy Origin
-                            </div>
-                            <div class="tags">
-                                @casePolicy.PolicyOrigin
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Type of Policy
-                            </div>
-                            <div class="tags">
-                                @casePolicy.TypeOfPolicyInstrument
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Jurisdiction
-                            </div>
-                            <div class="tags">
-                                @casePolicy.Jurisdiction
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Enforcement level
-                            </div>
-                            <div class="tags">
-                                @casePolicy.EnforcementLevel
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Sectoral coverage
-                            </div>
-                            <div class="tags">
-                                @casePolicy.SectoralCoverage
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Target group
-                            </div>
-                            <div class="tags">
-                                @casePolicy.TargetGroup
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Institutional requirement
-                            </div>
-                            <div class="tags">
-                                @casePolicy.InstitutionalRequirement
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Implementation status
-                            </div>
-                            <div class="tags">
-                                @casePolicy.ImplementationStatus
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Monitoring and evaluation
-                            </div>
-                            <div class="tags">
-                                @casePolicy.MonitoringAndEvaluation
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                Start date of implementation
-                            </div>
-                            <div class="tags">
-                                @casePolicy.StartDate
-                            </div>
-                        </div>
-                        <div class="col-1 tags">
-                            <div class="tagName">
-                                End date of implementation
-                            </div>
-                            <div class="tags">
-                                @if (casePolicy.EndDate != "1/1/1")
+                    <div class="card">
+                        <h4 class="card-header">@casePolicy.Title</h4>
+                        <div class="card-body">
+                            <p>@Html.Raw(casePolicy.InstrumentText)</p>
+                            <div style="padding: 10px">
+                                <h5>Policy Impact</h5>
+                                @if (casePolicy.ImpactLevel != "")
                                 {
-                                    @casePolicy.EndDate
+                                    <div>
+                                        Level: @casePolicy.ImpactLevel
+                                    </div>
                                 }
                                 else
                                 {
-                                    <div>Ongoing</div>
+                                    <div>
+                                        Level: TBD
+                                    </div>
                                 }
+                                @if (casePolicy.ImpactEvaluation != "")
+                                {
+                                    <div>
+                                        Evaluation: @casePolicy.ImpactEvaluation
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        Evaluation: TBD
+                                    </div>
+                                }
+                                @if (casePolicy.ImpactIndicator != "")
+                                {
+                                    <div>
+                                        Indicator: @Html.Raw(casePolicy.ImpactIndicator)
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        Indicator: TBD
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="row card-footer">
+                            <div class="col-1">
+                                <div class="tagName">
+                                    Policy Decision
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.PolicyDecision
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Policy Origin
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.PolicyOrigin
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Type of Policy
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.TypeOfPolicyInstrument
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Jurisdiction
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.Jurisdiction
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Enforcement level
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.EnforcementLevel
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Sectoral coverage
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.SectoralCoverage
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Target group
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.TargetGroup
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Institutional requirement
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.InstitutionalRequirement
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Implementation status
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.ImplementationStatus
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Monitoring and evaluation
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.MonitoringAndEvaluation
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    Start date of implementation
+                                </div>
+                                <div class="tags">
+                                    @casePolicy.StartDate
+                                </div>
+                            </div>
+                            <div class="col-1 tags">
+                                <div class="tagName">
+                                    End date of implementation
+                                </div>
+                                <div class="tags">
+                                    @if (casePolicy.EndDate != "1/1/1")
+                                    {
+                                        @casePolicy.EndDate
+                                    }
+                                    else
+                                    {
+                                        <div>Ongoing</div>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -308,4 +312,8 @@
             width: 75%;
             border-bottom: 1px solid gray;
         }
+
+    .card {
+        margin-bottom: 10px
+    }
 </style>
