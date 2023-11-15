@@ -163,25 +163,21 @@
 </div>
 
 <script>
-    // Selectors for DOM elements
     var toggleButtons = document.querySelectorAll('.toggle-container');
     var strategyItems = document.querySelectorAll('.strategy-item');
     var policyItems = document.querySelectorAll('.policy-item');
     var countryDropdown = document.getElementById('pilotCountryFilter');
     var sectorDropdown = document.getElementById('filterSector');
 
-    // Function to filter policies based on selected country and sector
     function filterPolicies() {
         var selectedCountry = countryDropdown.value;
         var selectedSector = sectorDropdown.value;
 
-        // Filter strategies based on selected country
         strategyItems.forEach(function (item) {
             var country = item.dataset.fromCountry;
             item.classList.toggle('hidden', selectedCountry !== '' && country !== selectedCountry);
         });
 
-        // Filter policies based on selected country and sector
         policyItems.forEach(function (item) {
             var country = item.dataset.fromCountry;
             var sector = item.dataset.sector;
@@ -194,55 +190,64 @@
                 itemElement.classList.add('hidden');
             }
         });
+
+        updateUrlParams();
     }
 
-    // Event listener for country dropdown change
     countryDropdown.addEventListener('change', filterPolicies);
-
-    // Event listener for sector dropdown change
     sectorDropdown.addEventListener('change', filterPolicies);
 
-    // Function to initialize content based on query parameter
     function initializeContent() {
         var paramName = 'country';
         var selectedCountry = getQueryParam(paramName);
+        var selectedSector = getQueryParam('sector');
 
-        // Set selected country and filter policies
         if (selectedCountry !== null) {
             countryDropdown.value = selectedCountry;
+            sectorDropdown.value = selectedSector || ''; // Set selected sector if present in URL
             filterPolicies();
+        }
+
+        // Set the sector dropdown value if the sector parameter is present in the URL
+        if (selectedSector !== null) {
+            sectorDropdown.value = selectedSector;
         }
     }
 
-    // Initialize content on page load
     initializeContent();
 
-    // Event listeners for toggle buttons
     toggleButtons.forEach(button => {
         button.addEventListener('click', function () {
             var targetId = this.getAttribute('data-target');
             var targetElement = document.getElementById(targetId);
             var sectorFilterContainer = document.getElementById('sectorFilter');
+            var selectedSector = sectorDropdown.value; // Retrieve the selected sector here
 
-            // Hide all content containers
             document.querySelectorAll('.toggle-content').forEach(container => {
                 container.classList.add('hidden');
             });
 
             sectorFilterContainer.classList.add('hidden');
-            sectorDropdown.value = ''; // Reset sector dropdown when toggling between views
 
-            // Show the selected content container
             targetElement.classList.remove('hidden');
 
-            // Show sector filter container for PolicyInventory view
             if (targetId === 'PolicyInventory') {
+                sectorDropdown.value = selectedSector; // Set the selected sector
                 sectorFilterContainer.classList.remove('hidden');
             }
         });
     });
 
-    // Function to get query parameter from URL
+    function updateUrlParams() {
+        var baseUrl = window.location.origin + window.location.pathname;
+        var updatedUrl = new URL(baseUrl);
+
+        updatedUrl.searchParams.set('country', countryDropdown.value);
+        updatedUrl.searchParams.set('sector', sectorDropdown.value);
+
+        window.history.replaceState(null, null, updatedUrl);
+    }
+
     function getQueryParam(name) {
         var urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
