@@ -7,6 +7,9 @@ import { ref, onMounted, watch, defineProps, computed } from 'vue';
 import { useCollaborationStore } from '../stores/collaborationStore';
 import * as d3 from 'd3';
 
+const xAxisTitle ="Annual System Emissions (MtCO2e)"
+const yAxisTitle = "Annualized System Costs (Billion $)"
+
 const collaborationStore = useCollaborationStore();
 
 const props = defineProps({
@@ -164,7 +167,7 @@ const setupLineAreaChart = async (countriesList) => {
         .attr('x', 0)
         .attr('y', chartHeight + 75) // Adjusted y position
         .style('text-anchor', 'start')
-        .text('Total system Emissions (Mt CO2e)')
+        .text(xAxisTitle)
         .attr("font-size", "42px")
         ;
 
@@ -174,7 +177,7 @@ const setupLineAreaChart = async (countriesList) => {
         .append('text')
         .attr('text-anchor', 'start')
         .attr('transform', 'rotate(-90)')
-        .text('Total System Cost (Billion $)')
+        .text(yAxisTitle)
         .attr("font-size", "42px")
         ;
 

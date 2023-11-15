@@ -10,6 +10,10 @@ import * as d3 from 'd3';
 
 const collaborationStore = useCollaborationStore();
 
+const xAxisTitle ="Annual System Emissions (MtCO2e)"
+const yAxisTitle = "Annualized System Costs (Billion $)"
+
+
 
 const emit = defineEmits(['technology-selected']);
 
@@ -199,7 +203,7 @@ const createAreaChart = (data, color) => {
         .attr('x', margin.left + 100)
         .attr('y', height + 35) // Adjusted y position
         .style('text-anchor', 'middle')
-        .text('Total system Emissions (Mt CO2e)');
+        .text(xAxisTitle);
 
     svg
         .append('g')
@@ -207,7 +211,7 @@ const createAreaChart = (data, color) => {
         .append('text')
         .attr('text-anchor', 'start')
         .attr('transform', 'rotate(-90)')
-        .text('Total System Cost (Billion $)');
+        .text(yAxisTitle);
 
     drawCrosshairLines(svg, data, minimumX, height, width, xValueFromMouse, yValueFromMouse);
 };
