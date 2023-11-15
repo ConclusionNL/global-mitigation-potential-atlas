@@ -10,15 +10,18 @@ import * as d3 from 'd3';
 
 const collaborationStore = useCollaborationStore();
 
-const xAxisTitle ="Annual System Emissions (MtCO2e)"
+const xAxisTitle = "Annual System Emissions (MtCO2e)"
 const yAxisTitle = "Annualized System Costs (Billion $)"
 
-
+const maxWidth = 1920
+const maxHeight = 1080
+// calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
+const screenSizeFactor = Math.min(window.innerWidth / maxWidth, window.innerHeight / maxHeight)
 
 const emit = defineEmits(['technology-selected']);
 
 const props = defineProps({
-    collaborationCountriesList: [], dataSetType : String
+    collaborationCountriesList: [], dataSetType: String
 });
 watch(
     () => props.collaborationCountriesList,
@@ -39,22 +42,16 @@ onMounted(() => {
 })
 let color
 const setupDiagram = async (collaborationCountriesList, dataSetType) => {
-    const isDetailedNationalModelling = collaborationCountriesList.length==1 && collaborationCountriesList[0]['DNM']
-    console.log(`isDetailedNationalModelling ${isDetailedNationalModelling}`)
-    if (isDetailedNationalModelling) {
-        console.log(`get data from total_data.csv`)
-    }
     const countriesKey = collaborationCountriesList.map((country) => country.properties.iso_a2).sort().join('')
     const data = collaborationStore.getTotalData()[countriesKey][dataSetType]
 
-    if (data.length==0){
+    if (data.length == 0) {
         // remove existing charts
         d3.select('#chart').selectAll('*').remove();
-        d3.select('#bar-chart').selectAll('*').remove();    
+        d3.select('#bar-chart').selectAll('*').remove();
         return
     }
-    // Create a color scale for the series
-    //  const x = Object.keys(data[0]).filter((key) => key !== 'x' && key !== 'sum')
+    // Create a color scale for the series    
     color = d3
         .scaleOrdinal()
         .domain(Object.keys(data[0]).filter((key) => key !== 'x' && key !== 'sum'))
@@ -72,18 +69,20 @@ const setupDiagram = async (collaborationCountriesList, dataSetType) => {
 let xScale, yScale;
 const createAreaChart = (data, color) => {
     // Create an SVG container
-    const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-    const width = 900 - margin.left - margin.right;
-    const height = 600 - margin.top - margin.bottom;
+
+    console.log(`window.innerWidth ${window.innerWidth} window.innerHeight ${window.innerHeight}`)
+    const margin = { top: 15, right: 30, bottom: 20, left: 40 };
+    const width = 750 - margin.left - margin.right;
+    const height = 480 - margin.top - margin.bottom;
     d3.select('#chart').selectAll('*').remove();
 
     const svg = d3
         .select('#chart')
         .append('svg')
-        .attr('width', 50+width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom + 50)
+        .attr('width', screenSizeFactor * (50 + width + margin.left + margin.right))
+        .attr('height', screenSizeFactor * (height + margin.top + margin.bottom + 40))
         .append('g')
-        .attr('transform', `translate(${margin.left + 50},${margin.top})`);
+        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor}) translate(${margin.left + 50},${margin.top})`);
 
     const tooltip = d3
         .select('body')
@@ -207,7 +206,7 @@ const createAreaChart = (data, color) => {
 
     svg
         .append('g')
-        .attr('transform', 'translate(' + -70 + ', ' + 530 + ')')
+        .attr('transform', 'translate(' + -70 + ', ' + 440 + ')')
         .append('text')
         .attr('text-anchor', 'start')
         .attr('transform', 'rotate(-90)')
@@ -379,7 +378,15 @@ let barXScale, barYScale;
 let barXAxis, barYAxis;
 const barMargin = { top: 20, right: 30, bottom: 40, left: 40 };
 const barWidth = 900 - barMargin.left - barMargin.right;
-const barHeight = 250 - barMargin.top - barMargin.bottom ;
+const barHeight = 250 - barMargin.top - barMargin.bottom;
+
+// const svg = d3
+//         .select('#chart')
+//         .append('svg')
+//         .attr('width', screenSizeFactor * (50 + width + margin.left + margin.right))
+//         .attr('height', screenSizeFactor * (height + margin.top + margin.bottom + 40))
+//         .append('g')
+//         .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor}) translate(${margin.left + 50},${margin.top})`);
 
 const bartooltip = d3.select("body")
     .append("div")
@@ -395,10 +402,10 @@ const drawBarChart = (barData, color) => {
     barSvg = d3
         .select('#bar-chart')
         .append('svg')
-        .attr('width', barWidth + barMargin.left + barMargin.right)
-        .attr('height', barHeight + barMargin.top + barMargin.bottom+50)
+        .attr('width', screenSizeFactor* (barWidth + barMargin.left + barMargin.right))
+        .attr('height', screenSizeFactor * (barHeight + barMargin.top + barMargin.bottom + 50))
         .append('g')
-        .attr('transform', `translate(${barMargin.left + 50},${barMargin.top})`);
+        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor}) translate(${barMargin.left + 50},${barMargin.top})`);
 
 
 
@@ -436,17 +443,17 @@ const repaintBar = (updatedBarData, color) => {
     barSvg.selectAll(".bar").remove();
 
     const cutOffPercentage = 1 // % that the value of a series entry must at least represent of the total sum in order to be displayed
-    const topX = Math.min(updatedBarData.length,10) // no more than 10 bars, no more than we actually have
+    const topX = Math.min(updatedBarData.length, 10) // no more than 10 bars, no more than we actually have
 
     // find out the value associated with topX
-    const cutoffTopXValue = updatedBarData.slice().sort((a, b) => b.value - a.value)[topX-1].value;
+    const cutoffTopXValue = updatedBarData.slice().sort((a, b) => b.value - a.value)[topX - 1].value;
 
     // find out value associated with cutoffPercentage of the total sum
-    const cutoffPercentageValue = updatedBarData.reduce((sum, obj) => sum + obj.value, 0) * cutOffPercentage/100;
+    const cutoffPercentageValue = updatedBarData.reduce((sum, obj) => sum + obj.value, 0) * cutOffPercentage / 100;
     // use the highest  of the two cutoff values to filter the series
 
     const cutoffValue = Math.max(cutoffTopXValue, cutoffPercentageValue)
-    const topNBarData = updatedBarData.filter(d => d.value >= cutoffValue) 
+    const topNBarData = updatedBarData.filter(d => d.value >= cutoffValue)
 
     const updatedBars = barSvg
         .selectAll('.bar')
@@ -500,10 +507,10 @@ const repaintBar = (updatedBarData, color) => {
     barSvg.select('.y-axis').transition().duration(1000).call(barYAxis);
 
     barSvg.selectAll(".x-axis text")
-  .style("text-anchor", "end") // Set the anchor to the end of the text
-  .attr("dx", "-0.5em") // Offset the text leftwards to center it correctly
-  .attr("dy", "0.5em") // Offset the text downwards to center it correctly
-  .attr("transform", "rotate(-15)"); // Rotate the text by -45 degrees
+        .style("text-anchor", "end") // Set the anchor to the end of the text
+        .attr("dx", "-0.5em") // Offset the text leftwards to center it correctly
+        .attr("dy", "0.5em") // Offset the text downwards to center it correctly
+        .attr("transform", "rotate(-15)"); // Rotate the text by -45 degrees
 }
 
 // Function to find values for every area at a given x-coordinate
