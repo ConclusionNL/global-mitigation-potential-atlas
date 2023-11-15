@@ -140,6 +140,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 // here are some better names for the heatmap properties
 
                  "Mitigation_Potential": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
+                 ,"Mitigation_Potential_at_NoLimit" : parseFloat(rec["Mitigation_Potential(MtCO2e)"])
                 , "Mitigation_Potential_at_0": parseFloat(rec["Mitigation_Potential_at_Average_0($/tCO2e)"])
                 , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
                 , "Mitigation_Potential_at_100": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
@@ -201,7 +202,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         // get country key for selectedCountries 
         const countriesKey = deriveCountryKey(collaboratingCountries.map((country) => country.properties.iso_a2))
 
-        const levels = ['0', '50', '100', '200']
+        const levels = ['0', '50', '100', '200','NoLimit']
         for (const level of levels) {
             // for every individual country, get Mitigation_Potential_at_Average_<current value> ($/tCO2e) values for country from heatmap_collaboration 
             // add the individual country values together to get the autarky value

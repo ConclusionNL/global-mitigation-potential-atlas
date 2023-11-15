@@ -67,7 +67,7 @@ let svg, countriesGroup, countryDataSet, pathGenerator, zoooom;
 const collaborationStore = useCollaborationStore();
 const heatmapData = collaborationStore.getHeatmapData();
 
-const mitigation = ref('None');
+const mitigation = ref('Mitigation_Potential');
 
 const maxScaleFactor = 6
 

@@ -68,6 +68,8 @@
                         <div>Back</div>
                     </div>
                     <div class="switch-box">
+                        <span class="switch-box-title">Annual Mitigation Potential (MtCO2e) at Average Abatement Cost of:</span>
+
                         <div v-for="(mitigation, i) in mitigationList" :key="i" class="radio-text">
                             <input :id="mitigation" :checked="((mitigation.value == selectedMitigation.value) || (!selectedMitigation.value && i==0)) " type="radio" :value="mitigation.value"
                                 name="mitigation" @change="selectedMitigation = mitigation" />
@@ -157,13 +159,12 @@ watch(selectedMitigation, (newMitigation) => {
 
 onMounted(() => {
     mitigationList.value = [
-        { label: 'Potential at 0', value: "At0" },
-        { label: 'Potential at 50', value: "At50" },
-        { label: 'Potential at 100', value: "At100" },
-        { label: 'Potential at 200', value: "At200" },
+        { label: '0 $/tCO2e', value: "At0" },
+        { label: '50 $/tCO2e', value: "At50" },
+        { label: '100 $/tCO2e', value: "At100" },
+        { label: '200 $/tCO2e', value: "At200" },
+        { label: 'No Cost Limit', value: "AtNoLimit" }
     ];
-
-    console.log(`reset selected mitigation in onmounted`)
     selectedMitigation.value = mitigationList.value[0]
 });
 
@@ -474,12 +475,15 @@ input[type='radio'] {
     display: flex;
     flex-direction: column;
     font-size: 14px;
+    margin-top: 20px;
 /*    align-self: center;
     justify-self: center;
     justify-content: center;
     align-items: center;
     */
 }
+
+.switch-box-title {margin-bottom: 20px;}
 
 .filter-options-dropdown {
     position: absolute;
