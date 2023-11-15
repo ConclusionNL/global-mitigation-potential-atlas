@@ -11,9 +11,9 @@
         </div>
         <div class="card-data-spacing">
             <div key="1" class="data">
-                <div>Mitigation Potential</div>
+                <div>Mitigation Potential at no cost limit</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential(GtCO2e)'] }} MtCO2e
+                    {{ selectedCountries[0].properties['Mitigation_Potential'] }} MtCO2e
                 </div>
             </div>
             <div key="2" class="data">
