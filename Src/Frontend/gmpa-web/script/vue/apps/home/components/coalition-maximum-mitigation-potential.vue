@@ -8,7 +8,8 @@ import { useCollaborationStore } from '../stores/collaborationStore';
 import * as d3 from 'd3';
 
 const xAxisTitle ="Annual System Emissions (MtCO2e)"
-const yAxisTitle = "Annualized System Costs (Billion $)"
+const yAxisTitle1 = "Annualized System Costs"
+const yAxisTitle2 = "(Billion $)"
 
 const collaborationStore = useCollaborationStore();
 
@@ -45,7 +46,7 @@ const setupLineAreaChart = async (countriesList) => {
     const chartWidth = 700;
     const chartHeight = 400;
     const chart = svg.append("g")
-        .attr("transform", `scale(${0.8 * svgWidth / chartWidth}, ${0.65 * svgHeight / chartHeight}) translate(100,120)`)
+        .attr("transform", `scale(${0.8 * svgWidth / chartWidth}, ${0.65 * svgHeight / chartHeight}) translate(120,120)`)
         .attr("width", chartWidth)
         .attr("height", chartHeight);
 
@@ -171,13 +172,22 @@ const setupLineAreaChart = async (countriesList) => {
         .attr("font-size", "42px")
         ;
 
-    chart
+        chart
         .append('g')
-        .attr('transform', 'translate(-65 , 400)')
+        .attr('transform', 'translate(-45 , 400)')
         .append('text')
         .attr('text-anchor', 'start')
         .attr('transform', 'rotate(-90)')
-        .text(yAxisTitle)
+        .text(yAxisTitle2)
+        .attr("font-size", "42px")
+        ;
+        chart
+        .append('g')
+        .attr('transform', 'translate(-90 , 400)')
+        .append('text')
+        .attr('text-anchor', 'start')
+        .attr('transform', 'rotate(-90)')
+        .text(yAxisTitle1)
         .attr("font-size", "42px")
         ;
 
