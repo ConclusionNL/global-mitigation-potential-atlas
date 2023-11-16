@@ -42,6 +42,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     //const env = loadEnv(mode, process.cwd(), '');
 
     return {
+        base: mode == 'production' ? '/dist' : '/',
         optimizeDeps: { exclude: ['swiper/vue', 'swiper/types'] },
         resolve: {
             alias: {
