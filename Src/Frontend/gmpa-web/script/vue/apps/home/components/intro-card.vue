@@ -13,7 +13,7 @@
             </div>
         </div>
         <div>
-            <img src="/Images/aniq.png" />
+            <img src="/public/aniq.png" />
         </div>
     </div>
 </template>
