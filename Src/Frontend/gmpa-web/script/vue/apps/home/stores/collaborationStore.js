@@ -151,6 +151,12 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         return arrayToCSV(totalDetailedNationalModellingRecords);
     }
 
+    const getRawCombinedData = () => {
+        return arrayToCSV(
+             combinedAutarkyRecords.map(obj => { return { ...obj, collaborationOrAutarky: 'autarky' }})
+             .concat(combinedCollaborationRecords.map(obj => { return { ...obj, collaborationOrAutarky: 'collaboration' }})
+             ));
+    }
 
     const getHeatmapData = () => {
         if (!processedHeatmapData) {
@@ -362,6 +368,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         getRawTotalCollaborationData,
         getRawTotalAutarkyData,
         getRawTotalDNMData,
+        getRawCombinedData,
 
     };
 });
