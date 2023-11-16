@@ -104,7 +104,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
 
 
                 if (!totalData[countryCombination]) {
-                    totalData[countryCombination] = { "collaboration": [], "autarky": [] , "detailedNationalModelling":[]}
+                    totalData[countryCombination] = { "collaboration": [], "autarky": [], "detailedNationalModelling": [] }
                 }
                 totalData[countryCombination][dataSetType] = dataArray
             }
@@ -113,8 +113,44 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         prepareTotalDataFromRecords("autarky", totalAutarkyRecords)
         prepareTotalDataFromRecords("collaboration", totalCollaborationRecords)
         prepareTotalDataFromRecords("detailedNationalModelling", totalDetailedNationalModellingRecords)
-        
+
     }
+
+    const arrayToCSV = (arrayData) => {
+        // Assuming arrayData is an array of objects
+        const csvRows = [];
+
+        // Extract headers
+        const headers = Object.keys(arrayData[0]);
+        csvRows.push(headers.join(','));
+
+        // Convert each row to CSV
+        for (const row of arrayData) {
+            const values = headers.map(header => {
+                const escaped = ('' + row[header]).replace(/"/g, '\\"');
+                return `"${escaped}"`;
+            });
+            csvRows.push(values.join(','));
+        }
+
+        return csvRows.join('\n');
+    }
+
+
+    const getRawHeatmapData = () => {
+        return arrayToCSV(heatmapCollaborationRecords)
+    }
+
+    const getRawTotalAutarkyData = () => {
+        return arrayToCSV(totalAutarkyRecords)
+    }
+    const getRawTotalCollaborationData = () => {
+        return arrayToCSV(totalCollaborationRecords)
+    }
+    const getRawTotalDNMData = () => {
+        return arrayToCSV(totalDetailedNationalModellingRecords);
+    }
+
 
     const getHeatmapData = () => {
         if (!processedHeatmapData) {
@@ -139,8 +175,8 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 // , "BAU_Emissions(MtCO2e)": parseFloat(rec["BAU_Emissions(MtCO2e)"])
                 // here are some better names for the heatmap properties
 
-                 "Mitigation_Potential": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
-                 ,"Mitigation_Potential_at_NoLimit" : parseFloat(rec["Mitigation_Potential(MtCO2e)"])
+                "Mitigation_Potential": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
+                , "Mitigation_Potential_at_NoLimit": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
                 , "Mitigation_Potential_at_0": parseFloat(rec["Mitigation_Potential_at_Average_0($/tCO2e)"])
                 , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
                 , "Mitigation_Potential_at_100": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
@@ -202,7 +238,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         // get country key for selectedCountries 
         const countriesKey = deriveCountryKey(collaboratingCountries.map((country) => country.properties.iso_a2))
 
-        const levels = ['0', '50', '100', '200','NoLimit']
+        const levels = ['0', '50', '100', '200', 'NoLimit']
         for (const level of levels) {
             // for every individual country, get Mitigation_Potential_at_Average_<current value> ($/tCO2e) values for country from heatmap_collaboration 
             // add the individual country values together to get the autarky value
@@ -211,7 +247,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 Mitigation_Potential_sum += heatmapData[country.properties.iso_a2][`Mitigation_Potential_at_${level}`]
             }
             data[`mitigationPotentialAutarkyAt${level}`] = Mitigation_Potential_sum
-            data[`mitigationPotentialCollaborationAt${level}`] = heatmapData[countriesKey][`Mitigation_Potential_at_${level}`]           
+            data[`mitigationPotentialCollaborationAt${level}`] = heatmapData[countriesKey][`Mitigation_Potential_at_${level}`]
         }
         data['mitigationPotentialCollaborationMax'] = heatmapData[countriesKey]["mitigationPotentialCollaborationMax"]
         return data
@@ -322,6 +358,10 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         deriveCountryKey,
         getTotalData,
         getHeatmapData,
+        getRawHeatmapData,
+        getRawTotalCollaborationData,
+        getRawTotalAutarkyData,
+        getRawTotalDNMData,
 
     };
 });

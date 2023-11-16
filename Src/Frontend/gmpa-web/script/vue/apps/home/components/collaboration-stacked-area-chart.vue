@@ -4,7 +4,7 @@
     <div id="bar-chart"></div>
 </template>
 <script setup>
-import { ref, onMounted, watch, defineProps, computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, defineProps, computed } from 'vue';
 import { useCollaborationStore } from '../stores/collaborationStore';
 import * as d3 from 'd3';
 
@@ -18,7 +18,7 @@ const maxHeight = 1080
 // calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
 const screenSizeFactor = Math.min(window.innerWidth / maxWidth, window.innerHeight / maxHeight)
 
-const emit = defineEmits(['technology-selected']);
+const emit = defineEmits(['technology-selected','download-data']);
 
 const props = defineProps({
     collaborationCountriesList: [], dataSetType: String
@@ -36,8 +36,26 @@ watch(
         setupDiagram(props.collaborationCountriesList, newValue);
     }
 );
+let isHovering = false
+const handleHoverIn = () => {
+    isHovering = true;
+}
+const handleHoverOut = () => {
+    isHovering = false;
+}
+
+const handleKeyPress = (event) => {
+    if (isHovering && event.ctrlKey && event.key === 'U') {
+        emit('download-data', { dataSetType: props.dataSetType });
+    }
+}
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeyPress);
+})
 
 onMounted(() => {
+    document.addEventListener('keydown', handleKeyPress);
     setupDiagram(props.collaborationCountriesList, props.dataSetType);
 })
 let color
@@ -82,7 +100,10 @@ const createAreaChart = (data, color) => {
         .attr('width', screenSizeFactor * (50 + width + margin.left + margin.right))
         .attr('height', screenSizeFactor * (height + margin.top + margin.bottom + 40))
         .append('g')
-        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor}) translate(${margin.left + 50},${margin.top})`);
+        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor}) translate(${margin.left + 50},${margin.top})`)
+        .on('mouseover', handleHoverIn)
+        .on('mouseleave', handleHoverOut)
+        ;
 
     const tooltip = d3
         .select('body')
