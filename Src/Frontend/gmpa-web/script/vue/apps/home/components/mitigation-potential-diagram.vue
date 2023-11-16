@@ -31,7 +31,7 @@
                         value: {...country,'DNM':true}
                     }))
                 )"
-                :value="option.value">
+                :value="option.value" >
                 {{ option.label }}
             </option>
         </select>
@@ -56,7 +56,7 @@ const handleTechnologySelected = (payload) => {
     emit('technology-selected', payload);
 };
 
-const selectedCountryDataSet = ref('all' );
+const selectedCountryDataSet = ref( (  props['countriesList'].length > 1 ?'all': props['countriesList'][0]) );
 const selectListOptions = ref([{ label: 'Full Collaboration', value: 'all' }, { label: 'Autarky', value: 'all-autarky' }]);
 
 const selectedCollaboration = computed(() => {
