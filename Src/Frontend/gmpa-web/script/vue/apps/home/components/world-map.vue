@@ -199,13 +199,27 @@ const width = 1700; // 200 is the width of the sidebar that takes up the left pa
 const height = 1080 - 86;
 
 const maxWidth = 1700
-const maxHeight = 1080-140
+const maxHeight = 1080 - 140
 // calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
-//const screenSizeFactor = Math.min( (window.innerWidth-200) / maxWidth, window.innerHeight / maxHeight)
-const screenSizeFactor = (window.innerWidth-220) / maxWidth
-console.log(`screenSizeFactor ${screenSizeFactor} current window width ${window.innerWidth} max width ${maxWidth} current height ${window.innerHeight} `)
-console.log(`SVG width becomes screenSizeFactor *width ${screenSizeFactor *maxWidth}   `)
+let screenSizeFactor = (window.innerWidth - 220) / maxWidth
 
+
+const adjustScreenSize = () => {
+    console.log(`new width ${window.innerWidth}`)
+    screenSizeFactor = (window.innerWidth - 220) / maxWidth
+    d3
+        .select('#worldMapGroup')
+        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor})`)
+
+    d3
+        .select('#svgMap')
+        .attr('width', screenSizeFactor * maxWidth)
+        .attr('height', screenSizeFactor * maxHeight)
+
+
+    console.log(`group ${groupToResize}`)
+
+}
 
 onBeforeUnmount(() => {
     document.removeEventListener('keydown', handleKeyPress);
@@ -213,6 +227,7 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
     document.addEventListener('keydown', handleKeyPress);
+    window.onresize = adjustScreenSize;
 
     watch(mitigation, (newValue) => {
         heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
@@ -226,13 +241,15 @@ onMounted(() => {
     svg = d3
         .select('#mapcontainer')
         .append('svg')
-        .attr('width', screenSizeFactor *maxWidth)
-        .attr('height', screenSizeFactor *maxHeight)
+        .attr("id", "svgMap")
+        .attr('width', screenSizeFactor * maxWidth)
+        .attr('height', screenSizeFactor * maxHeight)
         .attr('preserveAspectRatio', 'xMinYMin')
         .style('background', '#8ab5f9')
         .on('mouseover', handleHoverIn)
         .on('mouseleave', handleHoverOut)
         .append('g')
+        .attr('id', "worldMapGroup")
         .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor})`)
 
 
@@ -271,7 +288,6 @@ onMounted(() => {
         countriesGroup.selectAll('path').attr('transform', event.transform); // Apply the zoom transform to map elements
     }
 
-    const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
 
     let heatmapColorScale, yAxisScale;
 
@@ -296,11 +312,21 @@ onMounted(() => {
 
     yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
 
-    const heatmapLegend = (selection, props) => {
-        const { spacing, textOffset, backgroundRectWidth } = props;
+    countriesDataStore.fetchData()
+        .then((countries) => {
+            countryDataSet = countries;
+            collaborationStore.prepareCountryCollaborations();
+            useCountries.dataSet.value = countries.features;
+            drawHeatmapLegend();
+            drawAllCountries(countries);
+        });
 
-        const backgroundRect = selection.selectAll('rect').data([null]);
+    let countryNodes = [];
 
+    const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
+
+    function drawHeatmapLegend() {
+        const backgroundRect = heatmapLegendG.selectAll('rect').data([null]);
         backgroundRect
             .enter()
             .append('rect')
@@ -308,29 +334,10 @@ onMounted(() => {
             .attr('x', 10 * 2)
             .attr('y', 5)
             .attr('rx', 10 * 2)
-            .attr('width', backgroundRectWidth)
+            .attr('width', 100)
             .attr('fill', 'white')
             .attr('height', 350);
-    };
 
-    countriesDataStore.fetchData()
-        .then((countries) => {
-            countryDataSet = countries;
-            collaborationStore.prepareCountryCollaborations();
-            useCountries.dataSet.value = countries.features;
-
-            heatmapLegendG.call(heatmapLegend, {
-                spacing: 30,
-                textOffset: 15,
-                backgroundRectWidth: 100,
-            });
-            drawHeatmapLegend();
-            drawAllCountries(countries);
-        });
-
-    let countryNodes = [];
-
-    function drawHeatmapLegend() {
         // Define gradient
         const gradient = svg
             .append('defs')
@@ -393,7 +400,10 @@ onMounted(() => {
         // draw all countries
         countryNodes = countriesGroup.selectAll('path').data(countries.features);
         countryNodes
-            // fill with gray (#dcdcdc) when the country's data is unknown
+            // TODO if in collab mode and the country is one of the selected countries then calculate
+            //      the heatmap collaboration value instead of the autarky value
+            //      that means that the heatmap scale needs to be redetermined when switching to collab mode and back 
+            //      (as the combined collab value for the selected countries is bound to be higher than the highest single country value
             .attr('fill', (d) =>
                 d.properties['in_heatmap']
                     ? d.properties.hasOwnProperty(mitigation.value.value)
@@ -439,7 +449,7 @@ onMounted(() => {
 
 
     }
-    
+
 });
 
 
@@ -590,9 +600,13 @@ function zoomInOnSelectedCountries() {
                 .call(zoomBehavior.scaleTo, newScale)
                 .transition()
                 .duration(500)
-                .call(zoomBehavior.translateTo, x + 75, y + 20)
+                .call(zoomBehavior.translateTo, x + (screenSizeFactor < 0.7 ? -45 : 75), y + (screenSizeFactor < 0.7 ? -120 : 20))
+
+
         } else {
-            const transform = d3.zoomIdentity.scale(newScale).translate((-x - 0.5 * dx) / newScale - 180, (-y - 0.5 * dy) / newScale - 120)
+            const transform = d3.zoomIdentity
+                .scale(newScale)
+                .translate((-x - 0.5 * dx) / newScale - 180, (-y - 0.5 * dy) / newScale - 120)
             countriesGroup.transition().duration(750).call(zoomBehavior.transform, transform);
         }
 
@@ -709,8 +723,7 @@ p {
     box-shadow: 0px 4px 8px 0px #214b6352;
 }
 
-/* Media query for screens less than 1200 pixels wide */
-@media screen and (max-width: 1199px) {
+@media screen and (max-width: 1399px) {
     .zoom-box {
         bottom: 10px;
         right: 10px;
@@ -767,10 +780,10 @@ p {
     }
 
     .country-box {
-    position: absolute;
-    top: 150px;
-    right: 30px;
-}
+        position: absolute;
+        top: 150px;
+        right: 30px;
+    }
 }
 
 
