@@ -3,10 +3,17 @@
         <div class="content">
             <div class="title">Welcome to the Global Mitigation Potential Atlas</div>
             <div class="instructions">
-                With this atlas, it is our goal to inspire you to see what is possible if we work
-                together, and to bring you into contact with the right people to take action!
+                Welcome to the pilot of the Global Mitigation Potential Atlas! The Atlas is designed to inspire
+greater climate change mitigation ambition and implementation efforts, by presenting where
+significant and potentially transformative opportunities for reducing emissions are located,
+and what the key levers are for realising these opportunities. It fosters domestic action, as
+well as international collaboration and learning.
+<br/> <br/>
+We welcome your feedback on this pilot version for Southeast Asia – please get in touch
+with info@mitigationatlas.org
             </div>
-            <div class="instructions">Aniq Ashan</div>
+            <div class="instructions">~Aniq Ashan</div>
+            <br/>
             <div class="buttons">
                 <button @click="handleExploreMapClick" class="btn btn-alt-1">Explore the map</button>
                 <button class="btn btn-alt-2">Discover opportunities</button>
