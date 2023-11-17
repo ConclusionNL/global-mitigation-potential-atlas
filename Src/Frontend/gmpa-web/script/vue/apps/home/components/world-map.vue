@@ -71,8 +71,6 @@ const mitigation = ref('Mitigation_Potential');
 
 const maxScaleFactor = 6
 
-const width = window.innerWidth - 200;
-const height = window.innerHeight - 86;
 
 const props = defineProps({
     countries: {},
@@ -196,6 +194,19 @@ const downloadCSV = (filename) => {
 }
 
 
+
+const width = 1700; // 200 is the width of the sidebar that takes up the left part of the page
+const height = 1080 - 86;
+
+const maxWidth = 1700
+const maxHeight = 1080-140
+// calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
+//const screenSizeFactor = Math.min( (window.innerWidth-200) / maxWidth, window.innerHeight / maxHeight)
+const screenSizeFactor = (window.innerWidth-220) / maxWidth
+console.log(`screenSizeFactor ${screenSizeFactor} current window width ${window.innerWidth} max width ${maxWidth} current height ${window.innerHeight} `)
+console.log(`SVG width becomes screenSizeFactor *width ${screenSizeFactor *maxWidth}   `)
+
+
 onBeforeUnmount(() => {
     document.removeEventListener('keydown', handleKeyPress);
 })
@@ -204,7 +215,7 @@ onMounted(() => {
     document.addEventListener('keydown', handleKeyPress);
 
     watch(mitigation, (newValue) => {
-        colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
+        heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
         yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
 
         drawAllCountries(countryDataSet);
@@ -215,16 +226,19 @@ onMounted(() => {
     svg = d3
         .select('#mapcontainer')
         .append('svg')
-        .attr('width', width)
-        .attr('height', height)
+        .attr('width', screenSizeFactor *maxWidth)
+        .attr('height', screenSizeFactor *maxHeight)
         .attr('preserveAspectRatio', 'xMinYMin')
         .style('background', '#8ab5f9')
         .on('mouseover', handleHoverIn)
-        .on('mouseleave', handleHoverOut);
+        .on('mouseleave', handleHoverOut)
+        .append('g')
+        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor})`)
+
 
     const projection = d3
         .geoEquirectangular()
-        .rotate([-148, 0]) // rotate sets the spherical rotation angles. The default rotation is [0, 0], which centers the map on Greenwich (0° longitude). By adjusting the first value (longitude), you can center the map on a different region.
+        .rotate([-148, 0]) // rotate sets the spherical rotation angles. The default rotation is [0, 0], which centers the map on Greenwich (0° longitude). By adjusting the first value (longitude), you can center the map on a different region (in east/west shift).
         .translate([t0.x, t0.y])
         .scale(t0.k);
 
@@ -257,12 +271,9 @@ onMounted(() => {
         countriesGroup.selectAll('path').attr('transform', event.transform); // Apply the zoom transform to map elements
     }
 
-
-    const colorLegendG = svg.append('g').attr('transform', `translate(40,310)`);
-
     const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
 
-    let colorScale2, yAxisScale;
+    let heatmapColorScale, yAxisScale;
 
     function findMinMax(someObject, theProperty) {
 
@@ -276,7 +287,7 @@ onMounted(() => {
         const result = findMinMax(heatmapData, property);
         return scaleSequential(d3.interpolateBlues).domain([result.min, result.max]);
     }
-    colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
+    heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
 
     function createYAxisScaleForHeatmapProperty(heatmapData, property) {
         const result = findMinMax(heatmapData, property);
@@ -307,9 +318,7 @@ onMounted(() => {
             countryDataSet = countries;
             collaborationStore.prepareCountryCollaborations();
             useCountries.dataSet.value = countries.features;
-            // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
-            // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
-            // the color scale - get min and max for the desired property from the heatmap data
+
             heatmapLegendG.call(heatmapLegend, {
                 spacing: 30,
                 textOffset: 15,
@@ -388,7 +397,7 @@ onMounted(() => {
             .attr('fill', (d) =>
                 d.properties['in_heatmap']
                     ? d.properties.hasOwnProperty(mitigation.value.value)
-                        ? colorScale2(d.properties[mitigation.value.value])
+                        ? heatmapColorScale(d.properties[mitigation.value.value])
                         : '#ffffff'
                     : unknownCountryFillColor
             )
@@ -410,7 +419,7 @@ onMounted(() => {
             .attr('fill', (d) =>
                 d.properties['in_heatmap']
                     ? d.properties.hasOwnProperty(mitigation.value.value)
-                        ? colorScale2(d.properties[mitigation.value.value])
+                        ? heatmapColorScale(d.properties[mitigation.value.value])
                         : '#ffffff'
                     : unknownCountryFillColor
             )
@@ -430,52 +439,7 @@ onMounted(() => {
 
 
     }
-
-
-
-    function writeHTMLInLegend(htmlContent) {
-        // Define the legend's dimensions and position
-        const legendWidth = 370;
-        const legendHeight = 180;
-        const legendX = 1100; // X position
-        const legendY = 600; // Y position
-
-        // Select the SVG
-        const svg = d3.select('svg');
-
-        // Check if the legend rectangle already exists
-        let legendRect = svg.select('.legend-rect');
-        if (legendRect.empty()) {
-            // If it doesn't exist, append it
-            legendRect = svg
-                .append('rect')
-                .attr('x', legendX)
-                .attr('y', legendY)
-                .attr('width', legendWidth)
-                .attr('height', legendHeight)
-                .attr('fill', '#f5f5f5') // Light gray background
-                .attr('stroke', '#000'); // Black border
-        }
-
-        // Remove any existing foreignObject in the legend
-        svg.select('.legend-html').remove();
-
-        // Append the foreignObject to the SVG
-        const foreign = svg
-            .append('foreignObject')
-            .attr('class', 'legend-html')
-            .attr('x', legendX + 5)
-            .attr('y', legendY + 5)
-            .attr('width', legendWidth)
-            .attr('height', legendHeight);
-
-        // Append the HTML content to the foreignObject
-        foreign
-            .append('xhtml:div')
-            .style('font-family', 'Arial')
-            .style('font-size', '14px')
-            .html(htmlContent);
-    }
+    
 });
 
 
@@ -710,7 +674,7 @@ p {
 
 .country-box {
     position: absolute;
-    top: 350px;
+    top: 250px;
     right: 80px;
 }
 
@@ -774,7 +738,7 @@ p {
     }
 }
 
-/* Media query for screens less than 1200 pixels wide */
+/* Media query for screens less than 750 pixels high */
 @media screen and (max-height: 750px) {
     .zoom-box {
         bottom: 10px;
