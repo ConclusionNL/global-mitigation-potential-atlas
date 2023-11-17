@@ -11,7 +11,6 @@
 We welcome your feedback on this pilot version for Southeast Asia – please get in touch
 with info@mitigationatlas.org
             </div>
-            <div class="instructions">~Aniq Ashan</div>
             <br/>
             <div class="buttons">
                 <button @click="handleExploreMapClick" class="btn btn-alt-1">Explore the map</button>
