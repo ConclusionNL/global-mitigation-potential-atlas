@@ -82,7 +82,7 @@ const emit = defineEmits(['country-navigation', 'country-mitigation-potential-di
 
 @media screen and (max-width: 1199px) {
     .country-card {
-        padding: 14px 32px;
+        padding: 14px 14px;
         width: 340px;
         font-size: 12px;
     }
