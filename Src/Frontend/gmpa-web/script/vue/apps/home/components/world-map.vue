@@ -37,12 +37,12 @@
 <script setup>
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
-import { geoEquirectangular } from 'd3-geo';
+import { geoAlbers, geoEquirectangular, geoEqualEarth } from 'd3-geo';
 import { scaleSequential } from 'd3-scale';
 import { useCollaborationStore } from '../stores/collaborationStore';
 import { useCountriesDataStore } from '../stores/countriesDataStore';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
-import { ref, watch, onMounted, onBeforeUnmount, defineProps, defineEmits, computed } from 'vue';
+import { ref, watch, onMounted, defineProps, defineEmits, computed } from 'vue';
 import toggleBox from './toggle-box.vue';
 import countryCard from './country-card.vue';
 import collabCard from './collaboration-card.vue';
@@ -71,6 +71,8 @@ const mitigation = ref('Mitigation_Potential');
 
 const maxScaleFactor = 6
 
+const width = window.innerWidth - 200;
+const height = window.innerHeight - 86;
 
 const props = defineProps({
     countries: {},
@@ -168,54 +170,11 @@ const findCollaboratingCandidates = (selectedCountries) => {
 };
 let zoomBehavior
 
-let isHovering = false
-const handleHoverIn = () => {
-    isHovering = true;
-}
-const handleHoverOut = () => {
-    isHovering = false;
-}
-
-const handleKeyPress = (event) => {
-    if (isHovering && event.ctrlKey && event.key === 'U') {
-        downloadCSV('heatmap_collaboration.csv');
-    }
-}
-
-const downloadCSV = (filename) => {
-    const csvData = collaborationStore.getRawHeatmapData()
-    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-
-
-const width = 1700; // 200 is the width of the sidebar that takes up the left part of the page
-const height = 1080 - 86;
-
-const maxWidth = 1700
-const maxHeight = 1080-140
-// calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
-//const screenSizeFactor = Math.min( (window.innerWidth-200) / maxWidth, window.innerHeight / maxHeight)
-const screenSizeFactor = (window.innerWidth-220) / maxWidth
-console.log(`screenSizeFactor ${screenSizeFactor} current window width ${window.innerWidth} max width ${maxWidth} current height ${window.innerHeight} `)
-console.log(`SVG width becomes screenSizeFactor *width ${screenSizeFactor *maxWidth}   `)
-
-
-onBeforeUnmount(() => {
-    document.removeEventListener('keydown', handleKeyPress);
-})
-
 onMounted(() => {
-    document.addEventListener('keydown', handleKeyPress);
+
 
     watch(mitigation, (newValue) => {
-        heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
+        colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
         yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
 
         drawAllCountries(countryDataSet);
@@ -226,19 +185,14 @@ onMounted(() => {
     svg = d3
         .select('#mapcontainer')
         .append('svg')
-        .attr('width', screenSizeFactor *maxWidth)
-        .attr('height', screenSizeFactor *maxHeight)
+        .attr('width', width)
+        .attr('height', height)
         .attr('preserveAspectRatio', 'xMinYMin')
-        .style('background', '#8ab5f9')
-        .on('mouseover', handleHoverIn)
-        .on('mouseleave', handleHoverOut)
-        .append('g')
-        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor})`)
-
+        .style('background', '#8ab5f9');
 
     const projection = d3
         .geoEquirectangular()
-        .rotate([-148, 0]) // rotate sets the spherical rotation angles. The default rotation is [0, 0], which centers the map on Greenwich (0° longitude). By adjusting the first value (longitude), you can center the map on a different region (in east/west shift).
+        .rotate([-148, 0]) // rotate sets the spherical rotation angles. The default rotation is [0, 0], which centers the map on Greenwich (0° longitude). By adjusting the first value (longitude), you can center the map on a different region.
         .translate([t0.x, t0.y])
         .scale(t0.k);
 
@@ -271,12 +225,15 @@ onMounted(() => {
         countriesGroup.selectAll('path').attr('transform', event.transform); // Apply the zoom transform to map elements
     }
 
+
+    const colorLegendG = svg.append('g').attr('transform', `translate(40,310)`);
+
     const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
 
-    let heatmapColorScale, yAxisScale;
+    let colorScale2, yAxisScale;
 
     function findMinMax(someObject, theProperty) {
-
+        
         const values = Object.keys(someObject).map((key) => someObject[key][theProperty]);
         return {
             min: Math.min(...values),
@@ -287,7 +244,7 @@ onMounted(() => {
         const result = findMinMax(heatmapData, property);
         return scaleSequential(d3.interpolateBlues).domain([result.min, result.max]);
     }
-    heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
+    colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
 
     function createYAxisScaleForHeatmapProperty(heatmapData, property) {
         const result = findMinMax(heatmapData, property);
@@ -314,19 +271,21 @@ onMounted(() => {
     };
 
     countriesDataStore.fetchData()
-        .then((countries) => {
-            countryDataSet = countries;
-            collaborationStore.prepareCountryCollaborations();
-            useCountries.dataSet.value = countries.features;
-
-            heatmapLegendG.call(heatmapLegend, {
-                spacing: 30,
-                textOffset: 15,
-                backgroundRectWidth: 100,
-            });
-            drawHeatmapLegend();
-            drawAllCountries(countries);
+    .then((countries) => {
+        countryDataSet = countries;
+        collaborationStore.prepareCountryCollaborations();
+        useCountries.dataSet.value = countries.features;
+        // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
+        // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
+        // the color scale - get min and max for the desired property from the heatmap data
+        heatmapLegendG.call(heatmapLegend, {
+            spacing: 30,
+            textOffset: 15,
+            backgroundRectWidth: 100,
         });
+        drawHeatmapLegend();
+        drawAllCountries(countries);
+    });
 
     let countryNodes = [];
 
@@ -367,7 +326,6 @@ onMounted(() => {
             existing.remove();
         }
     }
-    const unknownCountryFillColor = '#898484';
 
     function drawVerticalAxis() {
         const yAxis = d3.axisRight(yAxisScale).ticks(5);
@@ -386,7 +344,7 @@ onMounted(() => {
             .attr('x', -660) // Position it at the middle of the axis
             .attr('dy', '1em') // Adjustments for positioning
             .style('text-anchor', 'middle') // Center the text
-            .text(mitigation.value.label);
+            .text( mitigation.value.label);
     }
 
     function drawAllCountries(countries) {
@@ -397,9 +355,9 @@ onMounted(() => {
             .attr('fill', (d) =>
                 d.properties['in_heatmap']
                     ? d.properties.hasOwnProperty(mitigation.value.value)
-                        ? heatmapColorScale(d.properties[mitigation.value.value])
+                        ? colorScale2(d.properties[mitigation.value.value])
                         : '#ffffff'
-                    : unknownCountryFillColor
+                    : '#dcdcdc'
             )
             .select('title') // Select the child title of each path
             .text(
@@ -415,13 +373,13 @@ onMounted(() => {
             .enter()
             .append('path')
             .attr('d', pathGenerator)
-            // fill with gray when the country's data is unknown
+            // fill with gray (#dcdcdc) when the country's data is unknown
             .attr('fill', (d) =>
                 d.properties['in_heatmap']
                     ? d.properties.hasOwnProperty(mitigation.value.value)
-                        ? heatmapColorScale(d.properties[mitigation.value.value])
+                        ? colorScale2(d.properties[mitigation.value.value])
                         : '#ffffff'
-                    : unknownCountryFillColor
+                    : '#dcdcdc'
             )
             .on('mouseover', handleMouseOver)
             .on('mouseleave', handleMouseLeave)
@@ -429,7 +387,7 @@ onMounted(() => {
             .append('title')
             .text(
                 (d) => d.properties.name +
-
+                    
                     (d.properties.hasOwnProperty(mitigation.value.value)
                         ? `: ${d.properties[mitigation.value.value]} ${mitigation.value.label}`
                         : '')
@@ -439,7 +397,52 @@ onMounted(() => {
 
 
     }
-    
+
+
+
+    function writeHTMLInLegend(htmlContent) {
+        // Define the legend's dimensions and position
+        const legendWidth = 370;
+        const legendHeight = 180;
+        const legendX = 1100; // X position
+        const legendY = 600; // Y position
+
+        // Select the SVG
+        const svg = d3.select('svg');
+
+        // Check if the legend rectangle already exists
+        let legendRect = svg.select('.legend-rect');
+        if (legendRect.empty()) {
+            // If it doesn't exist, append it
+            legendRect = svg
+                .append('rect')
+                .attr('x', legendX)
+                .attr('y', legendY)
+                .attr('width', legendWidth)
+                .attr('height', legendHeight)
+                .attr('fill', '#f5f5f5') // Light gray background
+                .attr('stroke', '#000'); // Black border
+        }
+
+        // Remove any existing foreignObject in the legend
+        svg.select('.legend-html').remove();
+
+        // Append the foreignObject to the SVG
+        const foreign = svg
+            .append('foreignObject')
+            .attr('class', 'legend-html')
+            .attr('x', legendX + 5)
+            .attr('y', legendY + 5)
+            .attr('width', legendWidth)
+            .attr('height', legendHeight);
+
+        // Append the HTML content to the foreignObject
+        foreign
+            .append('xhtml:div')
+            .style('font-family', 'Arial')
+            .style('font-size', '14px')
+            .html(htmlContent);
+    }
 });
 
 
@@ -551,13 +554,13 @@ function zoomInOnSelectedCountries() {
 
 
             selectedCountryGeoJSON.forEach((geojson) => { // for example australia consists of multiple polygons
-
-                const bounds = pathGenerator.bounds(geojson);
-                minX = Math.min(minX, bounds[0][0]);
-                minY = Math.min(minY, bounds[0][1]);
-                maxX = Math.max(maxX, bounds[1][0]);
-                maxY = Math.max(maxY, bounds[1][1]);
-
+            
+            const bounds = pathGenerator.bounds(geojson);
+            minX = Math.min(minX, bounds[0][0]);
+            minY = Math.min(minY, bounds[0][1]);
+            maxX = Math.max(maxX, bounds[1][0]);
+            maxY = Math.max(maxY, bounds[1][1]);
+            
             })
         });
         const dx = maxX - minX;
@@ -575,12 +578,12 @@ function zoomInOnSelectedCountries() {
         // Access the current scale factor
         let currentScaleFactor = transform.k;
         let currentTranslateX = 0, currentTranslateY = 0
-        try {
-            const matrix = countriesGroup.node().transform.baseVal.consolidate().matrix
-            currentTranslateX = matrix.e
-            currentTranslateY = matrix.f
+            try {
+                const matrix = countriesGroup.node().transform.baseVal.consolidate().matrix
+                currentTranslateX = matrix.e
+                currentTranslateY = matrix.f
 
-        } catch (e) { }
+            } catch (e) { }
 
         // if the current scale factor is close to the desired one, we can use a smooth transition for translate; scale will hardly be noticeable 
         if (currentScaleFactor / newScale > 0.8 && currentScaleFactor / newScale < 1.2) {
@@ -592,7 +595,7 @@ function zoomInOnSelectedCountries() {
                 .duration(500)
                 .call(zoomBehavior.translateTo, x + 75, y + 20)
         } else {
-            const transform = d3.zoomIdentity.scale(newScale).translate((-x - 0.5 * dx) / newScale - 180, (-y - 0.5 * dy) / newScale - 120)
+            const transform = d3.zoomIdentity.scale(newScale).translate((-x-0.5 * dx)/newScale  - 180,(-y-0.5 * dy)/newScale  - 120)
             countriesGroup.transition().duration(750).call(zoomBehavior.transform, transform);
         }
 
@@ -674,7 +677,7 @@ p {
 
 .country-box {
     position: absolute;
-    top: 250px;
+    top: 350px;
     right: 80px;
 }
 
@@ -709,77 +712,12 @@ p {
     box-shadow: 0px 4px 8px 0px #214b6352;
 }
 
-/* Media query for screens less than 1200 pixels wide */
-@media screen and (max-width: 1199px) {
-    .zoom-box {
-        bottom: 10px;
-        right: 10px;
-    }
-
-    .zoom-flex {
-        gap: 8px;
-    }
-
-    .r-btn {
-        width: 26px;
-        height: 26px;
-        border-radius: 30px;
-    }
-
-    .toggle-box {
-        position: absolute;
-        top: 90px;
-        margin-left: 10px;
-    }
-
-    .search-box {
-        z-index: 1500;
-        top: 96px;
-    }
-}
-
-/* Media query for screens less than 750 pixels high */
-@media screen and (max-height: 750px) {
-    .zoom-box {
-        bottom: 10px;
-        right: 10px;
-    }
-
-    .zoom-flex {
-        gap: 8px;
-    }
-
-    .r-btn {
-        width: 26px;
-        height: 26px;
-        border-radius: 30px;
-    }
-
-    .toggle-box {
-        position: absolute;
-        top: 90px;
-        margin-left: 10px;
-    }
-
-    .search-box {
-        z-index: 1500;
-        top: 96px;
-    }
-
-    .country-box {
-    position: absolute;
-    top: 150px;
-    right: 30px;
-}
-}
-
-
 .modal-diagram {
     display: flex;
     flex-direction: column;
     position: absolute;
     top: 2%;
-    bottom: 1%;
+    bottom:  1%;
     left: 40%;
     transform: translate(-40%, 0);
     width: calc(58vw + 48px);

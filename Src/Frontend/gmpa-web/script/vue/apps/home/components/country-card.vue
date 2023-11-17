@@ -2,7 +2,12 @@
     <div class="country-card">
         <div class="card-top">
             <div class="title">{{ selectedCountries[0].properties.name }}</div>
-            <closeIcon class="close-btn" alt="close-button" height="24" width="24" @click="useCountries.resetCountries()" />
+            <closeIcon
+                class="close-btn"
+                alt="close-button"
+                height="24"
+                width="24"
+                @click="useCountries.resetCountries()" />
         </div>
         <div class="card-data-spacing">
             <div key="1" class="data">
@@ -40,9 +45,9 @@
             </div>
         </div>
         <div class="coalition-potential">
-            <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
-            </coalitionMaximumMitigationPotential>
-        </div>
+                    <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
+                    </coalitionMaximumMitigationPotential>
+                </div>
         <div class="card-buttons">
             <button class="btn btn-alt-1" @click="useCountries.setCollabMode(true)">
                 Select for collaboration
@@ -50,7 +55,9 @@
             <button class="btn btn-alt-2" @click="emit('country-navigation', selectedCountries[0])">
                 View country details
             </button>
-            <button class="btn btn-alt-3" style="width: 100%"
+            <button
+                class="btn btn-alt-3"
+                style="width: 100%"
                 @click="emit('country-mitigation-potential-diagram', selectedCountries[0])">
                 Mitigation Potential Diagram
             </button>
@@ -78,14 +85,6 @@ const emit = defineEmits(['country-navigation', 'country-mitigation-potential-di
     background-color: white;
     border-radius: 8px;
     box-shadow: 0px 4px 8px 0px #214b6352;
-}
-
-@media screen and (max-width: 1199px) {
-    .country-card {
-        padding: 14px 32px;
-        width: 340px;
-        font-size: 12px;
-    }
 }
 
 .card-top {
