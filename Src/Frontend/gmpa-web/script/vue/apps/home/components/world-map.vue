@@ -37,12 +37,12 @@
 <script setup>
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
-import { geoAlbers, geoEquirectangular, geoEqualEarth } from 'd3-geo';
+import { geoEquirectangular } from 'd3-geo';
 import { scaleSequential } from 'd3-scale';
 import { useCollaborationStore } from '../stores/collaborationStore';
 import { useCountriesDataStore } from '../stores/countriesDataStore';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
-import { ref, watch, onMounted, defineProps, defineEmits, computed } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount, defineProps, defineEmits, computed } from 'vue';
 import toggleBox from './toggle-box.vue';
 import countryCard from './country-card.vue';
 import collabCard from './collaboration-card.vue';
@@ -170,8 +170,38 @@ const findCollaboratingCandidates = (selectedCountries) => {
 };
 let zoomBehavior
 
-onMounted(() => {
+let isHovering = false
+const handleHoverIn = () => {
+    isHovering = true;
+}
+const handleHoverOut = () => {
+    isHovering = false;
+}
 
+const handleKeyPress = (event) => {
+    if (isHovering && event.ctrlKey && event.key === 'U') {
+        downloadCSV('heatmap_collaboration.csv');
+    }
+}
+
+const downloadCSV = (filename) => {
+    const csvData = collaborationStore.getRawHeatmapData()
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeyPress);
+})
+
+onMounted(() => {
+    document.addEventListener('keydown', handleKeyPress);
 
     watch(mitigation, (newValue) => {
         colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
@@ -188,7 +218,9 @@ onMounted(() => {
         .attr('width', width)
         .attr('height', height)
         .attr('preserveAspectRatio', 'xMinYMin')
-        .style('background', '#8ab5f9');
+        .style('background', '#8ab5f9')
+        .on('mouseover', handleHoverIn)
+        .on('mouseleave', handleHoverOut);
 
     const projection = d3
         .geoEquirectangular()
@@ -233,7 +265,7 @@ onMounted(() => {
     let colorScale2, yAxisScale;
 
     function findMinMax(someObject, theProperty) {
-        
+
         const values = Object.keys(someObject).map((key) => someObject[key][theProperty]);
         return {
             min: Math.min(...values),
@@ -271,21 +303,21 @@ onMounted(() => {
     };
 
     countriesDataStore.fetchData()
-    .then((countries) => {
-        countryDataSet = countries;
-        collaborationStore.prepareCountryCollaborations();
-        useCountries.dataSet.value = countries.features;
-        // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
-        // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
-        // the color scale - get min and max for the desired property from the heatmap data
-        heatmapLegendG.call(heatmapLegend, {
-            spacing: 30,
-            textOffset: 15,
-            backgroundRectWidth: 100,
+        .then((countries) => {
+            countryDataSet = countries;
+            collaborationStore.prepareCountryCollaborations();
+            useCountries.dataSet.value = countries.features;
+            // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
+            // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
+            // the color scale - get min and max for the desired property from the heatmap data
+            heatmapLegendG.call(heatmapLegend, {
+                spacing: 30,
+                textOffset: 15,
+                backgroundRectWidth: 100,
+            });
+            drawHeatmapLegend();
+            drawAllCountries(countries);
         });
-        drawHeatmapLegend();
-        drawAllCountries(countries);
-    });
 
     let countryNodes = [];
 
@@ -326,6 +358,7 @@ onMounted(() => {
             existing.remove();
         }
     }
+    const unknownCountryFillColor = '#898484';
 
     function drawVerticalAxis() {
         const yAxis = d3.axisRight(yAxisScale).ticks(5);
@@ -344,7 +377,7 @@ onMounted(() => {
             .attr('x', -660) // Position it at the middle of the axis
             .attr('dy', '1em') // Adjustments for positioning
             .style('text-anchor', 'middle') // Center the text
-            .text( mitigation.value.label);
+            .text(mitigation.value.label);
     }
 
     function drawAllCountries(countries) {
@@ -357,7 +390,7 @@ onMounted(() => {
                     ? d.properties.hasOwnProperty(mitigation.value.value)
                         ? colorScale2(d.properties[mitigation.value.value])
                         : '#ffffff'
-                    : '#dcdcdc'
+                    : unknownCountryFillColor
             )
             .select('title') // Select the child title of each path
             .text(
@@ -373,13 +406,13 @@ onMounted(() => {
             .enter()
             .append('path')
             .attr('d', pathGenerator)
-            // fill with gray (#dcdcdc) when the country's data is unknown
+            // fill with gray when the country's data is unknown
             .attr('fill', (d) =>
                 d.properties['in_heatmap']
                     ? d.properties.hasOwnProperty(mitigation.value.value)
                         ? colorScale2(d.properties[mitigation.value.value])
                         : '#ffffff'
-                    : '#dcdcdc'
+                    : unknownCountryFillColor
             )
             .on('mouseover', handleMouseOver)
             .on('mouseleave', handleMouseLeave)
@@ -387,7 +420,7 @@ onMounted(() => {
             .append('title')
             .text(
                 (d) => d.properties.name +
-                    
+
                     (d.properties.hasOwnProperty(mitigation.value.value)
                         ? `: ${d.properties[mitigation.value.value]} ${mitigation.value.label}`
                         : '')
@@ -554,13 +587,13 @@ function zoomInOnSelectedCountries() {
 
 
             selectedCountryGeoJSON.forEach((geojson) => { // for example australia consists of multiple polygons
-            
-            const bounds = pathGenerator.bounds(geojson);
-            minX = Math.min(minX, bounds[0][0]);
-            minY = Math.min(minY, bounds[0][1]);
-            maxX = Math.max(maxX, bounds[1][0]);
-            maxY = Math.max(maxY, bounds[1][1]);
-            
+
+                const bounds = pathGenerator.bounds(geojson);
+                minX = Math.min(minX, bounds[0][0]);
+                minY = Math.min(minY, bounds[0][1]);
+                maxX = Math.max(maxX, bounds[1][0]);
+                maxY = Math.max(maxY, bounds[1][1]);
+
             })
         });
         const dx = maxX - minX;
@@ -578,12 +611,12 @@ function zoomInOnSelectedCountries() {
         // Access the current scale factor
         let currentScaleFactor = transform.k;
         let currentTranslateX = 0, currentTranslateY = 0
-            try {
-                const matrix = countriesGroup.node().transform.baseVal.consolidate().matrix
-                currentTranslateX = matrix.e
-                currentTranslateY = matrix.f
+        try {
+            const matrix = countriesGroup.node().transform.baseVal.consolidate().matrix
+            currentTranslateX = matrix.e
+            currentTranslateY = matrix.f
 
-            } catch (e) { }
+        } catch (e) { }
 
         // if the current scale factor is close to the desired one, we can use a smooth transition for translate; scale will hardly be noticeable 
         if (currentScaleFactor / newScale > 0.8 && currentScaleFactor / newScale < 1.2) {
@@ -595,7 +628,7 @@ function zoomInOnSelectedCountries() {
                 .duration(500)
                 .call(zoomBehavior.translateTo, x + 75, y + 20)
         } else {
-            const transform = d3.zoomIdentity.scale(newScale).translate((-x-0.5 * dx)/newScale  - 180,(-y-0.5 * dy)/newScale  - 120)
+            const transform = d3.zoomIdentity.scale(newScale).translate((-x - 0.5 * dx) / newScale - 180, (-y - 0.5 * dy) / newScale - 120)
             countriesGroup.transition().duration(750).call(zoomBehavior.transform, transform);
         }
 
@@ -712,12 +745,77 @@ p {
     box-shadow: 0px 4px 8px 0px #214b6352;
 }
 
+/* Media query for screens less than 1200 pixels wide */
+@media screen and (max-width: 1199px) {
+    .zoom-box {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .zoom-flex {
+        gap: 8px;
+    }
+
+    .r-btn {
+        width: 26px;
+        height: 26px;
+        border-radius: 30px;
+    }
+
+    .toggle-box {
+        position: absolute;
+        top: 90px;
+        margin-left: 10px;
+    }
+
+    .search-box {
+        z-index: 1500;
+        top: 96px;
+    }
+}
+
+/* Media query for screens less than 1200 pixels wide */
+@media screen and (max-height: 750px) {
+    .zoom-box {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .zoom-flex {
+        gap: 8px;
+    }
+
+    .r-btn {
+        width: 26px;
+        height: 26px;
+        border-radius: 30px;
+    }
+
+    .toggle-box {
+        position: absolute;
+        top: 90px;
+        margin-left: 10px;
+    }
+
+    .search-box {
+        z-index: 1500;
+        top: 96px;
+    }
+
+    .country-box {
+    position: absolute;
+    top: 150px;
+    right: 30px;
+}
+}
+
+
 .modal-diagram {
     display: flex;
     flex-direction: column;
     position: absolute;
     top: 2%;
-    bottom:  1%;
+    bottom: 1%;
     left: 40%;
     transform: translate(-40%, 0);
     width: calc(58vw + 48px);
