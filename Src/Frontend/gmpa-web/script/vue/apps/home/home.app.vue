@@ -1,7 +1,6 @@
 ﻿<template>
     <div>
         <introCard></introCard>
-        <!-- <div class="homeapp-row  row"> -->
         <div class="row">
             <div class="side-nav">
                 <homeSidenav :countries="props.countries"></homeSidenav>
@@ -54,19 +53,9 @@ const collaborationStore = useCollaborationStore();
 //TODO read from collaboration store which combinations of collaborating countries are even available - in addition to the fake data set
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .side-nav {
     width: 200px;
     height: calc(100vh - 136px);
 }
-
-// @media screen and (max-width: 1199px) {
-//  .homeapp-row { flex-wrap: nowrap;
-
-//  }
- 
-//      .col-10-correction {
-//          width: 75%
-//      }
-// }
 </style>
