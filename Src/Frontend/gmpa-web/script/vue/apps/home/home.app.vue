@@ -1,11 +1,11 @@
 ﻿<template>
     <div>
         <introCard></introCard>
-        <div class="row">
+        <div  class="row" style="flex-wrap: nowrap;">
             <div class="side-nav">
                 <homeSidenav :countries="props.countries"></homeSidenav>
             </div>
-            <div class="col-10 p-0">
+            <div id="worldMapContainerDIV" class="col-10-correction col-10 p-0">
                 <worldMap :countries="props.countries"></worldMap>
             </div>
         </div>
@@ -53,9 +53,18 @@ const collaborationStore = useCollaborationStore();
 //TODO read from collaboration store which combinations of collaborating countries are even available - in addition to the fake data set
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .side-nav {
     width: 200px;
     height: calc(100vh - 136px);
+
+
 }
+
+@media screen and (max-width: 1199px) {
+.col-10-correction.col-10 {
+    width:75%
+}
+}
+
 </style>
