@@ -156,4 +156,14 @@ const onEnter = () => {
     color: red;
     font-weight: 500;
 }
+
+@media screen and (max-width: 1199px) {
+    .search-bar {
+    width: 235px;
+}
+
+.search-input .results {
+    width: 220px;
+}
+}
 </style>
