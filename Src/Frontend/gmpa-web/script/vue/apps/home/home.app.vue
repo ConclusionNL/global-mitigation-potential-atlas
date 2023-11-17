@@ -1,7 +1,7 @@
 ﻿<template>
     <div>
         <introCard></introCard>
-        <div class="row" style="flex-wrap: nowrap">
+        <div class="homeapp-row  row">
             <div class="side-nav">
                 <homeSidenav :countries="props.countries"></homeSidenav>
             </div>
@@ -59,9 +59,13 @@ const collaborationStore = useCollaborationStore();
     height: calc(100vh - 136px);
 }
 
-// @media screen and (max-width: 1199px) {
-//     .col-10-correction {
-//         width: 75%
-//     }
-// }
+@media screen and (max-width: 1199px) {
+ .homeapp-row { flex-wrap: nowrap;
+
+ }
+ 
+    .col-10-correction {
+        width: 75%
+    }
+}
 </style>
