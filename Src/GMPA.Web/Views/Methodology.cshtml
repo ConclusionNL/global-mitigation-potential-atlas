@@ -3,31 +3,36 @@
     Layout = "Main.cshtml";
 }
 
-<h1>@Model.PageTitle</h1>
-@Html.Raw(Model.BodyText)
+<a href="javascript:history.back()">← Return to previous page</a>
+<div class="container">
+    <h1>@Model.PageTitle</h1>
+    @Html.Raw(Model.BodyText)
 
-@foreach (var sectionItem in Model.MethodologySectionBlock)
-{
-    <div data-bs-toggle="collapse" data-bs-target="#@sectionItem.SectionId" aria-expanded="false"
-         aria-controls="@sectionItem.SectionId">
-        <h2 class="collapsibleHeader">
-            @sectionItem.SectionHeader
-        </h2>
-    </div>
-    <div class="collapse" id="@sectionItem.SectionId">
-        @Html.Raw(sectionItem.SectionBody)
-    </div>
-}
+    @foreach (var sectionItem in Model.MethodologySectionBlock)
+    {
+        <div class="card">
+            <div class="card-header" data-bs-toggle="collapse" data-bs-target="#@sectionItem.SectionId" aria-expanded="false"
+                 aria-controls="@sectionItem.SectionId">
+                <h2 class="collapsibleHeader card-title">
+                    @sectionItem.SectionHeader (Expandable)
+                </h2>
+            </div>
+            <div class="collapse card-body" id="@sectionItem.SectionId">
+                @Html.Raw(sectionItem.SectionBody)
+            </div>
+        </div>
+    }
 
-<br />
-<h2 class="referenceDivider">References</h2>
-@foreach (var reference in Model.MethodologyReferenceBlock)
-{
-    <div class="reference">
-        <b>@reference.Title</b>
-        @Html.Raw(reference.Reference)
-    </div>
-}
+    <br />
+    <h2 class="referenceDivider">References</h2>
+    @foreach (var reference in Model.MethodologyReferenceBlock)
+    {
+        <div class="reference">
+            <b>@reference.Title</b>
+            @Html.Raw(reference.Reference)
+        </div>
+    }
+</div>
 
 <style>
     .referenceDivider {
@@ -40,5 +45,9 @@
 
     .collapsibleHeader {
         cursor: pointer;
+    }
+
+    .card {
+        margin-bottom: 10px;
     }
 </style>
