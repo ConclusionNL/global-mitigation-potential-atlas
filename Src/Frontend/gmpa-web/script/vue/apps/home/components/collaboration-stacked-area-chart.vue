@@ -221,7 +221,7 @@ const createAreaChart = (data, color) => {
     svg.append('text')
         .attr('class', 'x-axis-title')
         .attr('x', margin.left + 100)
-        .attr('y', height + 35) // Adjusted y position
+        .attr('y', height + 52) // Adjusted y position
         .style('text-anchor', 'middle')
         .text(xAxisTitle);
 
@@ -283,18 +283,20 @@ const drawCrosshairLines = (
         const newY = yScale(sum);
         // update horizontal line and marker
         horizontalLine.attr('y1', newY).attr('y2', newY); // Move line
-        horizontalLineMarker.attr('y', newY - 10); // Move marker
+        horizontalLineMarker.attr('y', newY - 0.5 * markerHeight); // Move marker
         repaintBar(updatedBarData, color);
     }
+const markerWidth =20
+const markerHeight = 20
 
     // vertical line Marker
     const verticalLineMarker = svg
         .append('rect')
         .attr('class', 'marker')
-        .attr('x', minimumXCoord - 10)
-        .attr('y', height + 20)
-        .attr('width', 20)
-        .attr('height', 20)
+        .attr('x', minimumXCoord - 0.5 * markerWidth)
+        .attr('y', height + markerHeight)
+        .attr('width', markerWidth)
+        .attr('height', markerHeight)
         .call(
             d3
                 .drag() // Call the drag behavior
@@ -315,10 +317,10 @@ const drawCrosshairLines = (
     const horizontalLineMarker = svg
         .append('rect')
         .attr('class', 'marker')
-        .attr('x', -30)
+        .attr('x', -45)
         .attr('y', newY - 10)
-        .attr('width', 20)
-        .attr('height', 20)
+        .attr('width', markerWidth)
+        .attr('height', markerHeight)
         .call(
             d3
                 .drag() // Call the drag behavior
@@ -334,7 +336,6 @@ const drawCrosshairLines = (
 
         horizontalLine.attr('y1', y).attr('y2', y); // Move line
 
-        // find current x coordinate and synchronize bar chart
         const yCoordToFind = yValueFromMouse(y);
         // find the X that goes with this total sum of Capacity - the X that produces this stack
         // iterate over data, take sum for each X
@@ -385,7 +386,7 @@ const drawCrosshairLines = (
 
         //update vertical line and marker
         verticalLine.attr('x1', newX).attr('x2', newX); // Move line
-        verticalLineMarker.attr('x', newX - 10); // Move marker
+        verticalLineMarker.attr('x', newX - 0.5*markerWidth); // Move marker
 
         repaintBar(updatedBarData, color);
 
