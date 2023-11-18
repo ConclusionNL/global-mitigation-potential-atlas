@@ -201,24 +201,21 @@ const height = 1080 - 86;
 const maxWidth = 1700
 const maxHeight = 1080 - 140
 // calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
-let screenSizeFactor = (window.innerWidth - 220) / maxWidth
+let horizontalScreenSizeFactor = (window.innerWidth - 220) / maxWidth
+let verticalScreenSizeFactor = (window.innerHeight - 80) / maxHeight
 
 
 const adjustScreenSize = () => {
-    console.log(`new width ${window.innerWidth}`)
-    screenSizeFactor = (window.innerWidth - 220) / maxWidth
+    horizontalScreenSizeFactor = (window.innerWidth - 220) / maxWidth
+    verticalScreenSizeFactor = (window.innerHeight - 80) / maxHeight
     d3
         .select('#worldMapGroup')
-        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor})`)
+        .attr('transform', `scale (${horizontalScreenSizeFactor},${verticalScreenSizeFactor})`)
 
     d3
         .select('#svgMap')
-        .attr('width', screenSizeFactor * maxWidth)
-        .attr('height', screenSizeFactor * maxHeight)
-
-
-    console.log(`group ${groupToResize}`)
-
+        .attr('width', horizontalScreenSizeFactor * maxWidth)
+        .attr('height', verticalScreenSizeFactor * maxHeight)
 }
 
 onBeforeUnmount(() => {
@@ -242,15 +239,15 @@ onMounted(() => {
         .select('#mapcontainer')
         .append('svg')
         .attr("id", "svgMap")
-        .attr('width', screenSizeFactor * maxWidth)
-        .attr('height', screenSizeFactor * maxHeight)
+        .attr('width', horizontalScreenSizeFactor * maxWidth)
+        .attr('height', verticalScreenSizeFactor * maxHeight)
         .attr('preserveAspectRatio', 'xMinYMin')
         .style('background', '#8ab5f9')
         .on('mouseover', handleHoverIn)
         .on('mouseleave', handleHoverOut)
         .append('g')
         .attr('id', "worldMapGroup")
-        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor})`)
+        .attr('transform', `scale (${horizontalScreenSizeFactor},${verticalScreenSizeFactor})`)
 
 
     const projection = d3
@@ -600,7 +597,7 @@ function zoomInOnSelectedCountries() {
                 .call(zoomBehavior.scaleTo, newScale)
                 .transition()
                 .duration(500)
-                .call(zoomBehavior.translateTo, x + (screenSizeFactor < 0.7 ? -45 : 75), y + (screenSizeFactor < 0.7 ? -120 : 20))
+                .call(zoomBehavior.translateTo, x + (horizontalScreenSizeFactor < 0.7 ? -45 : 75), y + (horizontalScreenSizeFactor < 0.7 ? -120 : 20))
 
 
         } else {
