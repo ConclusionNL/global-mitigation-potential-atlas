@@ -82,8 +82,6 @@ const navigateToCountry = (countryNavigationEvent) => {
             .replace(/'/g, '')       // Remove single quotes
             .replace(/%20/g, '-')     // Replace '%20' with '-'
             .replace(/\s+/g, '-');    // Replace spaces with '-'
-
-
         window.location.href = `/Countries/${countryNameWithDashes}`;
     } else {
         console.log('Invalid countryNavigationEvent object or missing properties.');
@@ -108,6 +106,7 @@ function highlightCollaborationCandidates() {
 }
 const handleChangeInCountriesSelection = () => {
     console.log('handleChangeInCountriesSelection')
+    refreshMap(mitigation.value.value)
     highlightCollaborationCandidates();
     zoomInOnSelectedCountries();
 };
@@ -140,14 +139,7 @@ watch(
     { deep: true }
 );
 
-watch(inCollabMode, (newVal) => {
-    if (newVal) {
-        markCollabCountry(selectedCountries.value[0]);
-        highlightCollaborationCandidates();
-    } else {
-        unmarkAllSelectedCountries();
-    }
-});
+
 
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
@@ -222,16 +214,60 @@ onBeforeUnmount(() => {
     document.removeEventListener('keydown', handleKeyPress);
 })
 
+
 onMounted(() => {
     document.addEventListener('keydown', handleKeyPress);
     window.onresize = adjustScreenSize;
+    initializeWorldMap()
+});
 
+const refreshMap = (mitigationValue) => {
+    console.log(`refresh map for mitigationValue ${mitigationValue}`)
+    heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigationValue);
+    yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigationValue);
+
+    drawAllCountries(countryDataSet);
+    drawVerticalAxis();
+
+}
+
+
+let heatmapColorScale, yAxisScale;
+
+function findMinMax(someObject, theProperty) {
+    const values = Object.keys(someObject).map((key) => someObject[key][theProperty]);
+    return {
+        min: Math.min(...values),
+        max: Math.max(...values),
+    };
+}
+
+
+function createColorScaleForHeatmapProperty(heatmapData, property) {
+    const result = findMinMax(heatmapData, property);
+    return scaleSequential(d3.interpolateBlues).domain([result.min, result.max]);
+}
+
+function createYAxisScaleForHeatmapProperty(heatmapData, property) {
+    const result = findMinMax(heatmapData, property);
+    return d3.scaleLinear().domain([result.min, result.max]).range([300, 0]); // Adjust the range to match the desired height of your axis
+}
+
+
+
+
+const initializeWorldMap = () => {
     watch(mitigation, (newValue) => {
-        heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
-        yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
-
-        drawAllCountries(countryDataSet);
-        drawVerticalAxis();
+        refreshMap(mitigation.value.value)
+    });
+    watch(inCollabMode, (newVal) => {
+        refreshMap(mitigation.value.value)
+        if (newVal) {
+            markCollabCountry(selectedCountries.value[0]);
+            highlightCollaborationCandidates();
+        } else {
+            unmarkAllSelectedCountries();
+        }
     });
 
     const t0 = { k: width / 2 / Math.PI, x: width / 2, y: height / 2 };
@@ -257,10 +293,7 @@ onMounted(() => {
         .scale(t0.k);
 
     pathGenerator = d3.geoPath().projection(projection);
-
     countriesGroup = svg.append('g');
-
-
     // Append a <rect> element with fill and opacity 0 (invisible) to allow every pixel in the area to be zoomable and draggable 
     countriesGroup.append("rect")
         .attr("x", 0) // X-coordinate
@@ -269,8 +302,6 @@ onMounted(() => {
         .attr("height", height) // Height
         .attr("fill", "blue") // Fill color - however: invisible
         .attr("opacity", 0); // Opacity set to 0 (invisible)
-
-
     zoomBehavior = d3.zoom()
         .scaleExtent([1, maxScaleFactor])
         .translateExtent([[0, 0], [width, height]])
@@ -286,27 +317,7 @@ onMounted(() => {
     }
 
 
-    let heatmapColorScale, yAxisScale;
-
-    function findMinMax(someObject, theProperty) {
-
-        const values = Object.keys(someObject).map((key) => someObject[key][theProperty]);
-        return {
-            min: Math.min(...values),
-            max: Math.max(...values),
-        };
-    }
-    function createColorScaleForHeatmapProperty(heatmapData, property) {
-        const result = findMinMax(heatmapData, property);
-        return scaleSequential(d3.interpolateBlues).domain([result.min, result.max]);
-    }
     heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
-
-    function createYAxisScaleForHeatmapProperty(heatmapData, property) {
-        const result = findMinMax(heatmapData, property);
-        return d3.scaleLinear().domain([result.min, result.max]).range([300, 0]); // Adjust the range to match the desired height of your axis
-    }
-
     yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
 
     countriesDataStore.fetchData()
@@ -317,8 +328,6 @@ onMounted(() => {
             drawHeatmapLegend();
             drawAllCountries(countries);
         });
-
-    let countryNodes = [];
 
     const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
 
@@ -365,89 +374,107 @@ onMounted(() => {
         // Draw the vertical axis using the scaleLinear
         drawVerticalAxis();
     }
-    function removeElementIfExists(id) {
-        const existing = svg.select(`#${id}`);
-        if (!existing.empty()) {
-            existing.remove();
-        }
+}
+
+function removeElementIfExists(id) {
+    const existing = svg.select(`#${id}`);
+    if (!existing.empty()) {
+        existing.remove();
     }
-    const unknownCountryFillColor = '#898484';
+}
+function drawVerticalAxis() {
+    const yAxis = d3.axisRight(yAxisScale).ticks(5);
 
-    function drawVerticalAxis() {
-        const yAxis = d3.axisRight(yAxisScale).ticks(5);
+    removeElementIfExists('legend-axis');
 
-        removeElementIfExists('legend-axis');
+    svg.append('g')
+        .attr('id', 'legend-axis')
+        .attr('transform', 'translate(75, 500) scale(1)') // Position the axis; adjust as needed
+        .call(yAxis);
+    removeElementIfExists('legend-axis-title');
+    svg.append('text')
+        .attr('id', 'legend-axis-title')
+        .attr('transform', 'rotate(-90)') // Rotate the text for vertical axis
+        .attr('y', 13) // Position it 40 pixels to the left of the axis
+        .attr('x', -660) // Position it at the middle of the axis
+        .attr('dy', '1em') // Adjustments for positioning
+        .style('text-anchor', 'middle') // Center the text
+        .text(mitigation.value.label);
+}
 
-        svg.append('g')
-            .attr('id', 'legend-axis')
-            .attr('transform', 'translate(75, 500) scale(1)') // Position the axis; adjust as needed
-            .call(yAxis);
-        removeElementIfExists('legend-axis-title');
-        svg.append('text')
-            .attr('id', 'legend-axis-title')
-            .attr('transform', 'rotate(-90)') // Rotate the text for vertical axis
-            .attr('y', 13) // Position it 40 pixels to the left of the axis
-            .attr('x', -660) // Position it at the middle of the axis
-            .attr('dy', '1em') // Adjustments for positioning
-            .style('text-anchor', 'middle') // Center the text
-            .text(mitigation.value.label);
-    }
+const unknownCountryFillColor = '#898484';
+let countryNodes = [];
 
-    function drawAllCountries(countries) {
-        // draw all countries
-        countryNodes = countriesGroup.selectAll('path').data(countries.features);
-        countryNodes
-            // TODO if in collab mode and the country is one of the selected countries then calculate
-            //      the heatmap collaboration value instead of the autarky value
-            //      that means that the heatmap scale needs to be redetermined when switching to collab mode and back 
-            //      (as the combined collab value for the selected countries is bound to be higher than the highest single country value
-            .attr('fill', (d) =>
-                d.properties['in_heatmap']
-                    ? d.properties.hasOwnProperty(mitigation.value.value)
-                        ? heatmapColorScale(d.properties[mitigation.value.value])
-                        : '#ffffff'
-                    : unknownCountryFillColor
-            )
-            .select('title') // Select the child title of each path
-            .text(
-                (d) =>
-                    d.properties.name_long +
-                    ' : ' +
-                    (d.properties.hasOwnProperty(mitigation.value.value)
-                        ? d.properties[mitigation.value.value] + ` ${mitigation.value.label}`
-                        : '')
-            );
+const toggleBoxMitigationPropertyToCollaborationMitigationPotentialProperty =
+{  "Mitigation_Potential_at_0" :"mitigationPotentialCollaborationAt0"
+,   "Mitigation_Potential_at_50" :"mitigationPotentialCollaborationAt50"
+,  "Mitigation_Potential_at_100" :"mitigationPotentialCollaborationAt100"
+,  "Mitigation_Potential_at_200" :"mitigationPotentialCollaborationAt200"
+ , "Mitigation_Potential" :"mitigationPotentialCollaborationAtNoLimit"
+}
 
-        countryNodes
-            .enter()
-            .append('path')
-            .attr('d', pathGenerator)
-            // fill with gray when the country's data is unknown
-            .attr('fill', (d) =>
-                d.properties['in_heatmap']
-                    ? d.properties.hasOwnProperty(mitigation.value.value)
-                        ? heatmapColorScale(d.properties[mitigation.value.value])
-                        : '#ffffff'
-                    : unknownCountryFillColor
-            )
-            .on('mouseover', handleMouseOver)
-            .on('mouseleave', handleMouseLeave)
-            .on('click', handleCountryClick)
-            .append('title')
-            .text(
-                (d) => d.properties.name +
+function drawAllCountries(countries) {
+let collaborationHeatmapvalue
 
-                    (d.properties.hasOwnProperty(mitigation.value.value)
-                        ? `: ${d.properties[mitigation.value.value]} ${mitigation.value.label}`
-                        : '')
-            )
-            .attr('class', 'country');
+if (inCollabMode.value && selectedCountries.value.length>1) {
+        // if in collab mode and the country is one of the selected countries and more than one country is selected then calculate
+        //      the heatmap collaboration value instead of the autarky value
+        //      that may mean TODO that the heatmap scale needs to be redetermined when switching to collab mode and back 
+        //      (as the combined collab value for the selected countries is bound to be higher than the highest single country value
+    
+    const data = collaborationStore.getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration(selectedCountries.value)
+    collaborationHeatmapvalue = data[toggleBoxMitigationPropertyToCollaborationMitigationPotentialProperty[mitigation.value.value]]
+}
 
+    countryNodes = countriesGroup.selectAll('path').data(countries.features);
+    countryNodes
+        .attr('fill', (d) =>
+            d.properties['in_heatmap']
+                ? d.properties.hasOwnProperty(mitigation.value.value)
+                    ? heatmapColorScale( inCollabMode.value && selectedCountries.value.length>1 && useCountries.isCountryInList(d)
+                        ?collaborationHeatmapvalue:d.properties[mitigation.value.value])
+                    : '#ffffff'
+                : unknownCountryFillColor
+        )
+        .select('title') // Select the child title of each path
+        .text(
+            (d) => inCollabMode.value && selectedCountries.value.length>1 && useCountries.isCountryInList(d)
+            ?` ${d.properties.name_long} in collaboration - combined mitigation potential ${collaborationHeatmapvalue} ${mitigation.value.label}`
+            :
+                d.properties.name_long +
+                ' : ' +
+                (d.properties.hasOwnProperty(mitigation.value.value)
+                    ? d.properties[mitigation.value.value] + ` ${mitigation.value.label}`
+                    : '')
 
+        );
 
-    }
-
-});
+    countryNodes
+        .enter()
+        .append('path')
+        .attr('d', pathGenerator)
+        // fill with gray when the country's data is unknown
+        .attr('fill', (d) =>
+            d.properties['in_heatmap']
+                ? d.properties.hasOwnProperty(mitigation.value.value)
+                    ? heatmapColorScale(d.properties[mitigation.value.value])
+                    : '#ffffff'
+                : unknownCountryFillColor
+        )
+        .on('mouseover', handleMouseOver)
+        .on('mouseleave', handleMouseLeave)
+        .on('click', handleCountryClick)
+        .append('title')
+        .text(
+            (d) =>
+                d.properties.name_long  +
+                ' : ' +
+                (d.properties.hasOwnProperty(mitigation.value.value)
+                    ? d.properties[mitigation.value.value] + ` ${mitigation.value.label}`
+                    : '')
+        )
+        .attr('class', 'country');
+}
 
 
 function zoomToScale(scale) {
