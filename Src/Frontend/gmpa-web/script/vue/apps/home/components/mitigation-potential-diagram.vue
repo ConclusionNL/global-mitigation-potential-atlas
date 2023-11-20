@@ -12,12 +12,14 @@
     </span>
     <div v-if="countriesList.length > 0">
         <label for="countryDataSetSelect" v-if="countriesList.length > 1">Select one Country, Full collaboration or Autarky:</label>
-        <label for="countryDataSetSelect" v-else>Select Overall or Detailed National Modelling:</label>
+        <label for="countryDataSetSelect" v-else-if="showAdvancedOptions">Select Overall or Detailed National Modelling:</label>
         <select
             id="countryDataSetSelect"
             v-model="selectedCountryDataSet"
             @change="handleCountryDataSetChange"
-            class="select-element">
+            class="select-element"
+            v-if="showAdvancedOptions || countriesList.length > 1"
+            >
             <option
                 v-for="option in (countriesList.length> 1? selectListOptions:[])
                 .concat(
@@ -25,11 +27,13 @@
                         label: country.properties.name,
                         value: country,
                     })))
-                .concat(
+                .concat( showAdvancedOptions
+                ?
                     countriesList.map((country) => ({
                         label: `${country.properties.name } - Detailed National Modelling`,
                         value: {...country,'DNM':true}
                     }))
+                :[]
                 )"
                 :value="option.value" >
                 {{ option.label }}
@@ -38,7 +42,8 @@
     </div>
     <collaborationStackedAreaChart
         :collaborationCountriesList="collaborationCountriesList" :dataSetType="dataSetTypeToShow"
-        @technologySelected="handleTechnologySelected" @downloadData="handleDownloadData"/>
+        @technologySelected="handleTechnologySelected" @downloadData="handleDownloadData"
+        @showAdvancedOptions="handleShowAdvancedOptions"/>
 </template>
 
 <script setup>
@@ -51,6 +56,17 @@ import { useCollaborationStore } from '../stores/collaborationStore';
 const collaborationStore = useCollaborationStore();
 
 const emit = defineEmits(['technology-selected']);
+
+
+
+// Set this to false to remove constant introcard pop-up
+const showAdvancedOptions = ref((!sessionStorage.getItem("AtlasShowAdvancedOptions")));
+
+const handleShowAdvancedOptions = () => {
+    sessionStorage.setItem("AtlasShowAdvancedOptions", true)
+    showAdvancedOptions.value = true
+    console.log(`show advanced options ${showAdvancedOptions.value}`)
+} 
 
 const props = defineProps({
     countriesList: [], 

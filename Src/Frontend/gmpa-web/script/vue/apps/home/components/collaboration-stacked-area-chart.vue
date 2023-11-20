@@ -18,7 +18,7 @@ const maxHeight = 1080
 // calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
 const screenSizeFactor = Math.min(window.innerWidth / maxWidth, window.innerHeight / maxHeight)
 
-const emit = defineEmits(['technology-selected','download-data']);
+const emit = defineEmits(['technology-selected','download-data','show-advanced-options']);
 
 const props = defineProps({
     collaborationCountriesList: [], dataSetType: String
@@ -47,6 +47,9 @@ const handleHoverOut = () => {
 const handleKeyPress = (event) => {
     if (isHovering && event.ctrlKey && event.key === 'U') {
         emit('download-data', { dataSetType: props.dataSetType });
+    }
+    if (isHovering && event.ctrlKey && event.key === 'Y') {
+        emit('show-advanced-options');
     }
 }
 
