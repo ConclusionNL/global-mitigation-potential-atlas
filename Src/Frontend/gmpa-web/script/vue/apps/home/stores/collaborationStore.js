@@ -184,10 +184,11 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 "Mitigation_Potential": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
                 , "Mitigation_Potential_at_NoLimit": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
                 , "Mitigation_Potential_at_0": parseFloat(rec["Mitigation_Potential_at_Average_0($/tCO2e)"])
-                , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
-                , "Mitigation_Potential_at_100": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
-                , "Mitigation_Potential_at_200": parseFloat(rec["Mitigation_Potential_at_Average_200($/tCO2e)"])
+                , "Mitigation_Potential_at_10": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
+                , "Mitigation_Potential_at_20": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
+                , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_Average_200($/tCO2e)"])
                 , "Mitigation_Potential_at_Average_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
+                , "Mitigation_Cost_NetZero": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
                 , "BAU_Emissions": parseFloat(rec["BAU_Emissions(MtCO2e)"]).toFixed(1)
                 , "mitigationPotentialCollaborationMax": rec["BAU_Emissions(MtCO2e)"]
             }
@@ -238,13 +239,13 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         // used for horizontal level gauge in benefits panel
         const heatmapData = getHeatmapData()
         // given an array list of two two letter country codes (for example ['ID','SG']) return an object with these values: 
-        // { mitigationPotentialAutarkyAt0 (50, 100, 200): 210, mitigationPotentialCollaborationAt0 (50,100,200): 300
+        // { mitigationPotentialAutarkyAt0 (10, 20, 50): 210, mitigationPotentialCollaborationAt0 (10,20,50): 300
         // , mitigationPotentialCollaborationMax:300 }
 
         // get country key for selectedCountries 
         const countriesKey = deriveCountryKey(collaboratingCountries.map((country) => country.properties.iso_a2))
 
-        const levels = ['0', '50', '100', '200', 'NoLimit']
+        const levels = ['0', '10', '20', '50', 'NoLimit']
         for (const level of levels) {
             // for every individual country, get Mitigation_Potential_at_Average_<current value> ($/tCO2e) values for country from heatmap_collaboration 
             // add the individual country values together to get the autarky value
@@ -276,7 +277,7 @@ export const useCollaborationStore = defineStore('collaboration', () => {
         const selectedCountriesIsoa2Array = selectedCountries.map((country) => country.properties.iso_a2)
         const selectedCountriesKey = deriveCountryKey(selectedCountriesIsoa2Array)
 
-        const properties = ["50", "100", "200"]
+        const properties = ["10", "20", "50"]
         const data = {}
 
         for (const property of properties) {

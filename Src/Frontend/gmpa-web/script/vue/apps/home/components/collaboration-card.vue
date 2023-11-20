@@ -71,8 +71,8 @@
                         <span class="switch-box-title">Annual Mitigation Potential (MtCO2e) at Average Abatement Cost of:</span>
 
                         <div v-for="(mitigation, i) in mitigationList" :key="i" class="radio-text">
-                            <input :id="mitigation" :checked="((mitigation.value == selectedMitigation.value) || (!selectedMitigation.value && i==0)) " type="radio" :value="mitigation.value"
-                                name="mitigation" @change="selectedMitigation = mitigation" />
+                            <input :id="collaborationMitigation" :checked="((mitigation.value == selectedCollaborationMitigation.value) || (!selectedCollaborationMitigation.value && i==0)) " type="radio" :value="mitigation.value"
+                                name="mitigation" @change="selectedCollaborationMitigation = mitigation" />
                             <label :for="mitigation">{{ mitigation.label }}</label>
                         </div>
 
@@ -89,11 +89,11 @@
                                     .map((country) => country.properties.name)
                                     .join(', ')
                             }}</span>
-                            in autarky vs collaboration at {{ selectedMitigation.value.substring(2) }} $/tCO2e
+                            in autarky vs collaboration at {{ selectedCollaborationMitigation.value.substring(2) }} $/tCO2e
                         </div>
                     </div>
                     <maximumMitigationPotentialGauge :countriesList="selectedCountries"
-                        :mitigationLevel="selectedMitigation.value" />
+                        :mitigationLevel="selectedCollaborationMitigation.value" />
                 </div>
                 <div class="divider"></div>
                 <div class="coalition-potential">
@@ -149,23 +149,23 @@ const showComposeCollaborationSet = ref(true);
 
 
 const mitigationList = ref([]);
-const selectedMitigation = ref()
+const selectedCollaborationMitigation = ref()
 
 
 
-watch(selectedMitigation, (newMitigation) => {
+watch(selectedCollaborationMitigation, (newMitigation) => {
     console.log(`new mitigation ${newMitigation.value}`)
 });
 
 onMounted(() => {
     mitigationList.value = [
         { label: '0 $/tCO2e', value: "At0" },
+        { label: '10 $/tCO2e', value: "At10" },
+        { label: '20 $/tCO2e', value: "At20" },
         { label: '50 $/tCO2e', value: "At50" },
-        { label: '100 $/tCO2e', value: "At100" },
-        { label: '200 $/tCO2e', value: "At200" },
-        { label: 'No Cost Limit', value: "AtNoLimit" }
+        { label: 'No Cost Limit', value: "AtNoLimit" },
     ];
-    selectedMitigation.value = mitigationList.value[0]
+    selectedCollaborationMitigation.value = mitigationList.value[0]
 });
 
 const props = defineProps({
@@ -175,9 +175,9 @@ const props = defineProps({
 const filterBox = ref(false);
 
 const mitTypes = [
+    'mitigationPotentialAt10',
+    'mitigationPotentialAt20',
     'mitigationPotentialAt50',
-    'mitigationPotentialAt100',
-    'mitigationPotentialAt200',
 ];
 
 const mitType = ref(mitTypes[0]);

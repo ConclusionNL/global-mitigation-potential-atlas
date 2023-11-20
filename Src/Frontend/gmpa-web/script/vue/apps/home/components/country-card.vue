@@ -18,24 +18,31 @@
                 </div>
             </div>
             <div key="3" class="data">
+                <div>Mitigation Potential at 10</div>
+                <div>
+                    {{ selectedCountries[0].properties['Mitigation_Potential_at_10'] }}
+                    MtCO2e
+                </div>
+            </div>
+            <div key="4" class="data">
+                <div>Mitigation Potential at 20</div>
+                <div>
+                    {{ selectedCountries[0].properties['Mitigation_Potential_at_20'] }}
+                    MtCO2e
+                </div>
+            </div>
+            <div key="5" class="data">
                 <div>Mitigation Potential at 50</div>
                 <div>
                     {{ selectedCountries[0].properties['Mitigation_Potential_at_50'] }}
                     MtCO2e
                 </div>
             </div>
-            <div key="4" class="data">
-                <div>Mitigation Potential at 100</div>
+            <div key="6" class="data">
+                <div>Average Mitigation Cost to Reach Net Zero</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_100'] }}
-                    MtCO2e
-                </div>
-            </div>
-            <div key="5" class="data">
-                <div>Mitigation Potential at 200</div>
-                <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_200'] }}
-                    MtCO2e
+                    {{ selectedCountries[0].properties['Mitigation_Cost_NetZero'] }}
+                    ($/tCO2e)
                 </div>
             </div>
         </div>

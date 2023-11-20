@@ -17,16 +17,19 @@ const selectedMitigation = ref(mitigationList.value[4]);
 const emit = defineEmits(['mitigation-value']);
 
 watch(selectedMitigation, (newMitigation) => {
+    console.log(`togglebox selected mitigation changed to ${newMitigation.label} `)
     emit('mitigation-value', newMitigation);
 });
 
 onMounted(() => {
+    
     mitigationList.value = [
         { label: '0 $/tCO2e', value: "Mitigation_Potential_at_0" },
+        { label: '10 $/tCO2e', value: "Mitigation_Potential_at_10" },
+        { label: '20 $/tCO2e', value: "Mitigation_Potential_at_20" },
         { label: '50 $/tCO2e', value: "Mitigation_Potential_at_50" },
-        { label: '100 $/tCO2e', value: "Mitigation_Potential_at_100" },
-        { label: '200 $/tCO2e', value: "Mitigation_Potential_at_200" },
         { label: 'No cost limit', value: "Mitigation_Potential" },
+        { label: 'Average Mitigation Cost to Reach Net Zero ($/tCO2e)', value: "Mitigation_Cost_NetZero" },
     ];
 
     emit('mitigation-value', mitigationList.value[4]);

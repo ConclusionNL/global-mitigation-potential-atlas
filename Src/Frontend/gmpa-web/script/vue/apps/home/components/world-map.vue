@@ -235,7 +235,7 @@ const refreshMap = (mitigationValue) => {
 let heatmapColorScale, yAxisScale;
 
 function findMinMax(someObject, theProperty) {
-    const values = Object.keys(someObject).map((key) => someObject[key][theProperty]);
+    const values = Object.keys(someObject).filter((key) => someObject[key][theProperty]).map((key) => someObject[key][theProperty]);
     return {
         min: Math.min(...values),
         max: Math.max(...values),
@@ -407,9 +407,9 @@ let countryNodes = [];
 
 const toggleBoxMitigationPropertyToCollaborationMitigationPotentialProperty =
 {  "Mitigation_Potential_at_0" :"mitigationPotentialCollaborationAt0"
-,   "Mitigation_Potential_at_50" :"mitigationPotentialCollaborationAt50"
-,  "Mitigation_Potential_at_100" :"mitigationPotentialCollaborationAt100"
-,  "Mitigation_Potential_at_200" :"mitigationPotentialCollaborationAt200"
+,   "Mitigation_Potential_at_10" :"mitigationPotentialCollaborationAt10"
+,  "Mitigation_Potential_at_20" :"mitigationPotentialCollaborationAt20"
+,  "Mitigation_Potential_at_50" :"mitigationPotentialCollaborationAt50"
  , "Mitigation_Potential" :"mitigationPotentialCollaborationAtNoLimit"
 }
 
@@ -431,14 +431,14 @@ if (inCollabMode.value && selectedCountries.value.length>1) {
         .attr('fill', (d) =>
             d.properties['in_heatmap']
                 ? d.properties.hasOwnProperty(mitigation.value.value)
-                    ? heatmapColorScale( inCollabMode.value && selectedCountries.value.length>1 && useCountries.isCountryInList(d)
-                        ?collaborationHeatmapvalue:d.properties[mitigation.value.value])
+                    ? heatmapColorScale( inCollabMode.value && selectedCountries.value.length>1 && useCountries.isCountryInList(d) && mitigation.value.value!="Mitigation_Cost_NetZero"
+                        ? collaborationHeatmapvalue :d.properties[mitigation.value.value])
                     : '#ffffff'
                 : unknownCountryFillColor
         )
         .select('title') // Select the child title of each path
         .text(
-            (d) => inCollabMode.value && selectedCountries.value.length>1 && useCountries.isCountryInList(d)
+            (d) => inCollabMode.value && selectedCountries.value.length>1 && useCountries.isCountryInList(d)  && mitigation.value.value!="Mitigation_Cost_NetZero"
             ?` ${d.properties.name_long} in collaboration - combined mitigation potential ${collaborationHeatmapvalue} ${mitigation.value.label}`
             :
                 d.properties.name_long +
@@ -805,7 +805,7 @@ p {
 
     .country-box {
         position: absolute;
-        top: 150px;
+        top: 90px;
         right: 30px;
     }
 }
