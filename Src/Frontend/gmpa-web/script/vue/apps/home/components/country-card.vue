@@ -74,9 +74,7 @@ import coalitionMaximumMitigationPotential from './coalition-maximum-mitigation-
 
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
-
 const rounder = useNumberRounder();
-
 const emit = defineEmits(['country-navigation', 'country-mitigation-potential-diagram']);
 </script>
 

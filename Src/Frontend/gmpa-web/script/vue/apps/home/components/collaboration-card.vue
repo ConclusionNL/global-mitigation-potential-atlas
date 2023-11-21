@@ -51,7 +51,7 @@
                         </div>
                         <div class="label-details">
                             <div class="mit-amount">
-                                {{ getMitPotCollabCountries(collabCandidate, mitType) ?? '' }}
+                                {{ rounder.sizeBasedRound(getMitPotCollabCountries(collabCandidate, mitType) ?? '') }}
                             </div>
                             <div>MtCO2 at {{ mitType.replaceAll(/[a-zA-Z]/g, '') }}</div>
                         </div>
@@ -130,6 +130,7 @@
 <script setup>
 import { ref, onMounted, watch, defineProps } from 'vue';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
+import { useNumberRounder } from '../composables/useNumberRounder';
 import closeIcon from '../assets/cross.svg';
 import filterIcon from '../assets/filter.svg';
 import backIcon from '../assets/arrow-left.svg';
@@ -143,6 +144,7 @@ const collaborationStore = useCollaborationStore();
 
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
+const rounder = useNumberRounder();
 const emit = defineEmits(['show-benefits', 'country-navigation']);
 const showComposeCollaborationSet = ref(true);
 
