@@ -6,8 +6,10 @@
 import { ref, watch, onMounted, onBeforeUnmount, defineProps, defineEmits, computed } from 'vue';
 import * as d3 from 'd3';
 import { useCollaborationStore } from '../stores/collaborationStore';
+import { useNumberRounder } from '../composables/useNumberRounder';
 
 const collaborationStore = useCollaborationStore();
+const rounder = useNumberRounder();
 const props = defineProps({
     countriesList: []
     , mitigationLevel: ''
@@ -142,8 +144,8 @@ const setupGauge = async (countriesList, mitigationLevel) => {
                 .attr('x', 0.5 * balloonWidth)
                 .attr('y', 92);
         }
-        createBalloon(autarkyBalloon, lowValue.toFixed(1), lowValuePrompt, lowValueFillColor)
-        createBalloon(collaborationBalloon, highValue.toFixed(1), highValuePrompt, highValueFillColor)
+        createBalloon(autarkyBalloon, rounder.sizeBasedRound(lowValue.toFixed(1)), lowValuePrompt, lowValueFillColor)
+        createBalloon(collaborationBalloon, rounder.sizeBasedRound(highValue.toFixed(1)), highValuePrompt, highValueFillColor)
         // Create a symbol generator for triangles
         const triangleSymbol = d3.symbol().type(d3.symbolTriangle);
 
@@ -401,7 +403,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
 
     chart
         .append('text')
-        .text(parseFloat(maxValue).toFixed(1))
+        .text(rounder.sizeBasedRound(parseFloat(maxValue).toFixed(1)))
         .attr('text-anchor', 'end') // Align the text to the end (rightmost) of the rectangle
         .attr('font-size', '48px')
         .attr('x', rectWidth) // Adjust the x-coordinate as needed
