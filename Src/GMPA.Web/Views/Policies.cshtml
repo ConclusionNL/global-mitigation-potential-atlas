@@ -11,32 +11,26 @@
     <div class="col-1">
         <div class="container text-center justify-content-center">
             <label for="pilotCountryFilter">Select a country:</label>
-            <select name="pilotCountryFilter" id="pilotCountryFilter">
+            <select class="side-width" name="pilotCountryFilter" id="pilotCountryFilter">
                 <option value=""></option>
-                <option value="Australia">Australia</option>
-                <!--<option value="Brunei">Brunei</option>-->
-                <option value="Cambodia">Cambodia</option>
-                <option value="India">India</option>
-                <option value="Indonesia">Indonesia</option>
-                <option value="Laos">Loa PDR</option>
-                <option value="Malaysia">Malaysia</option>
-                <option value="Philippines">Philippines</option>
-                <option value="Singapore">Singapore</option>
-                <option value="Thailand">Thailand</option>
-                <option value="Viet Nam">Viet Nam</option>
+                @foreach (var country in Model.Countries
+                    .Where(a => a.Active))
+                {
+                    <option value="@country.Name">@country.Name</option>
+                }
             </select>
         </div>
         <div class="container text-center mt-3">
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-primary toggle-container mr-3" id="btnStrategy" data-target="ClimateStrategy">Climate Strategies</button>
-                    <button class="btn btn-primary toggle-container" id="btnInventory" data-target="PolicyInventory">Policy Inventory</button>
+                    <button class="btn btn-primary toggle-container side-width" id="btnStrategy" data-target="ClimateStrategy">Climate Strategies</button>
+                    <button class="btn btn-primary toggle-container side-width" id="btnInventory" data-target="PolicyInventory">Policy Inventory</button>
                 </div>
             </div>
         </div>
         <div class="container text-center justify-content-center hidden" id="sectorFilter">
             <label for="filterSector">Filter by Sector:</label>
-            <select name="filterSector" id="filterSector" class="sector-dropdown">
+            <select name="filterSector" id="filterSector" class="sector-dropdown side-width">
                 <option value=""></option>
                 <option value="Energy">Energy</option>
                 <option value="Transport">Transport</option>
@@ -272,5 +266,10 @@
 
     .card {
         margin-bottom: 10px
+    }
+
+    .side-width {
+        width: calc(100% + 30px); /* Adjust the width as per your requirement */
+        margin-left: -15px; /* Adjust negative margin to offset the width increase */
     }
 </style>
