@@ -8,40 +8,40 @@
             <div key="1" class="data">
                 <div>Mitigation Potential at no cost limit</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential'] }} MtCO2e
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential']) }} MtCO2e
                 </div>
             </div>
             <div key="2" class="data">
                 <div>Mitigation Potential at 0</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_0'] }} MtCO2e
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential_at_0']) }} MtCO2e
                 </div>
             </div>
             <div key="3" class="data">
                 <div>Mitigation Potential at 10</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_10'] }}
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential_at_10']) }}
                     MtCO2e
                 </div>
             </div>
             <div key="4" class="data">
                 <div>Mitigation Potential at 20</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_20'] }}
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential_at_20']) }}
                     MtCO2e
                 </div>
             </div>
             <div key="5" class="data">
                 <div>Mitigation Potential at 50</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_50'] }}
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential_at_50']) }}
                     MtCO2e
                 </div>
             </div>
             <div key="6" class="data">
                 <div>Net Zero Mitigation Cost</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Cost_NetZero'] }}
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Cost_NetZero']) }}
                     ($/tCO2e)
                 </div>
             </div>
@@ -68,11 +68,14 @@
 <script setup>
 import { ref, onMounted, watch, defineProps } from 'vue';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
+import { useNumberRounder } from '../composables/useNumberRounder';
 import closeIcon from '../assets/cross.svg';
 import coalitionMaximumMitigationPotential from './coalition-maximum-mitigation-potential.vue';
 
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
+
+const rounder = useNumberRounder();
 
 const emit = defineEmits(['country-navigation', 'country-mitigation-potential-diagram']);
 </script>
