@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div key="6" class="data">
-                <div>Average Mitigation Cost to Reach Net Zero</div>
+                <div>Net Zero Mitigation Cost</div>
                 <div>
                     {{ selectedCountries[0].properties['Mitigation_Cost_NetZero'] }}
                     ($/tCO2e)

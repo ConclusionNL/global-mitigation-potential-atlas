@@ -29,7 +29,7 @@ onMounted(() => {
         { label: '20 $/tCO2e', value: "Mitigation_Potential_at_20" },
         { label: '50 $/tCO2e', value: "Mitigation_Potential_at_50" },
         { label: 'No cost limit', value: "Mitigation_Potential" },
-        { label: 'Average Mitigation Cost to Reach Net Zero ($/tCO2e)', value: "Mitigation_Cost_NetZero" },
+        { label: 'Net Zero Mitigation Cost ($/tCO2e)', value: "Mitigation_Cost_NetZero" },
     ];
 
     emit('mitigation-value', mitigationList.value[4]);
