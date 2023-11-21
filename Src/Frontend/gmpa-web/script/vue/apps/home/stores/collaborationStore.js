@@ -184,13 +184,14 @@ export const useCollaborationStore = defineStore('collaboration', () => {
                 "Mitigation_Potential": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
                 , "Mitigation_Potential_at_NoLimit": parseFloat(rec["Mitigation_Potential(MtCO2e)"])
                 , "Mitigation_Potential_at_0": parseFloat(rec["Mitigation_Potential_at_Average_0($/tCO2e)"])
-                , "Mitigation_Potential_at_10": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
-                , "Mitigation_Potential_at_20": parseFloat(rec["Mitigation_Potential_at_Average_100($/tCO2e)"])
-                , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_Average_200($/tCO2e)"])
+                , "Mitigation_Potential_at_10": parseFloat(rec["Mitigation_Potential_at_Average_10($/tCO2e)"])
+                , "Mitigation_Potential_at_20": parseFloat(rec["Mitigation_Potential_at_Average_20($/tCO2e)"])
+                , "Mitigation_Potential_at_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
                 , "Mitigation_Potential_at_Average_50": parseFloat(rec["Mitigation_Potential_at_Average_50($/tCO2e)"])
                 , "Mitigation_Cost_NetZero": parseFloat(rec["Mitigation_Cost($/tCO2e)"])
                 , "BAU_Emissions": parseFloat(rec["BAU_Emissions(MtCO2e)"]).toFixed(1)
                 , "mitigationPotentialCollaborationMax": rec["BAU_Emissions(MtCO2e)"]
+                , "singleCountryRecord" : !rec.country_2 
             }
             heatmapCollaborationData[countriesKey] = countryRecord
         }

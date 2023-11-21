@@ -235,7 +235,8 @@ const refreshMap = (mitigationValue) => {
 let heatmapColorScale, yAxisScale;
 
 function findMinMax(someObject, theProperty) {
-    const values = Object.keys(someObject).filter((key) => someObject[key][theProperty]).map((key) => someObject[key][theProperty]);
+    // filter records that apply to more than one country
+    const values = Object.keys(someObject).filter((key) => someObject[key][theProperty] && someObject[key]["singleCountryRecord"] ).map((key) => someObject[key][theProperty]);
     return {
         min: Math.min(...values),
         max: Math.max(...values),
