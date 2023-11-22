@@ -1,8 +1,8 @@
 <template>
     <div v-if="show" class="intro-card">
         <div class="content">
-            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
-                <img src="/public/GMPA_LogoFull.png" style="height: auto; width: 40%;"/>
+            <div class="image-container">
+                <img src="/public/GMPA_LogoFull.png" class="image"/>
             </div>
             <div class="title">Welcome to the pilot of the Global Mitigation Potential Atlas! </div>
             <div class="instructions">
@@ -10,9 +10,9 @@
                 significant and potentially transformative opportunities for reducing emissions are located,
                 and what the key levers are for realising these opportunities. It fosters domestic action, as
                 well as international collaboration and learning.
-<br/> <br/>
-We welcome your feedback on this pilot version for Southeast Asia – please get in touch
-with info@mitigationatlas.org
+                <br/> <br/>
+                We welcome your feedback on this pilot version for Southeast Asia – please get in touch
+                with info@mitigationatlas.org
             </div>
             <br/>
             <div class="buttons">
@@ -103,5 +103,17 @@ const handleExploreMapClick = () => {
 .instructions {
     font-size: 18px;
     line-height: 24px;
+}
+
+.image-container{
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin-bottom: 5px;
+}
+
+.image{
+    height: auto; 
+    width: 40%;
 }
 </style>
