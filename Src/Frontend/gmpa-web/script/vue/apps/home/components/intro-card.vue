@@ -1,6 +1,9 @@
 <template>
     <div v-if="show" class="intro-card">
         <div class="content">
+            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
+                <img src="/public/GMPA_LogoFull.png" style="height: auto; width: 40%;"/>
+            </div>
             <div class="title">Welcome to the pilot of the Global Mitigation Potential Atlas! </div>
             <div class="instructions">
                 The Atlas is designed to inspire greater climate change mitigation ambition and implementation efforts, by presenting where 
@@ -16,9 +19,6 @@ with info@mitigationatlas.org
                 <button @click="handleExploreMapClick" class="btn btn-alt-1">Explore the map</button>
                 <button class="btn btn-alt-2">Discover opportunities</button>
             </div>
-        </div>
-        <div>
-            <img src="/public/aniq.png" />
         </div>
     </div>
 </template>
@@ -45,7 +45,7 @@ const handleExploreMapClick = () => {
     top: 0;
     bottom: 0;
     width: 1000px;
-    height: 400px;
+    height: 430px;
     border-radius: 24px;
     padding: 40px;
     gap: 24px;
