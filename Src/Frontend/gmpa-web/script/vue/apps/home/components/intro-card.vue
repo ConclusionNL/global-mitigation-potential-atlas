@@ -18,7 +18,7 @@ with info@mitigationatlas.org
             </div>
         </div>
         <div>
-            <img src="/public/GMPA_LogoFull.png" />
+            <img src="/public/aniq.png" />
         </div>
     </div>
 </template>
