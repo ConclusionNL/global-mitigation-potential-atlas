@@ -68,14 +68,8 @@ namespace GMPA.Core.Controller.Render
                         InstitutionalRequirement = b.InstitutionalRequirement,
                         ImplementationStatus = b.ImplementationStatus,
                         MonitoringAndEvaluation = b.MonitoringAndEvaluation,
-                        StartDate = new string(
-                            $"{b.StartDateOfImplementation.Day}/" +
-                            $"{b.StartDateOfImplementation.Month}" +
-                            $"/{b.StartDateOfImplementation.Year}"),
-                        EndDate = new string(
-                            $"{b.EndDateOfImplementation.Day}/" +
-                            $"{b.EndDateOfImplementation.Month}" +
-                            $"/{b.EndDateOfImplementation.Year}")
+                        StartDate = new string($"{b.StartDateOfImplementation.Year}"),
+                        EndDate = new string($"{b.EndDateOfImplementation.Year}")
                     })
                     .ToList(),
 
