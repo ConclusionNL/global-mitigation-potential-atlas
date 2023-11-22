@@ -64,7 +64,7 @@ namespace GMPA.Core.Controller.Render
                         Jurisdiction = b.Jurisdiction,
                         EnforcementLevel = b.EnforcementLevel,
                         SectoralCoverage = b.SectoralCoverage,
-                        TargetGroup = b.TargetGroup,
+                        TargetGroup = b.TargetGroup?.ToList(),
                         InstitutionalRequirement = b.InstitutionalRequirement,
                         ImplementationStatus = b.ImplementationStatus,
                         MonitoringAndEvaluation = b.MonitoringAndEvaluation,

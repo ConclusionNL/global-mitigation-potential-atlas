@@ -124,10 +124,15 @@
                             </div>
                             <div class="col-1 tags">
                                 <div class="tagName">
-                                    Target group
+                                    Target group(s)
                                 </div>
                                 <div class="tags">
-                                    @casePolicy.TargetGroup
+                                    @foreach (var target in casePolicy.TargetGroup)
+                                    {
+                                        <div>
+                                            @target
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <div class="col-1 tags">

@@ -23,7 +23,7 @@ namespace GMPA.Core.Models.ViewModels
             public string Jurisdiction { get; set; }
             public string EnforcementLevel { get; set; }
             public string SectoralCoverage { get; set; }
-            public string TargetGroup { get; set; }
+            public List<string> TargetGroup { get; set; }
             public string InstitutionalRequirement { get; set; }
             public string ImplementationStatus { get; set; }
             public string MonitoringAndEvaluation { get; set; }
