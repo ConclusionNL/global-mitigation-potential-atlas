@@ -48,7 +48,7 @@
                     <div class="card md-3 strategy-item" data-from-country="@strategy.FromCountry">
 
                         <div class="card-header">
-                            <h3>@strategy.PolicyDocumentName</h3>
+                            <h3>@strategy.FromCountry: @strategy.PolicyDocumentName</h3>
                         </div>
                         <div class="card-body">
                             <h5>Key Objectives/Targets</h5>
@@ -93,7 +93,7 @@
                     <div class="card policy-item" data-from-country="@policy.FromCountry" data-sector="@policy.Sector">
                         <div class="row">
                             <div class="card-header">
-                                <h3>@policy.PolicyDocumentName</h3>
+                                <h3>@policy.FromCountry: @policy.PolicyDocumentName</h3>
                                 <div class="d-flex">
                                     <h5>Sector: </h5>
                                     @policy.Sector
