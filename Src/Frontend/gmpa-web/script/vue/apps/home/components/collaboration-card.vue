@@ -185,10 +185,11 @@ const mitTypes = [
 const mitType = ref(mitTypes[0]);
 
 const getMitPotCollabCountries = (collabCandidate, mitType) => {
-    return collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(
+    const mitigationPotentialContributionsForCollaborationCandidate=   collaborationStore.getMitigationPotentialContributionsForCollaborationCandidate(
         selectedCountries.value,
         collabCandidate
-    )[mitType].toFixed(1);
+    )[mitType];
+    return mitigationPotentialContributionsForCollaborationCandidate < 0?0:mitigationPotentialContributionsForCollaborationCandidate.toFixed(1)
 };
 
 
