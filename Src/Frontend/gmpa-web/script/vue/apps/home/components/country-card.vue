@@ -59,7 +59,7 @@
             </button>
             <button class="btn btn-alt-3" style="width: 100%"
                 @click="emit('country-mitigation-potential-diagram', selectedCountries[0])">
-                Mitigation Potential Diagram
+                Dynamic Pareto Abatement Cost Curve
             </button>
         </div>
     </div>

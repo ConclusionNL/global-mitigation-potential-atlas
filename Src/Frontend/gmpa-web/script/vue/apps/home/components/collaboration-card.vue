@@ -105,7 +105,7 @@
                     <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
                     </coalitionMaximumMitigationPotential>
                     <button class="benefits-btn" @click="emit('show-benefits')">
-                        Show Mitigation Potential Diagram
+                        Show Dynamic Pareto Abatement Cost Curve
                     </button>
                 </div>
                 <div class="divider"></div>
