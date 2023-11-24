@@ -1,7 +1,7 @@
 ﻿<template>
     <h1>
         <span class="selected-collaboration">{{ selectedCollaboration }}</span
-        >'s Mitigation Potential Diagram for 2050
+        >'s Dynamic Pareto Abatement Cost (D-PAC) Curve for 2050
     </h1>
     
     <span class="model-explanation"  v-if="!(collaborationCountriesList[0]['DNM'])">
