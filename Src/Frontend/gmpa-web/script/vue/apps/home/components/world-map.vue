@@ -41,6 +41,8 @@ import { geoEquirectangular } from 'd3-geo';
 import { scaleSequential } from 'd3-scale';
 import { useCollaborationStore } from '../stores/collaborationStore';
 import { useCountriesDataStore } from '../stores/countriesDataStore';
+import { useNumberRounder } from '../composables/useNumberRounder';
+
 import { useSelectedCountries } from '../composables/useSelectedCountries';
 import { ref, watch, onMounted, onBeforeUnmount, defineProps, defineEmits, computed } from 'vue';
 import toggleBox from './toggle-box.vue';
@@ -53,6 +55,8 @@ import closeIcon from '../assets/cross.svg';
 import mitigationPotentialDiagram from './mitigation-potential-diagram.vue';
 
 const useCountries = useSelectedCountries();
+const rounder = useNumberRounder();
+
 const countriesDataStore = useCountriesDataStore();
 const selectedCountries = useCountries.selectedCountries;
 const inCollabMode = useCountries.inCollabMode;
@@ -445,7 +449,7 @@ if (inCollabMode.value && selectedCountries.value.length>1) {
                 d.properties.name_long +
                 ' : ' +
                 (d.properties.hasOwnProperty(mitigation.value.value)
-                    ? d.properties[mitigation.value.value] + ` ${mitigation.value.label}`
+                    ? rounder.sizeBasedRound(d.properties[mitigation.value.value]) + ` ${mitigation.value.label}`
                     : '')
 
         );
@@ -471,7 +475,7 @@ if (inCollabMode.value && selectedCountries.value.length>1) {
                 d.properties.name_long  +
                 ' : ' +
                 (d.properties.hasOwnProperty(mitigation.value.value)
-                    ? d.properties[mitigation.value.value] + ` ${mitigation.value.label}`
+                    ? rounder.sizeBasedRound(d.properties[mitigation.value.value]) + ` ${mitigation.value.label}`
                     : '')
         )
         .attr('class', 'country');
