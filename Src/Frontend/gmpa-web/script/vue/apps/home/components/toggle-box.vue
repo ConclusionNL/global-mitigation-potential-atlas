@@ -4,7 +4,7 @@
         <div v-for="(mitigation, i) in mitigationList" :key="i" class="radio-text">
             <input :id="mitigation" :checked="i == 4" type="radio" :value="mitigation.value" name="mitigation"
                 @change="selectedMitigation = mitigation" />
-            <label :for="mitigation">{{ mitigation.label }}</label>
+            <label :for="mitigation"><span v-html="mitigation.label"></span></label>
         </div>
     </div>
 </template>
@@ -24,12 +24,12 @@ watch(selectedMitigation, (newMitigation) => {
 onMounted(() => {
     
     mitigationList.value = [
-        { label: '0 $/tCO2e', value: "Mitigation_Potential_at_0" },
+        { label: 'Net Zero Additional Cost', value: "Mitigation_Potential_at_0" },
         { label: '10 $/tCO2e', value: "Mitigation_Potential_at_10" },
         { label: '20 $/tCO2e', value: "Mitigation_Potential_at_20" },
         { label: '50 $/tCO2e', value: "Mitigation_Potential_at_50" },
         { label: 'No cost limit', value: "Mitigation_Potential" },
-        { label: 'Net Zero Mitigation Cost ($/tCO2e)', value: "Mitigation_Cost_NetZero" },
+        { label: 'Additional Average Abatement Cost to<br />Reach Net Zero Emissions ($/tCO2e)', value: "Mitigation_Cost_NetZero" },
     ];
 
     emit('mitigation-value', mitigationList.value[4]);

@@ -717,7 +717,7 @@ p {
 
 .country-box {
     position: absolute;
-    top: 250px;
+    top: 180px;
     right: 80px;
 }
 
