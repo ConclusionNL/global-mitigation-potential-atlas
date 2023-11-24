@@ -56,16 +56,18 @@ import { useCollaborationStore } from '../stores/collaborationStore';
 const collaborationStore = useCollaborationStore();
 
 const emit = defineEmits(['technology-selected']);
+const showAdvancedOptions = ref(false)
+
+onMounted(() => {
+  showAdvancedOptions.value = sessionStorage.getItem("AtlasShowAdvancedOptions")? !sessionStorage.getItem("AtlasShowAdvancedOptions"):false;
+})
 
 
 
-// Set this to false to remove constant introcard pop-up
-const showAdvancedOptions = ref((!sessionStorage.getItem("AtlasShowAdvancedOptions")));
 
 const handleShowAdvancedOptions = () => {
     sessionStorage.setItem("AtlasShowAdvancedOptions", true)
-    showAdvancedOptions.value = true
-    console.log(`show advanced options ${showAdvancedOptions.value}`)
+    showAdvancedOptions.value = !showAdvancedOptions.value
 } 
 
 const props = defineProps({
