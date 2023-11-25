@@ -4,7 +4,7 @@
             <div class="title">{{ selectedCountries[0].properties.name }}</div>
             <closeIcon class="close-btn" alt="close-button" height="24" width="24" @click="useCountries.resetCountries()" />
         </div>
-        Annual Mitigation Potential (MtCO2e) at Average Abatement Cost of:
+        Annual Mitigation Potential (MtCO2e) at Additional Average Abatement Cost of:
         <div class="card-data-spacing">
 
             <div key="2" class="data">

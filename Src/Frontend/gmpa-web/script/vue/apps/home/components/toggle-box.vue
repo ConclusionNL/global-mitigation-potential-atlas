@@ -1,6 +1,6 @@
 <template>
     <div class="mitigation-card">
-        Annual Mitigation Potential (MtCO2e)<br /> at Average Abatement Cost of:
+        Annual Mitigation Potential (MtCO2e)<br /> at Additional Average Abatement Cost of:
         <div v-for="(mitigation, i) in mitigationList" :key="i" class="radio-text">
             <input :id="mitigation" :checked="i == 4" type="radio" :value="mitigation.value" name="mitigation"
                 @change="selectedMitigation = mitigation" />
