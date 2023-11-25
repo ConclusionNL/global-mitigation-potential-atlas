@@ -1,6 +1,7 @@
 ﻿<template>
     <div id="chart"></div>
     <!-- Create a container for the bar chart -->
+    <div class="barChartTitle">Assets in Cost-Optimal Technology Mix</div>
     <div id="bar-chart"></div>
 </template>
 <script setup>
@@ -12,13 +13,15 @@ const collaborationStore = useCollaborationStore();
 
 const xAxisTitle = "Annual System Emissions (MtCO2e)"
 const yAxisTitle = "Annualized System Costs (Billion $)"
+const barXAxisTitle = "Asset Name"
+const barYAxisTitle = "Asset Costs (Billion $)"
 
 const maxWidth = 1920
 const maxHeight = 1080
 // calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
 const screenSizeFactor = Math.min(window.innerWidth / maxWidth, window.innerHeight / maxHeight)
 
-const emit = defineEmits(['technology-selected','download-data','show-advanced-options']);
+const emit = defineEmits(['technology-selected', 'download-data', 'show-advanced-options']);
 
 const props = defineProps({
     collaborationCountriesList: [], dataSetType: String
@@ -230,7 +233,7 @@ const createAreaChart = (data, color) => {
 
     svg
         .append('g')
-        .attr('transform', 'translate(' + -70 + ', ' + 440 + ')')
+        .attr('transform', 'translate(' + -50 + ', ' + 440 + ')')
         .append('text')
         .attr('text-anchor', 'start')
         .attr('transform', 'rotate(-90)')
@@ -289,8 +292,8 @@ const drawCrosshairLines = (
         horizontalLineMarker.attr('y', newY - 0.5 * markerHeight); // Move marker
         repaintBar(updatedBarData, color);
     }
-const markerWidth =20
-const markerHeight = 20
+    const markerWidth = 20
+    const markerHeight = 20
 
     // vertical line Marker
     const verticalLineMarker = svg
@@ -389,7 +392,7 @@ const markerHeight = 20
 
         //update vertical line and marker
         verticalLine.attr('x1', newX).attr('x2', newX); // Move line
-        verticalLineMarker.attr('x', newX - 0.5*markerWidth); // Move marker
+        verticalLineMarker.attr('x', newX - 0.5 * markerWidth); // Move marker
 
         repaintBar(updatedBarData, color);
 
@@ -427,11 +430,23 @@ const drawBarChart = (barData, color) => {
     barSvg = d3
         .select('#bar-chart')
         .append('svg')
-        .attr('width', screenSizeFactor* (barWidth + barMargin.left + barMargin.right))
+        .attr('width', screenSizeFactor * (barWidth + barMargin.left + barMargin.right))
         .attr('height', screenSizeFactor * (barHeight + barMargin.top + barMargin.bottom + 50))
         .append('g')
         .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor}) translate(${barMargin.left + 50},${barMargin.top})`);
-
+    barSvg
+        .append('g')
+        .attr('transform', 'translate(' + -30 + ', ' + 190 + ')')
+        .append('text')
+        .attr('text-anchor', 'start')
+        .attr('transform', 'rotate(-90)')
+        .text(barYAxisTitle);
+        barSvg.append('text')
+        .attr('class', 'x-axis-title')
+        .attr('x', barMargin.left )
+        .attr('y', barHeight + 52) // Adjusted y position
+        .style('text-anchor', 'middle')
+        .text(barXAxisTitle);
 
 
     // Create x and y scales for the bar chart
@@ -637,5 +652,25 @@ function findYforXinSerie(serie, xValue, data) {
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* Add other styling properties as needed */
+}
+
+.barChartTitle {
+    font-size: 22px;
+    margin-left: 200px;
+}
+
+
+@media screen and (max-height: 800px) {
+    .barChartTitle {
+        font-size: 16px;
+        margin-left: 200px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .barChartTitle {
+        font-size: 16px;
+        margin-left: 140px;
+    }
 }
 </style>
