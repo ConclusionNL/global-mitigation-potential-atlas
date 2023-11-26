@@ -2025,10 +2025,10 @@ MY,,,,0.0,0.0677,Onshore Wind
 MY,,,,0.0,26.0,Offshore Wind
 MY,,,,0.0,37.0,Utility-scale PV with 2 hour storage
 MY,,,,0.0,7.27e-09,Electricity Imports
-MY,,,,0.0,21.5,Solar PV (Distributed with Storage)
+MY,,,,0.0,21.5,Distributed solar without storage
 MY,,,,0.0,0.00468,Off-grid Hydropower
 MY,,,,0.0,6.82e-07,Electricity Exports
-MY,,,,0.0,0.0912,Gas Power Plant (SCGT)
+MY,,,,0.0,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,0.0,7.04,Coal Power Plant
 MY,,,,0.0,0.00566,Oil Fired Gas Turbine (SCGT)
 MY,,,,0.0,0.618,Biomass Power Plant
@@ -2042,14 +2042,6 @@ MY,,,,0.0,0.000387,Solar Potential
 MY,,,,0.0,4.03e-05,Wind Potential
 MY,,,,0.0,30.5,Coal Imports
 MY,,,,0.0,476.0,Light Fuel Oil Imports
-MY,,,,0.0,0.0,Gasoline Motorcycle
-MY,,,,0.0,0.0,Gasoline Car
-MY,,,,0.0,0.0,Gasoline Bus + Rail
-MY,,,,0.0,0.0,Residential Electric Stove
-MY,,,,0.0,0.0,Residential Oil Heating
-MY,,,,0.0,0.0,Commercial Oil Heating
-MY,,,,0.0,0.0,Industry Coal Heating
-MY,,,,0.0,0.0,Residential LPG/Kerosene Stove
 MY,,,,74.3,1.24,Electricity Distribution
 MY,,,,74.3,0.554,Geothermal Power Plant
 MY,,,,74.3,17.9,Gas Power Plant (CCGT)
@@ -2063,10 +2055,10 @@ MY,,,,74.3,0.27,Onshore Wind
 MY,,,,74.3,18.1,Offshore Wind
 MY,,,,74.3,17.0,Utility-scale PV with 2 hour storage
 MY,,,,74.3,6.97e-09,Electricity Imports
-MY,,,,74.3,21.3,Solar PV (Distributed with Storage)
+MY,,,,74.3,21.3,Distributed solar without storage
 MY,,,,74.3,0.00468,Off-grid Hydropower
 MY,,,,74.3,6.42e-07,Electricity Exports
-MY,,,,74.3,0.0912,Gas Power Plant (SCGT)
+MY,,,,74.3,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,74.3,8.39,Coal Power Plant
 MY,,,,74.3,0.00566,Oil Fired Gas Turbine (SCGT)
 MY,,,,74.3,0.618,Biomass Power Plant
@@ -2080,14 +2072,6 @@ MY,,,,74.3,0.000322,Solar Potential
 MY,,,,74.3,3.6e-05,Wind Potential
 MY,,,,74.3,32.5,Coal Imports
 MY,,,,74.3,494.0,Light Fuel Oil Imports
-MY,,,,74.3,0.0,Gasoline Motorcycle
-MY,,,,74.3,0.0,Gasoline Car
-MY,,,,74.3,0.0,Gasoline Bus + Rail
-MY,,,,74.3,0.0,Residential Electric Stove
-MY,,,,74.3,0.0,Residential Oil Heating
-MY,,,,74.3,0.0,Commercial Oil Heating
-MY,,,,74.3,0.0,Industry Coal Heating
-MY,,,,74.3,0.0,Residential LPG/Kerosene Stove
 MY,,,,143.0,0.986,Electricity Distribution
 MY,,,,143.0,0.554,Geothermal Power Plant
 MY,,,,143.0,19.8,Gas Power Plant (CCGT)
@@ -2101,10 +2085,10 @@ MY,,,,143.0,0.175,Onshore Wind
 MY,,,,143.0,12.7,Offshore Wind
 MY,,,,143.0,14.1,Utility-scale PV with 2 hour storage
 MY,,,,143.0,7.7e-09,Electricity Imports
-MY,,,,143.0,19.6,Solar PV (Distributed with Storage)
+MY,,,,143.0,19.6,Distributed solar without storage
 MY,,,,143.0,0.00468,Off-grid Hydropower
 MY,,,,143.0,6.63e-07,Electricity Exports
-MY,,,,143.0,0.0912,Gas Power Plant (SCGT)
+MY,,,,143.0,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,143.0,8.63,Coal Power Plant
 MY,,,,143.0,0.00566,Oil Fired Gas Turbine (SCGT)
 MY,,,,143.0,0.618,Biomass Power Plant
@@ -2118,14 +2102,6 @@ MY,,,,143.0,0.000246,Solar Potential
 MY,,,,143.0,3.1e-05,Wind Potential
 MY,,,,143.0,33.2,Coal Imports
 MY,,,,143.0,515.0,Light Fuel Oil Imports
-MY,,,,143.0,0.0,Gasoline Motorcycle
-MY,,,,143.0,0.0,Gasoline Car
-MY,,,,143.0,0.0,Gasoline Bus + Rail
-MY,,,,143.0,0.0,Residential Electric Stove
-MY,,,,143.0,0.0,Residential Oil Heating
-MY,,,,143.0,0.0,Commercial Oil Heating
-MY,,,,143.0,0.0,Industry Coal Heating
-MY,,,,143.0,0.0,Residential LPG/Kerosene Stove
 MY,,,,193.0,0.816,Electricity Distribution
 MY,,,,193.0,0.554,Geothermal Power Plant
 MY,,,,193.0,19.9,Gas Power Plant (CCGT)
@@ -2139,10 +2115,10 @@ MY,,,,193.0,0.119,Onshore Wind
 MY,,,,193.0,10.4,Offshore Wind
 MY,,,,193.0,13.7,Utility-scale PV with 2 hour storage
 MY,,,,193.0,6.47e-09,Electricity Imports
-MY,,,,193.0,18.6,Solar PV (Distributed with Storage)
+MY,,,,193.0,18.6,Distributed solar without storage
 MY,,,,193.0,0.00468,Off-grid Hydropower
 MY,,,,193.0,6.75e-07,Electricity Exports
-MY,,,,193.0,0.0912,Gas Power Plant (SCGT)
+MY,,,,193.0,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,193.0,8.96,Coal Power Plant
 MY,,,,193.0,0.00566,Oil Fired Gas Turbine (SCGT)
 MY,,,,193.0,0.676,Biomass Power Plant
@@ -2156,14 +2132,6 @@ MY,,,,193.0,0.000189,Solar Potential
 MY,,,,193.0,2.55e-05,Wind Potential
 MY,,,,193.0,35.5,Coal Imports
 MY,,,,193.0,530.0,Light Fuel Oil Imports
-MY,,,,193.0,0.0,Gasoline Motorcycle
-MY,,,,193.0,0.0,Gasoline Car
-MY,,,,193.0,0.0,Gasoline Bus + Rail
-MY,,,,193.0,0.0,Residential Electric Stove
-MY,,,,193.0,0.0,Residential Oil Heating
-MY,,,,193.0,0.0,Commercial Oil Heating
-MY,,,,193.0,0.0,Industry Coal Heating
-MY,,,,193.0,0.0,Residential LPG/Kerosene Stove
 MY,,,,264.0,0.713,Electricity Distribution
 MY,,,,264.0,0.554,Geothermal Power Plant
 MY,,,,264.0,19.4,Gas Power Plant (CCGT)
@@ -2177,10 +2145,10 @@ MY,,,,264.0,0.119,Onshore Wind
 MY,,,,264.0,8.87,Offshore Wind
 MY,,,,264.0,11.9,Utility-scale PV with 2 hour storage
 MY,,,,264.0,6.42e-09,Electricity Imports
-MY,,,,264.0,16.3,Solar PV (Distributed with Storage)
+MY,,,,264.0,16.3,Distributed solar without storage
 MY,,,,264.0,0.00468,Off-grid Hydropower
 MY,,,,264.0,7.34e-07,Electricity Exports
-MY,,,,264.0,0.0912,Gas Power Plant (SCGT)
+MY,,,,264.0,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,264.0,9.47,Coal Power Plant
 MY,,,,264.0,0.383,Oil Fired Gas Turbine (SCGT)
 MY,,,,264.0,1.81,Biomass Power Plant
@@ -2194,14 +2162,6 @@ MY,,,,264.0,0.000143,Solar Potential
 MY,,,,264.0,2.18e-05,Wind Potential
 MY,,,,264.0,37.4,Coal Imports
 MY,,,,264.0,543.0,Light Fuel Oil Imports
-MY,,,,264.0,0.0,Gasoline Motorcycle
-MY,,,,264.0,0.0,Gasoline Car
-MY,,,,264.0,0.0,Gasoline Bus + Rail
-MY,,,,264.0,0.0,Residential Electric Stove
-MY,,,,264.0,0.0,Residential Oil Heating
-MY,,,,264.0,0.0,Commercial Oil Heating
-MY,,,,264.0,0.0,Industry Coal Heating
-MY,,,,264.0,0.0,Residential LPG/Kerosene Stove
 MY,,,,372.0,0.662,Electricity Distribution
 MY,,,,372.0,0.554,Geothermal Power Plant
 MY,,,,372.0,19.2,Gas Power Plant (CCGT)
@@ -2215,10 +2175,10 @@ MY,,,,372.0,0.119,Onshore Wind
 MY,,,,372.0,6.87,Offshore Wind
 MY,,,,372.0,11.2,Utility-scale PV with 2 hour storage
 MY,,,,372.0,6.52e-09,Electricity Imports
-MY,,,,372.0,12.7,Solar PV (Distributed with Storage)
+MY,,,,372.0,12.7,Distributed solar without storage
 MY,,,,372.0,0.00468,Off-grid Hydropower
 MY,,,,372.0,7.27e-07,Electricity Exports
-MY,,,,372.0,0.0912,Gas Power Plant (SCGT)
+MY,,,,372.0,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,372.0,10.0,Coal Power Plant
 MY,,,,372.0,0.159,Oil Fired Gas Turbine (SCGT)
 MY,,,,372.0,3.57,Biomass Power Plant
@@ -2232,14 +2192,6 @@ MY,,,,372.0,0.000106,Solar Potential
 MY,,,,372.0,1.72e-05,Wind Potential
 MY,,,,372.0,39.3,Coal Imports
 MY,,,,372.0,563.0,Light Fuel Oil Imports
-MY,,,,372.0,0.0,Gasoline Motorcycle
-MY,,,,372.0,0.0,Gasoline Car
-MY,,,,372.0,0.0,Gasoline Bus + Rail
-MY,,,,372.0,0.0,Residential Electric Stove
-MY,,,,372.0,0.0,Residential Oil Heating
-MY,,,,372.0,0.0,Commercial Oil Heating
-MY,,,,372.0,0.0,Industry Coal Heating
-MY,,,,372.0,0.0,Residential LPG/Kerosene Stove
 MY,,,,446.0,0.69,Electricity Distribution
 MY,,,,446.0,0.554,Geothermal Power Plant
 MY,,,,446.0,14.1,Gas Power Plant (CCGT)
@@ -2253,10 +2205,10 @@ MY,,,,446.0,0.119,Onshore Wind
 MY,,,,446.0,4.96,Offshore Wind
 MY,,,,446.0,11.1,Utility-scale PV with 2 hour storage
 MY,,,,446.0,6.64e-09,Electricity Imports
-MY,,,,446.0,6.09,Solar PV (Distributed with Storage)
+MY,,,,446.0,6.09,Distributed solar without storage
 MY,,,,446.0,0.00468,Off-grid Hydropower
 MY,,,,446.0,7.65e-07,Electricity Exports
-MY,,,,446.0,0.0912,Gas Power Plant (SCGT)
+MY,,,,446.0,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,446.0,10.5,Coal Power Plant
 MY,,,,446.0,1.21,Oil Fired Gas Turbine (SCGT)
 MY,,,,446.0,15.7,Biomass Power Plant
@@ -2270,14 +2222,6 @@ MY,,,,446.0,9.13e-05,Solar Potential
 MY,,,,446.0,1.26e-05,Wind Potential
 MY,,,,446.0,40.7,Coal Imports
 MY,,,,446.0,579.0,Light Fuel Oil Imports
-MY,,,,446.0,0.0,Gasoline Motorcycle
-MY,,,,446.0,0.0,Gasoline Car
-MY,,,,446.0,0.0,Gasoline Bus + Rail
-MY,,,,446.0,0.0,Residential Electric Stove
-MY,,,,446.0,0.0,Residential Oil Heating
-MY,,,,446.0,0.0,Commercial Oil Heating
-MY,,,,446.0,0.0,Industry Coal Heating
-MY,,,,446.0,0.0,Residential LPG/Kerosene Stove
 MY,,,,520.0,0.742,Electricity Distribution
 MY,,,,520.0,0.554,Geothermal Power Plant
 MY,,,,520.0,11.8,Gas Power Plant (CCGT)
@@ -2291,10 +2235,10 @@ MY,,,,520.0,0.119,Onshore Wind
 MY,,,,520.0,0.0405,Offshore Wind
 MY,,,,520.0,10.8,Utility-scale PV with 2 hour storage
 MY,,,,520.0,5.99e-09,Electricity Imports
-MY,,,,520.0,0.00262,Solar PV (Distributed with Storage)
+MY,,,,520.0,0.00262,Distributed solar without storage
 MY,,,,520.0,0.00429,Off-grid Hydropower
 MY,,,,520.0,7.54e-07,Electricity Exports
-MY,,,,520.0,0.0912,Gas Power Plant (SCGT)
+MY,,,,520.0,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,520.0,10.0,Coal Power Plant
 MY,,,,520.0,1.95,Oil Fired Gas Turbine (SCGT)
 MY,,,,520.0,23.1,Biomass Power Plant
@@ -2308,14 +2252,6 @@ MY,,,,520.0,7.34e-05,Solar Potential
 MY,,,,520.0,2.85e-07,Wind Potential
 MY,,,,520.0,41.1,Coal Imports
 MY,,,,520.0,589.0,Light Fuel Oil Imports
-MY,,,,520.0,0.0,Gasoline Motorcycle
-MY,,,,520.0,0.0,Gasoline Car
-MY,,,,520.0,0.0,Gasoline Bus + Rail
-MY,,,,520.0,0.0,Residential Electric Stove
-MY,,,,520.0,0.0,Residential Oil Heating
-MY,,,,520.0,0.0,Commercial Oil Heating
-MY,,,,520.0,0.0,Industry Coal Heating
-MY,,,,520.0,0.0,Residential LPG/Kerosene Stove
 MY,,,,595.0,0.745,Electricity Distribution
 MY,,,,595.0,0.554,Geothermal Power Plant
 MY,,,,595.0,8.4,Gas Power Plant (CCGT)
@@ -2329,10 +2265,10 @@ MY,,,,595.0,0.119,Onshore Wind
 MY,,,,595.0,0.0,Offshore Wind
 MY,,,,595.0,8.99,Utility-scale PV with 2 hour storage
 MY,,,,595.0,5.68e-09,Electricity Imports
-MY,,,,595.0,0.00262,Solar PV (Distributed with Storage)
+MY,,,,595.0,0.00262,Distributed solar without storage
 MY,,,,595.0,0.00429,Off-grid Hydropower
 MY,,,,595.0,7.24e-07,Electricity Exports
-MY,,,,595.0,0.0912,Gas Power Plant (SCGT)
+MY,,,,595.0,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,595.0,11.5,Coal Power Plant
 MY,,,,595.0,3.91,Oil Fired Gas Turbine (SCGT)
 MY,,,,595.0,25.2,Biomass Power Plant
@@ -2346,14 +2282,6 @@ MY,,,,595.0,6.7e-05,Solar Potential
 MY,,,,595.0,2.58e-07,Wind Potential
 MY,,,,595.0,44.0,Coal Imports
 MY,,,,595.0,625.0,Light Fuel Oil Imports
-MY,,,,595.0,0.0,Gasoline Motorcycle
-MY,,,,595.0,0.0,Gasoline Car
-MY,,,,595.0,0.0,Gasoline Bus + Rail
-MY,,,,595.0,0.0,Residential Electric Stove
-MY,,,,595.0,0.0,Residential Oil Heating
-MY,,,,595.0,0.0,Commercial Oil Heating
-MY,,,,595.0,0.0,Industry Coal Heating
-MY,,,,595.0,0.0,Residential LPG/Kerosene Stove
 MY,,,,743.0,0.784,Electricity Distribution
 MY,,,,743.0,0.554,Geothermal Power Plant
 MY,,,,743.0,5.32,Gas Power Plant (CCGT)
@@ -2367,10 +2295,10 @@ MY,,,,743.0,0.119,Onshore Wind
 MY,,,,743.0,0.0,Offshore Wind
 MY,,,,743.0,5.91,Utility-scale PV with 2 hour storage
 MY,,,,743.0,4.57e-09,Electricity Imports
-MY,,,,743.0,0.00262,Solar PV (Distributed with Storage)
+MY,,,,743.0,0.00262,Distributed solar without storage
 MY,,,,743.0,0.00392,Off-grid Hydropower
 MY,,,,743.0,7.77e-07,Electricity Exports
-MY,,,,743.0,0.0912,Gas Power Plant (SCGT)
+MY,,,,743.0,0.0912,Gas Power Plant (Steam Turbine)
 MY,,,,743.0,17.0,Coal Power Plant
 MY,,,,743.0,3.88,Oil Fired Gas Turbine (SCGT)
 MY,,,,743.0,26.4,Biomass Power Plant
@@ -2384,52 +2312,6 @@ MY,,,,743.0,5.46e-05,Solar Potential
 MY,,,,743.0,2.58e-07,Wind Potential
 MY,,,,743.0,53.1,Coal Imports
 MY,,,,743.0,621.0,Light Fuel Oil Imports
-MY,,,,743.0,0.0,Gasoline Motorcycle
-MY,,,,743.0,0.0,Gasoline Car
-MY,,,,743.0,0.0,Gasoline Bus + Rail
-MY,,,,743.0,0.0,Residential Electric Stove
-MY,,,,743.0,0.0,Residential Oil Heating
-MY,,,,743.0,0.0,Commercial Oil Heating
-MY,,,,743.0,0.0,Industry Coal Heating
-MY,,,,743.0,0.0,Residential LPG/Kerosene Stove
-MY,,,,743.0,0.0,Electricity Distribution
-MY,,,,743.0,0.0,Geothermal Power Plant
-MY,,,,743.0,3.63,Gas Power Plant (CCGT)
-MY,,,,743.0,0.0,Electricity Transmission
-MY,,,,743.0,7.62,Solar PV (Utility)
-MY,,,,743.0,0.0,CSP with Storage
-MY,,,,743.0,25.4,Large Hydropower Plant (Dam) (>100MW)
-MY,,,,743.0,0.983,Medium Hydropower Plant (10-100MW)
-MY,,,,743.0,0.0,Small Hydropower Plant (<10MW)
-MY,,,,743.0,0.119,Onshore Wind
-MY,,,,743.0,0.0,Offshore Wind
-MY,,,,743.0,5.5,Utility-scale PV with 2 hour storage
-MY,,,,743.0,0.0,Electricity Imports
-MY,,,,743.0,0.00262,Solar PV (Distributed with Storage)
-MY,,,,743.0,0.00304,Off-grid Hydropower
-MY,,,,743.0,0.0,Electricity Exports
-MY,,,,743.0,0.0912,Gas Power Plant (SCGT)
-MY,,,,743.0,20.4,Coal Power Plant
-MY,,,,743.0,3.88,Oil Fired Gas Turbine (SCGT)
-MY,,,,743.0,26.7,Biomass Power Plant
-MY,,,,743.0,0.0172,Light Fuel Oil Power Plant
-MY,,,,743.0,6.43,Biomass Extraction
-MY,,,,743.0,3.71e-05,Geothermal Potential
-MY,,,,743.0,0.000191,Hydro Potential
-MY,,,,743.0,13.4,Natural Gas Extraction
-MY,,,,743.0,73.2,Crude Oil Extraction
-MY,,,,743.0,4.32e-05,Solar Potential
-MY,,,,743.0,2.58e-07,Wind Potential
-MY,,,,743.0,57.9,Coal Imports
-MY,,,,743.0,618.0,Light Fuel Oil Imports
-MY,,,,743.0,1.57,Gasoline Motorcycle
-MY,,,,743.0,2.62,Gasoline Car
-MY,,,,743.0,1.0,Gasoline Bus + Rail
-MY,,,,743.0,0.0674,Residential Electric Stove
-MY,,,,743.0,0.149,Residential Oil Heating
-MY,,,,743.0,0.0995,Commercial Oil Heating
-MY,,,,743.0,2.97,Industry Coal Heating
-MY,,,,743.0,0.0279,Residential LPG/Kerosene Stove
 LA,,,,1.25,0.0116,Electricity Distribution
 LA,,,,1.25,0.0244,Electricity Transmission
 LA,,,,1.25,7.57,Large Hydropower Plant (Dam) (>100MW)
@@ -2439,7 +2321,7 @@ LA,,,,1.25,4.65e-06,Electricity Exports
 LA,,,,1.25,1.01,Coal Power Plant
 LA,,,,1.25,0.113,Medium Hydropower Plant (10-100MW)
 LA,,,,1.25,0.0131,Small Hydropower Plant (<10MW)
-LA,,,,1.25,0.00073,Solar PV (Distributed with Storage)
+LA,,,,1.25,0.00073,Distributed solar without storage
 LA,,,,1.25,0.00131,Off-grid Hydropower
 LA,,,,1.25,0.0178,Biomass Power Plant
 LA,,,,1.25,0.616,Biomass Extraction
@@ -2448,16 +2330,6 @@ LA,,,,1.25,0.000129,Hydro Potential
 LA,,,,1.25,7.97e-09,Solar Potential
 LA,,,,1.25,4.67e-09,Wind Potential
 LA,,,,1.25,6.34,Light Fuel Oil Imports
-LA,,,,1.25,0.0,Gasoline Motorcycle
-LA,,,,1.25,0.0,Gasoline Car
-LA,,,,1.25,0.0,Gasoline Bus + Rail
-LA,,,,1.25,0.0,Industry Biomass Heating 
-LA,,,,1.25,0.0,Residential Electric Stove
-LA,,,,1.25,0.0,Industry Coal Heating
-LA,,,,1.25,0.0,Residential Biomass Stove
-LA,,,,1.25,0.0,Residential Biomass Heating
-LA,,,,1.25,0.0,Commercial Biomass Heating 
-LA,,,,1.25,0.0,DEMRESCKNCOA
 LA,,,,3.07,0.00996,Electricity Distribution
 LA,,,,3.07,0.021,Electricity Transmission
 LA,,,,3.07,7.3,Large Hydropower Plant (Dam) (>100MW)
@@ -2467,7 +2339,7 @@ LA,,,,3.07,4.62e-06,Electricity Exports
 LA,,,,3.07,1.01,Coal Power Plant
 LA,,,,3.07,0.113,Medium Hydropower Plant (10-100MW)
 LA,,,,3.07,0.0131,Small Hydropower Plant (<10MW)
-LA,,,,3.07,0.00073,Solar PV (Distributed with Storage)
+LA,,,,3.07,0.00073,Distributed solar without storage
 LA,,,,3.07,0.00131,Off-grid Hydropower
 LA,,,,3.07,0.0178,Biomass Power Plant
 LA,,,,3.07,0.653,Biomass Extraction
@@ -2476,16 +2348,6 @@ LA,,,,3.07,0.000127,Hydro Potential
 LA,,,,3.07,7.97e-09,Solar Potential
 LA,,,,3.07,3.69e-09,Wind Potential
 LA,,,,3.07,6.39,Light Fuel Oil Imports
-LA,,,,3.07,0.0,Gasoline Motorcycle
-LA,,,,3.07,0.0,Gasoline Car
-LA,,,,3.07,0.0,Gasoline Bus + Rail
-LA,,,,3.07,0.0,Industry Biomass Heating 
-LA,,,,3.07,0.0,Residential Electric Stove
-LA,,,,3.07,0.0,Industry Coal Heating
-LA,,,,3.07,0.0,Residential Biomass Stove
-LA,,,,3.07,0.0,Residential Biomass Heating
-LA,,,,3.07,0.0,Commercial Biomass Heating 
-LA,,,,3.07,0.0,DEMRESCKNCOA
 LA,,,,3.07,0.00996,Electricity Distribution
 LA,,,,3.07,0.021,Electricity Transmission
 LA,,,,3.07,7.3,Large Hydropower Plant (Dam) (>100MW)
@@ -2495,7 +2357,7 @@ LA,,,,3.07,4.62e-06,Electricity Exports
 LA,,,,3.07,1.01,Coal Power Plant
 LA,,,,3.07,0.113,Medium Hydropower Plant (10-100MW)
 LA,,,,3.07,0.0131,Small Hydropower Plant (<10MW)
-LA,,,,3.07,0.00073,Solar PV (Distributed with Storage)
+LA,,,,3.07,0.00073,Distributed solar without storage
 LA,,,,3.07,0.00131,Off-grid Hydropower
 LA,,,,3.07,0.0178,Biomass Power Plant
 LA,,,,3.07,0.653,Biomass Extraction
@@ -2504,16 +2366,6 @@ LA,,,,3.07,0.000127,Hydro Potential
 LA,,,,3.07,7.97e-09,Solar Potential
 LA,,,,3.07,3.69e-09,Wind Potential
 LA,,,,3.07,6.39,Light Fuel Oil Imports
-LA,,,,3.07,0.0,Gasoline Motorcycle
-LA,,,,3.07,0.0,Gasoline Car
-LA,,,,3.07,0.0,Gasoline Bus + Rail
-LA,,,,3.07,0.0,Industry Biomass Heating 
-LA,,,,3.07,0.0,Residential Electric Stove
-LA,,,,3.07,0.0,Industry Coal Heating
-LA,,,,3.07,0.0,Residential Biomass Stove
-LA,,,,3.07,0.0,Residential Biomass Heating
-LA,,,,3.07,0.0,Commercial Biomass Heating 
-LA,,,,3.07,0.0,DEMRESCKNCOA
 LA,,,,3.98,0.00914,Electricity Distribution
 LA,,,,3.98,0.0192,Electricity Transmission
 LA,,,,3.98,7.17,Large Hydropower Plant (Dam) (>100MW)
@@ -2523,7 +2375,7 @@ LA,,,,3.98,4.6e-06,Electricity Exports
 LA,,,,3.98,1.01,Coal Power Plant
 LA,,,,3.98,0.113,Medium Hydropower Plant (10-100MW)
 LA,,,,3.98,0.0131,Small Hydropower Plant (<10MW)
-LA,,,,3.98,0.00073,Solar PV (Distributed with Storage)
+LA,,,,3.98,0.00073,Distributed solar without storage
 LA,,,,3.98,0.00131,Off-grid Hydropower
 LA,,,,3.98,0.0178,Biomass Power Plant
 LA,,,,3.98,0.67,Biomass Extraction
@@ -2532,16 +2384,6 @@ LA,,,,3.98,0.000126,Hydro Potential
 LA,,,,3.98,7.97e-09,Solar Potential
 LA,,,,3.98,3.82e-09,Wind Potential
 LA,,,,3.98,6.39,Light Fuel Oil Imports
-LA,,,,3.98,0.0,Gasoline Motorcycle
-LA,,,,3.98,0.0,Gasoline Car
-LA,,,,3.98,0.0,Gasoline Bus + Rail
-LA,,,,3.98,0.0,Industry Biomass Heating 
-LA,,,,3.98,0.0,Residential Electric Stove
-LA,,,,3.98,0.0,Industry Coal Heating
-LA,,,,3.98,0.0,Residential Biomass Stove
-LA,,,,3.98,0.0,Residential Biomass Heating
-LA,,,,3.98,0.0,Commercial Biomass Heating 
-LA,,,,3.98,0.0,DEMRESCKNCOA
 LA,,,,4.88,0.00841,Electricity Distribution
 LA,,,,4.88,0.0177,Electricity Transmission
 LA,,,,4.88,7.07,Large Hydropower Plant (Dam) (>100MW)
@@ -2551,7 +2393,7 @@ LA,,,,4.88,4.59e-06,Electricity Exports
 LA,,,,4.88,1.01,Coal Power Plant
 LA,,,,4.88,0.113,Medium Hydropower Plant (10-100MW)
 LA,,,,4.88,0.0131,Small Hydropower Plant (<10MW)
-LA,,,,4.88,0.00073,Solar PV (Distributed with Storage)
+LA,,,,4.88,0.00073,Distributed solar without storage
 LA,,,,4.88,0.00131,Off-grid Hydropower
 LA,,,,4.88,0.0178,Biomass Power Plant
 LA,,,,4.88,0.688,Biomass Extraction
@@ -2560,16 +2402,6 @@ LA,,,,4.88,0.000125,Hydro Potential
 LA,,,,4.88,7.97e-09,Solar Potential
 LA,,,,4.88,4.01e-09,Wind Potential
 LA,,,,4.88,6.39,Light Fuel Oil Imports
-LA,,,,4.88,0.0,Gasoline Motorcycle
-LA,,,,4.88,0.0,Gasoline Car
-LA,,,,4.88,0.0,Gasoline Bus + Rail
-LA,,,,4.88,0.0,Industry Biomass Heating 
-LA,,,,4.88,0.0,Residential Electric Stove
-LA,,,,4.88,0.0,Industry Coal Heating
-LA,,,,4.88,0.0,Residential Biomass Stove
-LA,,,,4.88,0.0,Residential Biomass Heating
-LA,,,,4.88,0.0,Commercial Biomass Heating 
-LA,,,,4.88,0.0,DEMRESCKNCOA
 LA,,,,6.19,0.0077,Electricity Distribution
 LA,,,,6.19,0.0162,Electricity Transmission
 LA,,,,6.19,6.92,Large Hydropower Plant (Dam) (>100MW)
@@ -2579,7 +2411,7 @@ LA,,,,6.19,4.57e-06,Electricity Exports
 LA,,,,6.19,1.01,Coal Power Plant
 LA,,,,6.19,0.113,Medium Hydropower Plant (10-100MW)
 LA,,,,6.19,0.0131,Small Hydropower Plant (<10MW)
-LA,,,,6.19,0.00073,Solar PV (Distributed with Storage)
+LA,,,,6.19,0.00073,Distributed solar without storage
 LA,,,,6.19,0.00131,Off-grid Hydropower
 LA,,,,6.19,0.0178,Biomass Power Plant
 LA,,,,6.19,0.698,Biomass Extraction
@@ -2588,16 +2420,6 @@ LA,,,,6.19,0.000123,Hydro Potential
 LA,,,,6.19,7.97e-09,Solar Potential
 LA,,,,6.19,3.08e-09,Wind Potential
 LA,,,,6.19,6.39,Light Fuel Oil Imports
-LA,,,,6.19,0.0,Gasoline Motorcycle
-LA,,,,6.19,0.0,Gasoline Car
-LA,,,,6.19,0.0,Gasoline Bus + Rail
-LA,,,,6.19,0.0,Industry Biomass Heating 
-LA,,,,6.19,0.0,Residential Electric Stove
-LA,,,,6.19,0.0,Industry Coal Heating
-LA,,,,6.19,0.0,Residential Biomass Stove
-LA,,,,6.19,0.0,Residential Biomass Heating
-LA,,,,6.19,0.0,Commercial Biomass Heating 
-LA,,,,6.19,0.0,DEMRESCKNCOA
 LA,,,,7.56,0.00733,Electricity Distribution
 LA,,,,7.56,0.0154,Electricity Transmission
 LA,,,,7.56,6.8,Large Hydropower Plant (Dam) (>100MW)
@@ -2607,7 +2429,7 @@ LA,,,,7.56,4.56e-06,Electricity Exports
 LA,,,,7.56,1.01,Coal Power Plant
 LA,,,,7.56,0.113,Medium Hydropower Plant (10-100MW)
 LA,,,,7.56,0.0131,Small Hydropower Plant (<10MW)
-LA,,,,7.56,0.00073,Solar PV (Distributed with Storage)
+LA,,,,7.56,0.00073,Distributed solar without storage
 LA,,,,7.56,0.00131,Off-grid Hydropower
 LA,,,,7.56,0.0178,Biomass Power Plant
 LA,,,,7.56,0.709,Biomass Extraction
@@ -2616,16 +2438,6 @@ LA,,,,7.56,0.000122,Hydro Potential
 LA,,,,7.56,7.97e-09,Solar Potential
 LA,,,,7.56,2.63e-09,Wind Potential
 LA,,,,7.56,6.39,Light Fuel Oil Imports
-LA,,,,7.56,0.0,Gasoline Motorcycle
-LA,,,,7.56,0.0,Gasoline Car
-LA,,,,7.56,0.0,Gasoline Bus + Rail
-LA,,,,7.56,0.0,Industry Biomass Heating 
-LA,,,,7.56,0.0,Residential Electric Stove
-LA,,,,7.56,0.0,Industry Coal Heating
-LA,,,,7.56,0.0,Residential Biomass Stove
-LA,,,,7.56,0.0,Residential Biomass Heating
-LA,,,,7.56,0.0,Commercial Biomass Heating 
-LA,,,,7.56,0.0,DEMRESCKNCOA
 LA,,,,8.5,0.00699,Electricity Distribution
 LA,,,,8.5,0.0147,Electricity Transmission
 LA,,,,8.5,6.7,Large Hydropower Plant (Dam) (>100MW)
@@ -2635,7 +2447,7 @@ LA,,,,8.5,4.54e-06,Electricity Exports
 LA,,,,8.5,1.01,Coal Power Plant
 LA,,,,8.5,0.113,Medium Hydropower Plant (10-100MW)
 LA,,,,8.5,0.0131,Small Hydropower Plant (<10MW)
-LA,,,,8.5,0.00073,Solar PV (Distributed with Storage)
+LA,,,,8.5,0.00073,Distributed solar without storage
 LA,,,,8.5,0.00131,Off-grid Hydropower
 LA,,,,8.5,0.0178,Biomass Power Plant
 LA,,,,8.5,0.718,Biomass Extraction
@@ -2644,41 +2456,487 @@ LA,,,,8.5,0.000121,Hydro Potential
 LA,,,,8.5,7.98e-09,Solar Potential
 LA,,,,8.5,3.49e-09,Wind Potential
 LA,,,,8.5,6.39,Light Fuel Oil Imports
-LA,,,,8.5,0.0,Gasoline Motorcycle
-LA,,,,8.5,0.0,Gasoline Car
-LA,,,,8.5,0.0,Gasoline Bus + Rail
-LA,,,,8.5,0.0,Industry Biomass Heating 
-LA,,,,8.5,0.0,Residential Electric Stove
-LA,,,,8.5,0.0,Industry Coal Heating
-LA,,,,8.5,0.0,Residential Biomass Stove
-LA,,,,8.5,0.0,Residential Biomass Heating
-LA,,,,8.5,0.0,Commercial Biomass Heating 
-LA,,,,8.5,0.0,DEMRESCKNCOA
-LA,,,,9.45,0.146,Electricity Distribution
-LA,,,,9.45,0.293,Electricity Transmission
-LA,,,,9.45,6.57,Large Hydropower Plant (Dam) (>100MW)
-LA,,,,9.45,0.000417,Onshore Wind
-LA,,,,9.45,7.7e-08,Electricity Imports
-LA,,,,9.45,4.53e-06,Electricity Exports
-LA,,,,9.45,1.01,Coal Power Plant
-LA,,,,9.45,0.113,Medium Hydropower Plant (10-100MW)
-LA,,,,9.45,0.0131,Small Hydropower Plant (<10MW)
-LA,,,,9.45,0.00073,Solar PV (Distributed with Storage)
-LA,,,,9.45,0.00131,Off-grid Hydropower
-LA,,,,9.45,0.0178,Biomass Power Plant
-LA,,,,9.45,0.831,Biomass Extraction
-LA,,,,9.45,0.27,Coal Extraction
-LA,,,,9.45,0.00012,Hydro Potential
-LA,,,,9.45,7.97e-09,Solar Potential
-LA,,,,9.45,9.08e-10,Wind Potential
-LA,,,,9.45,6.39,Light Fuel Oil Imports
-LA,,,,9.45,0.0142,Gasoline Motorcycle
-LA,,,,9.45,0.0182,Gasoline Car
-LA,,,,9.45,0.00965,Gasoline Bus + Rail
-LA,,,,9.45,0.0332,Industry Biomass Heating 
-LA,,,,9.45,0.000291,Residential Electric Stove
-LA,,,,9.45,0.0923,Industry Coal Heating
-LA,,,,9.45,0.0585,Residential Biomass Stove
-LA,,,,9.45,0.0831,Residential Biomass Heating
-LA,,,,9.45,0.0698,Commercial Biomass Heating 
-LA,,,,9.45,0.00777,DEMRESCKNCOA
+TH,,,,0.0,3.71,Electricity Distribution
+TH,,,,0.0,0.0134,Geothermal Power Plant
+TH,,,,0.0,10.8,Gas Power Plant (CCGT)
+TH,,,,0.0,7.87,Electricity Transmission
+TH,,,,0.0,28.7,Coal Power Plant
+TH,,,,0.0,16.7,Solar PV (Utility)
+TH,,,,0.0,262.0,CSP with Storage
+TH,,,,0.0,2.83,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,0.0,0.112,Medium Hydropower Plant (10-100MW)
+TH,,,,0.0,0.585,Small Hydropower Plant (<10MW)
+TH,,,,0.0,32.0,Onshore Wind
+TH,,,,0.0,22.8,Offshore Wind
+TH,,,,0.0,19.8,Utility-scale PV with 2 hour storage
+TH,,,,0.0,42.5,Onshore Wind power plant with storage
+TH,,,,0.0,5.68e-06,Electricity Imports
+TH,,,,0.0,25.9,Solar PV (Distributed with Storage)
+TH,,,,0.0,0.0715,Off-grid Hydropower
+TH,,,,0.0,4.32e-07,Electricity Exports
+TH,,,,0.0,0.00466,Electric Bus + Rail
+TH,,,,0.0,2.15,Gasoline Motorcycle
+TH,,,,0.0,0.9,Gasoline Car
+TH,,,,0.0,0.528,Gasoline Bus + Rail
+TH,,,,0.0,2.65,Industry Biomass Heating 
+TH,,,,0.0,0.117,Residential Electric Stove
+TH,,,,0.0,0.0503,Residential Oil Heating
+TH,,,,0.0,0.0227,Commercial Oil Heating
+TH,,,,0.0,6.01,Industry Coal Heating
+TH,,,,0.0,1.92,Biomass Power Plant
+TH,,,,0.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,0.0,0.17,Residential Biomass Stove
+TH,,,,0.0,0.548,Residential Biomass Heating
+TH,,,,0.0,0.261,Commercial Biomass Heating 
+TH,,,,0.0,1.68,Industry Natural Gas Heating
+TH,,,,0.0,14.0,Biomass Extraction
+TH,,,,0.0,43.5,Coal Extraction
+TH,,,,0.0,8.87e-07,Geothermal Potential
+TH,,,,0.0,3.76e-05,Hydro Potential
+TH,,,,0.0,31.1,Natural Gas Extraction
+TH,,,,0.0,12.3,Crude Oil Extraction
+TH,,,,0.0,0.000543,Solar Potential
+TH,,,,0.0,0.00022,Wind Potential
+TH,,,,0.0,3.63,Coal Imports
+TH,,,,0.0,851.0,Light Fuel Oil Imports
+TH,,,,0.0,0.0,Oil Fired Gas Turbine (SCGT)
+TH,,,,112.0,3.01,Electricity Distribution
+TH,,,,112.0,0.0134,Geothermal Power Plant
+TH,,,,112.0,18.9,Gas Power Plant (CCGT)
+TH,,,,112.0,6.44,Electricity Transmission
+TH,,,,112.0,21.8,Coal Power Plant
+TH,,,,112.0,16.9,Solar PV (Utility)
+TH,,,,112.0,162.0,CSP with Storage
+TH,,,,112.0,2.87,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,112.0,0.118,Medium Hydropower Plant (10-100MW)
+TH,,,,112.0,0.585,Small Hydropower Plant (<10MW)
+TH,,,,112.0,26.4,Onshore Wind
+TH,,,,112.0,21.0,Offshore Wind
+TH,,,,112.0,19.8,Utility-scale PV with 2 hour storage
+TH,,,,112.0,38.9,Onshore Wind power plant with storage
+TH,,,,112.0,5.68e-06,Electricity Imports
+TH,,,,112.0,23.9,Solar PV (Distributed with Storage)
+TH,,,,112.0,0.0865,Off-grid Hydropower
+TH,,,,112.0,4.78e-07,Electricity Exports
+TH,,,,112.0,0.0,Electric Bus + Rail
+TH,,,,112.0,2.15,Gasoline Motorcycle
+TH,,,,112.0,1.12,Gasoline Car
+TH,,,,112.0,0.552,Gasoline Bus + Rail
+TH,,,,112.0,2.75,Industry Biomass Heating 
+TH,,,,112.0,0.117,Residential Electric Stove
+TH,,,,112.0,0.0465,Residential Oil Heating
+TH,,,,112.0,0.0226,Commercial Oil Heating
+TH,,,,112.0,6.97,Industry Coal Heating
+TH,,,,112.0,1.92,Biomass Power Plant
+TH,,,,112.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,112.0,0.17,Residential Biomass Stove
+TH,,,,112.0,0.557,Residential Biomass Heating
+TH,,,,112.0,0.266,Commercial Biomass Heating 
+TH,,,,112.0,1.45,Industry Natural Gas Heating
+TH,,,,112.0,14.5,Biomass Extraction
+TH,,,,112.0,41.3,Coal Extraction
+TH,,,,112.0,8.92e-07,Geothermal Potential
+TH,,,,112.0,3.78e-05,Hydro Potential
+TH,,,,112.0,33.9,Natural Gas Extraction
+TH,,,,112.0,12.3,Crude Oil Extraction
+TH,,,,112.0,0.000411,Solar Potential
+TH,,,,112.0,0.00021,Wind Potential
+TH,,,,112.0,2.69,Coal Imports
+TH,,,,112.0,861.0,Light Fuel Oil Imports
+TH,,,,112.0,0.0,Oil Fired Gas Turbine (SCGT)
+TH,,,,224.0,2.45,Electricity Distribution
+TH,,,,224.0,0.0134,Geothermal Power Plant
+TH,,,,224.0,18.7,Gas Power Plant (CCGT)
+TH,,,,224.0,5.25,Electricity Transmission
+TH,,,,224.0,23.8,Coal Power Plant
+TH,,,,224.0,16.9,Solar PV (Utility)
+TH,,,,224.0,89.1,CSP with Storage
+TH,,,,224.0,2.87,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,224.0,0.115,Medium Hydropower Plant (10-100MW)
+TH,,,,224.0,0.585,Small Hydropower Plant (<10MW)
+TH,,,,224.0,24.8,Onshore Wind
+TH,,,,224.0,20.7,Offshore Wind
+TH,,,,224.0,19.7,Utility-scale PV with 2 hour storage
+TH,,,,224.0,34.5,Onshore Wind power plant with storage
+TH,,,,224.0,5.69e-06,Electricity Imports
+TH,,,,224.0,22.6,Solar PV (Distributed with Storage)
+TH,,,,224.0,0.0865,Off-grid Hydropower
+TH,,,,224.0,5.03e-07,Electricity Exports
+TH,,,,224.0,0.0,Electric Bus + Rail
+TH,,,,224.0,2.15,Gasoline Motorcycle
+TH,,,,224.0,1.37,Gasoline Car
+TH,,,,224.0,0.672,Gasoline Bus + Rail
+TH,,,,224.0,2.82,Industry Biomass Heating 
+TH,,,,224.0,0.117,Residential Electric Stove
+TH,,,,224.0,0.0438,Residential Oil Heating
+TH,,,,224.0,0.0216,Commercial Oil Heating
+TH,,,,224.0,7.67,Industry Coal Heating
+TH,,,,224.0,1.92,Biomass Power Plant
+TH,,,,224.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,224.0,0.172,Residential Biomass Stove
+TH,,,,224.0,0.578,Residential Biomass Heating
+TH,,,,224.0,0.276,Commercial Biomass Heating 
+TH,,,,224.0,1.03,Industry Natural Gas Heating
+TH,,,,224.0,15.0,Biomass Extraction
+TH,,,,224.0,42.0,Coal Extraction
+TH,,,,224.0,8.92e-07,Geothermal Potential
+TH,,,,224.0,3.78e-05,Hydro Potential
+TH,,,,224.0,34.0,Natural Gas Extraction
+TH,,,,224.0,12.3,Crude Oil Extraction
+TH,,,,224.0,0.000311,Solar Potential
+TH,,,,224.0,0.000198,Wind Potential
+TH,,,,224.0,6.95,Coal Imports
+TH,,,,224.0,871.0,Light Fuel Oil Imports
+TH,,,,224.0,0.0,Oil Fired Gas Turbine (SCGT)
+TH,,,,336.0,2.08,Electricity Distribution
+TH,,,,336.0,0.0134,Geothermal Power Plant
+TH,,,,336.0,15.7,Gas Power Plant (CCGT)
+TH,,,,336.0,4.47,Electricity Transmission
+TH,,,,336.0,28.8,Coal Power Plant
+TH,,,,336.0,16.9,Solar PV (Utility)
+TH,,,,336.0,40.1,CSP with Storage
+TH,,,,336.0,2.87,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,336.0,0.112,Medium Hydropower Plant (10-100MW)
+TH,,,,336.0,0.531,Small Hydropower Plant (<10MW)
+TH,,,,336.0,23.0,Onshore Wind
+TH,,,,336.0,20.3,Offshore Wind
+TH,,,,336.0,17.7,Utility-scale PV with 2 hour storage
+TH,,,,336.0,29.6,Onshore Wind power plant with storage
+TH,,,,336.0,5.72e-06,Electricity Imports
+TH,,,,336.0,22.1,Solar PV (Distributed with Storage)
+TH,,,,336.0,0.0865,Off-grid Hydropower
+TH,,,,336.0,4.85e-07,Electricity Exports
+TH,,,,336.0,0.0,Electric Bus + Rail
+TH,,,,336.0,2.15,Gasoline Motorcycle
+TH,,,,336.0,1.6,Gasoline Car
+TH,,,,336.0,0.88,Gasoline Bus + Rail
+TH,,,,336.0,2.86,Industry Biomass Heating 
+TH,,,,336.0,0.116,Residential Electric Stove
+TH,,,,336.0,0.0382,Residential Oil Heating
+TH,,,,336.0,0.0186,Commercial Oil Heating
+TH,,,,336.0,7.81,Industry Coal Heating
+TH,,,,336.0,4.03,Biomass Power Plant
+TH,,,,336.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,336.0,0.179,Residential Biomass Stove
+TH,,,,336.0,0.587,Residential Biomass Heating
+TH,,,,336.0,0.282,Commercial Biomass Heating 
+TH,,,,336.0,0.824,Industry Natural Gas Heating
+TH,,,,336.0,16.2,Biomass Extraction
+TH,,,,336.0,43.6,Coal Extraction
+TH,,,,336.0,8.92e-07,Geothermal Potential
+TH,,,,336.0,3.77e-05,Hydro Potential
+TH,,,,336.0,30.5,Natural Gas Extraction
+TH,,,,336.0,12.3,Crude Oil Extraction
+TH,,,,336.0,0.000246,Solar Potential
+TH,,,,336.0,0.000182,Wind Potential
+TH,,,,336.0,12.5,Coal Imports
+TH,,,,336.0,880.0,Light Fuel Oil Imports
+TH,,,,336.0,0.0,Oil Fired Gas Turbine (SCGT)
+TH,,,,448.0,1.93,Electricity Distribution
+TH,,,,448.0,0.0134,Geothermal Power Plant
+TH,,,,448.0,14.0,Gas Power Plant (CCGT)
+TH,,,,448.0,4.15,Electricity Transmission
+TH,,,,448.0,25.8,Coal Power Plant
+TH,,,,448.0,16.6,Solar PV (Utility)
+TH,,,,448.0,2.72,CSP with Storage
+TH,,,,448.0,2.79,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,448.0,0.112,Medium Hydropower Plant (10-100MW)
+TH,,,,448.0,0.531,Small Hydropower Plant (<10MW)
+TH,,,,448.0,20.4,Onshore Wind
+TH,,,,448.0,17.4,Offshore Wind
+TH,,,,448.0,16.9,Utility-scale PV with 2 hour storage
+TH,,,,448.0,25.6,Onshore Wind power plant with storage
+TH,,,,448.0,5.71e-06,Electricity Imports
+TH,,,,448.0,22.0,Solar PV (Distributed with Storage)
+TH,,,,448.0,0.0786,Off-grid Hydropower
+TH,,,,448.0,4.41e-07,Electricity Exports
+TH,,,,448.0,0.0,Electric Bus + Rail
+TH,,,,448.0,2.15,Gasoline Motorcycle
+TH,,,,448.0,1.9,Gasoline Car
+TH,,,,448.0,1.06,Gasoline Bus + Rail
+TH,,,,448.0,2.89,Industry Biomass Heating 
+TH,,,,448.0,0.116,Residential Electric Stove
+TH,,,,448.0,0.0236,Residential Oil Heating
+TH,,,,448.0,0.0112,Commercial Oil Heating
+TH,,,,448.0,7.81,Industry Coal Heating
+TH,,,,448.0,16.0,Biomass Power Plant
+TH,,,,448.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,448.0,0.18,Residential Biomass Stove
+TH,,,,448.0,0.593,Residential Biomass Heating
+TH,,,,448.0,0.284,Commercial Biomass Heating 
+TH,,,,448.0,0.668,Industry Natural Gas Heating
+TH,,,,448.0,19.1,Biomass Extraction
+TH,,,,448.0,42.7,Coal Extraction
+TH,,,,448.0,8.92e-07,Geothermal Potential
+TH,,,,448.0,3.73e-05,Hydro Potential
+TH,,,,448.0,29.8,Natural Gas Extraction
+TH,,,,448.0,12.3,Crude Oil Extraction
+TH,,,,448.0,0.000195,Solar Potential
+TH,,,,448.0,0.000159,Wind Potential
+TH,,,,448.0,12.1,Coal Imports
+TH,,,,448.0,887.0,Light Fuel Oil Imports
+TH,,,,448.0,0.0,Oil Fired Gas Turbine (SCGT)
+TH,,,,560.0,1.84,Electricity Distribution
+TH,,,,560.0,0.0134,Geothermal Power Plant
+TH,,,,560.0,10.3,Gas Power Plant (CCGT)
+TH,,,,560.0,3.98,Electricity Transmission
+TH,,,,560.0,21.8,Coal Power Plant
+TH,,,,560.0,16.0,Solar PV (Utility)
+TH,,,,560.0,0.00618,CSP with Storage
+TH,,,,560.0,2.79,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,560.0,0.109,Medium Hydropower Plant (10-100MW)
+TH,,,,560.0,0.531,Small Hydropower Plant (<10MW)
+TH,,,,560.0,18.0,Onshore Wind
+TH,,,,560.0,14.8,Offshore Wind
+TH,,,,560.0,15.4,Utility-scale PV with 2 hour storage
+TH,,,,560.0,20.0,Onshore Wind power plant with storage
+TH,,,,560.0,5.73e-06,Electricity Imports
+TH,,,,560.0,21.1,Solar PV (Distributed with Storage)
+TH,,,,560.0,0.0786,Off-grid Hydropower
+TH,,,,560.0,4.54e-07,Electricity Exports
+TH,,,,560.0,0.0,Electric Bus + Rail
+TH,,,,560.0,2.15,Gasoline Motorcycle
+TH,,,,560.0,2.71,Gasoline Car
+TH,,,,560.0,1.14,Gasoline Bus + Rail
+TH,,,,560.0,2.89,Industry Biomass Heating 
+TH,,,,560.0,0.116,Residential Electric Stove
+TH,,,,560.0,0.0011,Residential Oil Heating
+TH,,,,560.0,0.0,Commercial Oil Heating
+TH,,,,560.0,7.99,Industry Coal Heating
+TH,,,,560.0,31.9,Biomass Power Plant
+TH,,,,560.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,560.0,0.182,Residential Biomass Stove
+TH,,,,560.0,0.607,Residential Biomass Heating
+TH,,,,560.0,0.291,Commercial Biomass Heating 
+TH,,,,560.0,0.237,Industry Natural Gas Heating
+TH,,,,560.0,22.7,Biomass Extraction
+TH,,,,560.0,41.3,Coal Extraction
+TH,,,,560.0,8.92e-07,Geothermal Potential
+TH,,,,560.0,3.73e-05,Hydro Potential
+TH,,,,560.0,29.2,Natural Gas Extraction
+TH,,,,560.0,12.3,Crude Oil Extraction
+TH,,,,560.0,0.000186,Solar Potential
+TH,,,,560.0,0.000133,Wind Potential
+TH,,,,560.0,11.4,Coal Imports
+TH,,,,560.0,901.0,Light Fuel Oil Imports
+TH,,,,560.0,0.0,Oil Fired Gas Turbine (SCGT)
+TH,,,,672.0,1.81,Electricity Distribution
+TH,,,,672.0,0.0134,Geothermal Power Plant
+TH,,,,672.0,10.3,Gas Power Plant (CCGT)
+TH,,,,672.0,3.91,Electricity Transmission
+TH,,,,672.0,23.2,Coal Power Plant
+TH,,,,672.0,15.7,Solar PV (Utility)
+TH,,,,672.0,0.00618,CSP with Storage
+TH,,,,672.0,2.55,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,672.0,0.107,Medium Hydropower Plant (10-100MW)
+TH,,,,672.0,0.294,Small Hydropower Plant (<10MW)
+TH,,,,672.0,15.8,Onshore Wind
+TH,,,,672.0,8.82,Offshore Wind
+TH,,,,672.0,14.0,Utility-scale PV with 2 hour storage
+TH,,,,672.0,9.49,Onshore Wind power plant with storage
+TH,,,,672.0,5.72e-06,Electricity Imports
+TH,,,,672.0,19.0,Solar PV (Distributed with Storage)
+TH,,,,672.0,0.0715,Off-grid Hydropower
+TH,,,,672.0,4.39e-07,Electricity Exports
+TH,,,,672.0,0.0,Electric Bus + Rail
+TH,,,,672.0,2.15,Gasoline Motorcycle
+TH,,,,672.0,2.89,Gasoline Car
+TH,,,,672.0,1.14,Gasoline Bus + Rail
+TH,,,,672.0,2.89,Industry Biomass Heating 
+TH,,,,672.0,0.114,Residential Electric Stove
+TH,,,,672.0,0.0,Residential Oil Heating
+TH,,,,672.0,0.0,Commercial Oil Heating
+TH,,,,672.0,8.1,Industry Coal Heating
+TH,,,,672.0,36.3,Biomass Power Plant
+TH,,,,672.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,672.0,0.183,Residential Biomass Stove
+TH,,,,672.0,0.608,Residential Biomass Heating
+TH,,,,672.0,0.291,Commercial Biomass Heating 
+TH,,,,672.0,0.0,Industry Natural Gas Heating
+TH,,,,672.0,24.2,Biomass Extraction
+TH,,,,672.0,41.7,Coal Extraction
+TH,,,,672.0,8.92e-07,Geothermal Potential
+TH,,,,672.0,3.56e-05,Hydro Potential
+TH,,,,672.0,28.1,Natural Gas Extraction
+TH,,,,672.0,7.62,Crude Oil Extraction
+TH,,,,672.0,0.00018,Solar Potential
+TH,,,,672.0,8.76e-05,Wind Potential
+TH,,,,672.0,14.6,Coal Imports
+TH,,,,672.0,907.0,Light Fuel Oil Imports
+TH,,,,672.0,0.424,Oil Fired Gas Turbine (SCGT)
+TH,,,,784.0,1.8,Electricity Distribution
+TH,,,,784.0,0.0134,Geothermal Power Plant
+TH,,,,784.0,9.68,Gas Power Plant (CCGT)
+TH,,,,784.0,3.88,Electricity Transmission
+TH,,,,784.0,26.6,Coal Power Plant
+TH,,,,784.0,15.7,Solar PV (Utility)
+TH,,,,784.0,0.00618,CSP with Storage
+TH,,,,784.0,2.5,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,784.0,0.105,Medium Hydropower Plant (10-100MW)
+TH,,,,784.0,0.22,Small Hydropower Plant (<10MW)
+TH,,,,784.0,12.3,Onshore Wind
+TH,,,,784.0,6.08,Offshore Wind
+TH,,,,784.0,12.6,Utility-scale PV with 2 hour storage
+TH,,,,784.0,0.806,Onshore Wind power plant with storage
+TH,,,,784.0,5.76e-06,Electricity Imports
+TH,,,,784.0,16.9,Solar PV (Distributed with Storage)
+TH,,,,784.0,0.065,Off-grid Hydropower
+TH,,,,784.0,3.86e-07,Electricity Exports
+TH,,,,784.0,0.0,Electric Bus + Rail
+TH,,,,784.0,2.15,Gasoline Motorcycle
+TH,,,,784.0,2.96,Gasoline Car
+TH,,,,784.0,1.14,Gasoline Bus + Rail
+TH,,,,784.0,2.89,Industry Biomass Heating 
+TH,,,,784.0,0.113,Residential Electric Stove
+TH,,,,784.0,0.0,Residential Oil Heating
+TH,,,,784.0,0.0,Commercial Oil Heating
+TH,,,,784.0,8.1,Industry Coal Heating
+TH,,,,784.0,37.5,Biomass Power Plant
+TH,,,,784.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,784.0,0.183,Residential Biomass Stove
+TH,,,,784.0,0.608,Residential Biomass Heating
+TH,,,,784.0,0.291,Commercial Biomass Heating 
+TH,,,,784.0,0.0,Industry Natural Gas Heating
+TH,,,,784.0,24.6,Biomass Extraction
+TH,,,,784.0,42.4,Coal Extraction
+TH,,,,784.0,8.92e-07,Geothermal Potential
+TH,,,,784.0,3.51e-05,Hydro Potential
+TH,,,,784.0,26.3,Natural Gas Extraction
+TH,,,,784.0,7.32,Crude Oil Extraction
+TH,,,,784.0,0.000172,Solar Potential
+TH,,,,784.0,5.02e-05,Wind Potential
+TH,,,,784.0,20.2,Coal Imports
+TH,,,,784.0,908.0,Light Fuel Oil Imports
+TH,,,,784.0,0.4,Oil Fired Gas Turbine (SCGT)
+TH,,,,896.0,1.81,Electricity Distribution
+TH,,,,896.0,0.0134,Geothermal Power Plant
+TH,,,,896.0,9.16,Gas Power Plant (CCGT)
+TH,,,,896.0,3.92,Electricity Transmission
+TH,,,,896.0,28.7,Coal Power Plant
+TH,,,,896.0,15.6,Solar PV (Utility)
+TH,,,,896.0,0.00618,CSP with Storage
+TH,,,,896.0,2.5,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,896.0,0.105,Medium Hydropower Plant (10-100MW)
+TH,,,,896.0,0.15,Small Hydropower Plant (<10MW)
+TH,,,,896.0,1.71,Onshore Wind
+TH,,,,896.0,5.54,Offshore Wind
+TH,,,,896.0,12.2,Utility-scale PV with 2 hour storage
+TH,,,,896.0,0.136,Onshore Wind power plant with storage
+TH,,,,896.0,5.76e-06,Electricity Imports
+TH,,,,896.0,13.2,Solar PV (Distributed with Storage)
+TH,,,,896.0,0.0202,Off-grid Hydropower
+TH,,,,896.0,3.36e-07,Electricity Exports
+TH,,,,896.0,0.0,Electric Bus + Rail
+TH,,,,896.0,2.15,Gasoline Motorcycle
+TH,,,,896.0,3.01,Gasoline Car
+TH,,,,896.0,1.14,Gasoline Bus + Rail
+TH,,,,896.0,2.89,Industry Biomass Heating 
+TH,,,,896.0,0.11,Residential Electric Stove
+TH,,,,896.0,0.0,Residential Oil Heating
+TH,,,,896.0,0.0,Commercial Oil Heating
+TH,,,,896.0,8.1,Industry Coal Heating
+TH,,,,896.0,40.8,Biomass Power Plant
+TH,,,,896.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,896.0,0.183,Residential Biomass Stove
+TH,,,,896.0,0.608,Residential Biomass Heating
+TH,,,,896.0,0.291,Commercial Biomass Heating 
+TH,,,,896.0,0.0,Industry Natural Gas Heating
+TH,,,,896.0,25.4,Biomass Extraction
+TH,,,,896.0,42.7,Coal Extraction
+TH,,,,896.0,8.92e-07,Geothermal Potential
+TH,,,,896.0,3.48e-05,Hydro Potential
+TH,,,,896.0,25.2,Natural Gas Extraction
+TH,,,,896.0,7.15,Crude Oil Extraction
+TH,,,,896.0,0.000159,Solar Potential
+TH,,,,896.0,2e-05,Wind Potential
+TH,,,,896.0,24.0,Coal Imports
+TH,,,,896.0,909.0,Light Fuel Oil Imports
+TH,,,,896.0,0.386,Oil Fired Gas Turbine (SCGT)
+TH,,,,1010.0,1.91,Electricity Distribution
+TH,,,,1010.0,0.0134,Geothermal Power Plant
+TH,,,,1010.0,8.41,Gas Power Plant (CCGT)
+TH,,,,1010.0,4.13,Electricity Transmission
+TH,,,,1010.0,33.1,Coal Power Plant
+TH,,,,1010.0,15.5,Solar PV (Utility)
+TH,,,,1010.0,0.00618,CSP with Storage
+TH,,,,1010.0,2.18,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,1010.0,0.092,Medium Hydropower Plant (10-100MW)
+TH,,,,1010.0,0.0463,Small Hydropower Plant (<10MW)
+TH,,,,1010.0,0.364,Onshore Wind
+TH,,,,1010.0,1.91,Offshore Wind
+TH,,,,1010.0,11.0,Utility-scale PV with 2 hour storage
+TH,,,,1010.0,0.0,Onshore Wind power plant with storage
+TH,,,,1010.0,5.71e-06,Electricity Imports
+TH,,,,1010.0,7.57,Solar PV (Distributed with Storage)
+TH,,,,1010.0,0.0137,Off-grid Hydropower
+TH,,,,1010.0,3.63e-07,Electricity Exports
+TH,,,,1010.0,0.0,Electric Bus + Rail
+TH,,,,1010.0,2.15,Gasoline Motorcycle
+TH,,,,1010.0,3.01,Gasoline Car
+TH,,,,1010.0,1.14,Gasoline Bus + Rail
+TH,,,,1010.0,2.89,Industry Biomass Heating 
+TH,,,,1010.0,0.106,Residential Electric Stove
+TH,,,,1010.0,0.0,Residential Oil Heating
+TH,,,,1010.0,0.0,Commercial Oil Heating
+TH,,,,1010.0,8.1,Industry Coal Heating
+TH,,,,1010.0,40.4,Biomass Power Plant
+TH,,,,1010.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,1010.0,0.183,Residential Biomass Stove
+TH,,,,1010.0,0.608,Residential Biomass Heating
+TH,,,,1010.0,0.291,Commercial Biomass Heating 
+TH,,,,1010.0,0.0,Industry Natural Gas Heating
+TH,,,,1010.0,25.3,Biomass Extraction
+TH,,,,1010.0,43.6,Coal Extraction
+TH,,,,1010.0,8.92e-07,Geothermal Potential
+TH,,,,1010.0,3.31e-05,Hydro Potential
+TH,,,,1010.0,22.5,Natural Gas Extraction
+TH,,,,1010.0,7.08,Crude Oil Extraction
+TH,,,,1010.0,0.00014,Solar Potential
+TH,,,,1010.0,5.8e-06,Wind Potential
+TH,,,,1010.0,30.7,Coal Imports
+TH,,,,1010.0,909.0,Light Fuel Oil Imports
+TH,,,,1010.0,0.38,Oil Fired Gas Turbine (SCGT)
+TH,,,,1120.0,2.06,Electricity Distribution
+TH,,,,1120.0,0.0134,Geothermal Power Plant
+TH,,,,1120.0,8.23,Gas Power Plant (CCGT)
+TH,,,,1120.0,4.45,Electricity Transmission
+TH,,,,1120.0,35.8,Coal Power Plant
+TH,,,,1120.0,15.5,Solar PV (Utility)
+TH,,,,1120.0,0.00618,CSP with Storage
+TH,,,,1120.0,2.06,Large Hydropower Plant (Dam) (>100MW)
+TH,,,,1120.0,0.0787,Medium Hydropower Plant (10-100MW)
+TH,,,,1120.0,0.0,Small Hydropower Plant (<10MW)
+TH,,,,1120.0,0.29,Onshore Wind
+TH,,,,1120.0,0.0,Offshore Wind
+TH,,,,1120.0,10.2,Utility-scale PV with 2 hour storage
+TH,,,,1120.0,0.0,Onshore Wind power plant with storage
+TH,,,,1120.0,5.73e-06,Electricity Imports
+TH,,,,1120.0,0.0,Solar PV (Distributed with Storage)
+TH,,,,1120.0,0.0,Off-grid Hydropower
+TH,,,,1120.0,4.14e-07,Electricity Exports
+TH,,,,1120.0,0.0,Electric Bus + Rail
+TH,,,,1120.0,2.15,Gasoline Motorcycle
+TH,,,,1120.0,3.01,Gasoline Car
+TH,,,,1120.0,1.14,Gasoline Bus + Rail
+TH,,,,1120.0,2.89,Industry Biomass Heating 
+TH,,,,1120.0,0.109,Residential Electric Stove
+TH,,,,1120.0,0.0,Residential Oil Heating
+TH,,,,1120.0,0.0,Commercial Oil Heating
+TH,,,,1120.0,8.1,Industry Coal Heating
+TH,,,,1120.0,38.6,Biomass Power Plant
+TH,,,,1120.0,0.133,Residential LPG/Kerosene Stove
+TH,,,,1120.0,0.183,Residential Biomass Stove
+TH,,,,1120.0,0.608,Residential Biomass Heating
+TH,,,,1120.0,0.291,Commercial Biomass Heating 
+TH,,,,1120.0,0.0,Industry Natural Gas Heating
+TH,,,,1120.0,24.9,Biomass Extraction
+TH,,,,1120.0,44.0,Coal Extraction
+TH,,,,1120.0,8.92e-07,Geothermal Potential
+TH,,,,1120.0,3.24e-05,Hydro Potential
+TH,,,,1120.0,21.8,Natural Gas Extraction
+TH,,,,1120.0,7.08,Crude Oil Extraction
+TH,,,,1120.0,0.000115,Solar Potential
+TH,,,,1120.0,1.14e-06,Wind Potential
+TH,,,,1120.0,36.0,Coal Imports
+TH,,,,1120.0,909.0,Light Fuel Oil Imports
+TH,,,,1120.0,0.38,Oil Fired Gas Turbine (SCGT)
