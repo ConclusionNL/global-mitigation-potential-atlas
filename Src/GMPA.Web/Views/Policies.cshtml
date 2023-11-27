@@ -14,7 +14,7 @@
             <select class="side-width" name="pilotCountryFilter" id="pilotCountryFilter">
                 <option value=""></option>
                 @foreach (var country in Model.Countries
-                    .Where(a => a.Active))
+                .Where(a => a.Active))
                 {
                     <option value="@country.Name">@country.Name</option>
                 }
@@ -62,7 +62,14 @@
                             </div>
                             <div class="p-2">
                                 <h5>Valid till</h5>
-                                @strategy.EndYear
+                                @if (@strategy.EndYear == "")
+                                {
+                                    <p>Ongoing</p>
+                                }
+                                else
+                                {
+                                    @strategy.EndYear
+                                }
                             </div>
                             <div class="ms-auto p-2">
                                 <h5>Source</h5>
@@ -114,7 +121,7 @@
                             </div>
                             <div class="col-1">
                                 <h5>Valid till</h5>
-                                @if (@policy.EndDate == "0")
+                                @if (@policy.EndDate == "")
                                 {
                                     <p>Ongoing</p>
                                 }
