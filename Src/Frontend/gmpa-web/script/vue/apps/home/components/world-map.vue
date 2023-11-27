@@ -37,12 +37,14 @@
 <script setup>
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
-import { geoAlbers, geoEquirectangular, geoEqualEarth } from 'd3-geo';
+import { geoEquirectangular } from 'd3-geo';
 import { scaleSequential } from 'd3-scale';
 import { useCollaborationStore } from '../stores/collaborationStore';
 import { useCountriesDataStore } from '../stores/countriesDataStore';
+import { useNumberRounder } from '../composables/useNumberRounder';
+
 import { useSelectedCountries } from '../composables/useSelectedCountries';
-import { ref, watch, onMounted, defineProps, defineEmits, computed } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount, defineProps, defineEmits, computed } from 'vue';
 import toggleBox from './toggle-box.vue';
 import countryCard from './country-card.vue';
 import collabCard from './collaboration-card.vue';
@@ -53,6 +55,8 @@ import closeIcon from '../assets/cross.svg';
 import mitigationPotentialDiagram from './mitigation-potential-diagram.vue';
 
 const useCountries = useSelectedCountries();
+const rounder = useNumberRounder();
+
 const countriesDataStore = useCountriesDataStore();
 const selectedCountries = useCountries.selectedCountries;
 const inCollabMode = useCountries.inCollabMode;
@@ -71,8 +75,6 @@ const mitigation = ref('Mitigation_Potential');
 
 const maxScaleFactor = 6
 
-const width = window.innerWidth - 200;
-const height = window.innerHeight - 86;
 
 const props = defineProps({
     countries: {},
@@ -84,8 +86,6 @@ const navigateToCountry = (countryNavigationEvent) => {
             .replace(/'/g, '')       // Remove single quotes
             .replace(/%20/g, '-')     // Replace '%20' with '-'
             .replace(/\s+/g, '-');    // Replace spaces with '-'
-
-
         window.location.href = `/Countries/${countryNameWithDashes}`;
     } else {
         console.log('Invalid countryNavigationEvent object or missing properties.');
@@ -110,6 +110,7 @@ function highlightCollaborationCandidates() {
 }
 const handleChangeInCountriesSelection = () => {
     console.log('handleChangeInCountriesSelection')
+    refreshMap(mitigation.value.value)
     highlightCollaborationCandidates();
     zoomInOnSelectedCountries();
 };
@@ -142,14 +143,7 @@ watch(
     { deep: true }
 );
 
-watch(inCollabMode, (newVal) => {
-    if (newVal) {
-        markCollabCountry(selectedCountries.value[0]);
-        highlightCollaborationCandidates();
-    } else {
-        unmarkAllSelectedCountries();
-    }
-});
+
 
 const handleMitigation = (mitigationVal) => {
     mitigation.value = mitigationVal;
@@ -170,37 +164,141 @@ const findCollaboratingCandidates = (selectedCountries) => {
 };
 let zoomBehavior
 
+let isHovering = false
+const handleHoverIn = () => {
+    isHovering = true;
+}
+const handleHoverOut = () => {
+    isHovering = false;
+}
+
+const handleKeyPress = (event) => {
+    if (isHovering && event.ctrlKey && event.key === 'U') {
+        downloadCSV('heatmap_collaboration.csv');
+    }
+}
+
+const downloadCSV = (filename) => {
+    const csvData = collaborationStore.getRawHeatmapData()
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+
+
+const width = 1700; // 200 is the width of the sidebar that takes up the left part of the page
+const height = 1080 - 86;
+
+const maxWidth = 1700
+const maxHeight = 1080 - 140
+// calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
+let horizontalScreenSizeFactor = (window.innerWidth - 220) / maxWidth
+let verticalScreenSizeFactor = (window.innerHeight - 80) / maxHeight
+
+
+const adjustScreenSize = () => {
+    horizontalScreenSizeFactor = (window.innerWidth - 220) / maxWidth
+    verticalScreenSizeFactor = (window.innerHeight - 80) / maxHeight
+    d3
+        .select('#worldMapGroup')
+        .attr('transform', `scale (${horizontalScreenSizeFactor},${verticalScreenSizeFactor})`)
+
+    d3
+        .select('#svgMap')
+        .attr('width', horizontalScreenSizeFactor * maxWidth)
+        .attr('height', verticalScreenSizeFactor * maxHeight)
+}
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeyPress);
+})
+
+
 onMounted(() => {
+    document.addEventListener('keydown', handleKeyPress);
+    window.onresize = adjustScreenSize;
+    initializeWorldMap()
+});
+
+const refreshMap = (mitigationValue) => {
+    console.log(`refresh map for mitigationValue ${mitigationValue}`)
+    heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigationValue);
+    yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigationValue);
+
+    drawAllCountries(countryDataSet);
+    drawVerticalAxis();
+
+}
 
 
+let heatmapColorScale, yAxisScale;
+
+function findMinMax(someObject, theProperty) {
+    // filter records that apply to more than one country
+    const values = Object.keys(someObject).filter((key) => someObject[key][theProperty] && someObject[key]["singleCountryRecord"] ).map((key) => someObject[key][theProperty]);
+    return {
+        min: Math.min(...values),
+        max: Math.max(...values),
+    };
+}
+
+
+function createColorScaleForHeatmapProperty(heatmapData, property) {
+    const result = findMinMax(heatmapData, property);
+    return scaleSequential(d3.interpolateBlues).domain([result.min, result.max]);
+}
+
+function createYAxisScaleForHeatmapProperty(heatmapData, property) {
+    const result = findMinMax(heatmapData, property);
+    return d3.scaleLinear().domain([result.min, result.max]).range([300, 0]); // Adjust the range to match the desired height of your axis
+}
+
+
+
+
+const initializeWorldMap = () => {
     watch(mitigation, (newValue) => {
-        colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
-        yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
-
-        drawAllCountries(countryDataSet);
-        drawVerticalAxis();
+        refreshMap(mitigation.value.value)
+    });
+    watch(inCollabMode, (newVal) => {
+        refreshMap(mitigation.value.value)
+        if (newVal) {
+            markCollabCountry(selectedCountries.value[0]);
+            highlightCollaborationCandidates();
+        } else {
+            unmarkAllSelectedCountries();
+        }
     });
 
     const t0 = { k: width / 2 / Math.PI, x: width / 2, y: height / 2 };
     svg = d3
         .select('#mapcontainer')
         .append('svg')
-        .attr('width', width)
-        .attr('height', height)
+        .attr("id", "svgMap")
+        .attr('width', horizontalScreenSizeFactor * maxWidth)
+        .attr('height', verticalScreenSizeFactor * maxHeight)
         .attr('preserveAspectRatio', 'xMinYMin')
-        .style('background', '#8ab5f9');
+        .style('background', '#8ab5f9')
+        .on('mouseover', handleHoverIn)
+        .on('mouseleave', handleHoverOut)
+        .append('g')
+        .attr('id', "worldMapGroup")
+        .attr('transform', `scale (${horizontalScreenSizeFactor},${verticalScreenSizeFactor})`)
+
 
     const projection = d3
         .geoEquirectangular()
-        .rotate([-148, 0]) // rotate sets the spherical rotation angles. The default rotation is [0, 0], which centers the map on Greenwich (0° longitude). By adjusting the first value (longitude), you can center the map on a different region.
+        .rotate([-148, 0]) // rotate sets the spherical rotation angles. The default rotation is [0, 0], which centers the map on Greenwich (0° longitude). By adjusting the first value (longitude), you can center the map on a different region (in east/west shift).
         .translate([t0.x, t0.y])
         .scale(t0.k);
 
     pathGenerator = d3.geoPath().projection(projection);
-
     countriesGroup = svg.append('g');
-
-
     // Append a <rect> element with fill and opacity 0 (invisible) to allow every pixel in the area to be zoomable and draggable 
     countriesGroup.append("rect")
         .attr("x", 0) // X-coordinate
@@ -209,8 +307,6 @@ onMounted(() => {
         .attr("height", height) // Height
         .attr("fill", "blue") // Fill color - however: invisible
         .attr("opacity", 0); // Opacity set to 0 (invisible)
-
-
     zoomBehavior = d3.zoom()
         .scaleExtent([1, maxScaleFactor])
         .translateExtent([[0, 0], [width, height]])
@@ -226,38 +322,22 @@ onMounted(() => {
     }
 
 
-    const colorLegendG = svg.append('g').attr('transform', `translate(40,310)`);
+    heatmapColorScale = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
+    yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
+
+    countriesDataStore.fetchData()
+        .then((countries) => {
+            countryDataSet = countries;
+            collaborationStore.prepareCountryCollaborations();
+            useCountries.dataSet.value = countries.features;
+            drawHeatmapLegend();
+            drawAllCountries(countries);
+        });
 
     const heatmapLegendG = svg.append('g').attr('transform', `translate(-10,470)`);
 
-    let colorScale2, yAxisScale;
-
-    function findMinMax(someObject, theProperty) {
-        
-        const values = Object.keys(someObject).map((key) => someObject[key][theProperty]);
-        return {
-            min: Math.min(...values),
-            max: Math.max(...values),
-        };
-    }
-    function createColorScaleForHeatmapProperty(heatmapData, property) {
-        const result = findMinMax(heatmapData, property);
-        return scaleSequential(d3.interpolateBlues).domain([result.min, result.max]);
-    }
-    colorScale2 = createColorScaleForHeatmapProperty(heatmapData, mitigation.value.value);
-
-    function createYAxisScaleForHeatmapProperty(heatmapData, property) {
-        const result = findMinMax(heatmapData, property);
-        return d3.scaleLinear().domain([result.min, result.max]).range([300, 0]); // Adjust the range to match the desired height of your axis
-    }
-
-    yAxisScale = createYAxisScaleForHeatmapProperty(heatmapData, mitigation.value.value);
-
-    const heatmapLegend = (selection, props) => {
-        const { spacing, textOffset, backgroundRectWidth } = props;
-
-        const backgroundRect = selection.selectAll('rect').data([null]);
-
+    function drawHeatmapLegend() {
+        const backgroundRect = heatmapLegendG.selectAll('rect').data([null]);
         backgroundRect
             .enter()
             .append('rect')
@@ -265,31 +345,10 @@ onMounted(() => {
             .attr('x', 10 * 2)
             .attr('y', 5)
             .attr('rx', 10 * 2)
-            .attr('width', backgroundRectWidth)
+            .attr('width', 100)
             .attr('fill', 'white')
             .attr('height', 350);
-    };
 
-    countriesDataStore.fetchData()
-    .then((countries) => {
-        countryDataSet = countries;
-        collaborationStore.prepareCountryCollaborations();
-        useCountries.dataSet.value = countries.features;
-        // "Mitigation_Potential(GtCO2e)":"234","Mitigation_Cost($/GtCO2e)":"5","Mitigation_Potential(GtCO2e)_at_50":"234","Mitigation_Potential(GtCO2e)_at_100":"250","Mitigation_Potential(GtCO2e)_at_200":"300"}
-        // now we can determine - depending on the toggle that indicates which category of these data properties should be used for the heatmap
-        // the color scale - get min and max for the desired property from the heatmap data
-        heatmapLegendG.call(heatmapLegend, {
-            spacing: 30,
-            textOffset: 15,
-            backgroundRectWidth: 100,
-        });
-        drawHeatmapLegend();
-        drawAllCountries(countries);
-    });
-
-    let countryNodes = [];
-
-    function drawHeatmapLegend() {
         // Define gradient
         const gradient = svg
             .append('defs')
@@ -320,130 +379,107 @@ onMounted(() => {
         // Draw the vertical axis using the scaleLinear
         drawVerticalAxis();
     }
-    function removeElementIfExists(id) {
-        const existing = svg.select(`#${id}`);
-        if (!existing.empty()) {
-            existing.remove();
-        }
+}
+
+function removeElementIfExists(id) {
+    const existing = svg.select(`#${id}`);
+    if (!existing.empty()) {
+        existing.remove();
     }
+}
+function drawVerticalAxis() {
+    const yAxis = d3.axisRight(yAxisScale).ticks(5);
 
-    function drawVerticalAxis() {
-        const yAxis = d3.axisRight(yAxisScale).ticks(5);
+    removeElementIfExists('legend-axis');
 
-        removeElementIfExists('legend-axis');
+    svg.append('g')
+        .attr('id', 'legend-axis')
+        .attr('transform', 'translate(75, 500) scale(1)') // Position the axis; adjust as needed
+        .call(yAxis);
+    removeElementIfExists('legend-axis-title');
+    svg.append('text')
+        .attr('id', 'legend-axis-title')
+        .attr('transform', 'rotate(-90)') // Rotate the text for vertical axis
+        .attr('y', 13) // Position it 40 pixels to the left of the axis
+        .attr('x', -660) // Position it at the middle of the axis
+        .attr('dy', '1em') // Adjustments for positioning
+        .style('text-anchor', 'middle') // Center the text
+        .text(mitigation.value.label);
+}
 
-        svg.append('g')
-            .attr('id', 'legend-axis')
-            .attr('transform', 'translate(75, 500) scale(1)') // Position the axis; adjust as needed
-            .call(yAxis);
-        removeElementIfExists('legend-axis-title');
-        svg.append('text')
-            .attr('id', 'legend-axis-title')
-            .attr('transform', 'rotate(-90)') // Rotate the text for vertical axis
-            .attr('y', 13) // Position it 40 pixels to the left of the axis
-            .attr('x', -660) // Position it at the middle of the axis
-            .attr('dy', '1em') // Adjustments for positioning
-            .style('text-anchor', 'middle') // Center the text
-            .text( mitigation.value.label);
-    }
+const unknownCountryFillColor = '#898484';
+let countryNodes = [];
 
-    function drawAllCountries(countries) {
-        // draw all countries
-        countryNodes = countriesGroup.selectAll('path').data(countries.features);
-        countryNodes
-            // fill with gray (#dcdcdc) when the country's data is unknown
-            .attr('fill', (d) =>
-                d.properties['in_heatmap']
-                    ? d.properties.hasOwnProperty(mitigation.value.value)
-                        ? colorScale2(d.properties[mitigation.value.value])
-                        : '#ffffff'
-                    : '#dcdcdc'
-            )
-            .select('title') // Select the child title of each path
-            .text(
-                (d) =>
-                    d.properties.name_long +
-                    ' : ' +
-                    (d.properties.hasOwnProperty(mitigation.value.value)
-                        ? d.properties[mitigation.value.value] + ` ${mitigation.value.label}`
-                        : '')
-            );
+const toggleBoxMitigationPropertyToCollaborationMitigationPotentialProperty =
+{  "Mitigation_Potential_at_0" :"mitigationPotentialCollaborationAt0"
+,   "Mitigation_Potential_at_10" :"mitigationPotentialCollaborationAt10"
+,  "Mitigation_Potential_at_20" :"mitigationPotentialCollaborationAt20"
+,  "Mitigation_Potential_at_50" :"mitigationPotentialCollaborationAt50"
+ , "Mitigation_Potential" :"mitigationPotentialCollaborationAtNoLimit"
+}
 
-        countryNodes
-            .enter()
-            .append('path')
-            .attr('d', pathGenerator)
-            // fill with gray (#dcdcdc) when the country's data is unknown
-            .attr('fill', (d) =>
-                d.properties['in_heatmap']
-                    ? d.properties.hasOwnProperty(mitigation.value.value)
-                        ? colorScale2(d.properties[mitigation.value.value])
-                        : '#ffffff'
-                    : '#dcdcdc'
-            )
-            .on('mouseover', handleMouseOver)
-            .on('mouseleave', handleMouseLeave)
-            .on('click', handleCountryClick)
-            .append('title')
-            .text(
-                (d) => d.properties.name +
-                    
-                    (d.properties.hasOwnProperty(mitigation.value.value)
-                        ? `: ${d.properties[mitigation.value.value]} ${mitigation.value.label}`
-                        : '')
-            )
-            .attr('class', 'country');
+function drawAllCountries(countries) {
+let collaborationHeatmapvalue
 
+if (inCollabMode.value && selectedCountries.value.length>1) {
+        // if in collab mode and the country is one of the selected countries and more than one country is selected then calculate
+        //      the heatmap collaboration value instead of the autarky value
+        //      that may mean TODO that the heatmap scale needs to be redetermined when switching to collab mode and back 
+        //      (as the combined collab value for the selected countries is bound to be higher than the highest single country value
+    
+    const data = collaborationStore.getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration(selectedCountries.value)
+    collaborationHeatmapvalue = data[toggleBoxMitigationPropertyToCollaborationMitigationPotentialProperty[mitigation.value.value]]
+}
 
+    countryNodes = countriesGroup.selectAll('path').data(countries.features);
+    countryNodes
+        .attr('fill', (d) =>
+            d.properties['in_heatmap']
+                ? d.properties.hasOwnProperty(mitigation.value.value)
+                    ? heatmapColorScale( inCollabMode.value && selectedCountries.value.length>1 && useCountries.isCountryInList(d) && mitigation.value.value!="Mitigation_Cost_NetZero"
+                        ? collaborationHeatmapvalue :d.properties[mitigation.value.value])
+                    : '#ffffff'
+                : unknownCountryFillColor
+        )
+        .select('title') // Select the child title of each path
+        .text(
+            (d) => inCollabMode.value && selectedCountries.value.length>1 && useCountries.isCountryInList(d)  && mitigation.value.value!="Mitigation_Cost_NetZero"
+            ?` ${d.properties.name_long} in collaboration - combined mitigation potential ${collaborationHeatmapvalue} ${mitigation.value.label}`
+            :
+                d.properties.name_long +
+                ' : ' +
+                (d.properties.hasOwnProperty(mitigation.value.value)
+                    ? rounder.sizeBasedRound(d.properties[mitigation.value.value]) + ` ${mitigation.value.label}`
+                    : '')
 
-    }
+        );
 
-
-
-    function writeHTMLInLegend(htmlContent) {
-        // Define the legend's dimensions and position
-        const legendWidth = 370;
-        const legendHeight = 180;
-        const legendX = 1100; // X position
-        const legendY = 600; // Y position
-
-        // Select the SVG
-        const svg = d3.select('svg');
-
-        // Check if the legend rectangle already exists
-        let legendRect = svg.select('.legend-rect');
-        if (legendRect.empty()) {
-            // If it doesn't exist, append it
-            legendRect = svg
-                .append('rect')
-                .attr('x', legendX)
-                .attr('y', legendY)
-                .attr('width', legendWidth)
-                .attr('height', legendHeight)
-                .attr('fill', '#f5f5f5') // Light gray background
-                .attr('stroke', '#000'); // Black border
-        }
-
-        // Remove any existing foreignObject in the legend
-        svg.select('.legend-html').remove();
-
-        // Append the foreignObject to the SVG
-        const foreign = svg
-            .append('foreignObject')
-            .attr('class', 'legend-html')
-            .attr('x', legendX + 5)
-            .attr('y', legendY + 5)
-            .attr('width', legendWidth)
-            .attr('height', legendHeight);
-
-        // Append the HTML content to the foreignObject
-        foreign
-            .append('xhtml:div')
-            .style('font-family', 'Arial')
-            .style('font-size', '14px')
-            .html(htmlContent);
-    }
-});
+    countryNodes
+        .enter()
+        .append('path')
+        .attr('d', pathGenerator)
+        // fill with gray when the country's data is unknown
+        .attr('fill', (d) =>
+            d.properties['in_heatmap']
+                ? d.properties.hasOwnProperty(mitigation.value.value)
+                    ? heatmapColorScale(d.properties[mitigation.value.value])
+                    : '#ffffff'
+                : unknownCountryFillColor
+        )
+        .on('mouseover', handleMouseOver)
+        .on('mouseleave', handleMouseLeave)
+        .on('click', handleCountryClick)
+        .append('title')
+        .text(
+            (d) =>
+                d.properties.name_long  +
+                ' : ' +
+                (d.properties.hasOwnProperty(mitigation.value.value)
+                    ? rounder.sizeBasedRound(d.properties[mitigation.value.value]) + ` ${mitigation.value.label}`
+                    : '')
+        )
+        .attr('class', 'country');
+}
 
 
 function zoomToScale(scale) {
@@ -554,13 +590,13 @@ function zoomInOnSelectedCountries() {
 
 
             selectedCountryGeoJSON.forEach((geojson) => { // for example australia consists of multiple polygons
-            
-            const bounds = pathGenerator.bounds(geojson);
-            minX = Math.min(minX, bounds[0][0]);
-            minY = Math.min(minY, bounds[0][1]);
-            maxX = Math.max(maxX, bounds[1][0]);
-            maxY = Math.max(maxY, bounds[1][1]);
-            
+
+                const bounds = pathGenerator.bounds(geojson);
+                minX = Math.min(minX, bounds[0][0]);
+                minY = Math.min(minY, bounds[0][1]);
+                maxX = Math.max(maxX, bounds[1][0]);
+                maxY = Math.max(maxY, bounds[1][1]);
+
             })
         });
         const dx = maxX - minX;
@@ -578,12 +614,12 @@ function zoomInOnSelectedCountries() {
         // Access the current scale factor
         let currentScaleFactor = transform.k;
         let currentTranslateX = 0, currentTranslateY = 0
-            try {
-                const matrix = countriesGroup.node().transform.baseVal.consolidate().matrix
-                currentTranslateX = matrix.e
-                currentTranslateY = matrix.f
+        try {
+            const matrix = countriesGroup.node().transform.baseVal.consolidate().matrix
+            currentTranslateX = matrix.e
+            currentTranslateY = matrix.f
 
-            } catch (e) { }
+        } catch (e) { }
 
         // if the current scale factor is close to the desired one, we can use a smooth transition for translate; scale will hardly be noticeable 
         if (currentScaleFactor / newScale > 0.8 && currentScaleFactor / newScale < 1.2) {
@@ -593,9 +629,13 @@ function zoomInOnSelectedCountries() {
                 .call(zoomBehavior.scaleTo, newScale)
                 .transition()
                 .duration(500)
-                .call(zoomBehavior.translateTo, x + 75, y + 20)
+                .call(zoomBehavior.translateTo, x + (horizontalScreenSizeFactor < 0.7 ? -45 : 75), y + (horizontalScreenSizeFactor < 0.7 ? -120 : 20))
+
+
         } else {
-            const transform = d3.zoomIdentity.scale(newScale).translate((-x-0.5 * dx)/newScale  - 180,(-y-0.5 * dy)/newScale  - 120)
+            const transform = d3.zoomIdentity
+                .scale(newScale)
+                .translate((-x - 0.5 * dx) / newScale - 180, (-y - 0.5 * dy) / newScale - 120)
             countriesGroup.transition().duration(750).call(zoomBehavior.transform, transform);
         }
 
@@ -677,7 +717,7 @@ p {
 
 .country-box {
     position: absolute;
-    top: 350px;
+    top: 180px;
     right: 80px;
 }
 
@@ -712,12 +752,76 @@ p {
     box-shadow: 0px 4px 8px 0px #214b6352;
 }
 
+@media screen and (max-width: 1399px) {
+    .zoom-box {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .zoom-flex {
+        gap: 8px;
+    }
+
+    .r-btn {
+        width: 26px;
+        height: 26px;
+        border-radius: 30px;
+    }
+
+    .toggle-box {
+        position: absolute;
+        top: 90px;
+        margin-left: 10px;
+    }
+
+    .search-box {
+        z-index: 1500;
+        top: 96px;
+    }
+}
+
+/* Media query for screens less than 750 pixels high */
+@media screen and (max-height: 750px) {
+    .zoom-box {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .zoom-flex {
+        gap: 8px;
+    }
+
+    .r-btn {
+        width: 26px;
+        height: 26px;
+        border-radius: 30px;
+    }
+
+    .toggle-box {
+        position: absolute;
+        top: 90px;
+        margin-left: 10px;
+    }
+
+    .search-box {
+        z-index: 1500;
+        top: 96px;
+    }
+
+    .country-box {
+        position: absolute;
+        top: 90px;
+        right: 30px;
+    }
+}
+
+
 .modal-diagram {
     display: flex;
     flex-direction: column;
     position: absolute;
     top: 2%;
-    bottom:  1%;
+    bottom: 1%;
     left: 40%;
     transform: translate(-40%, 0);
     width: calc(58vw + 48px);

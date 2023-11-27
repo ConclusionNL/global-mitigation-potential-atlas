@@ -3,11 +3,13 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, defineProps, defineEmits, computed } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount, defineProps, defineEmits, computed } from 'vue';
 import * as d3 from 'd3';
 import { useCollaborationStore } from '../stores/collaborationStore';
+import { useNumberRounder } from '../composables/useNumberRounder';
 
 const collaborationStore = useCollaborationStore();
+const rounder = useNumberRounder();
 const props = defineProps({
     countriesList: []
     , mitigationLevel: ''
@@ -19,7 +21,38 @@ const autarkyColor = "darkblue"
 const collaborationColor = "#f07004"
 
 
+let isHovering = false
+const handleHoverIn = () => {
+    isHovering = true;
+}
+const handleHoverOut = () => {
+    isHovering = false;
+}
+
+const downloadCSV = (csvData, filename) => {
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+const handleKeyPress = (event) => {
+    if (isHovering && event.ctrlKey && event.key === 'U') {
+        const csvData = collaborationStore.getRawHeatmapData()
+        downloadCSV(csvData, 'heatmap_collaboration.csv');
+    }
+}
+
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeyPress);
+})
+
 onMounted(() => {
+    document.addEventListener('keydown', handleKeyPress);
     setupGauge(props.countriesList, props.mitigationLevel);
 });
 
@@ -48,8 +81,8 @@ const setupGauge = async (countriesList, mitigationLevel) => {
             .attr('width', chartWidth)
             .attr('height', chartHeight);
 
-        let autarkyTranslate = Math.min( rectWidth - 2* balloonWidth - 10, Math.max(rectWidth * lowPercentage - balloonWidth+10,3))
-        let collaborationTranslate = Math.max( Math.min( rectWidth * highPercentage - 10, rectWidth- balloonWidth-3),  balloonWidth+10)
+        let autarkyTranslate = Math.min(rectWidth - 2 * balloonWidth - 10, Math.max(rectWidth * lowPercentage - balloonWidth + 10, 3))
+        let collaborationTranslate = Math.max(Math.min(rectWidth * highPercentage - 10, rectWidth - balloonWidth - 3), balloonWidth + 10)
 
         // // cater for low and high close together
         // // high close to max
@@ -65,7 +98,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
         const autarkyBalloon = balloonArea.append('g').attr('transform', `translate(${autarkyTranslate},0)`)
         const collaborationBalloon = balloonArea.append('g').attr('transform', `translate(${collaborationTranslate},0)`)
 
-        const createBalloon = (balloonGroup,value, prompt, valueFillColor) => {
+        const createBalloon = (balloonGroup, value, prompt, valueFillColor) => {
             // text balloon
             balloonGroup
                 .append('rect')
@@ -111,8 +144,8 @@ const setupGauge = async (countriesList, mitigationLevel) => {
                 .attr('x', 0.5 * balloonWidth)
                 .attr('y', 92);
         }
-        createBalloon(autarkyBalloon,lowValue.toFixed(1),lowValuePrompt, lowValueFillColor)
-        createBalloon(collaborationBalloon,highValue.toFixed(1),highValuePrompt, highValueFillColor)
+        createBalloon(autarkyBalloon, rounder.sizeBasedRound(lowValue.toFixed(1)), lowValuePrompt, lowValueFillColor)
+        createBalloon(collaborationBalloon, rounder.sizeBasedRound(highValue.toFixed(1)), highValuePrompt, highValueFillColor)
         // Create a symbol generator for triangles
         const triangleSymbol = d3.symbol().type(d3.symbolTriangle);
 
@@ -150,7 +183,10 @@ const setupGauge = async (countriesList, mitigationLevel) => {
         .attr('class', 'chartContainer')
         .attr('width', svgWidth)
         .attr('height', svgHeight)
-        ;
+        .on('mouseover', handleHoverIn)
+        .on('mouseleave', handleHoverOut);
+
+    ;
     const data = collaborationStore.getCostOfAchievingMaximumMitigationPotentialInAutarkyvsCollaboration(countriesList)
 
     const unit = 'MtCO2e'
@@ -367,7 +403,7 @@ const setupGauge = async (countriesList, mitigationLevel) => {
 
     chart
         .append('text')
-        .text(parseFloat(maxValue).toFixed(1))
+        .text(rounder.sizeBasedRound(parseFloat(maxValue).toFixed(1)))
         .attr('text-anchor', 'end') // Align the text to the end (rightmost) of the rectangle
         .attr('font-size', '48px')
         .attr('x', rectWidth) // Adjust the x-coordinate as needed

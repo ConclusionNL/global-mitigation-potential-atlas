@@ -53,8 +53,9 @@ namespace GMPA.Core.Models.Umbraco
 		/// End Date
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("endDate")]
-		public virtual int EndDate => this.Value<int>(_publishedValueFallback, "endDate");
+		public virtual string EndDate => this.Value<string>(_publishedValueFallback, "endDate");
 
 		///<summary>
 		/// Objectives
@@ -124,8 +125,9 @@ namespace GMPA.Core.Models.Umbraco
 		/// Start Date
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("startDate")]
-		public virtual int StartDate => this.Value<int>(_publishedValueFallback, "startDate");
+		public virtual string StartDate => this.Value<string>(_publishedValueFallback, "startDate");
 
 		///<summary>
 		/// Sub-sector

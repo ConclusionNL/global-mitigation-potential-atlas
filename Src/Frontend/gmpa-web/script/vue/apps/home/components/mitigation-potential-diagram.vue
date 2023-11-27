@@ -1,7 +1,7 @@
 ﻿<template>
     <h1>
         <span class="selected-collaboration">{{ selectedCollaboration }}</span
-        >'s Mitigation Potential Diagram for 2050
+        >'s Dynamic Pareto Abatement Cost (D-PAC) Curve for 2050
     </h1>
     
     <span class="model-explanation"  v-if="!(collaborationCountriesList[0]['DNM'])">
@@ -12,12 +12,14 @@
     </span>
     <div v-if="countriesList.length > 0">
         <label for="countryDataSetSelect" v-if="countriesList.length > 1">Select one Country, Full collaboration or Autarky:</label>
-        <label for="countryDataSetSelect" v-else>Select Overall or Detailed National Modelling:</label>
+        <label for="countryDataSetSelect" v-else-if="showAdvancedOptions">Select Overall or Detailed National Modelling:</label>
         <select
             id="countryDataSetSelect"
             v-model="selectedCountryDataSet"
             @change="handleCountryDataSetChange"
-            class="select-element">
+            class="select-element"
+            v-if="showAdvancedOptions || countriesList.length > 1"
+            >
             <option
                 v-for="option in (countriesList.length> 1? selectListOptions:[])
                 .concat(
@@ -25,11 +27,13 @@
                         label: country.properties.name,
                         value: country,
                     })))
-                .concat(
+                .concat( showAdvancedOptions
+                ?
                     countriesList.map((country) => ({
                         label: `${country.properties.name } - Detailed National Modelling`,
                         value: {...country,'DNM':true}
                     }))
+                :[]
                 )"
                 :value="option.value" >
                 {{ option.label }}
@@ -38,7 +42,8 @@
     </div>
     <collaborationStackedAreaChart
         :collaborationCountriesList="collaborationCountriesList" :dataSetType="dataSetTypeToShow"
-        @technologySelected="handleTechnologySelected" />
+        @technologySelected="handleTechnologySelected" @downloadData="handleDownloadData"
+        @showAdvancedOptions="handleShowAdvancedOptions"/>
 </template>
 
 <script setup>
@@ -47,7 +52,23 @@ import closeIcon from '../assets/cross.svg';
 import filterIcon from '../assets/filter.svg';
 import collaborationStackedAreaChart from './collaboration-stacked-area-chart.vue';
 
+import { useCollaborationStore } from '../stores/collaborationStore';
+const collaborationStore = useCollaborationStore();
+
 const emit = defineEmits(['technology-selected']);
+const showAdvancedOptions = ref(false)
+
+onMounted(() => {
+  showAdvancedOptions.value = sessionStorage.getItem("AtlasShowAdvancedOptions")? !sessionStorage.getItem("AtlasShowAdvancedOptions"):false;
+})
+
+
+
+
+const handleShowAdvancedOptions = () => {
+    sessionStorage.setItem("AtlasShowAdvancedOptions", true)
+    showAdvancedOptions.value = !showAdvancedOptions.value
+} 
 
 const props = defineProps({
     countriesList: [], 
@@ -55,6 +76,29 @@ const props = defineProps({
 const handleTechnologySelected = (payload) => {
     emit('technology-selected', payload);
 };
+
+const downloadCSV = (csvData, filename) => {
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+const handleDownloadData = (payload) => {
+    console.log(`do download of data! ${JSON.stringify(payload)}`)
+    
+    // check for autarky
+    // check for DNM
+
+    const csvData = (payload.dataSetType =="autarky"? collaborationStore.getRawTotalAutarkyData() : 
+                              (payload.dataSetType =="detailedNationalModelling"?collaborationStore.getRawTotalDNMData():collaborationStore.getRawTotalCollaborationData()))
+
+    downloadCSV(csvData, (payload.dataSetType =="autarky"?"total_data_autarky.csv":
+                             ((payload.dataSetType =="detailedNationalModelling"?"total_data.csv":"total_data_collaboration.csv"))))
+}
 
 const selectedCountryDataSet = ref( (  props['countriesList'].length > 1 ?'all': props['countriesList'][0]) );
 const selectListOptions = ref([{ label: 'Full Collaboration', value: 'all' }, { label: 'Autarky', value: 'all-autarky' }]);

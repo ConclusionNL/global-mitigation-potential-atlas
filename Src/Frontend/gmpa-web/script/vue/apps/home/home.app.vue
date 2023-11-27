@@ -58,4 +58,14 @@ const collaborationStore = useCollaborationStore();
     width: 200px;
     height: calc(100vh - 136px);
 }
+
+@media screen and (max-width: 1199px) {
+     .col-10 {
+         width: 75%
+     }
+ }
+
+.row{
+    flex-wrap: nowrap;
+}
 </style>

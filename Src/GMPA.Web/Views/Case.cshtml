@@ -3,6 +3,7 @@
     Layout = "Main.cshtml";
 }
 
+<a href="javascript:history.back()">← Return to previous page</a>
 <div class="container">
     <h1>@Model.PageTitle</h1>
     <h3 class="sectorTag">Sector: @Model.SectorTag</h3>
@@ -123,10 +124,15 @@
                             </div>
                             <div class="col-1 tags">
                                 <div class="tagName">
-                                    Target group
+                                    Target group(s)
                                 </div>
                                 <div class="tags">
-                                    @casePolicy.TargetGroup
+                                    @foreach (var target in casePolicy.TargetGroup)
+                                    {
+                                        <div>
+                                            @target
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <div class="col-1 tags">
@@ -166,13 +172,13 @@
                                     End date of implementation
                                 </div>
                                 <div class="tags">
-                                    @if (casePolicy.EndDate != "1/1/1")
+                                    @if (casePolicy.EndDate != "1")
                                     {
                                         @casePolicy.EndDate
                                     }
                                     else
                                     {
-                                        <div>Ongoing</div>
+                                        <div>n.d.</div>
                                     }
                                 </div>
                             </div>

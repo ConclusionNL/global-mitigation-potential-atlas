@@ -1,10 +1,11 @@
 ﻿<template>
     <div id="chart"></div>
     <!-- Create a container for the bar chart -->
+    <div class="barChartTitle">Assets in Cost-Optimal Technology Mix</div>
     <div id="bar-chart"></div>
 </template>
 <script setup>
-import { ref, onMounted, watch, defineProps, computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, defineProps, computed } from 'vue';
 import { useCollaborationStore } from '../stores/collaborationStore';
 import * as d3 from 'd3';
 
@@ -12,13 +13,15 @@ const collaborationStore = useCollaborationStore();
 
 const xAxisTitle = "Annual System Emissions (MtCO2e)"
 const yAxisTitle = "Annualized System Costs (Billion $)"
+const barXAxisTitle = "Asset Name"
+const barYAxisTitle = "Asset Costs (Billion $)"
 
 const maxWidth = 1920
 const maxHeight = 1080
 // calculate scale - to reduce size from the original size created for a 1920 x 1080 wide/high screen 
 const screenSizeFactor = Math.min(window.innerWidth / maxWidth, window.innerHeight / maxHeight)
 
-const emit = defineEmits(['technology-selected']);
+const emit = defineEmits(['technology-selected', 'download-data', 'show-advanced-options']);
 
 const props = defineProps({
     collaborationCountriesList: [], dataSetType: String
@@ -36,8 +39,29 @@ watch(
         setupDiagram(props.collaborationCountriesList, newValue);
     }
 );
+let isHovering = false
+const handleHoverIn = () => {
+    isHovering = true;
+}
+const handleHoverOut = () => {
+    isHovering = false;
+}
+
+const handleKeyPress = (event) => {
+    if (isHovering && event.ctrlKey && event.key === 'U') {
+        emit('download-data', { dataSetType: props.dataSetType });
+    }
+    if (isHovering && event.ctrlKey && event.key === 'Y') {
+        emit('show-advanced-options');
+    }
+}
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeyPress);
+})
 
 onMounted(() => {
+    document.addEventListener('keydown', handleKeyPress);
     setupDiagram(props.collaborationCountriesList, props.dataSetType);
 })
 let color
@@ -82,7 +106,10 @@ const createAreaChart = (data, color) => {
         .attr('width', screenSizeFactor * (50 + width + margin.left + margin.right))
         .attr('height', screenSizeFactor * (height + margin.top + margin.bottom + 40))
         .append('g')
-        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor}) translate(${margin.left + 50},${margin.top})`);
+        .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor}) translate(${margin.left + 50},${margin.top})`)
+        .on('mouseover', handleHoverIn)
+        .on('mouseleave', handleHoverOut)
+        ;
 
     const tooltip = d3
         .select('body')
@@ -200,13 +227,13 @@ const createAreaChart = (data, color) => {
     svg.append('text')
         .attr('class', 'x-axis-title')
         .attr('x', margin.left + 100)
-        .attr('y', height + 35) // Adjusted y position
+        .attr('y', height + 52) // Adjusted y position
         .style('text-anchor', 'middle')
         .text(xAxisTitle);
 
     svg
         .append('g')
-        .attr('transform', 'translate(' + -70 + ', ' + 440 + ')')
+        .attr('transform', 'translate(' + -50 + ', ' + 440 + ')')
         .append('text')
         .attr('text-anchor', 'start')
         .attr('transform', 'rotate(-90)')
@@ -262,18 +289,20 @@ const drawCrosshairLines = (
         const newY = yScale(sum);
         // update horizontal line and marker
         horizontalLine.attr('y1', newY).attr('y2', newY); // Move line
-        horizontalLineMarker.attr('y', newY - 10); // Move marker
+        horizontalLineMarker.attr('y', newY - 0.5 * markerHeight); // Move marker
         repaintBar(updatedBarData, color);
     }
+    const markerWidth = 20
+    const markerHeight = 20
 
     // vertical line Marker
     const verticalLineMarker = svg
         .append('rect')
         .attr('class', 'marker')
-        .attr('x', minimumXCoord - 10)
-        .attr('y', height + 20)
-        .attr('width', 20)
-        .attr('height', 20)
+        .attr('x', minimumXCoord - 0.5 * markerWidth)
+        .attr('y', height + markerHeight)
+        .attr('width', markerWidth)
+        .attr('height', markerHeight)
         .call(
             d3
                 .drag() // Call the drag behavior
@@ -294,10 +323,10 @@ const drawCrosshairLines = (
     const horizontalLineMarker = svg
         .append('rect')
         .attr('class', 'marker')
-        .attr('x', -30)
+        .attr('x', -45)
         .attr('y', newY - 10)
-        .attr('width', 20)
-        .attr('height', 20)
+        .attr('width', markerWidth)
+        .attr('height', markerHeight)
         .call(
             d3
                 .drag() // Call the drag behavior
@@ -313,7 +342,6 @@ const drawCrosshairLines = (
 
         horizontalLine.attr('y1', y).attr('y2', y); // Move line
 
-        // find current x coordinate and synchronize bar chart
         const yCoordToFind = yValueFromMouse(y);
         // find the X that goes with this total sum of Capacity - the X that produces this stack
         // iterate over data, take sum for each X
@@ -364,7 +392,7 @@ const drawCrosshairLines = (
 
         //update vertical line and marker
         verticalLine.attr('x1', newX).attr('x2', newX); // Move line
-        verticalLineMarker.attr('x', newX - 10); // Move marker
+        verticalLineMarker.attr('x', newX - 0.5 * markerWidth); // Move marker
 
         repaintBar(updatedBarData, color);
 
@@ -402,11 +430,23 @@ const drawBarChart = (barData, color) => {
     barSvg = d3
         .select('#bar-chart')
         .append('svg')
-        .attr('width', screenSizeFactor* (barWidth + barMargin.left + barMargin.right))
+        .attr('width', screenSizeFactor * (barWidth + barMargin.left + barMargin.right))
         .attr('height', screenSizeFactor * (barHeight + barMargin.top + barMargin.bottom + 50))
         .append('g')
         .attr('transform', `scale (${screenSizeFactor},${screenSizeFactor}) translate(${barMargin.left + 50},${barMargin.top})`);
-
+    barSvg
+        .append('g')
+        .attr('transform', 'translate(' + -30 + ', ' + 190 + ')')
+        .append('text')
+        .attr('text-anchor', 'start')
+        .attr('transform', 'rotate(-90)')
+        .text(barYAxisTitle);
+        barSvg.append('text')
+        .attr('class', 'x-axis-title')
+        .attr('x', barMargin.left )
+        .attr('y', barHeight + 52) // Adjusted y position
+        .style('text-anchor', 'middle')
+        .text(barXAxisTitle);
 
 
     // Create x and y scales for the bar chart
@@ -612,5 +652,25 @@ function findYforXinSerie(serie, xValue, data) {
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* Add other styling properties as needed */
+}
+
+.barChartTitle {
+    font-size: 22px;
+    margin-left: 200px;
+}
+
+
+@media screen and (max-height: 800px) {
+    .barChartTitle {
+        font-size: 16px;
+        margin-left: 200px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .barChartTitle {
+        font-size: 16px;
+        margin-left: 140px;
+    }
 }
 </style>

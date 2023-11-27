@@ -85,14 +85,16 @@ namespace GMPA.Core.Models.Umbraco
 		/// Start year
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("startYear")]
-		public virtual int StartYear => this.Value<int>(_publishedValueFallback, "startYear");
+		public virtual string StartYear => this.Value<string>(_publishedValueFallback, "startYear");
 
 		///<summary>
 		/// Valid till
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "12.2.0+173d8dc")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("validTill")]
-		public virtual int ValidTill => this.Value<int>(_publishedValueFallback, "validTill");
+		public virtual string ValidTill => this.Value<string>(_publishedValueFallback, "validTill");
 	}
 }

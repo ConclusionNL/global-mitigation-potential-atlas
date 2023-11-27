@@ -1,19 +1,24 @@
 <template>
     <div v-if="show" class="intro-card">
         <div class="content">
-            <div class="title">Welcome to the Global Mitigation Potential Atlas</div>
-            <div class="instructions">
-                With this atlas, it is our goal to inspire you to see what is possible if we work
-                together, and to bring you into contact with the right people to take action!
+            <div class="image-container">
+                <img src="/public/GMPA_LogoFull.png" class="image"/>
             </div>
-            <div class="instructions">Aniq Ashan</div>
+            <div class="title">Welcome to the pilot of the Global Mitigation Potential Atlas! </div>
+            <div class="instructions">
+                The Atlas is designed to inspire greater climate change mitigation ambition and implementation efforts, by presenting where 
+                significant and potentially transformative opportunities for reducing emissions are located,
+                and what the key levers are for realising these opportunities. It fosters domestic action, as
+                well as international collaboration and learning.
+                <br/> <br/>
+                We welcome your feedback on this pilot version for Southeast Asia – please get in touch
+                with <a href="mailto:info@mitigationatlas.org">info@mitigationatlas.org</a>
+            </div>
+            <br/>
             <div class="buttons">
                 <button @click="handleExploreMapClick" class="btn btn-alt-1">Explore the map</button>
                 <button class="btn btn-alt-2">Discover opportunities</button>
             </div>
-        </div>
-        <div>
-            <img src="/public/aniq.png" />
         </div>
     </div>
 </template>
@@ -39,8 +44,8 @@ const handleExploreMapClick = () => {
     right: 0;
     top: 0;
     bottom: 0;
-    width: 867px;
-    height: 335px;
+    width: 1000px;
+    height: 430px;
     border-radius: 24px;
     padding: 40px;
     gap: 24px;
@@ -98,5 +103,17 @@ const handleExploreMapClick = () => {
 .instructions {
     font-size: 18px;
     line-height: 24px;
+}
+
+.image-container{
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin-bottom: 5px;
+}
+
+.image{
+    height: auto; 
+    width: 40%;
 }
 </style>

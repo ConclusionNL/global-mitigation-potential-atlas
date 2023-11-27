@@ -3,11 +3,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, defineProps, computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, defineProps, computed } from 'vue';
 import { useCollaborationStore } from '../stores/collaborationStore';
 import * as d3 from 'd3';
 
-const xAxisTitle ="Annual System Emissions (MtCO2e)"
+const xAxisTitle = "Annual System Emissions (MtCO2e)"
 const yAxisTitle1 = "Annualized System Costs"
 const yAxisTitle2 = "(Billion $)"
 
@@ -19,7 +19,39 @@ const props = defineProps({
 const svgWidth = 320;
 const svgHeight = 180;
 
+
+let isHovering = false
+const handleHoverIn = () => {
+    isHovering = true;
+}
+const handleHoverOut = () => {
+    isHovering = false;
+}
+
+const downloadCSV = (csvData, filename) => {
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+const handleKeyPress = (event) => {
+    if (isHovering && event.ctrlKey && event.key === 'U') {
+        const csvData = collaborationStore.getRawCombinedData()
+        downloadCSV(csvData, 'combined_data_autarky_and_collaboration.csv');
+    }
+}
+
+
+onBeforeUnmount(() => {
+    document.removeEventListener('keydown', handleKeyPress);
+})
+
 onMounted(() => {
+    document.addEventListener('keydown', handleKeyPress);
     setupLineAreaChart(props.countriesList);
 
     watch(() => props.countriesList, (newValue, oldValue) => {
@@ -30,17 +62,19 @@ onMounted(() => {
 const setupLineAreaChart = async (countriesList) => {
 
     const countryKey = collaborationStore.deriveCountryKey(countriesList.map((country) => country.properties.iso_a2))
-    const combinedData =  collaborationStore.getCombinedData()[countryKey]
+    const combinedData = collaborationStore.getCombinedData()[countryKey]
 
     d3.select('#lineChartContainer').remove()
     if (!combinedData) return
-    if (Object.keys(combinedData).length === 0) {return}
+    if (Object.keys(combinedData).length === 0) { return }
     const svg = d3
         .select('#svgLineChartContainer')
         .append('svg')
         .attr('id', "lineChartContainer")
         .attr('width', svgWidth)
-        .attr('height', svgHeight);
+        .attr('height', svgHeight)
+        .on('mouseover', handleHoverIn)
+        .on('mouseleave', handleHoverOut);
 
     // Create the D3.js bar chart within the SVG container
     const chartWidth = 700;
@@ -55,13 +89,13 @@ const setupLineAreaChart = async (countriesList) => {
         .attr('transform', `translate(0,0)`)
         .attr('width', chartWidth - 20)
         .attr('height', chartHeight - 20);
-    
+
     // if multiple countries are selected, then draw a line chart with two lines - one for collaboration - emissions along x axis and cost along y axis
     // and one for autarky
 
     // if only one country is selected, then draw a line chart with one line - for autarky only
 
-        // {collaboration: [{emissions: 34, cost:164}], autarky: [{emissions:53, cost:172 },{emissions:13, cost:72 }]}
+    // {collaboration: [{emissions: 34, cost:164}], autarky: [{emissions:53, cost:172 },{emissions:13, cost:72 }]}
 
     const maxCollabCost = d3.max(combinedData.collaboration, (d) => d['cost']);
     const maxAutarkyCost = d3.max(combinedData.autarky, (d) => d['cost']);
@@ -109,36 +143,36 @@ const setupLineAreaChart = async (countriesList) => {
         .attr('fill', 'darkblue') // Fill color for the area
         .attr('d', autarkyArea);
 
-    if (countriesList.length > 1) {    
-    // Create a line generator
-    const lineCollaboration = d3
-        .line()
-        .x((d) => xScale(d['emissions']))
-        .y((d) => yScale(d['cost']))
-        .curve(d3.curveNatural); // Use a natural curve for the line
+    if (countriesList.length > 1) {
+        // Create a line generator
+        const lineCollaboration = d3
+            .line()
+            .x((d) => xScale(d['emissions']))
+            .y((d) => yScale(d['cost']))
+            .curve(d3.curveNatural); // Use a natural curve for the line
 
-    // Append the line to the chart
-    lineChartArea
-        .append('path')
-        .datum(combinedData.collaboration)
-        .attr('fill', 'none')
-        .attr('stroke', 'orange')
-        .attr('stroke-width', 1)
-        .attr('d', lineCollaboration);
+        // Append the line to the chart
+        lineChartArea
+            .append('path')
+            .datum(combinedData.collaboration)
+            .attr('fill', 'none')
+            .attr('stroke', 'orange')
+            .attr('stroke-width', 1)
+            .attr('d', lineCollaboration);
 
-    const area = d3
-        .area()
-        .x((d) => xScale(d['emissions']))
-        .y0(chartHeight) // The bottom of the area is at the height of the chart
-        .y1((d) => yScale(d['cost']))
-        .curve(d3.curveNatural); // Use a natural curve for the area
+        const area = d3
+            .area()
+            .x((d) => xScale(d['emissions']))
+            .y0(chartHeight) // The bottom of the area is at the height of the chart
+            .y1((d) => yScale(d['cost']))
+            .curve(d3.curveNatural); // Use a natural curve for the area
 
-    // Append the area path to the chart
-    lineChartArea
-        .append('path')
-        .datum(combinedData.collaboration)
-        .attr("fill", "#f07004") // Fill color for the area
-        .attr("d", area);
+        // Append the area path to the chart
+        lineChartArea
+            .append('path')
+            .datum(combinedData.collaboration)
+            .attr("fill", "#f07004") // Fill color for the area
+            .attr("d", area);
     }
     // Add x-axis
     chart.append("g")
@@ -159,8 +193,8 @@ const setupLineAreaChart = async (countriesList) => {
             .tickSize(5) // Set the size of the ticks (adjust as needed)
             .tickPadding(5) // Set the distance between ticks and labels (adjust as needed)
             .tickFormat(d3.format(".0f")))
-            .selectAll("text")
-  .style("font-size", "28px")
+        .selectAll("text")
+        .style("font-size", "28px")
 
     chart
         .append('text')
@@ -172,7 +206,7 @@ const setupLineAreaChart = async (countriesList) => {
         .attr("font-size", "42px")
         ;
 
-        chart
+    chart
         .append('g')
         .attr('transform', 'translate(-45 , 400)')
         .append('text')
@@ -181,7 +215,7 @@ const setupLineAreaChart = async (countriesList) => {
         .text(yAxisTitle2)
         .attr("font-size", "42px")
         ;
-        chart
+    chart
         .append('g')
         .attr('transform', 'translate(-90 , 400)')
         .append('text')
@@ -190,11 +224,6 @@ const setupLineAreaChart = async (countriesList) => {
         .text(yAxisTitle1)
         .attr("font-size", "42px")
         ;
-
-
-
-
-
 
 }
 </script>

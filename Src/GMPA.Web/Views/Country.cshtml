@@ -3,6 +3,7 @@
     Layout = "Main.cshtml";
 }
 
+<a href="javascript:history.back()">← Return to previous page</a>
 <div class="container">
 <h1>
     @Model.PageTitle
@@ -60,17 +61,7 @@
 
 <div class="contactSection">
     <h3>Contact</h3>
-    <br />
-    <h4>@Model.ContactName</h4>
-    <div>@Model.ContactTitle</div>
-    <img src="@Model.ContactImageUrl" alt="Contact Person Picture" width="200px" height="200px" />
-    <h5><b>Contact Details</b></h5>
-    <div>
-        <b>Email:</b> @Model.ContactEmail
-    </div>
-    <div>
-        <b>Number:</b> @Model.ContactPhoneNumber
-    </div>
+        For additional information, please contact the GMPA consortium at <a href="mailto:info@mitigationatlast.org">info@mitigationatlas.org</a>
 </div>
 
 @if (Model.ReferenceBlock.Count != 0)

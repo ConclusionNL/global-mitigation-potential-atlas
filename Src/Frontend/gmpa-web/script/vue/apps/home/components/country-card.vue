@@ -2,52 +2,59 @@
     <div class="country-card">
         <div class="card-top">
             <div class="title">{{ selectedCountries[0].properties.name }}</div>
-            <closeIcon
-                class="close-btn"
-                alt="close-button"
-                height="24"
-                width="24"
-                @click="useCountries.resetCountries()" />
+            <closeIcon class="close-btn" alt="close-button" height="24" width="24" @click="useCountries.resetCountries()" />
         </div>
+        Annual Mitigation Potential (MtCO2e) at Additional Average Abatement Cost (Compared to Current Energy Mix) of:
         <div class="card-data-spacing">
-            <div key="1" class="data">
-                <div>Mitigation Potential at no cost limit</div>
-                <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential'] }} MtCO2e
-                </div>
-            </div>
+
             <div key="2" class="data">
-                <div>Mitigation Potential at 0</div>
+                <div>Net Zero Additional Cost</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_0'] }} MtCO2e
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential_at_0']) }} MtCO2e
                 </div>
             </div>
             <div key="3" class="data">
-                <div>Mitigation Potential at 50</div>
+                <div>10 $/tCO2e</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_50'] }}
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential_at_10']) }}
                     MtCO2e
                 </div>
             </div>
             <div key="4" class="data">
-                <div>Mitigation Potential at 100</div>
+                <div>20 $/tCO2e</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_100'] }}
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential_at_20']) }}
                     MtCO2e
                 </div>
             </div>
             <div key="5" class="data">
-                <div>Mitigation Potential at 200</div>
+                <div>50 $/tCO2e</div>
                 <div>
-                    {{ selectedCountries[0].properties['Mitigation_Potential_at_200'] }}
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential_at_50']) }}
                     MtCO2e
                 </div>
             </div>
-        </div>
-        <div class="coalition-potential">
-                    <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
-                    </coalitionMaximumMitigationPotential>
+            <div key="1" class="data">
+                <div>No Cost Limit</div>
+                <div>
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential']) }} MtCO2e
                 </div>
+            </div>
+            <div key="6" class="data">
+                <div>Additional Average Abatement Cost <br /> (Compared to Current Energy Mix) <br/>to Reach Net Zero Emissions ($
+                    /tCO2e)</div>
+                <div>
+                    {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Cost_NetZero']) }}
+                    ($/tCO2e)
+                </div>
+            </div>
+        </div>
+        <span class="chartTitle">Pareto Abatement Cost (PAC) Curve: </span>Trade-off between emissions and costs to build a
+        new system in 2050
+        <div class="coalition-potential">
+            <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
+            </coalitionMaximumMitigationPotential>
+        </div>
         <div class="card-buttons">
             <button class="btn btn-alt-1" @click="useCountries.setCollabMode(true)">
                 Select for collaboration
@@ -55,11 +62,9 @@
             <button class="btn btn-alt-2" @click="emit('country-navigation', selectedCountries[0])">
                 View country details
             </button>
-            <button
-                class="btn btn-alt-3"
-                style="width: 100%"
+            <button class="btn btn-alt-3" style="width: 100%"
                 @click="emit('country-mitigation-potential-diagram', selectedCountries[0])">
-                Mitigation Potential Diagram
+                Dynamic Pareto Abatement Cost Curve
             </button>
         </div>
     </div>
@@ -68,12 +73,13 @@
 <script setup>
 import { ref, onMounted, watch, defineProps } from 'vue';
 import { useSelectedCountries } from '../composables/useSelectedCountries';
+import { useNumberRounder } from '../composables/useNumberRounder';
 import closeIcon from '../assets/cross.svg';
 import coalitionMaximumMitigationPotential from './coalition-maximum-mitigation-potential.vue';
 
 const useCountries = useSelectedCountries();
 const selectedCountries = useCountries.selectedCountries;
-
+const rounder = useNumberRounder();
 const emit = defineEmits(['country-navigation', 'country-mitigation-potential-diagram']);
 </script>
 
@@ -85,6 +91,23 @@ const emit = defineEmits(['country-navigation', 'country-mitigation-potential-di
     background-color: white;
     border-radius: 8px;
     box-shadow: 0px 4px 8px 0px #214b6352;
+}
+
+.chartTitle {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+@media screen and (max-width: 1199px) {
+    .country-card {
+        padding: 14px 14px;
+        width: 340px;
+        font-size: 12px;
+    }
+
+    .chartTitle {
+        font-size: 14px;
+    }
 }
 
 .card-top {
@@ -150,5 +173,4 @@ const emit = defineEmits(['country-navigation', 'country-mitigation-potential-di
 
 .card-data-spacing {
     padding-block: 14px;
-}
-</style>
+}</style>
