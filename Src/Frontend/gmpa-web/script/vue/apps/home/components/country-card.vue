@@ -4,7 +4,7 @@
             <div class="title">{{ selectedCountries[0].properties.name }}</div>
             <closeIcon class="close-btn" alt="close-button" height="24" width="24" @click="useCountries.resetCountries()" />
         </div>
-        Annual Mitigation Potential (MtCO2e) at Additional Average Abatement Cost of:
+        Annual Mitigation Potential (MtCO2e) at Additional Average Abatement Cost (Compared to Current Energy Mix) of:
         <div class="card-data-spacing">
 
             <div key="2" class="data">
@@ -40,15 +40,17 @@
                     {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Potential']) }} MtCO2e
                 </div>
             </div>
-                        <div key="6" class="data">
-                <div>Additional Average Abatement Cost<br/>to Reach Net Zero Emissions</div>
+            <div key="6" class="data">
+                <div>Additional Average Abatement Cost <br /> (Compared to Current Energy Mix) <br/>to Reach Net Zero Emissions ($
+                    /tCO2e)</div>
                 <div>
                     {{ rounder.sizeBasedRound(selectedCountries[0].properties['Mitigation_Cost_NetZero']) }}
                     ($/tCO2e)
                 </div>
             </div>
         </div>
-        <span class="chartTitle">Pareto Abatement Cost (PAC) Curve: </span>Trade-off between emissions and costs to build a new system in 2050
+        <span class="chartTitle">Pareto Abatement Cost (PAC) Curve: </span>Trade-off between emissions and costs to build a
+        new system in 2050
         <div class="coalition-potential">
             <coalitionMaximumMitigationPotential :countriesList="selectedCountries">
             </coalitionMaximumMitigationPotential>
@@ -102,9 +104,10 @@ const emit = defineEmits(['country-navigation', 'country-mitigation-potential-di
         width: 340px;
         font-size: 12px;
     }
+
     .chartTitle {
-    font-size: 14px;
-}
+        font-size: 14px;
+    }
 }
 
 .card-top {
@@ -170,5 +173,4 @@ const emit = defineEmits(['country-navigation', 'country-mitigation-potential-di
 
 .card-data-spacing {
     padding-block: 14px;
-}
-</style>
+}</style>

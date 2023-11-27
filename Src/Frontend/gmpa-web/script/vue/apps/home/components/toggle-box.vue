@@ -1,6 +1,6 @@
 <template>
     <div class="mitigation-card">
-        Annual Mitigation Potential (MtCO2e)<br /> at Additional Average Abatement Cost of:
+        Annual Mitigation Potential (MtCO2e) at Additional Average Abatement Cost<br />  (Compared to Current Energy Mix) of:
         <div v-for="(mitigation, i) in mitigationList" :key="i" class="radio-text">
             <input :id="mitigation" :checked="i == 4" type="radio" :value="mitigation.value" name="mitigation"
                 @change="selectedMitigation = mitigation" />
@@ -29,7 +29,7 @@ onMounted(() => {
         { label: '20 $/tCO2e', value: "Mitigation_Potential_at_20" },
         { label: '50 $/tCO2e', value: "Mitigation_Potential_at_50" },
         { label: 'No cost limit', value: "Mitigation_Potential" },
-        { label: 'Additional Average Abatement Cost to<br />Reach Net Zero Emissions ($/tCO2e)', value: "Mitigation_Cost_NetZero" },
+        { label: 'Additional Average Abatement Cost (Compared to Current Energy Mix)<br />  to Reach Net Zero Emissions ($ /tCO2e)', value: "Mitigation_Cost_NetZero" },
     ];
 
     emit('mitigation-value', mitigationList.value[4]);
