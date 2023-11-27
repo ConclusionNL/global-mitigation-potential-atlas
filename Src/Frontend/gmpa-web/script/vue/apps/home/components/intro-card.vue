@@ -11,7 +11,8 @@
                 and what the key levers are for realising these opportunities. It fosters domestic action, as
                 well as international collaboration and learning.
                 <br/> <br/>
-                For additional information, please contact the GMPA consortium at info@mitigationatlas.org
+                We welcome your feedback on this pilot version for Southeast Asia – please get in touch
+                with info@mitigationatlas.org
             </div>
             <br/>
             <div class="buttons">
