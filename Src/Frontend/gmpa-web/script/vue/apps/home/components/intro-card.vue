@@ -12,7 +12,7 @@
                 well as international collaboration and learning.
                 <br/> <br/>
                 We welcome your feedback on this pilot version for Southeast Asia – please get in touch
-                with <a href="mailto:info@mitigationatlas.org">info@mitigationatlas.org</a>
+                with: <a href="mailto:info@mitigationatlas.org">info@mitigationatlas.org</a>
             </div>
             <br/>
             <div class="buttons">

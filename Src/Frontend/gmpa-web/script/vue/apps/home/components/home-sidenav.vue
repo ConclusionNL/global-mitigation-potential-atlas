@@ -4,7 +4,7 @@
             <button type="button" class="btn btn-light" @click="goToPage('/cases')">Facilitative policies</button>
             <button type="button" class="btn btn-light" @click="goToPage('/policies')">National policies</button>
         </div>
-        <h4 class="country-divider">Countries</h4>
+        <h4 class="country-divider">Country / Region / Territory</h4>
         <ul class="countries-list">
             <!-- #region Pilot countries-->
             <li>
