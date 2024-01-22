@@ -9,6 +9,10 @@ namespace GMPA.Web
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(x =>
+                {
+                    x.AddJsonFile("appsettings.user.json", true, true);
+                })
                 .ConfigureUmbracoDefaults()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
