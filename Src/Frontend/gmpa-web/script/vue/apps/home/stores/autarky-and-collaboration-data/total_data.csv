@@ -1988,30 +1988,6 @@ SG,,,,38.7,0.863,Industry Oil Heating
 SG,,,,38.7,1.37E-05,Solar Potential
 SG,,,,38.7,0.745,Coal Imports
 SG,,,,38.7,5.41,Light Fuel Oil Imports
-SG,,,,39.5,0.332,Electricity Distribution
-SG,,,,39.5,12.8,Gas Power Plant (CCGT)
-SG,,,,39.5,0.708,Electricity Transmission
-SG,,,,39.5,0.431,Solar PV (Utility)
-SG,,,,39.5,2.88,Distributed solar without storage
-SG,,,,39.5,0.796,Light Fuel Oil Power Plant
-SG,,,,39.5,0.516,Floating Solar PV
-SG,,,,39.5,7.91,Gas Power Plant (Steam Turbine)
-SG,,,,39.5,0.076,Coal Power Plant
-SG,,,,39.5,0.00207,Electric Car
-SG,,,,39.5,0.017,Electric Bus + Rail
-SG,,,,39.5,0.0365,Gasoline Motorcycle
-SG,,,,39.5,0.000732,Gasoline Car
-SG,,,,39.5,0.00253,Residential Electric Stove
-SG,,,,39.5,0.00273,Residential Oil Heating
-SG,,,,39.5,0.0298,Commercial Oil Heating
-SG,,,,39.5,0.153,Industry Coal Heating
-SG,,,,39.5,0.139,Biomass Power Plant
-SG,,,,39.5,0.561,Industry Natural Gas Heating
-SG,,,,39.5,0.0887,Gas Power Plant (SCGT)
-SG,,,,39.5,0.863,Industry Oil Heating
-SG,,,,39.5,1.23E-05,Solar Potential
-SG,,,,39.5,0.751,Coal Imports
-SG,,,,39.5,5.41,Light Fuel Oil Imports
 MY,,,,0,1.44,Electricity Distribution
 MY,,,,0,0.554,Geothermal Power Plant
 MY,,,,0,16.8,Gas Power Plant (CCGT)
