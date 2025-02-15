@@ -51,13 +51,13 @@ jobs:
 
       - name: dotnet publish
         working-directory: ${{ env.PROJECT_BACKEND }}
-        run: dotnet publish --configuration Release --runtime win-x64 --self-contained --output ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish --configuration Release --runtime win-x64 --self-contained --output ${{ env.DOTNET_ROOT }}/myapp
 
       - name: Zip files before uploading
-        run: tar -cvzf myapp.tar -C ${{env.DOTNET_ROOT}}/myapp .
+        run: tar -cvzf myapp.tar -C ${{ env.DOTNET_ROOT }}/myapp .
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: .net-app
           path: myapp.tar
@@ -73,7 +73,7 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: .net-app
 
